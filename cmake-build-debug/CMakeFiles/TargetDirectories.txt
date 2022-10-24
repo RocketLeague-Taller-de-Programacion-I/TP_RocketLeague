@@ -1,4 +1,4 @@
-/home/franco/TP_RocketLeague/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/franco/TP_RocketLeague/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/franco/TP_RocketLeague/cmake-build-debug/CMakeFiles/lib_server.dir
-/home/franco/TP_RocketLeague/cmake-build-debug/CMakeFiles/lib_client.dir
+/home/lucaswaisten/Documents/uba/taller1/TP_RocketLeague/cmake-build-debug/CMakeFiles/client.dir
+/home/lucaswaisten/Documents/uba/taller1/TP_RocketLeague/cmake-build-debug/CMakeFiles/server.dir
+/home/lucaswaisten/Documents/uba/taller1/TP_RocketLeague/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/lucaswaisten/Documents/uba/taller1/TP_RocketLeague/cmake-build-debug/CMakeFiles/rebuild_cache.dir
