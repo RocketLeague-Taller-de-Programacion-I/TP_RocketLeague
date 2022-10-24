@@ -3,9 +3,9 @@
 //
 
 #include <iostream>
+#include "sub_server/Server.h"
 
 int main(int argc, char const *argv[])
 {
-    std::cout << "Hola mundo" << std::endl;
-    return 0;
+    Server hola;
 }

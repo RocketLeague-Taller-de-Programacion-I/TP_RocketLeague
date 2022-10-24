@@ -6,8 +6,10 @@
 #define ROCKETLEAGUE_SERVER_H
 
 
-class Server {
-
+class Client {
+public:
+    Client();
+    ~Client();
 };
 
 

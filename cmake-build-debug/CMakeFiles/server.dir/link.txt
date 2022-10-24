@@ -1,0 +1,1 @@
+/usr/bin/c++  -Wall -Werror -pedantic -pedantic-errors -O3 -ggdb -DDEBUG -fno-inline -g CMakeFiles/server.dir/server_main.cpp.o -o ../server  sub_server/liblib_server.a 

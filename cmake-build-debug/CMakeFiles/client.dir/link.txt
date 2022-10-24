@@ -1,0 +1,1 @@
+/usr/bin/c++  -Wall -Werror -pedantic -pedantic-errors -O3 -ggdb -DDEBUG -fno-inline -g CMakeFiles/client.dir/client_main.cpp.o -o ../client  sub_client/liblib_client.a 
