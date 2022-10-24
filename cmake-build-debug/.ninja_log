@@ -1,0 +1,5 @@
+# ninja log v5
+1502	1781	1666621564667164028	client	bcc4e12eadb98f7d
+0	758	1666628402702670130	CMakeFiles/server.dir/server_main.cpp.o	541d18e5a14bf713
+0	1501	1666621564387162458	CMakeFiles/client.dir/client_main.cpp.o	ce68cfc9e1bd62e0
+758	894	1666628402838669538	server	a9392eb113a740b4
