@@ -6,7 +6,16 @@
 #define ROCKETLEAGUE_PROTOCOLO_H
 
 
+#include "socket.h"
+
 class Protocolo {
+private:
+    Socket socket;
+
+public:
+    explicit Protocolo(const std::string &servname);
+
+    Protocolo(const std::string &hostname, const std::string &servname);
 
 };
 
