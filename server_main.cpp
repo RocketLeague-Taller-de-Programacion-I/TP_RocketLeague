@@ -4,8 +4,11 @@
 
 #include <iostream>
 #include "sub_server/Server.h"
+//  Cada vez que queramos hacer include de box2d
+#include "box2d/box2d.h"
 
 int main(int argc, char const *argv[])
 {
-    Server hola;
+    b2Vec2 gravity(0, 0);
+    b2World world(gravity);
 }
