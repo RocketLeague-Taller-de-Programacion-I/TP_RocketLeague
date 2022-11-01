@@ -1,0 +1,2 @@
+/usr/bin/ar qc liblib_common.a CMakeFiles/lib_common.dir/liberror.cpp.o CMakeFiles/lib_common.dir/resolver.cpp.o CMakeFiles/lib_common.dir/resolvererror.cpp.o CMakeFiles/lib_common.dir/socket.cpp.o CMakeFiles/lib_common.dir/protocolo.cpp.o
+/usr/bin/ranlib liblib_common.a

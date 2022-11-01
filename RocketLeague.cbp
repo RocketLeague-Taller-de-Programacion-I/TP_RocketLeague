@@ -1,0 +1,1534 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="RocketLeague"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\..\;CMake Files\..\..\..\..\;CMake Files\..\..\..\..\usr\;CMake Files\..\..\..\..\usr\local\;CMake Files\..\..\..\..\usr\local\lib\;CMake Files\..\..\..\..\usr\local\lib\cmake\;CMake Files\..\..\..\..\usr\local\lib\cmake\SDL2pp\;CMake Files\..\..\..\..\usr\local\lib\cmake\SDL2\;CMake Files\box2d\;CMake Files\box2d\src\;CMake Files\box2d\unit-test\;CMake Files\box2d\extern\;CMake Files\box2d\extern\glad\;CMake Files\box2d\extern\glfw\;CMake Files\box2d\extern\imgui\;CMake Files\box2d\extern\sajson\;CMake Files\box2d\testbed\;CMake Files\libSDL2pp\;CMake Files\libSDL2pp\cmake\;CMake Files\libSDL2pp\SDL2pp\;CMake Files\gtest\;CMake Files\gtest\googlemock\;CMake Files\gtest\googlemock\cmake\;CMake Files\gtest\googletest\;CMake Files\gtest\googletest\cmake\;CMake Files\sub_client\;CMake Files\sub_server\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/lucaswaisten/Documents/TP_RocketLeague"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="client">
+				<Option output="/home/lucaswaisten/Documents/TP_RocketLeague/client" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucaswaisten/Documents/TP_RocketLeague"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/include"/>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp"/>
+					<Add directory="/usr/local/include/SDL2"/>
+					<Add directory="/usr/include/SDL2"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/Makefile&quot;  VERBOSE=1 client"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="client/fast">
+				<Option output="/home/lucaswaisten/Documents/TP_RocketLeague/client" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucaswaisten/Documents/TP_RocketLeague"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/include"/>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp"/>
+					<Add directory="/usr/local/include/SDL2"/>
+					<Add directory="/usr/include/SDL2"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/Makefile&quot;  VERBOSE=1 client/fast"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="server">
+				<Option output="/home/lucaswaisten/Documents/TP_RocketLeague/server" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucaswaisten/Documents/TP_RocketLeague"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/include"/>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/../include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/Makefile&quot;  VERBOSE=1 server"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="server/fast">
+				<Option output="/home/lucaswaisten/Documents/TP_RocketLeague/server" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucaswaisten/Documents/TP_RocketLeague"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/include"/>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/../include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/Makefile&quot;  VERBOSE=1 server/fast"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/home/lucaswaisten/Documents/TP_RocketLeague"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/home/lucaswaisten/Documents/TP_RocketLeague"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="list_install_components">
+				<Option working_dir="/home/lucaswaisten/Documents/TP_RocketLeague"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/Makefile&quot;  VERBOSE=1 list_install_components"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="install">
+				<Option working_dir="/home/lucaswaisten/Documents/TP_RocketLeague"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/Makefile&quot;  VERBOSE=1 install"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="install/local">
+				<Option working_dir="/home/lucaswaisten/Documents/TP_RocketLeague"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/Makefile&quot;  VERBOSE=1 install/local"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="install/strip">
+				<Option working_dir="/home/lucaswaisten/Documents/TP_RocketLeague"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/Makefile&quot;  VERBOSE=1 install/strip"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="box2d">
+				<Option output="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/bin/libbox2d.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/../include"/>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/Makefile&quot;  VERBOSE=1 box2d"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="box2d/fast">
+				<Option output="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/bin/libbox2d.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/../include"/>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/Makefile&quot;  VERBOSE=1 box2d/fast"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="unit_test">
+				<Option output="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/bin/unit_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/bin"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/../include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/unit-test/Makefile&quot;  VERBOSE=1 unit_test"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/unit-test/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/unit-test/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/unit-test/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="unit_test/fast">
+				<Option output="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/bin/unit_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/bin"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/../include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/unit-test/Makefile&quot;  VERBOSE=1 unit_test/fast"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/unit-test/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/unit-test/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/unit-test/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="glad">
+				<Option output="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/bin/libglad.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glad"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glad/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glad/Makefile&quot;  VERBOSE=1 glad"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glad/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glad/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glad/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="glad/fast">
+				<Option output="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/bin/libglad.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glad"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glad/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glad/Makefile&quot;  VERBOSE=1 glad/fast"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glad/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glad/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glad/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="glfw">
+				<Option output="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/bin/libglfw.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glfw"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glfw/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glfw/Makefile&quot;  VERBOSE=1 glfw"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glfw/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glfw/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glfw/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="glfw/fast">
+				<Option output="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/bin/libglfw.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glfw"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glfw/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glfw/Makefile&quot;  VERBOSE=1 glfw/fast"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glfw/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glfw/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glfw/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="imgui">
+				<Option output="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/bin/libimgui.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/imgui"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/imgui/.."/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/imgui/Makefile&quot;  VERBOSE=1 imgui"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/imgui/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/imgui/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/imgui/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="imgui/fast">
+				<Option output="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/bin/libimgui.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/imgui"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/imgui/.."/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/imgui/Makefile&quot;  VERBOSE=1 imgui/fast"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/imgui/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/imgui/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/imgui/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="sajson">
+				<Option output="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/bin/libsajson.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/sajson"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/sajson/.."/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/sajson/Makefile&quot;  VERBOSE=1 sajson"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/sajson/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/sajson/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/sajson/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="sajson/fast">
+				<Option output="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/bin/libsajson.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/sajson"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/sajson/.."/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/sajson/Makefile&quot;  VERBOSE=1 sajson/fast"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/sajson/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/sajson/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/sajson/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="testbed">
+				<Option output="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/bin/testbed" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/bin"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed"/>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/../include"/>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glfw/include"/>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/imgui/.."/>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/sajson/.."/>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glad/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/Makefile&quot;  VERBOSE=1 testbed"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="testbed/fast">
+				<Option output="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/bin/testbed" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/bin"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed"/>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/../include"/>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glfw/include"/>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/imgui/.."/>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/sajson/.."/>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glad/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/Makefile&quot;  VERBOSE=1 testbed/fast"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="SDL2pp">
+				<Option output="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/libSDL2pp.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp"/>
+					<Add directory="/usr/local/include/SDL2"/>
+					<Add directory="/usr/include/SDL2"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/Makefile&quot;  VERBOSE=1 SDL2pp"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="SDL2pp/fast">
+				<Option output="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/libSDL2pp.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp"/>
+					<Add directory="/usr/local/include/SDL2"/>
+					<Add directory="/usr/include/SDL2"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/Makefile&quot;  VERBOSE=1 SDL2pp/fast"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gmock">
+				<Option output="/home/lucaswaisten/Documents/TP_RocketLeague/lib/libgmock.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googlemock"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googlemock/include"/>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googlemock"/>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googletest/include"/>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googletest"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googlemock/Makefile&quot;  VERBOSE=1 gmock"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googlemock/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googlemock/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googlemock/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gmock/fast">
+				<Option output="/home/lucaswaisten/Documents/TP_RocketLeague/lib/libgmock.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googlemock"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googlemock/include"/>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googlemock"/>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googletest/include"/>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googletest"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googlemock/Makefile&quot;  VERBOSE=1 gmock/fast"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googlemock/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googlemock/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googlemock/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gmock_main">
+				<Option output="/home/lucaswaisten/Documents/TP_RocketLeague/lib/libgmock_main.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googlemock"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googlemock/include"/>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googlemock"/>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googletest/include"/>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googletest"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googlemock/Makefile&quot;  VERBOSE=1 gmock_main"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googlemock/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googlemock/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googlemock/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gmock_main/fast">
+				<Option output="/home/lucaswaisten/Documents/TP_RocketLeague/lib/libgmock_main.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googlemock"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googlemock/include"/>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googlemock"/>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googletest/include"/>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googletest"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googlemock/Makefile&quot;  VERBOSE=1 gmock_main/fast"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googlemock/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googlemock/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googlemock/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gtest">
+				<Option output="/home/lucaswaisten/Documents/TP_RocketLeague/lib/libgtest.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googletest"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googletest/include"/>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googletest"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googletest/Makefile&quot;  VERBOSE=1 gtest"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googletest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gtest/fast">
+				<Option output="/home/lucaswaisten/Documents/TP_RocketLeague/lib/libgtest.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googletest"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googletest/include"/>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googletest"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googletest/Makefile&quot;  VERBOSE=1 gtest/fast"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googletest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gtest_main">
+				<Option output="/home/lucaswaisten/Documents/TP_RocketLeague/lib/libgtest_main.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googletest"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googletest/include"/>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googletest"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googletest/Makefile&quot;  VERBOSE=1 gtest_main"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googletest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gtest_main/fast">
+				<Option output="/home/lucaswaisten/Documents/TP_RocketLeague/lib/libgtest_main.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googletest"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googletest/include"/>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googletest"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googletest/Makefile&quot;  VERBOSE=1 gtest_main/fast"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googletest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googletest/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="lib_client">
+				<Option output="/home/lucaswaisten/Documents/TP_RocketLeague/sub_client/liblib_client.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucaswaisten/Documents/TP_RocketLeague/sub_client"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/sub_client/Makefile&quot;  VERBOSE=1 lib_client"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/sub_client/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/sub_client/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/sub_client/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="lib_client/fast">
+				<Option output="/home/lucaswaisten/Documents/TP_RocketLeague/sub_client/liblib_client.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucaswaisten/Documents/TP_RocketLeague/sub_client"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/sub_client/Makefile&quot;  VERBOSE=1 lib_client/fast"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/sub_client/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/sub_client/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/sub_client/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="lib_server">
+				<Option output="/home/lucaswaisten/Documents/TP_RocketLeague/sub_server/liblib_server.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucaswaisten/Documents/TP_RocketLeague/sub_server"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/sub_server/Makefile&quot;  VERBOSE=1 lib_server"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/sub_server/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/sub_server/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/sub_server/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="lib_server/fast">
+				<Option output="/home/lucaswaisten/Documents/TP_RocketLeague/sub_server/liblib_server.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucaswaisten/Documents/TP_RocketLeague/sub_server"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/sub_server/Makefile&quot;  VERBOSE=1 lib_server/fast"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/sub_server/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/sub_server/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/lucaswaisten/Documents/TP_RocketLeague/sub_server/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glad/include/KHR/khrplatform.h">
+			<Option target="glad"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glad/include/glad/gl.h">
+			<Option target="glad"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glad/src/gl.c">
+			<Option target="glad"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glfw/include/GLFW/glfw3.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glfw/include/GLFW/glfw3native.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glfw/src/context.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glfw/src/egl_context.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glfw/src/egl_context.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glfw/src/glx_context.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glfw/src/glx_context.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glfw/src/init.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glfw/src/input.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glfw/src/internal.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glfw/src/linux_joystick.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glfw/src/linux_joystick.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glfw/src/mappings.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glfw/src/monitor.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glfw/src/osmesa_context.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glfw/src/osmesa_context.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glfw/src/posix_thread.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glfw/src/posix_thread.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glfw/src/posix_time.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glfw/src/posix_time.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glfw/src/vulkan.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glfw/src/window.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glfw/src/x11_init.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glfw/src/x11_monitor.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glfw/src/x11_platform.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glfw/src/x11_window.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glfw/src/xkb_unicode.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glfw/src/xkb_unicode.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/imgui/imconfig.h">
+			<Option target="imgui"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/imgui/imgui.cpp">
+			<Option target="imgui"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/imgui/imgui.h">
+			<Option target="imgui"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/imgui/imgui_demo.cpp">
+			<Option target="imgui"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/imgui/imgui_draw.cpp">
+			<Option target="imgui"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/imgui/imgui_internal.h">
+			<Option target="imgui"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/imgui/imgui_widgets.cpp">
+			<Option target="imgui"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/imgui/imstb_rectpack.h">
+			<Option target="imgui"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/imgui/imstb_textedit.h">
+			<Option target="imgui"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/imgui/imstb_truetype.h">
+			<Option target="imgui"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/sajson/sajson.cpp">
+			<Option target="sajson"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/sajson/sajson.h">
+			<Option target="sajson"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/include/box2d/b2_api.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/include/box2d/b2_block_allocator.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/include/box2d/b2_body.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/include/box2d/b2_broad_phase.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/include/box2d/b2_chain_shape.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/include/box2d/b2_circle_shape.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/include/box2d/b2_collision.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/include/box2d/b2_common.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/include/box2d/b2_contact.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/include/box2d/b2_contact_manager.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/include/box2d/b2_distance.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/include/box2d/b2_distance_joint.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/include/box2d/b2_draw.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/include/box2d/b2_dynamic_tree.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/include/box2d/b2_edge_shape.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/include/box2d/b2_fixture.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/include/box2d/b2_friction_joint.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/include/box2d/b2_gear_joint.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/include/box2d/b2_growable_stack.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/include/box2d/b2_joint.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/include/box2d/b2_math.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/include/box2d/b2_motor_joint.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/include/box2d/b2_mouse_joint.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/include/box2d/b2_polygon_shape.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/include/box2d/b2_prismatic_joint.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/include/box2d/b2_pulley_joint.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/include/box2d/b2_revolute_joint.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/include/box2d/b2_rope.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/include/box2d/b2_settings.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/include/box2d/b2_shape.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/include/box2d/b2_stack_allocator.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/include/box2d/b2_time_of_impact.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/include/box2d/b2_time_step.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/include/box2d/b2_timer.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/include/box2d/b2_types.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/include/box2d/b2_weld_joint.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/include/box2d/b2_wheel_joint.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/include/box2d/b2_world.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/include/box2d/b2_world_callbacks.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/include/box2d/box2d.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/collision/b2_broad_phase.cpp">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/collision/b2_chain_shape.cpp">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/collision/b2_circle_shape.cpp">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/collision/b2_collide_circle.cpp">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/collision/b2_collide_edge.cpp">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/collision/b2_collide_polygon.cpp">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/collision/b2_collision.cpp">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/collision/b2_distance.cpp">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/collision/b2_dynamic_tree.cpp">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/collision/b2_edge_shape.cpp">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/collision/b2_polygon_shape.cpp">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/collision/b2_time_of_impact.cpp">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/common/b2_block_allocator.cpp">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/common/b2_draw.cpp">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/common/b2_math.cpp">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/common/b2_settings.cpp">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/common/b2_stack_allocator.cpp">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/common/b2_timer.cpp">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/dynamics/b2_body.cpp">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/dynamics/b2_chain_circle_contact.cpp">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/dynamics/b2_chain_circle_contact.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/dynamics/b2_chain_polygon_contact.cpp">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/dynamics/b2_chain_polygon_contact.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/dynamics/b2_circle_contact.cpp">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/dynamics/b2_circle_contact.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/dynamics/b2_contact.cpp">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/dynamics/b2_contact_manager.cpp">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/dynamics/b2_contact_solver.cpp">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/dynamics/b2_contact_solver.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/dynamics/b2_distance_joint.cpp">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/dynamics/b2_edge_circle_contact.cpp">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/dynamics/b2_edge_circle_contact.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/dynamics/b2_edge_polygon_contact.cpp">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/dynamics/b2_edge_polygon_contact.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/dynamics/b2_fixture.cpp">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/dynamics/b2_friction_joint.cpp">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/dynamics/b2_gear_joint.cpp">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/dynamics/b2_island.cpp">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/dynamics/b2_island.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/dynamics/b2_joint.cpp">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/dynamics/b2_motor_joint.cpp">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/dynamics/b2_mouse_joint.cpp">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/dynamics/b2_polygon_circle_contact.cpp">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/dynamics/b2_polygon_circle_contact.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/dynamics/b2_polygon_contact.cpp">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/dynamics/b2_polygon_contact.h">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/dynamics/b2_prismatic_joint.cpp">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/dynamics/b2_pulley_joint.cpp">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/dynamics/b2_revolute_joint.cpp">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/dynamics/b2_weld_joint.cpp">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/dynamics/b2_wheel_joint.cpp">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/dynamics/b2_world.cpp">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/dynamics/b2_world_callbacks.cpp">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/rope/b2_rope.cpp">
+			<Option target="box2d"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/draw.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/draw.h">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/imgui_impl_glfw.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/imgui_impl_glfw.h">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/imgui_impl_opengl3.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/imgui_impl_opengl3.h">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/main.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/settings.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/settings.h">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/test.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/test.h">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/add_pair.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/apply_force.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/body_types.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/box_stack.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/breakable.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/bridge.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/bullet_test.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/cantilever.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/car.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/chain.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/chain_problem.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/character_collision.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/circle_stack.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/collision_filtering.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/collision_processing.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/compound_shapes.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/confined.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/continuous_test.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/convex_hull.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/conveyor_belt.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/distance_joint.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/distance_test.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/dominos.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/dump_loader.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/dynamic_tree.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/edge_shapes.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/edge_test.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/friction.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/gear_joint.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/heavy1.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/heavy2.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/mobile_balanced.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/mobile_unbalanced.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/motor_joint.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/pinball.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/platformer.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/polygon_collision.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/polygon_shapes.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/prismatic_joint.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/pulley_joint.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/pyramid.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/ray_cast.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/restitution.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/revolute_joint.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/rope.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/sensor.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/shape_cast.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/shape_editing.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/skier.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/slider_crank_1.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/slider_crank_2.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/theo_jansen.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/tiles.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/time_of_impact.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/tumbler.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/web.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/wheel_joint.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/tests/wrecking_ball.cpp">
+			<Option target="testbed"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/unit-test/collision_test.cpp">
+			<Option target="unit_test"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/unit-test/doctest.h">
+			<Option target="unit_test"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/unit-test/hello_world.cpp">
+			<Option target="unit_test"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/unit-test/joint_test.cpp">
+			<Option target="unit_test"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/unit-test/math_test.cpp">
+			<Option target="unit_test"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/unit-test/world_test.cpp">
+			<Option target="unit_test"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/client_main.cpp">
+			<Option target="client"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googlemock/src/gmock-all.cc">
+			<Option target="gmock"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googlemock/src/gmock_main.cc">
+			<Option target="gmock_main"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googletest/src/gtest-all.cc">
+			<Option target="gtest"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googletest/src/gtest_main.cc">
+			<Option target="gtest_main"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/SDL2pp/AudioDevice.cc">
+			<Option target="SDL2pp"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/SDL2pp/AudioDevice.hh">
+			<Option target="SDL2pp"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/SDL2pp/AudioLock.cc">
+			<Option target="SDL2pp"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/SDL2pp/AudioSpec.cc">
+			<Option target="SDL2pp"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/SDL2pp/AudioSpec.hh">
+			<Option target="SDL2pp"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/SDL2pp/Chunk.cc">
+			<Option target="SDL2pp"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/SDL2pp/Chunk.hh">
+			<Option target="SDL2pp"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/SDL2pp/Color.cc">
+			<Option target="SDL2pp"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/SDL2pp/Color.hh">
+			<Option target="SDL2pp"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/SDL2pp/ContainerRWops.hh">
+			<Option target="SDL2pp"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/SDL2pp/Exception.cc">
+			<Option target="SDL2pp"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/SDL2pp/Exception.hh">
+			<Option target="SDL2pp"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/SDL2pp/Font.cc">
+			<Option target="SDL2pp"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/SDL2pp/Font.hh">
+			<Option target="SDL2pp"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/SDL2pp/Mixer.cc">
+			<Option target="SDL2pp"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/SDL2pp/Mixer.hh">
+			<Option target="SDL2pp"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/SDL2pp/Music.cc">
+			<Option target="SDL2pp"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/SDL2pp/Music.hh">
+			<Option target="SDL2pp"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/SDL2pp/Optional.hh">
+			<Option target="SDL2pp"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/SDL2pp/Point.cc">
+			<Option target="SDL2pp"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/SDL2pp/Point.hh">
+			<Option target="SDL2pp"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/SDL2pp/RWops.cc">
+			<Option target="SDL2pp"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/SDL2pp/RWops.hh">
+			<Option target="SDL2pp"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/SDL2pp/Rect.cc">
+			<Option target="SDL2pp"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/SDL2pp/Rect.hh">
+			<Option target="SDL2pp"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/SDL2pp/Renderer.cc">
+			<Option target="SDL2pp"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/SDL2pp/Renderer.hh">
+			<Option target="SDL2pp"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/SDL2pp/SDL.cc">
+			<Option target="SDL2pp"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/SDL2pp/SDL.hh">
+			<Option target="SDL2pp"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/SDL2pp/SDL2pp.hh">
+			<Option target="SDL2pp"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/SDL2pp/SDLImage.cc">
+			<Option target="SDL2pp"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/SDL2pp/SDLImage.hh">
+			<Option target="SDL2pp"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/SDL2pp/SDLMixer.cc">
+			<Option target="SDL2pp"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/SDL2pp/SDLMixer.hh">
+			<Option target="SDL2pp"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/SDL2pp/SDLTTF.cc">
+			<Option target="SDL2pp"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/SDL2pp/SDLTTF.hh">
+			<Option target="SDL2pp"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/SDL2pp/StreamRWops.hh">
+			<Option target="SDL2pp"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/SDL2pp/Surface.cc">
+			<Option target="SDL2pp"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/SDL2pp/Surface.hh">
+			<Option target="SDL2pp"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/SDL2pp/SurfaceLock.cc">
+			<Option target="SDL2pp"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/SDL2pp/Texture.cc">
+			<Option target="SDL2pp"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/SDL2pp/Texture.hh">
+			<Option target="SDL2pp"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/SDL2pp/TextureLock.cc">
+			<Option target="SDL2pp"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/SDL2pp/Wav.cc">
+			<Option target="SDL2pp"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/SDL2pp/Wav.hh">
+			<Option target="SDL2pp"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/SDL2pp/Window.cc">
+			<Option target="SDL2pp"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/SDL2pp/Window.hh">
+			<Option target="SDL2pp"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/server_main.cpp">
+			<Option target="server"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/sub_client/Client.cpp">
+			<Option target="lib_client"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/sub_client/Client.h">
+			<Option target="lib_client"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/sub_server/Server.cpp">
+			<Option target="lib_server"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/sub_server/Server.h">
+			<Option target="lib_server"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/../../../../usr/local/lib/cmake/SDL2pp/FindSDL2_image.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\usr\local\lib\cmake\SDL2pp\"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/../../../../usr/local/lib/cmake/SDL2pp/FindSDL2_mixer.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\usr\local\lib\cmake\SDL2pp\"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/../../../../usr/local/lib/cmake/SDL2pp/SDL2ppConfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\usr\local\lib\cmake\SDL2pp\"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/../../../../usr/local/lib/cmake/SDL2pp/SDL2ppTargets.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\usr\local\lib\cmake\SDL2pp\"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/../../../../usr/local/lib/cmake/SDL2/sdl2-config-version.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\usr\local\lib\cmake\SDL2\"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/../../../../usr/local/lib/cmake/SDL2/sdl2-config.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\usr\local\lib\cmake\SDL2\"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\box2d\"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/src/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\box2d\src\"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/unit-test/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\box2d\unit-test\"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glad/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\box2d\extern\glad\"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/glfw/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\box2d\extern\glfw\"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/imgui/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\box2d\extern\imgui\"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/extern/sajson/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\box2d\extern\sajson\"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/box2d/testbed/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\box2d\testbed\"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\libSDL2pp\"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/cmake/FindSDL2_image.cmake">
+			<Option virtualFolder="CMake Files\libSDL2pp\cmake\"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/cmake/FindSDL2_mixer.cmake">
+			<Option virtualFolder="CMake Files\libSDL2pp\cmake\"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/cmake/FindSDL2_ttf.cmake">
+			<Option virtualFolder="CMake Files\libSDL2pp\cmake\"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/libSDL2pp/SDL2pp/Config.hh.in">
+			<Option virtualFolder="CMake Files\libSDL2pp\SDL2pp\"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/gtest/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\gtest\"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googlemock/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\gtest\googlemock\"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googlemock/cmake/gmock.pc.in">
+			<Option virtualFolder="CMake Files\gtest\googlemock\cmake\"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googlemock/cmake/gmock_main.pc.in">
+			<Option virtualFolder="CMake Files\gtest\googlemock\cmake\"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googletest/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\gtest\googletest\"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googletest/cmake/Config.cmake.in">
+			<Option virtualFolder="CMake Files\gtest\googletest\cmake\"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googletest/cmake/gtest.pc.in">
+			<Option virtualFolder="CMake Files\gtest\googletest\cmake\"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googletest/cmake/gtest_main.pc.in">
+			<Option virtualFolder="CMake Files\gtest\googletest\cmake\"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/gtest/googletest/cmake/internal_utils.cmake">
+			<Option virtualFolder="CMake Files\gtest\googletest\cmake\"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/sub_client/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\sub_client\"/>
+		</Unit>
+		<Unit filename="/home/lucaswaisten/Documents/TP_RocketLeague/sub_server/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\sub_server\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

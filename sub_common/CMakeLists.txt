@@ -1,0 +1,11 @@
+add_library(lib_common
+        liberror.cpp
+        liberror.h
+        resolver.cpp
+        resolver.h
+        resolvererror.h
+        resolvererror.cpp
+        socket.h
+        socket.cpp
+        protocolo.cpp
+        protocolo.h)
