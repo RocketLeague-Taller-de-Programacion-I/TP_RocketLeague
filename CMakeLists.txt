@@ -9,13 +9,13 @@ set(SDL2PP_WITH_MIXER ON) # if you need SDL_mixer support
 set(SDL2PP_WITH_TTF ON) # if you need SDL_ttf support
 # Incluyo libreria SDL2pp
 add_subdirectory(libSDL2pp)
-add_subdirectory(gtest)
 include_directories(${PROJECT_SOURCE_DIR}/box2d/include)
 
 #  Incluyo los subdir.
 add_subdirectory("sub_client")
 add_subdirectory("sub_server")
 add_subdirectory("sub_common")
+add_subdirectory("tests")
 
 #  Creo los ejecutables
 add_executable(client client_main.cpp)

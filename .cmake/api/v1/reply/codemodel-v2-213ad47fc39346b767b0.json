@@ -1,0 +1,391 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1,
+						9,
+						10,
+						11,
+						12
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-f5ebdc15457944623624.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						2,
+						10
+					]
+				},
+				{
+					"build" : "box2d",
+					"childIndexes" : 
+					[
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-box2d-e2a6d1253decec305d13.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.8"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 1,
+					"source" : "box2d"
+				},
+				{
+					"build" : "box2d/src",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-box2d.src-d890dc40abb930234014.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.8"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 1,
+					"source" : "box2d/src",
+					"targetIndexes" : 
+					[
+						1
+					]
+				},
+				{
+					"build" : "box2d/unit-test",
+					"jsonFile" : "directory-box2d.unit-test-88123ef780793bdb07a4.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.8"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 1,
+					"source" : "box2d/unit-test",
+					"targetIndexes" : 
+					[
+						12
+					]
+				},
+				{
+					"build" : "box2d/extern/glad",
+					"jsonFile" : "directory-box2d.extern.glad-29a6b39e76750473a9e4.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.8"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 1,
+					"source" : "box2d/extern/glad",
+					"targetIndexes" : 
+					[
+						3
+					]
+				},
+				{
+					"build" : "box2d/extern/glfw",
+					"jsonFile" : "directory-box2d.extern.glfw-33ec522f7d46fb67238d.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.8"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 1,
+					"source" : "box2d/extern/glfw",
+					"targetIndexes" : 
+					[
+						4
+					]
+				},
+				{
+					"build" : "box2d/extern/imgui",
+					"jsonFile" : "directory-box2d.extern.imgui-5ada65960341a3875f62.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.8"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 1,
+					"source" : "box2d/extern/imgui",
+					"targetIndexes" : 
+					[
+						5
+					]
+				},
+				{
+					"build" : "box2d/extern/sajson",
+					"jsonFile" : "directory-box2d.extern.sajson-b48f17383acf4fae380f.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.8"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 1,
+					"source" : "box2d/extern/sajson",
+					"targetIndexes" : 
+					[
+						9
+					]
+				},
+				{
+					"build" : "box2d/testbed",
+					"jsonFile" : "directory-box2d.testbed-9b7932762ef9cf5633fe.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.8"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 1,
+					"source" : "box2d/testbed",
+					"targetIndexes" : 
+					[
+						11
+					]
+				},
+				{
+					"build" : "libSDL2pp",
+					"jsonFile" : "directory-libSDL2pp-107a4110ca09fc6f1178.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 2,
+					"source" : "libSDL2pp",
+					"targetIndexes" : 
+					[
+						0
+					]
+				},
+				{
+					"build" : "sub_client",
+					"jsonFile" : "directory-sub_client-c56d0db2cdca9ef2e2f3.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "sub_client",
+					"targetIndexes" : 
+					[
+						6
+					]
+				},
+				{
+					"build" : "sub_server",
+					"jsonFile" : "directory-sub_server-4aeffb6eaa5e91517db2.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "sub_server",
+					"targetIndexes" : 
+					[
+						8
+					]
+				},
+				{
+					"build" : "sub_common",
+					"jsonFile" : "directory-sub_common-d4952ed7be3b3d84de3f.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "sub_common",
+					"targetIndexes" : 
+					[
+						7
+					]
+				}
+			],
+			"name" : "",
+			"projects" : 
+			[
+				{
+					"childIndexes" : 
+					[
+						1,
+						2
+					],
+					"directoryIndexes" : 
+					[
+						0,
+						10,
+						11,
+						12
+					],
+					"name" : "RocketLeague",
+					"targetIndexes" : 
+					[
+						2,
+						6,
+						7,
+						8,
+						10
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8
+					],
+					"name" : "box2d",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						1,
+						3,
+						4,
+						5,
+						9,
+						11,
+						12
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						9
+					],
+					"name" : "libSDL2pp",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 9,
+					"id" : "SDL2pp::@932ec4ee50991ec918cf",
+					"jsonFile" : "target-SDL2pp-b250ecf00cc862899a32.json",
+					"name" : "SDL2pp",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "box2d::@1702ee254ed0382960a7",
+					"jsonFile" : "target-box2d-07eddf0078d940e68535.json",
+					"name" : "box2d",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "client::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-client-7dffbade137a6bcd4286.json",
+					"name" : "client",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 4,
+					"id" : "glad::@db082d33905314ee4901",
+					"jsonFile" : "target-glad-4663b5f98ab85594d36c.json",
+					"name" : "glad",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "glfw::@922bf12fd37d6631da0d",
+					"jsonFile" : "target-glfw-c12ab1c00c2eda0cdd2f.json",
+					"name" : "glfw",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 6,
+					"id" : "imgui::@4bdd6564a4a0261d012d",
+					"jsonFile" : "target-imgui-2617d91fdf83341d03e4.json",
+					"name" : "imgui",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 10,
+					"id" : "lib_client::@61077d7176da34d5cec9",
+					"jsonFile" : "target-lib_client-417a310061b13d360960.json",
+					"name" : "lib_client",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 12,
+					"id" : "lib_common::@a01866e40ed710dfd3bd",
+					"jsonFile" : "target-lib_common-9eb7878c689fde14c86c.json",
+					"name" : "lib_common",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 11,
+					"id" : "lib_server::@279f32365429bf38bb48",
+					"jsonFile" : "target-lib_server-a821add5a4f029b43801.json",
+					"name" : "lib_server",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 7,
+					"id" : "sajson::@5c3ad75728406797a6e0",
+					"jsonFile" : "target-sajson-db8cf71a40efc7a96697.json",
+					"name" : "sajson",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "server::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-server-409e6216082badd4f6aa.json",
+					"name" : "server",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 8,
+					"id" : "testbed::@d4f8f455a89bf204da30",
+					"jsonFile" : "target-testbed-baddfb10b601ffbb0464.json",
+					"name" : "testbed",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 3,
+					"id" : "unit_test::@d6ff4050bea43cdc6a81",
+					"jsonFile" : "target-unit_test-e68ff0269bdff16c1210.json",
+					"name" : "unit_test",
+					"projectIndex" : 1
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/lucaswaisten/Documents/uba/taller1/TP_RocketLeague",
+		"source" : "/home/lucaswaisten/Documents/uba/taller1/TP_RocketLeague"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}
