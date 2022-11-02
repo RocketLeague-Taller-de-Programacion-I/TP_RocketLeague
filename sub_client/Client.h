@@ -10,6 +10,7 @@ class Client {
 public:
     Client();
     ~Client();
+    int view_screen();
 };
 
 
