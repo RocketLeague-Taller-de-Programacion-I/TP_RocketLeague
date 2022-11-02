@@ -31,15 +31,20 @@
 #include <SDL2pp/Renderer.hh>
 #include <SDL2pp/Texture.hh>
 #include <SDL2pp/Surface.hh>
+#include <QLabel>
+#include <QApplication>
+#include <QVBoxLayout>
+#include <QPushButton>
 #include "sub_client/Client.h"
+#include "sub_client/mainwindow.h"
 
 using namespace SDL2pp;
 #define TESTDATA_DIR "../libSDL2pp/testdata"
 static const float pi = 3.14159265358979323846f;
 
-int main(int, char*[]) try {
-    Client cliente;
-
+int main(int argc, char* argv[]) try {
+    Client client;
+    client.start();
 } catch (std::exception & e) {
         std::cerr << "Error: " << e.what() << std::endl;
         return 1;

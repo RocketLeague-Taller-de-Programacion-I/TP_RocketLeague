@@ -4,9 +4,12 @@
 
 #include <iostream>
 #include "Client.h"
+#include "mainwindow.h"
 #include <cmath>
 #include <iostream>
 
+#include <QApplication>
+#include <QLabel>
 #include <SDL2pp/SDL.hh>
 #include <SDL2pp/SDLImage.hh>
 #include <SDL2pp/Window.hh>
@@ -14,12 +17,14 @@
 #include <SDL2pp/Texture.hh>
 #include <SDL2pp/Surface.hh>
 #include <SDL.h>
+#include <QPushButton>
+#include <QVBoxLayout>
 
 using namespace SDL2pp;
 #define TESTDATA_DIR "../libSDL2pp/testdata"
 static const float pi = 3.14159265358979323846f;
 Client::Client() {
- view_screen();
+    //qt_init(argc, argv);
 }
 
 Client::~Client() { }
@@ -29,7 +34,7 @@ int Client::view_screen() {
     SDL sdl(SDL_INIT_VIDEO);
 
     // Create main window: 640x480 dimensions, resizable, "SDL2pp demo" title
-    Window window("SDL2pp demo",
+    Window window("Rocket League",
                   SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                   640, 480,
                   SDL_WINDOW_RESIZABLE);
@@ -66,4 +71,8 @@ int Client::view_screen() {
         // Show rendered frame
         renderer.Present();
     }
+}
+
+void Client::start() {
+    view_screen();
 }
