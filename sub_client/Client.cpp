@@ -74,9 +74,11 @@ int Client::view_screen() {
 }
 int Client::qt_init(int argc, char *argv[]) {
     QApplication app(argc, argv);
-    QWidget window;
 
     Greeter greeter;
+    greeter.setWindowState(greeter.windowState());
+    greeter.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    greeter.setStyleSheet("image: url(../images/rocketLig.jpg);" "background-repeat: no-repeat;" "background-position: center;");
     greeter.show();
 
     return app.exec();
