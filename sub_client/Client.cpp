@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include "Client.h"
-#include "mainwindow.h"
+#include "Greeter.h"
 #include <cmath>
 #include <iostream>
 
@@ -36,7 +36,7 @@ int Client::view_screen() {
     // Create main window: 640x480 dimensions, resizable, "SDL2pp demo" title
     Window window("Rocket League",
                   SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                  640, 480,
+                  640, 320,
                   SDL_WINDOW_RESIZABLE);
 
     // Create accelerated video renderer with default driver
@@ -72,7 +72,16 @@ int Client::view_screen() {
         renderer.Present();
     }
 }
+int Client::qt_init(int argc, char *argv[]) {
+    QApplication app(argc, argv);
+    QWidget window;
 
+    Greeter greeter;
+    greeter.show();
+
+    return app.exec();
+}
 void Client::start() {
-    view_screen();
+    qt_init(0, nullptr);
+    //view_screen();
 }

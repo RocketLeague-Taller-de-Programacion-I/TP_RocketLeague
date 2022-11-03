@@ -36,7 +36,6 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 #include "sub_client/Client.h"
-#include "sub_client/mainwindow.h"
 
 using namespace SDL2pp;
 #define TESTDATA_DIR "../libSDL2pp/testdata"
