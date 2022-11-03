@@ -62,19 +62,19 @@ TEST_CASE( "Protocolo serializa acciones de Menu", "[single-file]" ) {
     SECTION("Accion CREATE") {
 
         REQUIRE(
-                protocolo.serializeMenuAction("create")
+                protocolo.serializeAction("create")
                 == CREATE);
     }
     SECTION("Accion LIST") {
 
         REQUIRE(
-                protocolo.serializeMenuAction("list")
+                protocolo.serializeAction("list")
                 == LIST);
     }
     SECTION("Accion JOIN") {
 
         REQUIRE(
-                protocolo.serializeMenuAction("join")
+                protocolo.serializeAction("join")
                 == JOIN);
     }
 }

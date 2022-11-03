@@ -8,7 +8,3 @@
 uint8_t Protocolo::serializeAction(const std::string &action) {
     return this->mapCommand.at(action);
 }
-
-command_t Protocolo::serializeMenuAction(const std::string &menuAction) {
-    return this->mapMenuCommand.at(menuAction);
-}

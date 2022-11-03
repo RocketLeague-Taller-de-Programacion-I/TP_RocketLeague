@@ -17,13 +17,12 @@ enum action{
     LEFT,
     UP,
     DOWN,
-    TURBO
-};
-enum menu{
+    TURBO,
     CREATE,
     LIST,
     JOIN
 };
+
 typedef uint8_t command_t;
 
 class Protocolo {
@@ -36,17 +35,12 @@ private:
             {"up", UP},
             {"down", DOWN},
             {"turbo", TURBO},
-    };
-    const std::unordered_map<std::string, command_t> mapMenuCommand = {
             {"create", CREATE},
             {"list", LIST},
             {"join", JOIN}
     };
 public:
-    uint8_t serializeAction(const std::string &action);
-
-    command_t serializeMenuAction(const std::string &menuAction);
+    command_t serializeAction(const std::string &action);
 };
-
 
 #endif //ROCKETLEAGUE_PROTOCOLO_H
