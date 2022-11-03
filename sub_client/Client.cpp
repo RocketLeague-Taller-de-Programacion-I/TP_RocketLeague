@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include "Client.h"
-#include "Greeter.h"
+#include "mainwindow.h"
 #include <cmath>
 #include <iostream>
 
@@ -74,13 +74,13 @@ int Client::view_screen() {
 }
 int Client::qt_init(int argc, char *argv[]) {
     QApplication app(argc, argv);
-
-    Greeter greeter;
-    greeter.setWindowState(greeter.windowState());
-    greeter.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    greeter.setStyleSheet("image: url(../images/rocketLig.jpg);" "background-repeat: no-repeat;" "background-position: center;");
-    greeter.show();
-
+    mainwindow window;
+//    Greeter greeter;
+//    greeter.setWindowState(greeter.windowState());
+//    greeter.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+//    greeter.setStyleSheet("image: url(../images/rocketLig.jpg);" "background-repeat: no-repeat;" "background-position: center;");
+//    greeter.show();
+    window.show();
     return app.exec();
 }
 void Client::start() {
