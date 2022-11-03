@@ -2,19 +2,79 @@
 // Created by lucaswaisten on 01/11/22.
 //
 #include <catch2/catch_test_macros.hpp>
+#include "../sub_common/protocolo.h"
 
-static int Factorial( int number ) {
-    return number <= 1 ? number : Factorial( number - 1 ) * number;  // fail
-// return number <= 1 ? 1      : Factorial( number - 1 ) * number;  // pass
+/*
+ * Defino de forma global a protocolo que utilizare para los test.
+ */
+Protocolo protocolo;
+/*
+ * Test unitario de protocolo
+ *      - Buscaremos testiar cuando recibe mensajes desde cliente
+ *      y los mismos se serializan en comandos de 2 bytes.
+ *      - Buscaremos testiar las respuestas del servidor
+ *      los casos exitosos y los casos no exitosos.
+ */
+
+TEST_CASE("Protocolo serializa acciones del jugador",
+           "[single-file]" ) {
+    /*
+    * protocolo.serializeAction recibe una serie de acciones
+    * en formato string y devuelve un comando serializado
+    */
+    SECTION("Accion JUMP") {
+        REQUIRE(
+                protocolo.serializeAction("jump")
+                == JUMP);
+    }
+    SECTION("Accion RIGHT") {
+        REQUIRE(
+                protocolo.serializeAction("right")
+                == RIGHT);
+    }
+    SECTION("Accion LEFT") {
+        REQUIRE(
+                protocolo.serializeAction("left")
+                == LEFT);
+    }
+    SECTION("Accion UP") {
+        REQUIRE(
+                protocolo.serializeAction("up")
+                == UP);
+    }
+
+    SECTION("Accion TURBO") {
+        REQUIRE(
+                protocolo.serializeAction("turbo")
+                == TURBO);
+    }
+    SECTION("Accion DOWN") {
+        REQUIRE(
+                protocolo.serializeAction("down")
+                == DOWN);
+    }
 }
+TEST_CASE( "Protocolo serializa acciones de Menu", "[single-file]" ) {
+    /*
+     * las acciones de Menu, son las acciones de creacion de partida
+     * listar partidas o unirse a una partida
+     */
+    SECTION("Accion CREATE") {
 
-TEST_CASE( "Factorial of 0 is 1 (fail)", "[single-file]" ) {
-    REQUIRE( Factorial(0) == 1 );
-}
+        REQUIRE(
+                protocolo.serializeMenuAction("create")
+                == CREATE);
+    }
+    SECTION("Accion LIST") {
 
-TEST_CASE( "Factorials of 1 and higher are computed (pass)", "[single-file]" ) {
-    REQUIRE( Factorial(1) == 1 );
-    REQUIRE( Factorial(2) == 2 );
-    REQUIRE( Factorial(3) == 6 );
-    REQUIRE( Factorial(10) == 3628800 );
+        REQUIRE(
+                protocolo.serializeMenuAction("list")
+                == LIST);
+    }
+    SECTION("Accion JOIN") {
+
+        REQUIRE(
+                protocolo.serializeMenuAction("join")
+                == JOIN);
+    }
 }
