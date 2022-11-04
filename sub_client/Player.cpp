@@ -20,7 +20,7 @@ void Player::update(float dt) {
 
 void Player::render(SDL2pp::Renderer &renderer) {
     SDL_RendererFlip flip = facingLeft ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
-    an.render(renderer, SDL2pp::Rect(x, y, 200, 200), flip);
+    an.render(renderer, SDL2pp::Rect(x, y, 400, 200), flip);
 }
 
 void Player::moveRight() {
@@ -35,4 +35,13 @@ void Player::moveLeft() {
 
 void Player::stopMoving() {
     moving = false;
+}
+
+void Player::moveDown() {
+    moving = true;
+    facingLeft = true;
+}
+
+void Player::moveUp() {
+
 }

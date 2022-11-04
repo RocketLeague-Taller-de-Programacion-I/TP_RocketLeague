@@ -2,7 +2,6 @@ set(SDL2PP_WITH_IMAGE ON) # if you need SDL_image support
 set(SDL2PP_WITH_MIXER ON) # if you need SDL_mixer support
 set(SDL2PP_WITH_TTF ON) # if you need SDL_ttf support
 #add_definitions(-DDATA_PATH="${PROJECT_SOURCE_DIR}/data")
-set(CMAKE_AUTOUIC ON)
 find_package(Qt5Widgets)
 qt5_wrap_cpp(SUB_CLIENT_VAR mainwindow.h)
 qt5_wrap_ui(UIS_HEADERS mainwindow.ui)

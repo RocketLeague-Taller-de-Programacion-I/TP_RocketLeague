@@ -39,6 +39,13 @@ void GameLoop::handle_events() {
                     case SDLK_RIGHT:
                         player.moveRight();
                         break;
+                    case SDLK_UP:
+                        player.moveUp();
+                        // cola_cliente.push(evento)
+                        break;
+                    case SDLK_DOWN:
+                        player.moveDown();
+                        break;
                 }
             } // Fin KEY_DOWN
                 break;
@@ -54,18 +61,12 @@ void GameLoop::handle_events() {
                 }
             }// Fin KEY_UP
                 break;
-            case SDL_MOUSEMOTION:
-                std::cout << "Oh! Mouse" << std::endl;
-                break;
-            case SDL_QUIT:
-                std::cout << "Quit :(" << std::endl;
-                running = false;
         } // fin switch(event)
     } // fin while(SDL_PollEvents)
 }
 
 void GameLoop::render() {
-    renderer.SetDrawColor(0x33, 0x33, 0x33);
+    renderer.SetDrawColor(0x00, 0x00, 0x00);
     renderer.Clear();
     player.render(renderer);
     renderer.Present();

@@ -17,6 +17,10 @@ public:
     void moveLeft();
     void stopMoving();
 
+    void moveDown();
+
+    void moveUp();
+
 private:
     Animation an;
     bool facingLeft;
