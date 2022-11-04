@@ -29,7 +29,7 @@ Client::Client() {
 
 Client::~Client() { }
 
-int Client::view_screen() {
+void Client::view_screen() {
 // Initialize SDL library
     SDL2pp::SDL sdl(SDL_INIT_VIDEO);
     SDL2pp::Window sdlWindow("Hello world", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
@@ -45,9 +45,6 @@ int Client::view_screen() {
 
     GameLoop gameloop(renderer, im);
     gameloop.run();
-
-} catch (...) {
-    std::cerr << "Error desconocido en la función main" << std::endl;
 }
 int Client::qt_init(int argc, char *argv[]) {
     QApplication app(argc, argv);
@@ -56,6 +53,6 @@ int Client::qt_init(int argc, char *argv[]) {
     return app.exec();
 }
 void Client::start() {
-    qt_init(0, nullptr);
+    // qt_init(0, nullptr);
     //view_screen();
 }

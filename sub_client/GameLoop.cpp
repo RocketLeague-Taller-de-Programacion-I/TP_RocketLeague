@@ -34,6 +34,7 @@ void GameLoop::handle_events() {
                 switch (keyEvent.keysym.sym) {
                     case SDLK_LEFT:
                         player.moveLeft();
+                        // cola_cliente.push(evento)
                         break;
                     case SDLK_RIGHT:
                         player.moveRight();

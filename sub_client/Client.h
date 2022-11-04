@@ -10,7 +10,7 @@ class Client {
 public:
     Client();
     ~Client();
-    int view_screen();
+    void view_screen();
     void start();
 
     int qt_init(int argc, char **argv);

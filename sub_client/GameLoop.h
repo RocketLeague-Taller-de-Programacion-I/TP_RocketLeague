@@ -18,7 +18,7 @@ class GameLoop {
     void render();
 
 public:
-    Gameloop(SDL2pp::Renderer &renderer, SDL2pp::Texture &texture);
+    GameLoop(SDL2pp::Renderer &renderer, SDL2pp::Texture &texture);
     void run();
 };
 #endif //ROCKETLEAGUE_GAMELOOP_H
