@@ -41,11 +41,11 @@ bool GameLoop::handle_events() {
                         player.moveRight(this->xMax);
                         break;
                     case SDLK_UP:
-                        player.moveUp(this->xMax);
+                        player.moveUp(this->yMax);
                         // cola_cliente.push(evento)
                         break;
                     case SDLK_DOWN:
-                        player.moveDown(this->xMax);
+                        player.moveDown(this->yMax);
                         break;
                     case SDLK_ESCAPE:
                         running = false;
