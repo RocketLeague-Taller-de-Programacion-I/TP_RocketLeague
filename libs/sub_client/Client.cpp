@@ -32,8 +32,10 @@ Client::~Client() { }
 void Client::view_screen() {
 // Initialize SDL library
     SDL2pp::SDL sdl(SDL_INIT_VIDEO);
+    int w = 800;
+    int h = 600;
     SDL2pp::Window sdlWindow("RocketLeague", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                             800, 600,
+                             w, h,
                              SDL_WINDOW_RESIZABLE);
 
     // Creo renderer
@@ -43,7 +45,7 @@ void Client::view_screen() {
     SDL2pp::Texture im(renderer,
                        SDL2pp::Surface("../images/car.jpeg").SetColorKey(true, 0));
 
-    GameLoop gameloop(renderer, im);
+    GameLoop gameloop(renderer, im, w, h);
     gameloop.run();
 }
 int Client::qt_init(int argc, char *argv[]) {

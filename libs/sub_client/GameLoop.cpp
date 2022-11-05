@@ -6,8 +6,8 @@
 #include <unistd.h>
 #include "GameLoop.h"
 
-GameLoop::GameLoop(SDL2pp::Renderer &renderer, SDL2pp::Texture &texture): renderer(renderer),
-                                                                          player(texture),running(true){}
+GameLoop::GameLoop(SDL2pp::Renderer &renderer, SDL2pp::Texture &texture, int xMax, int yMax): renderer(renderer),
+                                                                          player(texture),running(true), xMax(xMax), yMax(yMax){}
 
 void GameLoop::run() {
     // Gameloop, notar como tenemos desacoplado el procesamiento de los inputs (handleEvents)
@@ -34,18 +34,18 @@ bool GameLoop::handle_events() {
                 SDL_KeyboardEvent& keyEvent = (SDL_KeyboardEvent&) event;
                 switch (keyEvent.keysym.sym) {
                     case SDLK_LEFT:
-                        player.moveLeft();
+                        player.moveLeft(this->xMax);
                         // cola_cliente.push(evento)
                         break;
                     case SDLK_RIGHT:
-                        player.moveRight();
+                        player.moveRight(this->xMax);
                         break;
                     case SDLK_UP:
-                        player.moveUp();
+                        player.moveUp(this->xMax);
                         // cola_cliente.push(evento)
                         break;
                     case SDLK_DOWN:
-                        player.moveDown();
+                        player.moveDown(this->xMax);
                         break;
                     case SDLK_ESCAPE:
                         running = false;

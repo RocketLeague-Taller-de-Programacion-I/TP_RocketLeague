@@ -13,14 +13,12 @@ public:
     ~Player();
     void update(float dt);
     void render(SDL2pp::Renderer &renderer);
-    void moveRight();
-    void moveLeft();
-    void stopMoving();
+    void moveRight(int xMax);
+    void moveLeft(int yMax);
     void stopMovingX();
     void stopMovingY();
-    void moveDown();
-
-    void moveUp();
+    void moveDown(int yMax);
+    void moveUp(int yMax);
 
 private:
     Animation an;
