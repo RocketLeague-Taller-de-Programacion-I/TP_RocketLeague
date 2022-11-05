@@ -16,7 +16,8 @@ public:
     void moveRight();
     void moveLeft();
     void stopMoving();
-
+    void stopMovingX();
+    void stopMovingY();
     void moveDown();
 
     void moveUp();
@@ -24,7 +25,9 @@ public:
 private:
     Animation an;
     bool facingLeft;
-    bool moving;
+    bool facingUp;
+    bool movingX;
+    bool movingY;
     int x;
     int y;
 };

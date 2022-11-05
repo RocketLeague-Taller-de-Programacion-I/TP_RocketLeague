@@ -20,9 +20,10 @@ void GameLoop::run() {
         // de la cantidad de tiempo que demoró el handleEvents y el render
         usleep(FRAME_RATE);
     }
+    return;
 }
 
-void GameLoop::handle_events() {
+bool GameLoop::handle_events() {
     SDL_Event event;
     // Para el alumno: Buscar diferencia entre waitEvent y pollEvent
     // Aca estara la cola de eventos!!
@@ -46,6 +47,10 @@ void GameLoop::handle_events() {
                     case SDLK_DOWN:
                         player.moveDown();
                         break;
+                    case SDLK_ESCAPE:
+                        running = false;
+                        break;
+
                 }
             } // Fin KEY_DOWN
                 break;
@@ -53,16 +58,22 @@ void GameLoop::handle_events() {
                 SDL_KeyboardEvent& keyEvent = (SDL_KeyboardEvent&) event;
                 switch (keyEvent.keysym.sym) {
                     case SDLK_LEFT:
-                        player.stopMoving();
+                        player.stopMovingX();
                         break;
                     case SDLK_RIGHT:
-                        player.stopMoving();
+                        player.stopMovingX();
+                        break;
+                    case SDLK_UP:
+                        player.stopMovingY();
+                        break;
+                    case SDLK_DOWN:
+                        player.stopMovingY();
                         break;
                 }
             }// Fin KEY_UP
-                break;
         } // fin switch(event)
     } // fin while(SDL_PollEvents)
+    return true;
 }
 
 void GameLoop::render() {

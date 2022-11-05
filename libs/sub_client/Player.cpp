@@ -1,6 +1,6 @@
 #include "Player.h"
 
-Player::Player(SDL2pp::Texture &texture): an(texture), facingLeft(false), moving(false), x(300), y(300) {}
+Player::Player(SDL2pp::Texture &texture): an(texture), facingLeft(false), movingX(false), movingY(false), x(300), y(300) {}
 
 Player::~Player() {}
 
@@ -9,12 +9,21 @@ Player::~Player() {}
  * Esto les va a resultar muy util. 
  */
 void Player::update(float dt) {
-    if (moving) {
+    if (movingX) {
         an.update(dt);
         if (facingLeft)
             x -= 3;
-        else
+        else{
             x += 3;
+        }
+    }
+    if (movingY) {
+        an.update(dt);
+        if (facingUp)
+            y -= 3;
+        else {
+            y += 3;
+        }
     }
 }
 
@@ -24,24 +33,31 @@ void Player::render(SDL2pp::Renderer &renderer) {
 }
 
 void Player::moveRight() {
-    moving = true;
+    movingX = true;
     facingLeft = false;
+    facingUp = false;
 }
 
 void Player::moveLeft() {
-    moving = true;
+    movingX = true;
     facingLeft = true;
+    facingUp = false;
 }
 
-void Player::stopMoving() {
-    moving = false;
+void Player::stopMovingX() {
+    movingX = false;
 }
+void Player::stopMovingY() {
+    movingY= false;
+}
+
 
 void Player::moveDown() {
-    moving = true;
-    facingLeft = true;
+    movingY = true;
+    facingUp = false;
 }
 
 void Player::moveUp() {
-
+    movingY = true;
+    facingUp = true;
 }

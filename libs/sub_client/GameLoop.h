@@ -13,7 +13,7 @@ class GameLoop {
     Player player;
     bool running;
 
-    void handle_events();
+    bool handle_events();
     void update(float dt);
     void render();
 

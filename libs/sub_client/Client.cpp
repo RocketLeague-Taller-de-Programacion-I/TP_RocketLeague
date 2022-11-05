@@ -58,5 +58,5 @@ void Client::hola() {
 
 void Client::start() {
     qt_init(0, nullptr);
-    //view_screen();
+    view_screen();
 }
