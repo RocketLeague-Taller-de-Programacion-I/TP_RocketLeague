@@ -3,9 +3,9 @@
 
 #include <QWidget>
 
-class Greeter : public QWidget {
+class MainWindow : public QWidget {
 public:
-    explicit Greeter(QWidget *parent = 0);
+    explicit MainWindow(QWidget *parent = 0);
 private:
     void updateGreetings();
     void connectEvents();

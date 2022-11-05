@@ -25,7 +25,7 @@ add_subdirectory(libs/sub_server)
 # Find the QtWidgets library
 find_package(Qt5 REQUIRED COMPONENTS Widgets)
 qt5_wrap_ui(UIS_HEADERS
-        ui/Greeter.ui
+        ui/MainWindow.ui
         )
 
 #  Creo los ejecutables

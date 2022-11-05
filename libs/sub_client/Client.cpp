@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include "Client.h"
-#include "Greeter.h"
+#include "MainWindow.h"
 #include <cmath>
 #include <iostream>
 #include "GameLoop.h"
@@ -48,7 +48,7 @@ void Client::view_screen() {
 }
 int Client::qt_init(int argc, char *argv[]) {
     QApplication app(argc, argv);
-    Greeter greeter;
+    MainWindow greeter;
     greeter.show();
     return app.exec();
 }
@@ -57,6 +57,6 @@ void Client::hola() {
 }
 
 void Client::start() {
-    qt_init(0, nullptr);
-    //view_screen();
+    //qt_init(0, nullptr);
+    view_screen();
 }

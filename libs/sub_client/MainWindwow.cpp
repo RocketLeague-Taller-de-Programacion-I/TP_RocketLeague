@@ -1,16 +1,16 @@
-#include "Greeter.h"
+#include "MainWindow.h"
 // Cargo el archivo generado por uic, leer el CMakelist.txt para mas info
-#include "ui_Greeter.h"
+#include "ui_MainWindow.h"
 
-Greeter::Greeter(QWidget *parent) : QWidget(parent) {
+MainWindow::MainWindow(QWidget *parent) : QWidget(parent) {
     // Instancio la configuracion generada por el designer y uic
-    Ui::Greeter greeter;
+    Ui::MainWindow mainWindow;
     // Configuro este widget para use esa configuracion
-    greeter.setupUi(this);
+    mainWindow.setupUi(this);
     connectEvents();
 }
 
-void Greeter::updateGreetings() {
+void MainWindow::updateGreetings() {
     /**
      * findChild es un metodo de qObject que permite buscar un widget hijo
      * segun su nombre. Si observamos el codigo generado en ui_Greeter
@@ -24,9 +24,9 @@ void Greeter::updateGreetings() {
     labelOut->setText(greetings);
 }
 
-void Greeter::connectEvents() {
+void MainWindow::connectEvents() {
     // Conecto el evento del boton
     QPushButton* buttonGreet = findChild<QPushButton*>("buttonGreet");
     QObject::connect(buttonGreet, &QPushButton::clicked,
-                     this, &Greeter::updateGreetings);
+                     this, &MainWindow::updateGreetings);
 }

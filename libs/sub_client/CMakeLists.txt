@@ -10,5 +10,5 @@ message("Client - Agregando '${PROJECT_SOURCE_DIR}/sub_client' como directorio d
 
 #add_executable(client ../../client_main.cpp ${UIS_HEADERS})
 #include_directories(${SDL2PP_INCLUDE_DIRS})
-add_library(lib_client Client.cpp Client.h Animation.cpp Animation.h Player.cpp Player.h Greeter.h Greeter.cpp GameLoop.cpp GameLoop.h)
+add_library(lib_client Client.cpp Client.h Animation.cpp Animation.h Player.cpp Player.h MainWindow.h MainWindwow.cpp GameLoop.cpp GameLoop.h)
 target_link_libraries(lib_client SDL2pp::SDL2pp Qt5::Widgets)
