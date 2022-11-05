@@ -13,21 +13,27 @@ add_subdirectory(libs/libSDL2pp)
 add_subdirectory(box2d)
 
 # Incluyo libreria SDL2pp y box2d
-message("Agregando '${PROJECT_SOURCE_DIR}/libs' como directorio de includes")
+message("General - Agregando '${PROJECT_SOURCE_DIR}/libs' como directorio de includes")
 include_directories(${PROJECT_SOURCE_DIR}/libs)
 include_directories(${PROJECT_SOURCE_DIR}/box2d/include)
 include_directories(${SDL2PP_INCLUDE_DIRS})
-
+include_directories(${PROJECT_BINARY_DIR})
 #  Incluyo los subdir.
-add_subdirectory("sub_client")
-add_subdirectory("sub_server")
+add_subdirectory(libs/sub_client)
+add_subdirectory(libs/sub_server)
+
+# Find the QtWidgets library
+find_package(Qt5 REQUIRED COMPONENTS Widgets)
+
+qt5_wrap_ui(UIS_HEADERS
+        ui/Greeter.ui
+        )
 
 #  Creo los ejecutables
-#add_executable(client client_main.cpp  ${SUB_CLIENT_VAR} ${UIS_HEADERS})
-add_executable(server server_main.cpp)
-#find_package(SDL2pp REQUIRED)
-find_package(Qt5 REQUIRED COMPONENTS Widgets)
+add_executable(client_main client_main.cpp ${UIS_HEADERS})
+add_executable(server_main server_main.cpp)
+
 #  Linkeo las bibliotecas con los ejecutables
-target_link_libraries(server PUBLIC lib_server box2d Qt5::Widgets)
-target_link_libraries(client PUBLIC lib_client SDL2pp::SDL2pp Qt5::Widgets)
+target_link_libraries(server_main PUBLIC lib_server box2d Qt5::Widgets)
+target_link_libraries(client_main PUBLIC lib_client SDL2pp::SDL2pp Qt5::Widgets)
 
