@@ -32,7 +32,7 @@ Client::~Client() { }
 void Client::view_screen() {
 // Initialize SDL library
     SDL2pp::SDL sdl(SDL_INIT_VIDEO);
-    SDL2pp::Window sdlWindow("Hello world", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+    SDL2pp::Window sdlWindow("RocketLeague", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                              800, 600,
                              SDL_WINDOW_RESIZABLE);
 
@@ -41,7 +41,7 @@ void Client::view_screen() {
 
     // Encapsular en un repositorio de texturas para no crear multiples veces la misma textura
     SDL2pp::Texture im(renderer,
-                       SDL2pp::Surface("assets/soldier2.png").SetColorKey(true, 0));
+                       SDL2pp::Surface("../images/car.jpeg").SetColorKey(true, 0));
 
     GameLoop gameloop(renderer, im);
     gameloop.run();
@@ -51,7 +51,10 @@ int Client::qt_init(int argc, char *argv[]) {
     Greeter greeter;
     greeter.show();
     return app.exec();
+void Client::hola() {
+    std::cout<<"nashe"<<std::endl;
 }
+
 void Client::start() {
     qt_init(0, nullptr);
     //view_screen();
