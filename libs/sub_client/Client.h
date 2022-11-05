@@ -13,6 +13,8 @@ public:
     void view_screen();
     void hola();
     void start();
+
+    int qt_init(int argc, char **argv);
 };
 
 

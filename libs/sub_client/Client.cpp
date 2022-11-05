@@ -51,6 +51,7 @@ int Client::qt_init(int argc, char *argv[]) {
     Greeter greeter;
     greeter.show();
     return app.exec();
+}
 void Client::hola() {
     std::cout<<"nashe"<<std::endl;
 }
