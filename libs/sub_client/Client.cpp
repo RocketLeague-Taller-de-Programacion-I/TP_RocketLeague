@@ -4,12 +4,11 @@
 
 #include <iostream>
 #include "Client.h"
-#include "MainWindow.h"
+#include "GameLoop.h"
+#include "mainwindow.h"
 #include <cmath>
 #include <iostream>
-#include "GameLoop.h"
 #include <QApplication>
-#include <QLabel>
 #include <SDL2pp/SDL.hh>
 #include <SDL2pp/SDLImage.hh>
 #include <SDL2pp/Window.hh>
@@ -17,8 +16,6 @@
 #include <SDL2pp/Texture.hh>
 #include <SDL2pp/Surface.hh>
 #include <SDL.h>
-#include <QPushButton>
-#include <QVBoxLayout>
 
 using namespace SDL2pp;
 #define TESTDATA_DIR "../libSDL2pp/testdata"
@@ -48,15 +45,13 @@ void Client::view_screen() {
 }
 int Client::qt_init(int argc, char *argv[]) {
     QApplication app(argc, argv);
-    MainWindow greeter;
-    greeter.show();
+    MainWindow mainWindow;
+    mainWindow.show();
+    mainWindow.displayMainMenu();
     return app.exec();
-}
-void Client::hola() {
-    std::cout<<"nashe"<<std::endl;
 }
 
 void Client::start() {
-    //qt_init(0, nullptr);
-    view_screen();
+    qt_init(0, nullptr);
+//    view_screen();
 }
