@@ -25,5 +25,15 @@ public slots:
 private:
     Ui::MainWindow *ui;
     GameScene scene;
+
+    void drawGUI();
+
+    void drawTitle();
+
+    void drawCreateButton();
+
+    void drawJoinButton();
+
+    void drawBackButton();
 };
 #endif // MAINWINDOW_H
