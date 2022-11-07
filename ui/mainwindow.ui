@@ -48,8 +48,30 @@
       <height>71</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>24</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::LeftToRight</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(82,30, 61);
+border-color: rgb(0, 255, 0);
+border-image:transparent;
+background-color: rgb(245, 253, 255);</string>
+    </property>
     <property name="text">
      <string/>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+    <property name="placeholderText">
+     <string>Enter your name</string>
     </property>
    </widget>
    <widget class="QSpinBox" name="cantPlayers">
@@ -65,6 +87,9 @@
      <font>
       <pointsize>24</pointsize>
      </font>
+    </property>
+    <property name="autoFillBackground">
+     <bool>true</bool>
     </property>
     <property name="wrapping">
      <bool>false</bool>

@@ -55,6 +55,7 @@ void MainWindow::back() {
     // clear the screen
     this->scene.clear();
     this->lineEdit->clear();
+    this->lineEdit->setPlaceholderText("Enter your name");
     this->lineEdit->setGeometry(1150, 530, 301, 71);
     this->cantPlayers->setValue(0);
 
@@ -103,6 +104,7 @@ void MainWindow::drawCreateGameMenu() {
     this->lineEdit->setGeometry(width() / 2 - 110 , 200 , 301, 71);
     this->lineEdit->clear();
     this->lineEdit->show();
+    this->lineEdit->setPlaceholderText("Room Name");
     this->cantPlayers->show();
     this->label->show();
 
