@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <QLineEdit>
 #include <QSpinBox>
+#include <QLabel>
+#include <QString>
 
 #include "gamescene.h"
 
@@ -47,5 +49,8 @@ private:
 
     QLineEdit* lineEdit;
     QSpinBox* cantPlayers;
+    QLabel *label;
+
+    QString userName = QString("stranger");
 };
 #endif // MAINWINDOW_H

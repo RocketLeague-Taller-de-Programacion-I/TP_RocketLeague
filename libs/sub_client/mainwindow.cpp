@@ -13,11 +13,15 @@ MainWindow::MainWindow(QWidget *parent)
     ui->view->setStyleSheet("border-image: url(/home/roby/Documents/FIUBA/EnCurso/Taller de Programacion I/TP3/TP_RocketLeague/images/rocketLig.jpg);");
     this->lineEdit = findChild<QLineEdit*>("lineEditName");
     this->cantPlayers = findChild<QSpinBox*>("cantPlayers");
+    this->label = findChild<QLabel*>("label");
 }
 
 void MainWindow::start() {
     // clear the screen
     this->scene.clear();
+    this->lineEdit->hide();
+    this->cantPlayers->hide();
+    this->label->hide();
 
     //set menu background
     ui->view->setStyleSheet("border-image: url(/home/roby/Documents/FIUBA/EnCurso/Taller de Programacion I/TP3/TP_RocketLeague/images/menu.png);");
@@ -50,20 +54,22 @@ void MainWindow::joinGame() {
 void MainWindow::back() {
     // clear the screen
     this->scene.clear();
+    this->lineEdit->clear();
+    this->lineEdit->setGeometry(1150, 530, 301, 71);
+    this->cantPlayers->setValue(0);
 
     displayMainMenu();
 }
 
 void MainWindow::drawGUI() {
     drawTitle("Rocket League");
-    QString name = "stranger";
 
-    QLineEdit* inputName = findChild<QLineEdit*>("lineEditName");
-    if(inputName != nullptr){
-        std::cout << inputName->text().toStdString() << std::endl;
-        name = inputName->text();
-        inputName->hide();
+    if(this->lineEdit != nullptr and std::equal(this->userName.begin(), this->userName.end(), "stranger")) {
+        std::cout << this->lineEdit->text().toStdString() << std::endl;
+        userName = this->lineEdit->text();
+        this->lineEdit->hide();
     }
+    QString name = userName;
     QString greetings = QString("Welcome %1").arg(name);
 
     QGraphicsTextItem* titleText = new QGraphicsTextItem(greetings);
@@ -84,6 +90,8 @@ void MainWindow::displayMainMenu() {
     ui->view->setStyleSheet("border-image: url(/home/roby/Documents/FIUBA/EnCurso/Taller de Programacion I/TP3/TP_RocketLeague/images/rocketLig.jpg);");
     this->lineEdit->show();
     this->cantPlayers->hide();
+    this->label->hide();
+
     drawPlayButton();
 }
 
@@ -93,10 +101,10 @@ void MainWindow::drawCreateGameMenu() {
 
     // draw room name line edit
     this->lineEdit->setGeometry(width() / 2 - 110 , 200 , 301, 71);
+    this->lineEdit->clear();
     this->lineEdit->show();
     this->cantPlayers->show();
-//    drawLineEdit(width() / 2 - 200 , 300);
-//    drawLineEdit(width() / 2 - 200 , 400);
+    this->label->show();
 
     // draw save and start button
     drawPlayButton();

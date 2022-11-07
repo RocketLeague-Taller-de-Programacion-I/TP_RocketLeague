@@ -55,17 +55,40 @@
    <widget class="QSpinBox" name="cantPlayers">
     <property name="geometry">
      <rect>
-      <x>690</x>
-      <y>350</y>
-      <width>81</width>
-      <height>61</height>
+      <x>870</x>
+      <y>360</y>
+      <width>91</width>
+      <height>71</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>24</pointsize>
+     </font>
     </property>
     <property name="wrapping">
      <bool>false</bool>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>720</x>
+      <y>360</y>
+      <width>201</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>24</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Players: </string>
     </property>
    </widget>
   </widget>
