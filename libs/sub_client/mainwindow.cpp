@@ -39,12 +39,25 @@ void MainWindow::createGame() {
 void MainWindow::joinGame() {
     // clear the screen
     this->scene.clear();
-    // draw join game menu
+
+    drawTitle("Join Game");
     //list all the games
     //draw a button for each game
-
+    std::map<std::string, std::string> games;
+    games["game1"] = "1/2";
+    games["game2"] = "2/2";
+    games["game3"] = "1/3";
+    int i = 200;
+    foreach(auto game, games) {
+        QString roomName = QString::fromStdString(game.first);
+        QString players = QString::fromStdString(game.second);
+        Button* button = new Button( QString("%1 %2").arg(roomName,players));
+        this->scene.addItem(button);
+        button->setPos(width() / 2 - button->boundingRect().width() / 2, i);
+        i += 100;
+    }
     //crear evento de listar juegos
-
+    drawBackButton();
 
     //draw a back button
     // crear evento de join ()
