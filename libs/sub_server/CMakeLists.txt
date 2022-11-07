@@ -1,1 +1,1 @@
-add_library(lib_server Server.cpp)
+add_library(lib_server Server.cpp Ball.cpp Ball.h)
