@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "Button.h"
+#include <iostream>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -10,6 +11,8 @@ MainWindow::MainWindow(QWidget *parent)
     // Seteo un Objeto QGraphicsScene para manejar la escena del juego
     ui->view->setScene(&this->scene);
     ui->view->setStyleSheet("border-image: url(/home/roby/Documents/FIUBA/EnCurso/Taller de Programacion I/TP3/TP_RocketLeague/images/rocketLig.jpg);");
+    this->lineEdit = findChild<QLineEdit*>("lineEditName");
+    this->cantPlayers = findChild<QSpinBox*>("cantPlayers");
 }
 
 void MainWindow::start() {
@@ -22,9 +25,48 @@ void MainWindow::start() {
     drawGUI();
 }
 
+void MainWindow::createGame() {
+    // clear the screen
+    this->scene.clear();
+    // draw create game menu
+    drawCreateGameMenu();
+}
+
+void MainWindow::joinGame() {
+    // clear the screen
+    this->scene.clear();
+    // draw join game menu
+    //list all the games
+    //draw a button for each game
+
+    //crear evento de listar juegos
+
+
+    //draw a back button
+    // crear evento de join ()
+    // agregar a la cola de eventos
+}
+
+void MainWindow::back() {
+    // clear the screen
+    this->scene.clear();
+
+    displayMainMenu();
+}
+
 void MainWindow::drawGUI() {
-    drawTitle();
-    QGraphicsTextItem* titleText = new QGraphicsTextItem(QString("Welcome "));
+    drawTitle("Rocket League");
+    QString name = "stranger";
+
+    QLineEdit* inputName = findChild<QLineEdit*>("lineEditName");
+    if(inputName != nullptr){
+        std::cout << inputName->text().toStdString() << std::endl;
+        name = inputName->text();
+        inputName->hide();
+    }
+    QString greetings = QString("Welcome %1").arg(name);
+
+    QGraphicsTextItem* titleText = new QGraphicsTextItem(greetings);
     QFont titleFont("comic sans",32);
     titleText->setFont(titleFont);
     int txPos = width() / 2 - titleText->boundingRect().width() / 2;
@@ -37,19 +79,34 @@ void MainWindow::drawGUI() {
     drawBackButton();
 }
 
-void MainWindow::drawCreateButton() {
-    // create the create game button
-    Button* createGameButton = new Button(QString("Create Game"));
-    int bxPos = width() / 2 - createGameButton->boundingRect().width() / 2;
-    int byPos = 300;
-    createGameButton->setPos(bxPos,byPos);
-    connect(createGameButton,SIGNAL(clicked()),this,SLOT(createGame()));
-    scene.addItem(createGameButton);
+void MainWindow::displayMainMenu() {
+    //set menu background
+    ui->view->setStyleSheet("border-image: url(/home/roby/Documents/FIUBA/EnCurso/Taller de Programacion I/TP3/TP_RocketLeague/images/rocketLig.jpg);");
+    this->lineEdit->show();
+    this->cantPlayers->hide();
+    drawPlayButton();
 }
 
-void MainWindow::drawTitle() {
+void MainWindow::drawCreateGameMenu() {
+    // draw title
+    drawTitle("Create Game");
+
+    // draw room name line edit
+    this->lineEdit->setGeometry(width() / 2 - 110 , 200 , 301, 71);
+    this->lineEdit->show();
+    this->cantPlayers->show();
+//    drawLineEdit(width() / 2 - 200 , 300);
+//    drawLineEdit(width() / 2 - 200 , 400);
+
+    // draw save and start button
+    drawPlayButton();
+    // draw back button
+    drawBackButton();
+}
+
+void MainWindow::drawTitle(std::string title) {
     // create the title text
-    QGraphicsTextItem* titleText = new QGraphicsTextItem(QString("Rocket League"));
+    QGraphicsTextItem* titleText = new QGraphicsTextItem(QString(title.c_str()));
     QFont titleFont("comic sans",60);
     titleText->setFont(titleFont);
     int txPos = width() / 2 - titleText->boundingRect().width() / 2;
@@ -58,18 +115,23 @@ void MainWindow::drawTitle() {
     scene.addItem(titleText);
 }
 
-void MainWindow::displayMainMenu() {
-    // create the play button
+void MainWindow::drawPlayButton() {// create the play button
     Button* playButton = new Button(QString("Play"));
     int bxPos = 1250 - playButton->boundingRect().width()/2;
     int byPos = 600;
     playButton->setPos(bxPos,byPos);
     connect(playButton,SIGNAL(clicked()),this,SLOT(start()));
-    this->scene.addItem(playButton);
+    scene.addItem(playButton);
 }
-MainWindow::~MainWindow()
-{
-    delete ui;
+
+void MainWindow::drawCreateButton() {
+    // create the create game button
+    Button* createGameButton = new Button(QString("Create Game"));
+    int bxPos = width() / 2 - createGameButton->boundingRect().width() / 2;
+    int byPos = 300;
+    createGameButton->setPos(bxPos,byPos);
+    connect(createGameButton,SIGNAL(clicked()),this,SLOT(createGame()));
+    scene.addItem(createGameButton);
 }
 
 void MainWindow::drawJoinButton() {
@@ -85,10 +147,15 @@ void MainWindow::drawJoinButton() {
 void MainWindow::drawBackButton() {
     // create the back button
     Button* backButton = new Button(QString("Back"));
-    int bxPos = width() / 2 - backButton->boundingRect().width() / 2;
-    int byPos = 500;
+    int bxPos = width() / 5 - backButton->boundingRect().width() / 2;
+    int byPos = 600;
     backButton->setPos(bxPos,byPos);
     connect(backButton,SIGNAL(clicked()),this,SLOT(back()));
     scene.addItem(backButton);
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
 }
 
