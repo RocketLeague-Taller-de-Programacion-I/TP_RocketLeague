@@ -6,25 +6,23 @@
 #define ROCKETLEAGUE_THREAD_H
 
 
-#include <iostream>
 #include <thread>
+#include <utility>
 
 class Thread {
-private:
-    std::thread thread;
 public:
-    //  Elimino constructor por copia
-    Thread(const Thread&) = delete;
-    //  Elimino operator = (copia)
-    Thread& operator=(Thread&& other) = delete;
-    //  Elimino constructor por movimiento
-    Thread(Thread&& other) = delete;
     Thread();
+    virtual ~Thread();
     void start();
     void join();
     virtual void run() = 0;
-    virtual void stop() = 0;
-    virtual ~Thread();
+    Thread(const Thread &) = delete;
+    Thread &operator=(const Thread &) = delete;
+    Thread(Thread &&otroThread) noexcept;
+    Thread &operator=(Thread &&otroThread);
+
+private:
+    std::thread thread;
 };
 
 

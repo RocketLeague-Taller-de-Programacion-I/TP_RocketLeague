@@ -4,6 +4,6 @@
 
 #include "protocolo.h"
 
-command_t Protocolo::serializeAction(const std::string &action) {
+command_t Protocolo::serializeAction(uint32_t action) {
     return this->mapCommand.at(action);
 }

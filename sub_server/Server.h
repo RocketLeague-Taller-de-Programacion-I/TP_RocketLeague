@@ -6,15 +6,17 @@
 #define ROCKETLEAGUE_SERVER_H
 
 
+#include <vector>
 #include "../sub_common/thread.h"
 #include "../sub_common/socket.h"
 #include "gameManager.h"
-#include "clientManager.h"
+#include "ClientManager.h"
 
 class Server : public Thread{
  private:
     bool cerrado;
     Socket acept_skt;
+    std::vector<ClientManager*> managers;
  public:
     explicit Server(const std::string& servname);
 
@@ -22,8 +24,11 @@ class Server : public Thread{
 
     void run() override;
 
-    void stop() override;
+    void stop();
 
+    void cleanManagersEnds();
+
+    void cleanManagers();
 };
 
 

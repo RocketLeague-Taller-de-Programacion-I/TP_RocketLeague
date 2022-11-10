@@ -7,40 +7,41 @@
 
 
 #include <cstdint>
+#include <SDL2/SDL_keycode.h>
 #include <string>
 #include <unordered_map>
 
 enum action{
-    NOP,
-    JUMP,
-    RIGHT,
-    LEFT,
-    UP,
-    DOWN,
-    TURBO,
-    CREATE,
-    LIST,
-    JOIN
+    NOP_C,
+    JUMP_C,
+    RIGHT_C,
+    LEFT_C,
+    UP_C,
+    DOWN_C,
+    TURBO_C,
+    CREATE_C,
+    LIST_C,
+    JOIN_C
 };
 
 typedef uint8_t command_t;
 
 class Protocolo {
 private:
-    const std::unordered_map<std::string, command_t> mapCommand = {
-            {"nop", NOP},
-            {"jump", JUMP},
-            {"right", RIGHT},
-            {"left", LEFT},
-            {"up", UP},
-            {"down", DOWN},
-            {"turbo", TURBO},
-            {"create", CREATE},
-            {"list", LIST},
-            {"join", JOIN}
+    const std::unordered_map<uint32_t , command_t> mapCommand = {
+            {SDLK_ESCAPE, NOP_C},
+            {SDLK_SPACE, JUMP_C},
+            {SDLK_RIGHT, RIGHT_C},
+            {SDLK_LEFT, LEFT_C},
+            {SDLK_UP, UP_C},
+            {SDLK_DOWN, DOWN_C},
+            {SDLK_KP_C, TURBO_C},
+            {SDLK_0, CREATE_C},
+            {SDLK_1, LIST_C},
+            {SDLK_2, JOIN_C}
     };
 public:
-    command_t serializeAction(const std::string &action);
+    command_t serializeAction(uint32_t action);
 };
 
 

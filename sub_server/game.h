@@ -6,8 +6,26 @@
 #define ROCKETLEAGUE_GAME_H
 
 
-class Game {
+#include <cstdint>
+#include <string>
 
+class Game {
+private:
+    int capacity;
+    int playerOnLine;
+    std::string gameName;
+public:
+    Game(uint8_t aCant, std::string  aName);
+
+    bool joinPlayer();
+
+    std::string information();
+
+    /*
+    * No copiable
+    */
+    Game(const Game&) = delete;
+    Game& operator=(const Game&) = delete;
 };
 
 

@@ -5,11 +5,22 @@
 #include "thread.h"
 
 Thread::Thread() = default;
+
 Thread::~Thread() = default;
 
-void Thread::join() {
-    thread.join();
-}
 void Thread::start() {
-    thread = std::thread(&Thread::run, this);
+    this->thread = std::thread(&Thread::run, this);
+}
+
+void Thread::join() {
+    this->thread.join();
+}
+
+Thread::Thread(Thread &&otroThread) noexcept {
+    this->thread = std::move(otroThread.thread);
+}
+
+Thread &Thread::operator=(Thread &&otroThread) {
+    this->thread = std::move(otroThread.thread);
+    return *this;
 }

@@ -166,7 +166,7 @@ Socket::Socket(Socket&& other) {
      *
      * En el caso de `Socket` podemos marcar el file
      * descriptor del otro socket como invalido (-1)
-     * y marcarlo como cerrado (closed).
+     * y marcarlo como closed (closed).
      * De esa manera el destructor de `other` no
      * va a intentar cerrar el file descriptor.
      * */
@@ -233,7 +233,7 @@ int Socket::sendsome(
     *was_closed = false;
     /*
      * Cuando se hace un send, el sistema operativo puede aceptar
-     * la data pero descubrir luego que el socket fue cerrado
+     * la data pero descubrir luego que el socket fue closed
      * por el otro endpoint quedando la data sin enviar.
      *
      * Esto se lo conoce como "tubería rota" o "broken pipe".
@@ -295,7 +295,7 @@ int Socket::recvall(
 
         if (s <= 0) {
             /*
-             * Si el socket fue cerrado (`s == 0`) o hubo un error
+             * Si el socket fue closed (`s == 0`) o hubo un error
              * `Socket::recvsome` ya debería haber seteado `was_closed`
              * y haber notificado el error.
              *

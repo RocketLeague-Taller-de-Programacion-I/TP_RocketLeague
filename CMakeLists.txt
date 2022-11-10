@@ -19,11 +19,11 @@ add_subdirectory("sub_common")
 add_subdirectory("tests")
 
 #  Creo los ejecutables
-#add_executable(client client_main.cpp  ${SUB_CLIENT_VAR} ${UIS_HEADERS})
+#add_executable(client client_main.cpp)
 add_executable(server server_main.cpp)
 #find_package(SDL2pp REQUIRED)
 find_package(Qt5 REQUIRED COMPONENTS Widgets)
 #  Linkeo las bibliotecas con los ejecutables
-target_link_libraries(server PUBLIC lib_server lib_common box2d Qt5::Widgets)
+target_link_libraries(server PUBLIC lib_server box2d Qt5::Widgets)
 target_link_libraries(client PUBLIC lib_client SDL2pp::SDL2pp Qt5::Widgets)
 

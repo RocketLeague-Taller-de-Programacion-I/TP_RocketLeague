@@ -12,7 +12,16 @@
 
 class GameManager {
     std::mutex mutex;
-    std::map<std::string ,Game> partidas;
+    std::map<std::string ,Game&> games;
+public:
+    uint8_t createGame(uint8_t aCantPlayers,
+                       const std::string& aGameName);
+
+    uint8_t joinGame(const std::string &aGameName);
+
+    std::string listGames();
+
+    void cleanGames();
 };
 
 
