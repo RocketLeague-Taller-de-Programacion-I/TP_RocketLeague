@@ -43,7 +43,7 @@ static const float pi = 3.14159265358979323846f;
 
 int main(int argc, char* argv[]) try {
     Client client;
-    client.start();
+    client.start(0, nullptr);
 } catch (std::exception & e) {
         std::cerr << "Error: " << e.what() << std::endl;
         return 1;

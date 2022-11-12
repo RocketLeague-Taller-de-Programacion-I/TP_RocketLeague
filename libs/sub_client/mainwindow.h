@@ -28,6 +28,7 @@ public slots:
     void back();
     void createGame();
     void joinGame();
+    void joinParticularGame();
 private:
     Ui::MainWindow *ui;
 

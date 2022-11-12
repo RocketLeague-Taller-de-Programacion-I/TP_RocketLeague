@@ -52,6 +52,7 @@ void MainWindow::joinGame() {
         QString roomName = QString::fromStdString(game.first);
         QString players = QString::fromStdString(game.second);
         Button* button = new Button( QString("%1 %2").arg(roomName,players));
+        connect(button,SIGNAL(clicked()),this,SLOT(joinParticularGame()));
         this->scene.addItem(button);
         button->setPos(width() / 2 - button->boundingRect().width() / 2, i);
         i += 100;
@@ -62,6 +63,13 @@ void MainWindow::joinGame() {
     //draw a back button
     // crear evento de join ()
     // agregar a la cola de eventos
+}
+
+void MainWindow::joinParticularGame() {
+    // clear the screen
+    this->scene.clear();
+    //exit qt
+    close();
 }
 
 void MainWindow::back() {

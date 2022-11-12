@@ -12,7 +12,7 @@ public:
     ~Client();
     void view_screen();
     void hola();
-    void start();
+    void start(int argc, char *argv[]);
 
     int qt_init(int argc, char **argv);
 };
