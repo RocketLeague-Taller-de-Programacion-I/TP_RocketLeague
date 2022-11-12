@@ -3,9 +3,10 @@
 #include "Button.h"
 #include <iostream>
 
-MainWindow::MainWindow(QWidget *parent)
+MainWindow::MainWindow(QWidget *parent, BlockingQueue<std::string> &updatesQueue)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
+    , updatesQueue(updatesQueue)
 {
     ui->setupUi(this);
     // Seteo un Objeto QGraphicsScene para manejar la escena del juego
@@ -59,15 +60,16 @@ void MainWindow::joinGame() {
     }
     //crear evento de listar juegos
     drawBackButton();
-
-    //draw a back button
-    // crear evento de join ()
-    // agregar a la cola de eventos
 }
 
 void MainWindow::joinParticularGame() {
     // clear the screen
     this->scene.clear();
+
+    // crear evento de join ()
+    std::string action = "join";
+    // agregar a la cola de eventos
+    this->updatesQueue.push(action);
     //exit qt
     close();
 }

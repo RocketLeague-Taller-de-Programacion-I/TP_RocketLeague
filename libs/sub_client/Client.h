@@ -5,16 +5,27 @@
 #ifndef ROCKETLEAGUE_SERVER_H
 #define ROCKETLEAGUE_SERVER_H
 
+#include <cmath>
+#include <iostream>
+#include <QApplication>
+#include <SDL2pp/SDL.hh>
+#include <SDL2pp/SDLImage.hh>
+#include <SDL2pp/Window.hh>
+#include <SDL2pp/Renderer.hh>
+#include <SDL2pp/Texture.hh>
+#include <SDL2pp/Surface.hh>
+#include <SDL.h>
+
+#include "RenderThread.h"
+#include "../sub_common/socket.h"
 
 class Client {
+private:
+    Socket skt_client;
 public:
-    Client();
+    Client(const char *host, const char *port);
     ~Client();
-    void view_screen();
-    void hola();
-    void start(int argc, char *argv[]);
-
-    int qt_init(int argc, char **argv);
+    void start();
 };
 
 
