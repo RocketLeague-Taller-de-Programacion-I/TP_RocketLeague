@@ -3,7 +3,8 @@
 //
 #include <catch2/catch_test_macros.hpp>
 #include <SDL2/SDL_keycode.h>
-#include "../sub_common/protocolo.h"
+#include "sub_common/protocolo.h"
+
 
 /*
  * Defino de forma global a protocolo que utilizare para los test.
