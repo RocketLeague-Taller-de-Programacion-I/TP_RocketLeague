@@ -22,10 +22,10 @@ public:
 
     T pop(){
         std::unique_lock<std::mutex> lock(mutex);
-        T element = queue.front();
-        if(isEmpty()){
+        if (isEmpty()) {
             throw QueueIsEmptyException("Empty Queue Exception");
         }
+        T element = queue.front();
         queue.pop();
         return element;
     }
