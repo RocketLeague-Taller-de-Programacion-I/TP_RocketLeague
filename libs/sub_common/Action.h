@@ -11,11 +11,11 @@
 
 class Action {
 public:
-    explicit Action(const std::uint8_t &type, std::vector<char>& data);
+    explicit Action(const std::uint8_t &type, std::vector<uint8_t>& data);
     explicit Action(const std::uint8_t &type, std::string & data);
 
     std::uint8_t type;
-    std::vector<char> data;
+    std::vector<uint8_t> data;
 
     std::uint8_t getType() const;
 };

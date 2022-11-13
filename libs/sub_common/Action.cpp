@@ -4,7 +4,7 @@
 
 #include "Action.h"
 
-Action::Action(const uint8_t &type, std::vector<char> &data) : type(type), data(data) {}
+Action::Action(const uint8_t &type, std::vector<uint8_t> &data) : type(type), data(data) {}
 
 std::uint8_t Action::getType() const {
     return type;

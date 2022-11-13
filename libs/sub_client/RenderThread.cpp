@@ -45,7 +45,7 @@ void RenderThread::run() {
         SDL2pp::Texture im(renderer,
                            SDL2pp::Surface("../images/car.jpeg").SetColorKey(true, 0));
 
-        GameLoop gameloop(renderer, im, Width, Height, actionsQueue, updatesQueue);
+        GameLoop gameloop(renderer, im, Width, Height, updatesQueue, actionsQueue);
         gameloop.run();
 
     } catch (const std::exception &e) {

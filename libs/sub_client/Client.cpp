@@ -32,12 +32,4 @@ void Client::start() {
     render_thread.join();
     sender.join();
 //    receiver.join();
-
-    std::vector<Action> outputs;
-
-    while(!actionsQueue.isEmpty()) {
-        outputs.push_back(actionsQueue.pop());
-        std::cout << "action of type: " << outputs.back().getType() << std::endl;
-        outputs.pop_back();
-    }
 }
