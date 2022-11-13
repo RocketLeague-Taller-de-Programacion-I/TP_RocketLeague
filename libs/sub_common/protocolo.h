@@ -41,7 +41,7 @@ private:
             {SDLK_2, JOIN_C}
     };
 public:
-    command_t serializeAction(uint32_t action);
+    command_t getMapCommand(uint32_t action);
 };
 
 

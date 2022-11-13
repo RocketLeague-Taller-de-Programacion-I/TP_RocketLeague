@@ -21,38 +21,38 @@ Protocolo protocolo;
 TEST_CASE("Protocolo serializa acciones del jugador",
           "[single-file]" ) {
     /*
-    * protocolo.serializeAction recibe una serie de acciones
+    * protocolo.getMapCommand recibe una serie de acciones
     * en formato string y devuelve un comando serializado
     */
     SECTION("Accion JUMP") {
         REQUIRE(
-                protocolo.serializeAction(SDLK_SPACE)
+                protocolo.getMapCommand(SDLK_SPACE)
                 == JUMP_C);
     }
     SECTION("Accion RIGHT") {
         REQUIRE(
-                protocolo.serializeAction(SDLK_RIGHT)
+                protocolo.getMapCommand(SDLK_RIGHT)
                 == RIGHT_C);
     }
     SECTION("Accion LEFT") {
         REQUIRE(
-                protocolo.serializeAction(SDLK_LEFT)
+                protocolo.getMapCommand(SDLK_LEFT)
                 == LEFT_C);
     }
     SECTION("Accion UP") {
         REQUIRE(
-                protocolo.serializeAction(SDLK_UP)
+                protocolo.getMapCommand(SDLK_UP)
                 == UP_C);
     }
 
     SECTION("Accion TURBO") {
         REQUIRE(
-                protocolo.serializeAction(SDLK_KP_C)
+                protocolo.getMapCommand(SDLK_KP_C)
                 == TURBO_C);
     }
     SECTION("Accion DOWN") {
         REQUIRE(
-                protocolo.serializeAction(SDLK_DOWN)
+                protocolo.getMapCommand(SDLK_DOWN)
                 == DOWN_C);
     }
 }
@@ -64,19 +64,19 @@ TEST_CASE( "Protocolo serializa acciones de Menu", "[single-file]" ) {
     SECTION("Accion CREATE") {
 
         REQUIRE(
-                protocolo.serializeAction(SDLK_0)
+                protocolo.getMapCommand(SDLK_0)
                 == CREATE_C);
     }
     SECTION("Accion LIST") {
 
         REQUIRE(
-                protocolo.serializeAction(SDLK_1)
+                protocolo.getMapCommand(SDLK_1)
                 == LIST_C);
     }
     SECTION("Accion JOIN") {
 
         REQUIRE(
-                protocolo.serializeAction(SDLK_2)
+                protocolo.getMapCommand(SDLK_2)
                 == JOIN_C);
     }
 }
