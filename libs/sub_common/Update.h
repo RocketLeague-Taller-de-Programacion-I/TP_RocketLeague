@@ -6,12 +6,12 @@
 #define ROCKETLEAGUE_UPDATE_H
 
 
-class Update {
-private:
-    std::string data;
-public:
+#include "Information.h"
 
-    explicit Update(std::string aData);
+class Update : public Information {
+public:
+    explicit Update(uint8_t aType,
+                    std::string aData);
 
 };
 

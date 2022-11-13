@@ -6,4 +6,7 @@
 #include <string>
 #include "Update.h"
 
-Update::Update(std::string aData) : data(std::move(aData)) {}
+Update::Update(uint8_t aType,
+               std::string aData) : Information(aType,
+                                                std::vector<char>(aData.begin(),
+                                                                  aData.end())) {}
