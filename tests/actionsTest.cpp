@@ -4,6 +4,13 @@
 #include <catch2/catch_test_macros.hpp>
 #include "../libs/sub_common/Action.h"
 
+enum actionType {
+    CREATE_ROOM,
+    JOIN_ROOM,
+    LIST_ROOMS,
+    MOVE
+};
+
 TEST_CASE("Action type is set correctly", "[Action]") {
     std::vector<char> data;
     Action action(CREATE_ROOM, data);

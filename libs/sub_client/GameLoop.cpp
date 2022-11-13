@@ -5,7 +5,6 @@
 #include <map>
 #include <unistd.h>
 #include "GameLoop.h"
-#include "sub_common/protocolo.h"
 
 GameLoop::GameLoop(SDL2pp::Renderer &renderer, SDL2pp::Texture &texture, int xMax, int yMax,
                    BlockingQueue<Action> &actions, BlockingQueue<Action> &updates)
@@ -46,28 +45,28 @@ bool GameLoop::handle_events() {
                         player.moveLeft(this->xMax);
                         // cola_cliente.push(evento)
                         // create action
-                        movement[0] = protocolo.serializeAction(SDLK_LEFT);
+                        movement[0] = protocolo.getMapCommand(SDLK_LEFT);
                         // push action to queue
                          actions.push(action);
                         break;
                     case SDLK_RIGHT:
                         player.moveRight(this->xMax);
                         // create action
-                        movement[0] = protocolo.serializeAction(SDLK_RIGHT);
+                        movement[0] = protocolo.getMapCommand(SDLK_RIGHT);
                         // push action to queue
                         actions.push(action);
                         break;
                     case SDLK_UP:
                         player.moveUp(this->yMax);
                         // create action
-                        movement[0] = protocolo.serializeAction(SDLK_UP);
+                        movement[0] = protocolo.getMapCommand(SDLK_UP);
                         // push action to queue
                         actions.push(action);
                         break;
                     case SDLK_DOWN:
                         player.moveDown(this->yMax);
                         // create action
-                        movement[0] = protocolo.serializeAction(SDLK_DOWN);
+                        movement[0] = protocolo.getMapCommand(SDLK_DOWN);
                         // push action to queue
                         actions.push(action);
                         break;
@@ -83,22 +82,22 @@ bool GameLoop::handle_events() {
                     case SDLK_LEFT:
                         player.stopMovingX();
                         // poppear de la cola de updates
-                        std::cout << "update popped of type: MOVE and data: " << actions.pop().data.back() << std::endl;
+                        std::cout << "update to be popped of type: MOVE and data: " << std::endl;
                         break;
                     case SDLK_RIGHT:
                         player.stopMovingX();
                         // poppear de la cola de updates
-                        std::cout << "update popped of type: MOVE and data: " << actions.pop().data.back() << std::endl;
+                        std::cout << "update to be popped of type: MOVE and data: " << std::endl;
                         break;
                     case SDLK_UP:
                         player.stopMovingY();
                         // poppear de la cola de updates
-                        std::cout << "update popped of type: MOVE and data: " << actions.pop().data.back() << std::endl;
+                        std::cout << "update to be popped of type: MOVE and data: " << std::endl;
                         break;
                     case SDLK_DOWN:
                         player.stopMovingY();
                         // poppear de la cola de updates
-                        std::cout << "update popped of type: MOVE and data: " << actions.pop().data.back() << std::endl;
+                        std::cout << "update to be popped of type: MOVE and data: " << std::endl;
                         break;
                 }
             }// Fin KEY_UP

@@ -10,6 +10,14 @@
 #include <SDL2/SDL_keycode.h>
 #include <string>
 #include <unordered_map>
+#include "Action.h"
+
+enum actionType {
+    CREATE_ROOM,
+    JOIN_ROOM,
+    LIST_ROOMS,
+    MOVE
+};
 
 enum action{
     NOP_C,
@@ -18,10 +26,7 @@ enum action{
     LEFT_C,
     UP_C,
     DOWN_C,
-    TURBO_C,
-    CREATE_C,
-    LIST_C,
-    JOIN_C
+    TURBO_C
 };
 
 typedef uint8_t command_t;
@@ -36,12 +41,16 @@ private:
             {SDLK_UP, UP_C},
             {SDLK_DOWN, DOWN_C},
             {SDLK_KP_C, TURBO_C},
-            {SDLK_0, CREATE_C},
-            {SDLK_1, LIST_C},
-            {SDLK_2, JOIN_C}
+            {SDLK_0, CREATE_ROOM},
+            {SDLK_1, LIST_ROOMS},
+            {SDLK_2, JOIN_ROOM}
     };
 public:
-    command_t serializeAction(uint32_t action);
+    command_t getMapCommand(uint32_t action);
+
+    std::vector<char> serializeAction(Action action);
+
+    void parseCreateRoomData(Action &action, std::vector<char> &result) const;
 };
 
 

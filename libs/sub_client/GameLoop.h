@@ -9,6 +9,7 @@
 #include "Player.h"
 #include "sub_common/Action.h"
 #include "sub_common/BlockingQueue.h"
+#include "sub_common/protocolo.h"
 
 class GameLoop {
     SDL2pp::Renderer &renderer;

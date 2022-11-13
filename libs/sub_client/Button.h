@@ -15,6 +15,7 @@ public:
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
 signals:
+    void clicked(QString text);
     void clicked();
 private:
     QGraphicsTextItem* text;

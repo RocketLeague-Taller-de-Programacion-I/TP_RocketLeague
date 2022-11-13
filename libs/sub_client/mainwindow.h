@@ -6,10 +6,12 @@
 #include <QSpinBox>
 #include <QLabel>
 #include <QString>
+#include <QAction>
 
 #include "gamescene.h"
 #include "GameLoop.h"
 #include "sub_common/Action.h"
+#include "Button.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -31,7 +33,7 @@ public slots:
     void back();
     void drawCreateGameMenu();
     void drawJoinGameMenu();
-    void joinParticularGame();
+    void joinParticularGame(QString roomName);
     void createRoom();
 
 private:

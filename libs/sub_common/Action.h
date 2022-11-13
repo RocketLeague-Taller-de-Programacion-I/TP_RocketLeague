@@ -9,19 +9,11 @@
 #include <string>
 #include <vector>
 
-enum actionType {
-    CREATE_ROOM,
-    JOIN_ROOM,
-    LIST_ROOMS,
-    MOVE
-};
-
 class Action {
 public:
     explicit Action(const std::uint8_t &type, std::vector<char>& data);
     explicit Action(const std::uint8_t &type, std::string & data);
 
-public:
     std::uint8_t type;
     std::vector<char> data;
 

@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "Button.h"
 #include <iostream>
 
 MainWindow::MainWindow(QWidget *parent, BlockingQueue<Action> &updates, BlockingQueue<Action> &actions)
@@ -68,7 +67,7 @@ void MainWindow::drawJoinGameMenu() {
         QString roomName = QString::fromStdString(game.first);
         QString players = QString::fromStdString(game.second);
         Button* button = new Button( QString("%1 %2").arg(roomName,players));
-        connect(button,SIGNAL(clicked()),this,SLOT(joinParticularGame()));
+        connect(button, SIGNAL(clicked(QString)), this, SLOT(joinParticularGame(QString)));
         this->scene.addItem(button);
         button->setPos(width() / 2 - button->boundingRect().width() / 2, i);
         i += 100;
@@ -80,21 +79,21 @@ void MainWindow::drawJoinGameMenu() {
 void MainWindow::createRoom() {
     std::string roomName = this->lineEdit->text().toStdString();
     int cantidadPlayers = this->cantPlayers->value();
-    std::string data = "createRoom " + roomName + " " + std::to_string(cantidadPlayers);
+    std::string data = roomName + std::to_string(cantidadPlayers);
     Action action(CREATE_ROOM, data);
-    this->updatesQueue.push(action);
+    this->actionsQueue.push(action);
     close();
 }
 
-void MainWindow::joinParticularGame() {
+void MainWindow::joinParticularGame(QString roomName) {
     // clear the screen
     this->scene.clear();
 
     // crear evento de join ()
-    std::string data = "join";
-    Action action(JOIN_ROOM, data);
+    std::string data = roomName.toStdString();
+    Action action(JOIN_ROOM,data);
     // agregar a la cola de eventos
-    this->updatesQueue.push(action);
+    this->actionsQueue.push(action);
     //exit qt
     close();
 }
