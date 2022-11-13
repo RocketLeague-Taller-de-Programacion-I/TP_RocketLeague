@@ -5,9 +5,16 @@
 #include <map>
 #include <unistd.h>
 #include "GameLoop.h"
+#include "sub_common/BlockingQueue.h"
+#include "sub_common/Action.h"
 
-GameLoop::GameLoop(SDL2pp::Renderer &renderer, SDL2pp::Texture &texture): renderer(renderer),
-                                                                          player(texture),running(true){}
+GameLoop::GameLoop(SDL2pp::Renderer &renderer, SDL2pp::Texture &texture, int xMax, int yMax,
+                   BlockingQueue<std::string> &actions, BlockingQueue<std::string> &updates)
+                   : renderer(renderer),
+                   player(texture),
+                   running(true),
+                   xMax(xMax),
+                   yMax(yMax){}
 
 void GameLoop::run() {
     // Gameloop, notar como tenemos desacoplado el procesamiento de los inputs (handleEvents)
@@ -22,29 +29,56 @@ void GameLoop::run() {
     }
 }
 
-void GameLoop::handle_events() {
+bool GameLoop::handle_events() {
     SDL_Event event;
     // Para el alumno: Buscar diferencia entre waitEvent y pollEvent
     // Aca estara la cola de eventos!!
     while(SDL_PollEvent(&event)){
+        std::string action;
+        std::string update;
         switch(event.type) {
             case SDL_KEYDOWN: {
                 // ¿Qué pasa si mantengo presionada la tecla?
                 SDL_KeyboardEvent& keyEvent = (SDL_KeyboardEvent&) event;
                 switch (keyEvent.keysym.sym) {
                     case SDLK_LEFT:
-                        player.moveLeft();
+                        player.moveLeft(this->xMax);
                         // cola_cliente.push(evento)
+                        // create action
+                        Action action1 = Action(MOVE,"moveLeft");
+                        action = "moveLeft";
+                        // push action to queue
+                         actions.push(action);
                         break;
                     case SDLK_RIGHT:
-                        player.moveRight();
+                        player.moveRight(this->xMax);
+                        // create action
+                        Action action2 = Action(MOVE,"moveRight");
+                        action= "moveRight";
+                        // push action to queue
+                        actions.push(action);
+
                         break;
                     case SDLK_UP:
-                        player.moveUp();
+                        player.moveUp(this->yMax);
                         // cola_cliente.push(evento)
+                        // create action
+                        Action action3 = Action(MOVE,"moveUp");
+                        action = "moveUp";
+                        // push action to queue
+                        actions.push(action);
                         break;
                     case SDLK_DOWN:
-                        player.moveDown();
+                        player.moveDown(this->yMax);
+                        // cola_cliente.push(evento)
+                        // create action
+                        Action action4 = Action(MOVE,"moveDown");
+                        action = "moveDown";
+                        // push action to queue
+                        actions.push(action);
+                        break;
+                    case SDLK_ESCAPE:
+                        running = false;
                         break;
                 }
             } // Fin KEY_DOWN
@@ -53,16 +87,34 @@ void GameLoop::handle_events() {
                 SDL_KeyboardEvent& keyEvent = (SDL_KeyboardEvent&) event;
                 switch (keyEvent.keysym.sym) {
                     case SDLK_LEFT:
-                        player.stopMoving();
+                        player.stopMovingX();
+                        // poppear de la cola de updates
+                        actions.tryPop(update);
+                        std::cout << "update popped: " << update << std::endl;
                         break;
                     case SDLK_RIGHT:
-                        player.stopMoving();
+                        player.stopMovingX();
+                        // poppear de la cola de updates
+                        actions.tryPop(update);
+                        std::cout << "update popped: " << update << std::endl;
+                        break;
+                    case SDLK_UP:
+                        player.stopMovingY();
+                        // poppear de la cola de updates
+                        actions.tryPop(update);
+                        std::cout << "update popped: " << update << std::endl;
+                        break;
+                    case SDLK_DOWN:
+                        player.stopMovingY();
+                        // poppear de la cola de updates
+                        actions.tryPop(update);
+                        std::cout << "update popped: " << update << std::endl;
                         break;
                 }
             }// Fin KEY_UP
-                break;
         } // fin switch(event)
     } // fin while(SDL_PollEvents)
+    return true;
 }
 
 void GameLoop::render() {

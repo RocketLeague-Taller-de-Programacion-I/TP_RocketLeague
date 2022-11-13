@@ -26,22 +26,26 @@ void RenderThread::run() {
         if (qt_return) {
             throw std::runtime_error("La aplicación QT finalizó de forma incorrecta");
         }
+        // Initialize SDL library
         std::cout << "QT finalizó correctamente con: " << qt_return << std::endl;
-//        // Initialize SDL library
-//        SDL2pp::SDL sdl(SDL_INIT_VIDEO);
-//        SDL2pp::Window sdlWindow("RocketLeague", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-//                                 800, 600,
-//                                 SDL_WINDOW_RESIZABLE);
-//
-//        // Creo renderer
-//        SDL2pp::Renderer renderer(sdlWindow, -1, SDL_RENDERER_SOFTWARE);
-//
-//        // Encapsular en un repositorio de texturas para no crear multiples veces la misma textura
-//        SDL2pp::Texture im(renderer,
-//                           SDL2pp::Surface("../images/car.jpeg").SetColorKey(true, 0));
-//
-//        GameLoop gameloop(renderer, im);
-//        gameloop.run();
+        SDL2pp::SDL sdl(SDL_INIT_VIDEO);
+        SDL_DisplayMode DM;
+        SDL_GetCurrentDisplayMode(0, &DM);
+        auto Width = DM.w;
+        auto Height = DM.h;
+        SDL2pp::Window sdlWindow("RocketLeague", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+                                 Width, Height,
+                                 SDL_WINDOW_RESIZABLE);
+
+        // Creo renderer
+        SDL2pp::Renderer renderer(sdlWindow, -1, SDL_RENDERER_SOFTWARE);
+
+        // Encapsular en un repositorio de texturas para no crear multiples veces la misma textura
+        SDL2pp::Texture im(renderer,
+                           SDL2pp::Surface("../images/car.jpeg").SetColorKey(true, 0));
+
+        GameLoop gameloop(renderer, im, Width, Height, actionsQueue, updatesQueue);
+        gameloop.run();
 
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
