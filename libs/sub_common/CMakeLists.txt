@@ -10,4 +10,4 @@ add_library(lib_common
         resolvererror.h
         resolvererror.cpp
         protocolo.h
-        protocolo.cpp)
+        protocolo.cpp BlockingQueue.h MonitorSocket.cpp MonitorSocket.h Action.cpp Action.h Update.cpp Update.h)

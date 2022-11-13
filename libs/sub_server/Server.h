@@ -10,13 +10,22 @@
 #include "../sub_common/thread.h"
 #include "../sub_common/socket.h"
 #include "gameManager.h"
-#include "ClientManager.h"
+#include "ClientReceiver.h"
+#include "ClientSender.h"
+#include "sub_common/BlockingQueue.h"
+#include "sub_common/Action.h"
+#include "sub_common/Update.h"
 
 class Server : public Thread{
  private:
-    bool cerrado;
-    Socket acept_skt;
-    std::vector<ClientManager*> managers;
+    bool closed;
+    Socket accept_skt;
+    std::vector<ClientSender*> senders;
+    std::vector<ClientReceiver*> recivers;
+
+    BlockingQueue<Action> receiverQueue;
+    BlockingQueue<Update> senderQueue;
+
  public:
     explicit Server(const std::string& servname);
 
@@ -26,7 +35,7 @@ class Server : public Thread{
 
     void stop();
 
-    void cleanManagersEnds();
+    void garbageCollector();
 
     void cleanManagers();
 };
