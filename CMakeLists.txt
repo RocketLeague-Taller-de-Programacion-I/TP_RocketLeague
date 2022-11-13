@@ -11,6 +11,7 @@ set(SDL2PP_WITH_TTF ON) # if you need SDL_ttf support
 add_subdirectory(libs/libSDL2pp)
 
 add_subdirectory(box2d)
+add_subdirectory(libs/Catch2)
 
 # Incluyo libreria SDL2pp y box2d
 message("General - Agregando '${PROJECT_SOURCE_DIR}/libs' como directorio de includes")
@@ -22,6 +23,7 @@ include_directories(${PROJECT_BINARY_DIR})
 add_subdirectory(libs/sub_client)
 add_subdirectory(libs/sub_server)
 add_subdirectory(libs/sub_common)
+add_subdirectory(tests)
 
 # Find the QtWidgets library
 find_package(Qt5 REQUIRED COMPONENTS Widgets)
