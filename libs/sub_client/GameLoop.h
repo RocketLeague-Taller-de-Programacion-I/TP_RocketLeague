@@ -7,14 +7,14 @@
 
 #include "SDL2pp/SDL2pp.hh"
 #include "Player.h"
-#include "sub_common/BlockingQueue.h"
 #include "sub_common/Action.h"
+#include "sub_common/BlockingQueue.h"
 
 class GameLoop {
     SDL2pp::Renderer &renderer;
     Player player;
-    BlockingQueue<std::string> updates;
-    BlockingQueue<std::string> actions;
+    BlockingQueue<Action> updates;
+    BlockingQueue<Action> actions;
     bool running;
     int xMax;
     int yMax;
@@ -24,7 +24,7 @@ class GameLoop {
 
 public:
     GameLoop(SDL2pp::Renderer &renderer, SDL2pp::Texture &texture, int xMax, int yMax,
-             BlockingQueue<std::string> &actions, BlockingQueue<std::string> &updates);
+             BlockingQueue<Action> &actions, BlockingQueue<Action> &updates);
     void run();
 };
 #endif //ROCKETLEAGUE_GAMELOOP_H

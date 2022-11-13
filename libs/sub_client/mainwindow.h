@@ -8,7 +8,8 @@
 #include <QString>
 
 #include "gamescene.h"
-#include "sub_common/BlockingQueue.h"
+#include "GameLoop.h"
+#include "sub_common/Action.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -20,7 +21,7 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(QWidget *parent = nullptr);
-    MainWindow(QWidget *parent, BlockingQueue<std::string> &updates, BlockingQueue<std::string> &actions);
+    MainWindow(QWidget *parent, BlockingQueue<Action> &updates, BlockingQueue<Action> &actions);
     ~MainWindow();
 
     void displayMainMenu();
@@ -36,8 +37,8 @@ public slots:
 private:
     Ui::MainWindow *ui;
     GameScene scene;
-    BlockingQueue<std::string> &updatesQueue;
-    BlockingQueue<std::string> &actionsQueue;
+    BlockingQueue<Action> &updatesQueue;
+    BlockingQueue<Action> &actionsQueue;
 
     void drawGUI();
 

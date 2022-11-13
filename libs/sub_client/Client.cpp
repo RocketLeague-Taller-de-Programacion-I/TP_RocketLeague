@@ -4,7 +4,6 @@
 
 #include <iostream>
 #include "Client.h"
-#include "sub_common/BlockingQueue.h"
 
 
 using namespace SDL2pp;
@@ -16,23 +15,20 @@ Client::~Client() { }
 
 void Client::start() {
     // create actions queue
-    BlockingQueue<std::string> actionsQueue;
+    BlockingQueue<Action> actionsQueue;
     // create updates queue
-    BlockingQueue<std::string> updatesQueue;
+    BlockingQueue<Action> updatesQueue;
     //launch ClientSender thread
     //launch ClientReceiver thread
     //launch render thread
     RenderThread render_thread(updatesQueue, actionsQueue);
     render_thread.start();
     render_thread.join();
-    std::string output;
+    std::vector<Action> outputs;
 
-    while(!updatesQueue.empty()) {
-        updatesQueue.tryPop(output);
-        std::cout << output << std::endl;
-    }
-    while (!actionsQueue.empty()) {
-        actionsQueue.tryPop(output);
-        std::cout << output << std::endl;
+    while(!actionsQueue.isEmpty()) {
+        outputs.push_back(actionsQueue.pop());
+        std::cout << "action of type: " << outputs.back().getType() << std::endl;
+        outputs.pop_back();
     }
 }

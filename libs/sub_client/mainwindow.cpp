@@ -3,7 +3,7 @@
 #include "Button.h"
 #include <iostream>
 
-MainWindow::MainWindow(QWidget *parent, BlockingQueue<std::string> &updates, BlockingQueue<std::string> &actions)
+MainWindow::MainWindow(QWidget *parent, BlockingQueue<Action> &updates, BlockingQueue<Action> &actions)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , updatesQueue(updates)
@@ -80,8 +80,9 @@ void MainWindow::drawJoinGameMenu() {
 void MainWindow::createRoom() {
     std::string roomName = this->lineEdit->text().toStdString();
     int cantidadPlayers = this->cantPlayers->value();
-    std::string action = "createRoom " + roomName + " " + std::to_string(cantidadPlayers);
-    this->actionsQueue.push(action);
+    std::string data = "createRoom " + roomName + " " + std::to_string(cantidadPlayers);
+    Action action(CREATE_ROOM, data);
+    this->updatesQueue.push(action);
     close();
 }
 
@@ -90,7 +91,8 @@ void MainWindow::joinParticularGame() {
     this->scene.clear();
 
     // crear evento de join ()
-    std::string action = "join";
+    std::string data = "join";
+    Action action(JOIN_ROOM, data);
     // agregar a la cola de eventos
     this->updatesQueue.push(action);
     //exit qt

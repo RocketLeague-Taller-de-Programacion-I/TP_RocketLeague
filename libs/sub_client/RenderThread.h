@@ -9,15 +9,13 @@
 
 #include "../sub_common/thread.h"
 #include "sub_common/liberror.h"
-#include "GameLoop.h"
 #include "mainwindow.h"
-#include "sub_common/BlockingQueue.h"
 
 class RenderThread : public Thread {
 private:
 protected:
-    BlockingQueue<std::string> &updatesQueue;
-    BlockingQueue<std::string> &actionsQueue;
+    BlockingQueue<Action> &updatesQueue;
+    BlockingQueue<Action> &actionsQueue;
 
     void run() override;
 public:
@@ -25,7 +23,7 @@ public:
     explicit RenderThread();
     ~RenderThread() override;
 
-    RenderThread(BlockingQueue<std::string> &updates, BlockingQueue<std::string> &actionsQueue);
+    RenderThread(BlockingQueue<Action> &updates, BlockingQueue<Action>& actionsQueue);
 };
 
 #endif  //  ROCKETLEAGUE_RENDERTHREAD_H

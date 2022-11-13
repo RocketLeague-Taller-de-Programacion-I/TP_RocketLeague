@@ -5,11 +5,10 @@
 #include <map>
 #include <unistd.h>
 #include "GameLoop.h"
-#include "sub_common/BlockingQueue.h"
-#include "sub_common/Action.h"
+#include "sub_common/protocolo.h"
 
 GameLoop::GameLoop(SDL2pp::Renderer &renderer, SDL2pp::Texture &texture, int xMax, int yMax,
-                   BlockingQueue<std::string> &actions, BlockingQueue<std::string> &updates)
+                   BlockingQueue<Action> &actions, BlockingQueue<Action> &updates)
                    : renderer(renderer),
                    player(texture),
                    running(true),
@@ -34,7 +33,9 @@ bool GameLoop::handle_events() {
     // Para el alumno: Buscar diferencia entre waitEvent y pollEvent
     // Aca estara la cola de eventos!!
     while(SDL_PollEvent(&event)){
-        std::string action;
+        Protocolo protocolo;
+        std::vector<char> movement(1);
+        Action action(MOVE,movement);
         std::string update;
         switch(event.type) {
             case SDL_KEYDOWN: {
@@ -45,35 +46,28 @@ bool GameLoop::handle_events() {
                         player.moveLeft(this->xMax);
                         // cola_cliente.push(evento)
                         // create action
-                        Action action1 = Action(MOVE,"moveLeft");
-                        action = "moveLeft";
+                        movement[0] = protocolo.serializeAction(SDLK_LEFT);
                         // push action to queue
                          actions.push(action);
                         break;
                     case SDLK_RIGHT:
                         player.moveRight(this->xMax);
                         // create action
-                        Action action2 = Action(MOVE,"moveRight");
-                        action= "moveRight";
+                        movement[0] = protocolo.serializeAction(SDLK_RIGHT);
                         // push action to queue
                         actions.push(action);
-
                         break;
                     case SDLK_UP:
                         player.moveUp(this->yMax);
-                        // cola_cliente.push(evento)
                         // create action
-                        Action action3 = Action(MOVE,"moveUp");
-                        action = "moveUp";
+                        movement[0] = protocolo.serializeAction(SDLK_UP);
                         // push action to queue
                         actions.push(action);
                         break;
                     case SDLK_DOWN:
                         player.moveDown(this->yMax);
-                        // cola_cliente.push(evento)
                         // create action
-                        Action action4 = Action(MOVE,"moveDown");
-                        action = "moveDown";
+                        movement[0] = protocolo.serializeAction(SDLK_DOWN);
                         // push action to queue
                         actions.push(action);
                         break;
@@ -89,26 +83,22 @@ bool GameLoop::handle_events() {
                     case SDLK_LEFT:
                         player.stopMovingX();
                         // poppear de la cola de updates
-                        actions.tryPop(update);
-                        std::cout << "update popped: " << update << std::endl;
+                        std::cout << "update popped of type: MOVE and data: " << actions.pop().data.back() << std::endl;
                         break;
                     case SDLK_RIGHT:
                         player.stopMovingX();
                         // poppear de la cola de updates
-                        actions.tryPop(update);
-                        std::cout << "update popped: " << update << std::endl;
+                        std::cout << "update popped of type: MOVE and data: " << actions.pop().data.back() << std::endl;
                         break;
                     case SDLK_UP:
                         player.stopMovingY();
                         // poppear de la cola de updates
-                        actions.tryPop(update);
-                        std::cout << "update popped: " << update << std::endl;
+                        std::cout << "update popped of type: MOVE and data: " << actions.pop().data.back() << std::endl;
                         break;
                     case SDLK_DOWN:
                         player.stopMovingY();
                         // poppear de la cola de updates
-                        actions.tryPop(update);
-                        std::cout << "update popped: " << update << std::endl;
+                        std::cout << "update popped of type: MOVE and data: " << actions.pop().data.back() << std::endl;
                         break;
                 }
             }// Fin KEY_UP

@@ -1,7 +1,6 @@
 //
-// Created by roby on 12/11/22.
+// Created by lucaswaisten on 12/11/22.
 //
-#pragma once
 #include <queue>
 #include <mutex>
 #include <condition_variable>
@@ -10,62 +9,33 @@ template<typename T>
 class BlockingQueue
 {
 public:
-    void push(T const& _data)
-    {
-        {
-            std::lock_guard<std::mutex> lock(guard);
-            queue.push(_data);
-        }
-        signal.notify_one();
+    void push(T &element) {
+        std::unique_lock<std::mutex> lock(mutex);
+        queue.push(element);
+        signal.notify_all();
     }
 
-    bool empty() const
-    {
-        std::lock_guard<std::mutex> lock(guard);
-        return queue.empty();
-    }
-
-    bool tryPop(T& _value)
-    {
-        std::lock_guard<std::mutex> lock(guard);
-        if (queue.empty())
-        {
-            return false;
-        }
-
-        _value = queue.front();
+    T pop() {
+        std::unique_lock<std::mutex> lock(mutex);
+        wait_not_empty(lock);
+        T element = queue.front();
         queue.pop();
-        return true;
+        return element;
     }
 
-    void waitAndPop(T& _value)
-    {
-        std::unique_lock<std::mutex> lock(guard);
-        while (queue.empty())
-        {
+    void wait_not_empty(std::unique_lock<std::mutex> &lock) {
+        while(queue.empty()) {
             signal.wait(lock);
         }
-
-        _value = queue.front();
-        queue.pop();
     }
 
-    bool tryWaitAndPop(T& _value, int _milli)
-    {
-        std::unique_lock<std::mutex> lock(guard);
-        while (queue.empty())
-        {
-            signal.wait_for(lock, std::chrono::milliseconds(_milli));
-            return false;
-        }
-
-        _value = queue.front();
-        queue.pop();
-        return true;
+    bool isEmpty() {
+        std::lock_guard<std::mutex> lock(mutex);
+        return queue.empty();
     }
 
 private:
     std::queue<T> queue;
-    mutable std::mutex guard;
+    mutable std::mutex mutex;
     std::condition_variable signal;
 };
