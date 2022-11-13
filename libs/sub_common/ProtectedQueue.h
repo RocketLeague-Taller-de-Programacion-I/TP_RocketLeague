@@ -8,6 +8,7 @@
 #include <mutex>
 #include <queue>
 #include <condition_variable>
+#include "QueueIsEmptyException.h"
 
 template<typename T>
 class ProtectedQueue
@@ -22,6 +23,9 @@ public:
     T pop(){
         std::unique_lock<std::mutex> lock(mutex);
         T element = queue.front();
+        if(isEmpty()){
+            throw QueueIsEmptyException("Empty Queue Exception");
+        }
         queue.pop();
         return element;
     }
