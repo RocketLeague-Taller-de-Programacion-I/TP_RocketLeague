@@ -20,7 +20,7 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(QWidget *parent = nullptr);
-    MainWindow(QWidget *parent, BlockingQueue<std::string> &updates);
+    MainWindow(QWidget *parent, BlockingQueue<std::string> &updates, BlockingQueue<std::string> &actions);
     ~MainWindow();
 
     void displayMainMenu();
@@ -28,13 +28,16 @@ public:
 public slots:
     void start();
     void back();
-    void createGame();
-    void joinGame();
+    void drawCreateGameMenu();
+    void drawJoinGameMenu();
     void joinParticularGame();
+    void createRoom();
+
 private:
     Ui::MainWindow *ui;
     GameScene scene;
     BlockingQueue<std::string> &updatesQueue;
+    BlockingQueue<std::string> &actionsQueue;
 
     void drawGUI();
 
@@ -48,7 +51,7 @@ private:
 
     void drawPlayButton();
 
-    void drawCreateGameMenu();
+    void drawSaveAndStartButton();
 
     QLineEdit* lineEdit;
     QSpinBox* cantPlayers;

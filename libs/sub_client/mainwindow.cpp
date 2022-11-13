@@ -3,10 +3,11 @@
 #include "Button.h"
 #include <iostream>
 
-MainWindow::MainWindow(QWidget *parent, BlockingQueue<std::string> &updatesQueue)
+MainWindow::MainWindow(QWidget *parent, BlockingQueue<std::string> &updates, BlockingQueue<std::string> &actions)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
-    , updatesQueue(updatesQueue)
+    , updatesQueue(updates)
+    , actionsQueue(actions)
 {
     ui->setupUi(this);
     // Seteo un Objeto QGraphicsScene para manejar la escena del juego
@@ -30,14 +31,28 @@ void MainWindow::start() {
     drawGUI();
 }
 
-void MainWindow::createGame() {
+void MainWindow::drawCreateGameMenu() {
     // clear the screen
     this->scene.clear();
     // draw create game menu
-    drawCreateGameMenu();
+    // draw title
+    drawTitle("Create Game");
+
+    // draw room name line edit
+    this->lineEdit->setGeometry(width() / 2 - 110 , 200 , 301, 71);
+    this->lineEdit->clear();
+    this->lineEdit->show();
+    this->lineEdit->setPlaceholderText("Room Name");
+    this->cantPlayers->show();
+    this->label->show();
+
+    // draw save and start button
+    drawSaveAndStartButton();
+    // draw back button
+    drawBackButton();
 }
 
-void MainWindow::joinGame() {
+void MainWindow::drawJoinGameMenu() {
     // clear the screen
     this->scene.clear();
 
@@ -60,6 +75,14 @@ void MainWindow::joinGame() {
     }
     //crear evento de listar juegos
     drawBackButton();
+}
+
+void MainWindow::createRoom() {
+    std::string roomName = this->lineEdit->text().toStdString();
+    int cantidadPlayers = this->cantPlayers->value();
+    std::string action = "createRoom " + roomName + " " + std::to_string(cantidadPlayers);
+    this->actionsQueue.push(action);
+    close();
 }
 
 void MainWindow::joinParticularGame() {
@@ -87,8 +110,10 @@ void MainWindow::back() {
 
 void MainWindow::drawGUI() {
     drawTitle("Rocket League");
-
-    if(this->lineEdit != nullptr and std::equal(this->userName.begin(), this->userName.end(), "stranger")) {
+    if(this->lineEdit != nullptr
+        and this->lineEdit->text() != ""
+        and std::equal(this->userName.begin(), this->userName.end(), "stranger"))
+    {
         std::cout << this->lineEdit->text().toStdString() << std::endl;
         userName = this->lineEdit->text();
         this->lineEdit->hide();
@@ -119,24 +144,6 @@ void MainWindow::displayMainMenu() {
     drawPlayButton();
 }
 
-void MainWindow::drawCreateGameMenu() {
-    // draw title
-    drawTitle("Create Game");
-
-    // draw room name line edit
-    this->lineEdit->setGeometry(width() / 2 - 110 , 200 , 301, 71);
-    this->lineEdit->clear();
-    this->lineEdit->show();
-    this->lineEdit->setPlaceholderText("Room Name");
-    this->cantPlayers->show();
-    this->label->show();
-
-    // draw save and start button
-    drawPlayButton();
-    // draw back button
-    drawBackButton();
-}
-
 void MainWindow::drawTitle(std::string title) {
     // create the title text
     QGraphicsTextItem* titleText = new QGraphicsTextItem(QString(title.c_str()));
@@ -163,7 +170,7 @@ void MainWindow::drawCreateButton() {
     int bxPos = width() / 2 - createGameButton->boundingRect().width() / 2;
     int byPos = 300;
     createGameButton->setPos(bxPos,byPos);
-    connect(createGameButton,SIGNAL(clicked()),this,SLOT(createGame()));
+    connect(createGameButton,SIGNAL(clicked()),this,SLOT(drawCreateGameMenu()));
     scene.addItem(createGameButton);
 }
 
@@ -173,7 +180,7 @@ void MainWindow::drawJoinButton() {
     int bxPos = width() / 2 - joinGameButton->boundingRect().width() / 2;
     int byPos = 400;
     joinGameButton->setPos(bxPos,byPos);
-    connect(joinGameButton,SIGNAL(clicked()),this,SLOT(joinGame()));
+    connect(joinGameButton,SIGNAL(clicked()),this,SLOT(drawJoinGameMenu()));
     scene.addItem(joinGameButton);
 }
 
@@ -185,6 +192,16 @@ void MainWindow::drawBackButton() {
     backButton->setPos(bxPos,byPos);
     connect(backButton,SIGNAL(clicked()),this,SLOT(back()));
     scene.addItem(backButton);
+}
+
+void MainWindow::drawSaveAndStartButton() {
+    // create the save and start button
+    Button* saveAndStartButton = new Button(QString("Save and Start"));
+    int bxPos = width() / 2 - saveAndStartButton->boundingRect().width() / 2;
+    int byPos = 600;
+    saveAndStartButton->setPos(bxPos,byPos);
+    connect(saveAndStartButton,SIGNAL(clicked()),this,SLOT(createRoom()));
+    scene.addItem(saveAndStartButton);
 }
 
 MainWindow::~MainWindow()

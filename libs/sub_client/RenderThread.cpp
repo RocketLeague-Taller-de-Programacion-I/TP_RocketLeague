@@ -3,7 +3,9 @@
 #include <QApplication>
 #include "RenderThread.h"
 
-RenderThread::RenderThread(BlockingQueue<std::string> &updates) : updatesQueue(updates){}
+RenderThread::RenderThread(BlockingQueue<std::string> &updates, BlockingQueue<std::string> &actionsQueue)
+        : updatesQueue(updates)
+        , actionsQueue(actionsQueue){}
 
 void RenderThread::run() {
     try {
@@ -11,7 +13,7 @@ void RenderThread::run() {
         int argc = 0;
         QApplication app(argc, nullptr);
         // Instancio la ventana principal
-        MainWindow mainWindow(nullptr, updatesQueue);
+        MainWindow mainWindow(nullptr, updatesQueue, actionsQueue);
         mainWindow.show();
         mainWindow.displayMainMenu();
         /*

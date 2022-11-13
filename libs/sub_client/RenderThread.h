@@ -17,13 +17,15 @@ class RenderThread : public Thread {
 private:
 protected:
     BlockingQueue<std::string> &updatesQueue;
+    BlockingQueue<std::string> &actionsQueue;
+
     void run() override;
 public:
     void stop() override;
     explicit RenderThread();
     ~RenderThread() override;
 
-    RenderThread(BlockingQueue<std::string> &updates);
+    RenderThread(BlockingQueue<std::string> &updates, BlockingQueue<std::string> &actionsQueue);
 };
 
 #endif  //  ROCKETLEAGUE_RENDERTHREAD_H
