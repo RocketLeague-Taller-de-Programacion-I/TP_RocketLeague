@@ -45,3 +45,10 @@ TEST_CASE("When action type is 4 (movement action), data is a byte representing 
     Action action(MOVE, data);
     REQUIRE(1 == action.data.back());
 }
+
+TEST_CASE("Action can be created with a string as data", "[Action]") {
+    std::string roomsName = "room's name";
+    Action action(CREATE_ROOM, roomsName);
+    std::string answer_string(action.data.begin(), action.data.end());
+    REQUIRE(roomsName == answer_string);
+}

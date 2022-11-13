@@ -5,8 +5,9 @@
 #ifndef ROCKETLEAGUE_ACTION_H
 #define ROCKETLEAGUE_ACTION_H
 
-
 #include <cstdint>
+#include <string>
+#include <vector>
 
 enum actionType {
     CREATE_ROOM,
@@ -18,6 +19,7 @@ enum actionType {
 class Action {
 public:
     explicit Action(const std::uint8_t &type, std::vector<char>& data);
+    explicit Action(const std::uint8_t &type, std::string & data);
 
 public:
     std::uint8_t type;
