@@ -18,6 +18,7 @@
 
 #include "RenderThread.h"
 #include "../sub_common/socket.h"
+#include "sub_common/ClientSender.h"
 
 class Client {
 private:

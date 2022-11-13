@@ -10,5 +10,12 @@ add_library(lib_common
         resolvererror.h
         resolvererror.cpp
         protocolo.h
-        protocolo.cpp BlockingQueue.h Action.cpp Action.h)
+        protocolo.cpp
+        BlockingQueue.h
+        Action.cpp
+        Action.h
+        ClientReceiver.cpp
+        ClientReceiver.h
+        ClientSender.cpp
+        ClientSender.h)
 target_link_libraries(lib_common)

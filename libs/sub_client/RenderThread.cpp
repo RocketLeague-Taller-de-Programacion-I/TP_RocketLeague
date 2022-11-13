@@ -29,12 +29,6 @@ void RenderThread::run() {
         // Initialize SDL library
         std::cout << "QT finalizó correctamente con: " << qt_return << std::endl;
 
-        while(!updatesQueue.isEmpty()) {
-            Action update = updatesQueue.pop();
-            std::string data(update.data.begin(), update.data.end());
-            std::cout << "update of type: " << update.getType() << "and data: " << data << std::endl;
-        }
-
         SDL2pp::SDL sdl(SDL_INIT_VIDEO);
         SDL_DisplayMode DM;
         SDL_GetCurrentDisplayMode(0, &DM);

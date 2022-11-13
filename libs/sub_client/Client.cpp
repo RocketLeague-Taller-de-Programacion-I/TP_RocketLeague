@@ -3,8 +3,8 @@
 //
 
 #include <iostream>
+#include <regex>
 #include "Client.h"
-
 
 using namespace SDL2pp;
 #define TESTDATA_DIR "../libSDL2pp/testdata"
@@ -19,11 +19,20 @@ void Client::start() {
     // create updates queue
     BlockingQueue<Action> updatesQueue;
     //launch ClientSender thread
+     ClientSender sender(skt_client, actionsQueue);
     //launch ClientReceiver thread
+//     ClientReceiver receiver(skt_client, updatesQueue);
+//     receiver.start();
     //launch render thread
+
     RenderThread render_thread(updatesQueue, actionsQueue);
+    sender.start();
     render_thread.start();
+
     render_thread.join();
+    sender.join();
+//    receiver.join();
+
     std::vector<Action> outputs;
 
     while(!actionsQueue.isEmpty()) {
