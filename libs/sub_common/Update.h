@@ -7,6 +7,11 @@
 
 
 class Update {
+private:
+    std::string data;
+public:
+
+    explicit Update(std::string aData);
 
 };
 

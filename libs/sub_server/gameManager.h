@@ -8,20 +8,25 @@
 
 #include <map>
 #include <mutex>
+#include <vector>
 #include "game.h"
+#include "sub_common/Update.h"
 
 class GameManager {
     std::mutex mutex;
     std::map<std::string ,Game&> games;
 public:
-    uint8_t createGame(uint8_t aCantPlayers,
-                       const std::string& aGameName);
+    std::string createGame(std::vector<char> &data);
 
-    uint8_t joinGame(const std::string &aGameName);
+    std::string joinGame(std::vector<char> &data);
 
     std::string listGames();
 
     void cleanGames();
+
+    std::string move(std::vector<char> data);
+
+    void sendUpdate(Update &update);
 };
 
 

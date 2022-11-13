@@ -8,6 +8,12 @@ ClientReceiver::ClientReceiver(Socket &aSkt,
                                closed(false),
                                socket(aSkt),
                                queueAction(queue) {}
+/*
+* Bytes que recivo del socket
+* [0] -> type action
+* [1] -> cantidad de jugadores
+* [2]-[n] -> nombre de la partida, hasta el nop incluido
+*/
 void ClientReceiver::run() {
 
 }
