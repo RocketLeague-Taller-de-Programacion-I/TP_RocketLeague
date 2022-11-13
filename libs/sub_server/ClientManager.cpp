@@ -4,15 +4,31 @@
 
 #include <sys/socket.h>
 #include "ClientManager.h"
+#include "sub_common/Action.h"
+#include "sub_common/Update.h"
+#include "ClientReceiver.h"
+#include "ClientSender.h"
 
 ClientManager::ClientManager(Socket &aClient,
                              GameManager &aGameManager) :
-                             client(std::move(aClient)),
+                             client(aClient),
                              gameManager(aGameManager),
                              closed(false){}
 
 void ClientManager::run() {
+    BlockingQueue<Action> receiverQueue;
+    BlockingQueue<Update> senderQueue;
+
+    auto *threadReceiver = new ClientReceiver(client, receiverQueue);
+    auto *threadSender = new ClientSender(client, senderQueue);
+
+    threadReceiver->start();
+    threadSender->start();
+
     while (not closed) {
+        do {
+
+        }
         /*
          * logica de lectura de los comandos
          * recividos por el socket

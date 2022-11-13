@@ -12,7 +12,7 @@
 
 class ClientManager : public Thread{
 private:
-    Socket client;
+    Socket &client;
     GameManager &gameManager;
     bool closed;
 public:

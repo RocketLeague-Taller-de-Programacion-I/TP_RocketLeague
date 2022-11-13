@@ -9,14 +9,22 @@
 #include "sub_common/socket.h"
 #include "sub_common/thread.h"
 #include "sub_common/MonitorSocket.h"
+#include "sub_common/BlockingQueue.h"
+#include "sub_common/Action.h"
 
 class ClientReceiver : public Thread{
-
+private:
+    bool closed;
+    Socket &socket;
+    BlockingQueue<Action> &queueAction;
 public:
-    explicit ClientReceiver(MonitorSocket& aMonitor);
-    void run();
+    explicit ClientReceiver(Socket &aSkt, BlockingQueue <Action> &queue);
+    void run() override;
 
     bool joinThread();
+
+
+
 };
 
 

@@ -3,8 +3,11 @@
 //
 
 #include "ClientReceiver.h"
-#include "sub_common/MonitorSocket.h"
-
+ClientReceiver::ClientReceiver(Socket &aSkt,
+                               BlockingQueue<Action> &queue) :
+                               closed(false),
+                               socket(aSkt),
+                               queueAction(queue) {}
 void ClientReceiver::run() {
 
 }
@@ -13,6 +16,4 @@ bool ClientReceiver::joinThread() {
     return false;
 }
 
-ClientReceiver::ClientReceiver(MonitorSocket &aClient) {
 
-}
