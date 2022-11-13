@@ -1,12 +1,16 @@
 //
-// Created by lucaswaisten on 12/11/22.
+// Created by lucaswaisten on 13/11/22.
 //
-#include <queue>
+
+#ifndef ROCKETLEAGUE_PROTECTEDQUEUE_H
+#define ROCKETLEAGUE_PROTECTEDQUEUE_H
+
 #include <mutex>
+#include <queue>
 #include <condition_variable>
 
 template<typename T>
-class BlockingQueue
+class ProtectedQueue
 {
 public:
     void push(T &element) {
@@ -15,18 +19,11 @@ public:
         signal.notify_all();
     }
 
-    T pop() {
+    T pop(){
         std::unique_lock<std::mutex> lock(mutex);
-        wait_not_empty(lock);
         T element = queue.front();
         queue.pop();
         return element;
-    }
-
-    void wait_not_empty(std::unique_lock<std::mutex> &lock) {
-        while(queue.empty()) {
-            signal.wait(lock);
-        }
     }
 
     bool isEmpty() {
@@ -39,3 +36,4 @@ private:
     mutable std::mutex mutex;
     std::condition_variable signal;
 };
+#endif //ROCKETLEAGUE_PROTECTEDQUEUE_H
