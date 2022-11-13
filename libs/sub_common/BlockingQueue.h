@@ -1,6 +1,10 @@
 //
 // Created by lucaswaisten on 12/11/22.
 //
+
+#ifndef ROCKETLEAGUE_BQUEUE_H
+#define ROCKETLEAGUE_BQUEUE_H
+
 #include <queue>
 #include <mutex>
 #include <condition_variable>
@@ -39,3 +43,5 @@ private:
     mutable std::mutex mutex;
     std::condition_variable signal;
 };
+
+#endif //ROCKETLEAGUE_BQUEUE_H
