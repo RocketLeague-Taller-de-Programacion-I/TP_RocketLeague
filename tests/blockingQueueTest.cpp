@@ -2,16 +2,17 @@
 // Created by lucaswaisten on 14/11/22.
 //
 #include <catch2/catch_test_macros.hpp>
+#include <atomic>
 #include "sub_common/BlockingQueue.h"
 #include "sub_common/thread.h"
 
 class TessterQueue : public Thread {
 private:
     BlockingQueue<char> &queue;
-    bool &waiting;
+    std::atomic<bool> &waiting;
 public:
     TessterQueue(BlockingQueue<char> &pQueue,
-                 bool &b) :
+                 std::atomic<bool> &b) :
                  queue(pQueue),
                  waiting(b){}
 
@@ -19,6 +20,7 @@ public:
        queue.pop();
        waiting = true;
     }
+
 
 };
 
@@ -53,7 +55,7 @@ TEST_CASE("pushed two elements, verified if the queue is empty and popped the pu
 TEST_CASE("thread is blocked trying to pop",
           "[single-file]") {
     BlockingQueue<char> queue;
-    bool waiting(false);
+    std::atomic<bool> waiting(false);
     TessterQueue tester(queue,waiting);
 
     tester.start();
@@ -64,6 +66,6 @@ TEST_CASE("thread is blocked trying to pop",
 
     char element1 = 'a';
     queue.push(element1);
-
+    tester.join();
     REQUIRE(waiting == true);
 }
