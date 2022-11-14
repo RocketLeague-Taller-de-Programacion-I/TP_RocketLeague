@@ -19,7 +19,7 @@ void GameManager::cleanGames() {
  * [1] -> primer char del nombre de partida
  * [n] -> comando NOP finaliza la data
  */
-std::string GameManager::createGame(std::vector<char> &data) {
+void GameManager::createGame(std::vector<char> &data, ClientManager *i) {
     std::unique_lock<std::mutex> lock(this->mutex);
 
     std::string aGameName(data.begin()+1,data.end());
@@ -31,36 +31,47 @@ std::string GameManager::createGame(std::vector<char> &data) {
             Game&>(aGameName,
                       *pGame));
     /*
-     *
+     * if ret.second = true
+     *  - Game tiene que crear un Update
+     *  del tipo CREATE_ROOM y pasarle al manager
+     *  este update para que lo pushee
      */
-    pGame->upDateAll();
    if (ret.second) {
-       return OK_MSG;
+      /*
+       * do game update
+       */
    } else {
+       /*
+        * delete game and wherever
+        */
        delete pGame;
-       return ERROR_MSG;
    }
 }
 
-std::string GameManager::joinGame(std::vector<char> &data) {
+std::string GameManager::joinGame(std::vector<char> &data, ClientManager *i) {
     std::unique_lock<std::mutex> lock(this->mutex);
     std::string aGameName(data.begin()+1,data.end());
 
     auto iter = games.find(aGameName);
-
-    if (iter != games.end() and iter->second.joinPlayer()) {
-        std::cout
-                << "Comenzando partida "
-                << aGameName
-                << "..."
-                << std::endl;
-        return OK_MSG;
+    /*
+     * iter es una tupla
+     *      - en el primer elemento contiene la key encontrada
+     *      - en el segundo el Game
+     * Si first es igual a la key buscada y la partida tiene espacio
+     * para nuevos jugadores, entonces puede hacer el Update
+     */
+    if (iter->first == aGameName and iter->second.joinPlayer()) {
+        /*
+         * do update in Game
+         */
     } else {
-        return ERROR_MSG;
+        /*
+         * not update
+         */
     }
 }
 
-std::string GameManager::listGames() {
+void GameManager::listGames() {
     std::unique_lock<std::mutex> lock(this->mutex);
     std::string mensaje("OK");
 
@@ -68,7 +79,9 @@ std::string GameManager::listGames() {
         mensaje.append("\n");
         mensaje.append(partida.second.information());
     }
-    return mensaje;
+    /*
+     * send the Update with the data
+     */
 }
 /*
  * Procesas las actiones move:
@@ -81,7 +94,10 @@ std::string GameManager::listGames() {
  *
  * posible problema cuando tenga que decirle a que jugador mover
  */
-std::string GameManager::move(std::vector<char> data) {
+std::string GameManager::move(std::vector<char> data, ClientManager *i) {
+    /*
+     * Hay que buscar la partida donde esta el cliente y hacer le update
+     */
     return std::string();
 }
 

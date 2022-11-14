@@ -10,7 +10,6 @@
 #include "../sub_common/thread.h"
 #include "../sub_common/socket.h"
 #include "gameManager.h"
-#include "ClientManager.h"
 
 class Server : public Thread{
  private:

@@ -15,17 +15,16 @@ std::uint8_t Action::getType() const {
     return type;
 }
 
-std::string Action::excecute(GameManager &manager) {
+void Action::excecute(GameManager &manager, ClientManager *i) {
     switch (this->type) {
         case CREATE_ROOM:
-            return manager.createGame(this->data);
+            manager.createGame(this->data, i);
         case JOIN_ROOM:
-            return manager.joinGame(this->data);
+            manager.joinGame(this->data, i);
         case LIST_ROOMS:
-            return manager.listGames();
+            manager.listGames();
         case MOVE:
-            return manager.move(this->data);
+            manager.move(this->data, i);
     }
-    return {};
 }
 

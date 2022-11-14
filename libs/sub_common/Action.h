@@ -10,6 +10,7 @@
 #include <vector>
 #include "sub_server/gameManager.h"
 #include "Information.h"
+#include "sub_server/ClientManager.h"
 
 enum actionType {
     CREATE_ROOM,
@@ -23,7 +24,7 @@ public:
     explicit Action(const std::uint8_t &type, std::vector<char>& data);
     explicit Action(const std::uint8_t &type, std::string & data);
     std::uint8_t getType() const;
-    std::string excecute(GameManager &manager);
+    void excecute(GameManager &manager, ClientManager *i);
 
 };
 

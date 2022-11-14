@@ -9,6 +9,8 @@
 #include <cstdint>
 #include <string>
 
+typedef uint8_t idPlayer_t;
+
 class Game {
 private:
     int capacity;

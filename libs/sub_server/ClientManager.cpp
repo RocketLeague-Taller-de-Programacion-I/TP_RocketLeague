@@ -5,7 +5,6 @@
 #include <sys/socket.h>
 #include "ClientManager.h"
 #include "sub_common/Action.h"
-#include "sub_common/Update.h"
 #include "ClientReceiver.h"
 #include "ClientSender.h"
 
@@ -25,10 +24,16 @@ void ClientManager::run() {
     threadReceiver->start();
     threadSender->start();
 
-    while (not closed) {
-        do {
-
-        }
+    do {
+        auto action = receiverQueue.pop();
+        action.excecute(gameManager, this);
+        /*
+         * posiblemente el push tenga que ser por movimiento
+         * ya que se va a eliminar una vez salido de este scope
+         * el update
+         */
+        //gameManager.sendUpdate(update);
+    } while (not closed);
         /*
          * logica de lectura de los comandos
          * recividos por el socket
@@ -40,7 +45,6 @@ void ClientManager::run() {
         * y que me devuelva los parametros para enviar
         * nuevamente por medio del socket
         */
-        }
 }
 
 bool ClientManager::joinThread() {
@@ -55,3 +59,9 @@ bool ClientManager::endManager() {
     this->join();
     return closed;
 }
+
+void ClientManager::attendClient(unsigned long aId) {
+    this->id = aId;
+    this->start();
+}
+

@@ -12,19 +12,20 @@
 #include "game.h"
 #include "sub_common/Update.h"
 
+
 class GameManager {
     std::mutex mutex;
     std::map<std::string ,Game&> games;
 public:
-    std::string createGame(std::vector<char> &data);
+    void createGame(std::vector<char> &data, ClientManager *i);
 
-    std::string joinGame(std::vector<char> &data);
+    std::string joinGame(std::vector<char> &data, ClientManager *i);
 
-    std::string listGames();
+    void listGames();
 
     void cleanGames();
 
-    std::string move(std::vector<char> data);
+    std::string move(std::vector<char> data, ClientManager *i);
 
     void sendUpdate(Update &update);
 };

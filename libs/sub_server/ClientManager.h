@@ -15,6 +15,7 @@ private:
     Socket &client;
     GameManager &gameManager;
     bool closed;
+    unsigned long id;
 public:
     ClientManager(Socket &aClient, GameManager &aGameManager);
 
@@ -23,6 +24,9 @@ public:
     bool joinThread();
 
     bool endManager();
+
+    void attendClient(unsigned long aId);
+
 };
 
 

@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <sys/socket.h>
 #include "Server.h"
+#include "ClientManager.h"
 
 Server::Server(const std::string &servname)
         : closed(false),
@@ -25,6 +26,7 @@ void Server::run() {
      * definir la cola bloqueante por aca, ya sea de atributo o lo que fuere
      */
     GameManager gameManager;
+    idPlayer_t idPlayer = 0;
     try {
         while (not closed) {
             /*
@@ -37,12 +39,13 @@ void Server::run() {
             auto *manager = new ClientManager(client,gameManager);
             this->managers.push_back(manager);
             /*
-             * aca sever llama a un metodo para que ni bien llegue una action
-             * la lea y se ejectuta de parte del servidor.
-             * El servir subira el update a la cola de update. Y llamaria a todos los sender para que actualizen
-             * las nuevas posiciones del respectivo cliente
+             * Attend client:
+             *  - Set the ID manager
+             *  - Start the thread
              */
-            manager->start();
+            manager->attendClient(idPlayer);
+            idPlayer++;
+
             this->garbageCollector();
         }
     } catch (...) {}
