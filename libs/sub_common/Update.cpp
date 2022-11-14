@@ -6,7 +6,5 @@
 #include <string>
 #include "Update.h"
 
-Update::Update(uint8_t aType,
-               std::string aData) : Information(aType,
-                                                std::vector<char>(aData.begin(),
-                                                                  aData.end())) {}
+Update::Update(const uint8_t &type,
+               std::vector<uint8_t> &data) : Information(type,data){}

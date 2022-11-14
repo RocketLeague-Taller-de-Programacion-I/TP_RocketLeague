@@ -19,7 +19,7 @@ Protocolo protocolo;
  */
 
 TEST_CASE("Protocolo serializa acciones del jugador",
-          "[single-file]" ) {
+          "[Protocolo]" ) {
     /*
     * protocolo.getMapCommand recibe una serie de acciones
     * en formato string y devuelve un comando serializado
@@ -27,36 +27,36 @@ TEST_CASE("Protocolo serializa acciones del jugador",
     SECTION("Accion JUMP") {
         REQUIRE(
                 protocolo.getMapCommand(SDLK_SPACE)
-                == JUMP_C);
+                == JUMP);
     }
     SECTION("Accion RIGHT") {
         REQUIRE(
                 protocolo.getMapCommand(SDLK_RIGHT)
-                == RIGHT_C);
+                == RIGHT);
     }
     SECTION("Accion LEFT") {
         REQUIRE(
                 protocolo.getMapCommand(SDLK_LEFT)
-                == LEFT_C);
+                == LEFT);
     }
     SECTION("Accion UP") {
         REQUIRE(
                 protocolo.getMapCommand(SDLK_UP)
-                == UP_C);
+                == UP);
     }
 
     SECTION("Accion TURBO") {
         REQUIRE(
-                protocolo.getMapCommand(SDLK_KP_C)
-                == TURBO_C);
+                protocolo.getMapCommand(SDLK_t)
+                == TURBO);
     }
     SECTION("Accion DOWN") {
         REQUIRE(
                 protocolo.getMapCommand(SDLK_DOWN)
-                == DOWN_C);
+                == DOWN);
     }
 }
-TEST_CASE( "Protocolo serializa acciones de Menu", "[single-file]" ) {
+TEST_CASE( "Protocolo serializa acciones de Menu", "[Protocolo]" ) {
     /*
      * las acciones de Menu, son las acciones de creacion de partida
      * listar games o unirse a una partida
@@ -65,18 +65,18 @@ TEST_CASE( "Protocolo serializa acciones de Menu", "[single-file]" ) {
 
         REQUIRE(
                 protocolo.getMapCommand(SDLK_0)
-                == CREATE_C);
+                == CREATE_ROOM);
     }
     SECTION("Accion LIST") {
 
         REQUIRE(
                 protocolo.getMapCommand(SDLK_1)
-                == LIST_C);
+                == LIST_ROOMS);
     }
     SECTION("Accion JOIN") {
 
         REQUIRE(
                 protocolo.getMapCommand(SDLK_2)
-                == JOIN_C);
+                == JOIN_ROOM);
     }
 }

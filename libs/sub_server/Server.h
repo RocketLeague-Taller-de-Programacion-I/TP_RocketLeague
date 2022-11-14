@@ -19,19 +19,16 @@ class Server : public Thread{
     //std::vector<ClientSender*> senders;
     //std::vector<ClientReceiver*> receivers;
     std::vector<ClientManager*> managers;
- public:
-    explicit Server(const std::string& servname);
-
-    ~Server() override;
-
+ protected:
     void run() override;
+ public:
+    explicit Server(const char *port);
 
-    void stop();
+    void stop() override;
 
     void garbageCollector();
 
     void cleanManagers();
-
 };
 
 

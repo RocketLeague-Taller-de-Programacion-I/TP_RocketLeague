@@ -12,13 +12,6 @@
 #include <unordered_map>
 #include "Action.h"
 
-enum actionType {
-    CREATE_ROOM,
-    JOIN_ROOM,
-    LIST_ROOMS,
-    MOVE
-};
-
 enum action {
     NOP,
     JUMP,
@@ -40,7 +33,7 @@ private:
             {SDLK_LEFT, LEFT},
             {SDLK_UP, UP},
             {SDLK_DOWN, DOWN},
-            {SDLK_SPACE, TURBO}
+            {SDLK_t, TURBO}
     };
 public:
     command_t getMapCommand(uint32_t action);

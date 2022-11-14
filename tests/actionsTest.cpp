@@ -4,12 +4,6 @@
 #include <catch2/catch_test_macros.hpp>
 #include "../libs/sub_common/Action.h"
 
-enum actionType {
-    CREATE_ROOM,
-    JOIN_ROOM,
-    LIST_ROOMS,
-    MOVE
-};
 
 TEST_CASE("Action type is set correctly", "[Action]") {
     std::vector<uint8_t> data;
@@ -21,6 +15,7 @@ TEST_CASE("Action data is set correctly", "[Action]") {
     std::vector<uint8_t> data(1);
     data.push_back(1);
     Action action(CREATE_ROOM, data);
+//    REQUIRE(action.getData().empty());
     REQUIRE(1 == action.getData().back());
 }
 
@@ -56,6 +51,7 @@ TEST_CASE("When action type is 4 (movement action), data is a byte representing 
 TEST_CASE("Action can be created with a string as data", "[Action]") {
     std::string roomsName = "room's name";
     Action action(CREATE_ROOM, roomsName);
-    std::string answer_string(action.getData().begin(), action.getData().end());
-    REQUIRE(roomsName == answer_string);
+    REQUIRE(action.getData().size() == roomsName.size());
+    REQUIRE((char) action.getData().back() == roomsName.back());
+    REQUIRE((char) action.getData().front() == 'r');
 }

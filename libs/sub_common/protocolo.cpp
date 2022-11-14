@@ -24,12 +24,12 @@ std::vector<uint8_t> Protocolo::serializeAction(Action action) {
     } else if (action.getType() == MOVE) {
         //insertar el id del jugador previamente otorgado
     }
-    result.insert(result.end(), action.data.begin(), action.data.end());
+    result.insert(result.end(), action.getData().begin(), action.getData().end());
     return result;
 }
 
 void Protocolo::parseCreateRoomData(Action &action, std::vector<uint8_t> &result) const {
-    std::string data (action.data.begin(), action.data.end());
+    std::string data (action.getData().begin(), action.getData().end());
     std::regex number("[0-9]+");
     std::smatch match;
     std::regex_search(data, match, number);

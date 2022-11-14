@@ -37,6 +37,6 @@ add_executable(client_main client_main.cpp ${UIS_HEADERS})
 add_executable(server_main server_main.cpp)
 
 #  Linkeo las bibliotecas con los ejecutables
-target_link_libraries(server_main PUBLIC lib_server box2d Qt5::Widgets)
+target_link_libraries(server_main PUBLIC lib_server lib_common box2d Qt5::Widgets)
 target_link_libraries(client_main PUBLIC lib_client lib_common SDL2pp::SDL2pp Qt5::Widgets)
 

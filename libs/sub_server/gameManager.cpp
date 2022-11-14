@@ -19,7 +19,7 @@ void GameManager::cleanGames() {
  * [1] -> primer char del nombre de partida
  * [n] -> comando NOP finaliza la data
  */
-std::string GameManager::createGame(std::vector<char> &data) {
+std::string GameManager::createGame(std::vector<uint8_t> &data) {
     std::unique_lock<std::mutex> lock(this->mutex);
 
     std::string aGameName(data.begin()+1,data.end());
@@ -33,7 +33,7 @@ std::string GameManager::createGame(std::vector<char> &data) {
     /*
      *
      */
-    pGame->upDateAll();
+//    pGame->upDateAll();
    if (ret.second) {
        return OK_MSG;
    } else {
@@ -42,7 +42,7 @@ std::string GameManager::createGame(std::vector<char> &data) {
    }
 }
 
-std::string GameManager::joinGame(std::vector<char> &data) {
+std::string GameManager::joinGame(std::vector<uint8_t> &data) {
     std::unique_lock<std::mutex> lock(this->mutex);
     std::string aGameName(data.begin()+1,data.end());
 
@@ -81,7 +81,7 @@ std::string GameManager::listGames() {
  *
  * posible problema cuando tenga que decirle a que jugador mover
  */
-std::string GameManager::move(std::vector<char> data) {
+std::string GameManager::move(std::vector<uint8_t> data) {
     return std::string();
 }
 

@@ -8,8 +8,20 @@
 #include "box2d/box2d.h"
 
 int main(int argc, char const *argv[]) {
-    Server server(argv[1]);
-
-    server.start();
-
+    if (argc != 2) {
+        printf("Bad program call. Expected %s with one arguments.\n", argv[0]);
+        return 1;
+    }
+    try {
+        Server server(argv[1]);
+        server.start();
+        server.join();
+    } catch (const std::exception& e) {
+        std::cerr << e.what() << std::endl;
+        return 1;
+    } catch(...) {
+        std::cerr << "Unknown exception\n";
+        return 1;
+    }
+    return 0;
 }

@@ -10,8 +10,7 @@
 
 class Update : public Information {
 public:
-    explicit Update(uint8_t aType,
-                    std::string aData);
+    explicit Update(const std::uint8_t &type, std::vector<uint8_t>& data);
 
 };
 

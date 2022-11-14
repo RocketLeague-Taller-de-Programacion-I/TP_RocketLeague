@@ -16,15 +16,15 @@ class GameManager {
     std::mutex mutex;
     std::map<std::string ,Game&> games;
 public:
-    std::string createGame(std::vector<char> &data);
+    std::string createGame(std::vector<uint8_t> &data);
 
-    std::string joinGame(std::vector<char> &data);
+    std::string joinGame(std::vector<uint8_t> &data);
 
     std::string listGames();
 
     void cleanGames();
 
-    std::string move(std::vector<char> data);
+    std::string move(std::vector<uint8_t> data);
 
     void sendUpdate(Update &update);
 };
