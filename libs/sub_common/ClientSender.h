@@ -24,7 +24,6 @@ public:
     explicit ClientSender(Socket &skt_client, BlockingQueue <Action> &actionsQueue);
 
     void stop() override;
-    bool joinThread();
 };
 
 

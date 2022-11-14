@@ -6,8 +6,8 @@
 #include "ClientManager.h"
 #include "sub_common/Action.h"
 #include "sub_common/Update.h"
-#include "ClientReceiver.h"
-#include "ClientSender.h"
+#include "sub_common/ClientReceiver.h"
+#include "sub_common/ClientSender.h"
 
 ClientManager::ClientManager(Socket &aClient,
                              GameManager &aGameManager) :
@@ -16,19 +16,20 @@ ClientManager::ClientManager(Socket &aClient,
                              closed(false){}
 
 void ClientManager::run() {
-    BlockingQueue<Action> receiverQueue;
-    BlockingQueue<Update> senderQueue;
+    BlockingQueue<Information*> receiverQueue;
+    BlockingQueue<Action> senderQueue;
 
-    auto *threadReceiver = new ClientReceiver(client, receiverQueue);
+    std::vector<uint8_t> data(1);
+    data.push_back(1);
+    Action action(CREATE_ROOM, data);
+    senderQueue.push(action);
+//    auto *threadReceiver = new ClientReceiver(client, receiverQueue);
     auto *threadSender = new ClientSender(client, senderQueue);
 
-    threadReceiver->start();
+//    threadReceiver->start();
     threadSender->start();
 
     while (not closed) {
-        do {
-
-        }
         /*
          * logica de lectura de los comandos
          * recividos por el socket
@@ -54,4 +55,8 @@ bool ClientManager::endManager() {
     client.close();
     this->join();
     return closed;
+}
+
+void ClientManager::stop() {
+
 }

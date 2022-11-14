@@ -18,10 +18,10 @@ private:
 public:
     ClientManager(Socket &aClient, GameManager &aGameManager);
 
-    void run();
+    void run() override;
+    void stop() override;
 
     bool joinThread();
-
     bool endManager();
 };
 

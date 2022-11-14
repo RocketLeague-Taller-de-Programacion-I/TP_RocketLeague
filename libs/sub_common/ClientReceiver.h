@@ -8,15 +8,21 @@
 
 #include "sub_common/socket.h"
 #include "sub_common/thread.h"
+#include "Action.h"
+#include "protocolo.h"
+#include "BlockingQueue.h"
 
 class ClientReceiver : public Thread{
 private:
     Socket &skt_client;
+    bool closed;
+protected:
+    void run() override;
 public:
-    explicit ClientReceiver(Socket &skt_client);
-    void run();
+    BlockingQueue<Action> &actionsQueue;
+    explicit ClientReceiver(Socket &skt_client, BlockingQueue <Action> &actionsQueue);
 
-    bool joinThread();
+    void stop() override;
 };
 
 
