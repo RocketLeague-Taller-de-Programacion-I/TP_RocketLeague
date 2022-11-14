@@ -7,16 +7,16 @@
 
 class TessterQueue : public Thread {
 private:
-    BlockingQueue<char> *queue;
+    BlockingQueue<char> &queue;
     bool &waiting;
 public:
-    TessterQueue(BlockingQueue<char> *pQueue,
+    TessterQueue(BlockingQueue<char> &pQueue,
                  bool &b) :
                  queue(pQueue),
                  waiting(b){}
 
     void run() override {
-       queue->pop();
+       queue.pop();
        waiting = true;
     }
 
@@ -52,7 +52,7 @@ TEST_CASE("pushed two elements, verified if the queue is empty and popped the pu
  */
 TEST_CASE("thread is blocked trying to pop",
           "[single-file]") {
-    BlockingQueue<char> *queue;
+    BlockingQueue<char> queue;
     bool waiting(false);
     TessterQueue tester(queue,waiting);
 
@@ -63,7 +63,7 @@ TEST_CASE("thread is blocked trying to pop",
     REQUIRE(waiting == false);
 
     char element1 = 'a';
-    queue->push(element1);
+    queue.push(element1);
 
     REQUIRE(waiting == true);
 }
