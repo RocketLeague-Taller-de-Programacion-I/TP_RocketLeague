@@ -6,9 +6,10 @@
 #include "box2d/box2d.h"
 #define NO_VEL 0
 #define DEGTORAD 0.0174533
+#define cojstaxisY 0.35
 
-Car::Car(b2World* world) : remainingJumpSteps(0), turboOn(false) {
-    b2PolygonShape chassis; //  a
+Car::Car(b2World* world) : turboOn(false), remainingJumpSteps(0) {
+    //  a
     b2Vec2 vertices[8]; //  a
     vertices[0].Set(-1.5f, -0.5f);
     vertices[1].Set(1.5f, -0.5f);
@@ -71,58 +72,44 @@ Car::Car(b2World* world) : remainingJumpSteps(0), turboOn(false) {
     jd.upperTranslation = 0.25f;
     jd.enableLimit = true;
     (b2WheelJoint *) world->CreateJoint(&jd);
+
 }
 void Car::goRight() {
-    if (remainingJumpSteps > 6) {
-    float bodyAngle = m_car->GetAngle();
-    m_car->SetAngularVelocity(0);
-    float totalRotation = 360;
-    float change = 6 * DEGTORAD;  //allow 1 degree rotation per time step
-    float newAngle = bodyAngle + fmin(change, fmax(-change, totalRotation));
-    m_car->SetTransform(m_car->GetPosition(), newAngle);
-    }
-    this->m_spring1->SetMotorSpeed(-m_speed);
-    if (this->turboOn){
-        this->m_spring1->SetMotorSpeed(-1000*m_speed);
-        this->turboOn = false;
-    }
-
-}
-void Car::goLeft()
-{
-    //  Ruedas giran antihrario
-    if (this->turboOn) {
-        this->m_spring1->SetMotorSpeed(-5*m_speed);
-        this->turboOn = false;
+    //  Ruedas giran horario
+    if (turboOn) {
+        this->m_car->SetLinearVelocity(b2Vec2(20, this->m_car->GetLinearVelocity().y));
+        turboOn = false;
         return;
     }
-    this->m_spring1->SetMotorSpeed(m_speed);
-    if (remainingJumpSteps > 6) {
-        float bodyAngle = m_car->GetAngle();
-        b2Vec2 toTarget = b2Vec2(0,0) - m_car->GetPosition();
-        float desiredAngle = atan2f( -toTarget.x, toTarget.y );
-        m_car->SetAngularVelocity(0);
-        //m_car->SetTransform( m_car->GetPosition(), desiredAngle );
-        float totalRotation = 360;
-        float change = 6 * DEGTORAD;  //allow 1 degree rotation per time step
-        float newAngle = bodyAngle + fmin( change, fmax(-change, totalRotation));
-        m_car->SetTransform( m_car->GetPosition(), newAngle );
-    }
+    this->m_car->SetLinearVelocity(b2Vec2(5, this->m_car->GetLinearVelocity().y));
 
+}
+void Car::goLeft() {
+    if (turboOn) {
+        this->m_car->SetLinearVelocity(b2Vec2(-20, this->m_car->GetLinearVelocity().y));
+        turboOn = false;
+        return;
+    }
+    this->m_car->SetLinearVelocity(b2Vec2(-5, this->m_car->GetLinearVelocity().y));
 }
 void Car::stop()
 {
     //  Ruedas giran antihrario
     this->m_spring1->SetMotorSpeed(NO_VEL);
 }
-void Car::jump() {
-    remainingJumpSteps += 6;
-    // 1/10th of a second at 60H
-    check_y_pos();
-}
+
 void Car::turbo() {
     this->turboOn = true;
 }
+void Car::jump() {
+
+    // 1/10th of a second at 60H
+    check_y_pos();
+    remainingJumpSteps += 6;
+}
+
+Car::~Car() = default;
+
 void Car::check_y_pos() {
     if (remainingJumpSteps >= 0) {
         //to change velocity by 10 in one time step
@@ -131,7 +118,12 @@ void Car::check_y_pos() {
         force /= 6.0;
         m_car->ApplyForce(b2Vec2(0, force), m_car->GetWorldCenter(), true);
         remainingJumpSteps--;
+        return;
     }
+    //to change velocity by 10 in one time step
+    float force = m_car->GetMass() * 50 / (1 / 60.0); //f = mv/t
+    //spread this over 6 time steps
+    force /= 6.0;
+    m_car->ApplyForce(b2Vec2(0, force), m_car->GetWorldCenter(), true);
+    remainingJumpSteps--;
 }
-
-Car::~Car() = default;
