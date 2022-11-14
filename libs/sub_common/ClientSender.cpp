@@ -13,7 +13,7 @@ void ClientSender::run() {
     try {
         while (not closed) {
             Action action = actionsQueue.pop();
-            std::vector<uint8_t> v = p.serializeAction(action);
+            std::vector<uint8_t> v = p.serializeFromAction(action);
             //  se iteran los comandos parseados y se envian al servidor
             for (uint8_t c : v) {
                 skt_client.sendall(&c, sizeof(c), &closed);

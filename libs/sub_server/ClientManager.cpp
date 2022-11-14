@@ -16,17 +16,18 @@ ClientManager::ClientManager(Socket &aClient,
                              closed(false){}
 
 void ClientManager::run() {
-    BlockingQueue<Information*> receiverQueue;
+    BlockingQueue<Action> receiverQueue;
     BlockingQueue<Action> senderQueue;
 
     std::vector<uint8_t> data(1);
     data.push_back(1);
     Action action(CREATE_ROOM, data);
     senderQueue.push(action);
-//    auto *threadReceiver = new ClientReceiver(client, receiverQueue);
+
+    auto *threadReceiver = new ClientReceiver(client, receiverQueue);
     auto *threadSender = new ClientSender(client, senderQueue);
 
-//    threadReceiver->start();
+    threadReceiver->start();
     threadSender->start();
 
     while (not closed) {

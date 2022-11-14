@@ -15,7 +15,7 @@ devuelve un vector de char
         command_t Protocolo::getMapCommand(Action action) {
 //procesa la accion y devuelve un vector de char
 }*/
-std::vector<uint8_t> Protocolo::serializeAction(Action action) {
+std::vector<uint8_t> Protocolo::serializeFromAction(Action action) {
     std::vector<uint8_t> result;
     result.emplace_back(action.getType());
     if (action.getType() == CREATE_ROOM) {
@@ -26,6 +26,12 @@ std::vector<uint8_t> Protocolo::serializeAction(Action action) {
     }
     result.insert(result.end(), action.getData().begin(), action.getData().end());
     return result;
+}
+
+Action Protocolo::deserializeToAction(std::vector<uint8_t> &data) {
+    uint8_t type = data[0];
+    std::vector<uint8_t> actionData(data.begin() + 1, data.end());
+    return Action(type, actionData);
 }
 
 void Protocolo::parseCreateRoomData(Action &action, std::vector<uint8_t> &result) const {
