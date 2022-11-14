@@ -17,5 +17,12 @@ add_library(lib_common
         ClientReceiver.cpp
         ClientReceiver.h
         ClientSender.cpp
-        ClientSender.h)
+        ClientSender.h
+        Update.cpp
+        Update.h
+        ProtectedQueue.h
+        QueueIsEmptyException.cpp
+        QueueIsEmptyException.h
+        Information.cpp
+        Information.h)
 target_link_libraries(lib_common)
