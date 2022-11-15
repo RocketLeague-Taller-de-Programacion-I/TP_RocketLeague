@@ -12,15 +12,9 @@ class Car {
     std::string playerName;
     bool turboOn;
     b2Body *m_car;
-    b2FixtureDef fd;
     b2BodyDef bd;
     b2PolygonShape chassis;
-    b2WheelJoint *m_spring1;
-    b2WheelJoint *m_spring2;
-    b2Body * m_wheel1;
-    b2Body * m_wheel2;
     float m_speed = 50.0f;
-    int remainingJumpSteps;
 public:
     explicit Car(b2World* world);
     ~Car();
@@ -31,6 +25,7 @@ public:
     void turbo();
     void check_y_pos();
     std::string name();
+    int GetPosition();
 };
 
 
