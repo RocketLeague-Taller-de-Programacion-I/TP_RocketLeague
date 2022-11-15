@@ -14,7 +14,7 @@ class Car {
     b2Body *m_car;
     b2BodyDef bd;
     b2PolygonShape chassis;
-    float m_speed = 50.0f;
+    b2Fixture* fixture;
 public:
     explicit Car(b2World* world);
     ~Car();

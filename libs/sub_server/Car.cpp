@@ -20,13 +20,9 @@ Car::Car(b2World* world) : turboOn(false){
     chassis.Set(vertices, 6);
     bd.type = b2_dynamicBody;
     bd.position.Set(0.0f, 1.0f);
-    b2FixtureDef fd;
-    fd.shape = &chassis;
-    fd.restitution = 0.6;
     m_car = world->CreateBody(&bd);
-    m_car->CreateFixture(&chassis, 1.0f);
-
-
+    fixture = m_car->CreateFixture(&chassis, 1.0f);
+    fixture->SetRestitution(0.3);
 }
 void Car::goRight() {
     if (this->m_car->GetPosition().y > 4) {
@@ -53,8 +49,8 @@ void Car::goLeft() {
     }
     m_car->ApplyForce(b2Vec2(-500, 0), m_car->GetWorldCenter(), true);
 }
-void Car::stop()
-{
+void Car::stop() {
+    fixture->SetFriction(100);
 }
 
 void Car::turbo() {
