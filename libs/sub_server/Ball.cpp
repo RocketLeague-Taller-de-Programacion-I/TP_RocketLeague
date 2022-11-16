@@ -20,7 +20,13 @@ Ball::Ball(b2World* world, float radius) {
     myFixtureDef.shape = &circleShape;
     myFixtureDef.density = 1;
     myFixtureDef.restitution = 0.7;
-    m_body->CreateFixture(&myFixtureDef);
+    ballFixture = m_body->CreateFixture(&myFixtureDef);
+}
+float Ball::X() {
+    return(this->m_body->GetPosition().x);
+}
+float Ball::Y() {
+    return(this->m_body->GetPosition().y);
 }
 
 Ball::~Ball() { }

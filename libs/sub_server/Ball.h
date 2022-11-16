@@ -12,12 +12,16 @@ class Ball {
 public:
     //class member variables
     b2Body* m_body;
+    b2Fixture* ballFixture;
     float m_radius;
 
 public:
     Ball(b2World* world, float radius);
     ~Ball();
 
+    float X();
+
+    float Y();
 };
 
 

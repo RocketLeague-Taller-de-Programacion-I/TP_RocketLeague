@@ -8,15 +8,15 @@
 #define DEGTORAD 0.0174533
 #define cojstaxisY 0.35
 
-Car::Car(b2World* world) : turboOn(false){
-    //  a
-    b2Vec2 vertices[8]; //  a
+Car::Car(b2World* world) : turboOn(false), facingRight(true){
+    b2Vec2 vertices[8];
     vertices[0].Set(-1.5f, -0.5f);
     vertices[1].Set(1.5f, -0.5f);
     vertices[2].Set(1.5f, 0.0f);
     vertices[3].Set(0.0f, 0.9f);
     vertices[4].Set(-1.15f, 0.9f);
     vertices[5].Set(-1.5f, 0.2f);
+
     chassis.Set(vertices, 6);
     bd.type = b2_dynamicBody;
     bd.position.Set(0.0f, 1.0f);
@@ -75,3 +75,18 @@ void Car::check_y_pos() {
 int Car::GetPosition() {
     return this->m_car->GetPosition().y;
 }
+/*
+void Car::faceLeft() {
+    b2Vec2 vertices[8];
+    vertices[0].Set(1.5f,-0.5f);
+    vertices[1].Set(-1.5f, -0.5f);
+    vertices[2].Set(-1.5f, 0.0f);
+    vertices[3].Set(0.0f, 0.9f);
+    vertices[4].Set(1.15f, 0.9f);
+    vertices[5].Set(1.5f, 0.2f);
+    this->chassis.Set(vertices, 6);
+    bd.type = b2_dynamicBody;
+    bd.position.Set(this->m_car->GetPosition().x, this->m_car->GetPosition().y);
+    fixture = m_car->CreateFixture(&chassis, 1.0f);
+}
+ */
