@@ -25,8 +25,9 @@ public:
     void jump();
     void turbo();
     void check_y_pos();
-    int GetPosition();
     // void faceLeft();
+    float X();
+    float Y();
 };
 
 

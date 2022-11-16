@@ -66,14 +66,18 @@ void Car::jump() {
 Car::~Car() = default;
 
 void Car::check_y_pos() {
-    if (this->m_car->GetPosition().y > 3) {
+    if (Y() > 6) { return; }
+    if (Y() > 3) {
         m_car->ApplyForce(b2Vec2(0, 1150), m_car->GetWorldCenter(), true);
         return;
     }
     m_car->ApplyForce(b2Vec2(0, 1500), m_car->GetWorldCenter(), true);
 }
-int Car::GetPosition() {
+float Car::Y() {
     return this->m_car->GetPosition().y;
+}
+float Car::X() {
+    return this->m_car->GetPosition().x;
 }
 /*
 void Car::faceLeft() {

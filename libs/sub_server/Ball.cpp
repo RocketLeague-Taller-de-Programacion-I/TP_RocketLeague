@@ -22,10 +22,10 @@ Ball::Ball(b2World* world, float radius) {
     myFixtureDef.restitution = 0.7;
     ballFixture = m_body->CreateFixture(&myFixtureDef);
 }
-float Ball::X() {
+float Ball::X() const {
     return(this->m_body->GetPosition().x);
 }
-float Ball::Y() {
+float Ball::Y() const {
     return(this->m_body->GetPosition().y);
 }
 

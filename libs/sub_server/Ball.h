@@ -18,10 +18,8 @@ public:
 public:
     Ball(b2World* world, float radius);
     ~Ball();
-
-    float X();
-
-    float Y();
+    float  X() const;
+    float  Y() const;
 };
 
 
