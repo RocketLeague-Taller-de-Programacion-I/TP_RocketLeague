@@ -5,9 +5,6 @@
 #include <iostream>
 #include "gameManager.h"
 
-#define OK_MSG "OK"
-#define ERROR_MSG "ERROR"
-
 void GameManager::cleanGames() {
     for (auto & game: games) {
         delete &game.second;
@@ -19,7 +16,11 @@ void GameManager::cleanGames() {
  * [1] -> primer char del nombre de partida
  * [n] -> comando NOP finaliza la data
  */
-void GameManager::createGame(std::vector<char> &data, ClientManager *i) {
+void GameManager::createGame(std::vector<char> &data, ClientManager *pManager) {
+    /*
+     * estoy deserealizanso y no le corresponde a monitor
+     * puede ser el protocolo el que haga todo esto con la data
+     */
     std::unique_lock<std::mutex> lock(this->mutex);
 
     std::string aGameName(data.begin()+1,data.end());
@@ -48,7 +49,7 @@ void GameManager::createGame(std::vector<char> &data, ClientManager *i) {
    }
 }
 
-std::string GameManager::joinGame(std::vector<char> &data, ClientManager *i) {
+std::string GameManager::joinGame(std::vector<char> &data, ClientManager *pManager) {
     std::unique_lock<std::mutex> lock(this->mutex);
     std::string aGameName(data.begin()+1,data.end());
 
@@ -94,7 +95,7 @@ void GameManager::listGames() {
  *
  * posible problema cuando tenga que decirle a que jugador mover
  */
-std::string GameManager::move(std::vector<char> data, ClientManager *i) {
+std::string GameManager::move(std::vector<char> data, ClientManager *pManager) {
     /*
      * Hay que buscar la partida donde esta el cliente y hacer le update
      */

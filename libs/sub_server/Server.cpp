@@ -6,7 +6,6 @@
 #include <algorithm>
 #include <sys/socket.h>
 #include "Server.h"
-#include "ClientManager.h"
 
 Server::Server(const std::string &servname)
         : closed(false),
@@ -34,7 +33,6 @@ void Server::run() {
              * ver si se puede crear el socket dinamico
              */
             Socket client = accept_skt.accept();
-
 
             auto *manager = new ClientManager(client,gameManager);
             this->managers.push_back(manager);

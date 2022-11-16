@@ -5,10 +5,10 @@
 #ifndef ROCKETLEAGUE_ACTION_H
 #define ROCKETLEAGUE_ACTION_H
 
+#pragma once
 #include <cstdint>
 #include <string>
 #include <vector>
-#include "sub_server/gameManager.h"
 #include "Information.h"
 #include "sub_server/ClientManager.h"
 

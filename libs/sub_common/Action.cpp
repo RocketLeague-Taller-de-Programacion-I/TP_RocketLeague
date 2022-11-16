@@ -16,6 +16,7 @@ std::uint8_t Action::getType() const {
 }
 
 void Action::excecute(GameManager &manager, ClientManager *i) {
+
     switch (this->type) {
         case CREATE_ROOM:
             manager.createGame(this->data, i);

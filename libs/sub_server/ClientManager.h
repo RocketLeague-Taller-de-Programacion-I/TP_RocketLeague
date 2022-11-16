@@ -1,10 +1,10 @@
 //
 // Created by lucaswaisten on 07/11/22.
 //
+#pragma once
 
 #ifndef ROCKETLEAGUE_CLIENTMANAGER_H
 #define ROCKETLEAGUE_CLIENTMANAGER_H
-
 
 #include "../sub_common/thread.h"
 #include "../sub_common/socket.h"

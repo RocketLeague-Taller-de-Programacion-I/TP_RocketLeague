@@ -1,6 +1,10 @@
 //
 // Created by lucaswaisten on 12/11/22.
 //
+#ifndef ROCKETLEAGUE_BLOCKINGQUEUE_H
+#define ROCKETLEAGUE_BLOCKINGQUEUE_H
+
+#pragma once
 #include <queue>
 #include <mutex>
 #include <condition_variable>
@@ -43,3 +47,5 @@ private:
     mutable std::mutex mutex;
     std::condition_variable signal;
 };
+
+#endif //ROCKETLEAGUE_BLOCKINGQUEUE_H
