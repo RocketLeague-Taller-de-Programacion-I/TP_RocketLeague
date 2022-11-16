@@ -19,10 +19,18 @@ enum actionType {
     MOVE
 };
 
-class Action : public Information{
+class Action {
+protected:
+    Action(uint8_t id, uint8_t c, std::string  name);
+
+    uint8_t idCreator;
+    uint8_t capacityGame;
+    std::string nameGame;
 public:
-    explicit Action(const std::uint8_t &type, std::vector<char>& data);
-    explicit Action(const std::uint8_t &type, std::string & data);
+    Action();
+
+   // explicit Action(const std::uint8_t &type, std::vector<char>& data);
+   // explicit Action(const std::uint8_t &type, std::string & data);
     std::uint8_t getType() const;
     void excecute(GameManager &manager, ClientManager *i);
 
