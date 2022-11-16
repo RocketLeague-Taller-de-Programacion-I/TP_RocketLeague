@@ -42,7 +42,7 @@ using namespace SDL2pp;
 static const float pi = 3.14159265358979323846f;
 
 int main(int argc, char* argv[]) try {
-    Client client;
+    Client client(argv[1], argv[2]);
     client.start();
 } catch (std::exception & e) {
         std::cerr << "Error: " << e.what() << std::endl;

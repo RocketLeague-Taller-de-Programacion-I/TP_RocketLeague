@@ -33,7 +33,7 @@ void Player::render(SDL2pp::Renderer &renderer) {
 }
 
 void Player::moveRight(int xMax) {
-    if (this-> x < xMax) {
+    if (this->x < xMax) {
         movingX = true;
     }
     facingLeft = false;
@@ -52,7 +52,7 @@ void Player::moveDown(int yMax) {
     facingUp = false;
 }
 void Player::moveUp(int yMax) {
-    if (this-> y > 0) {
+    if (this->y > 0) {
         movingY = true;
     }
     facingUp = true;
@@ -63,5 +63,3 @@ void Player::stopMovingX() {
 void Player::stopMovingY() {
     movingY= false;
 }
-
-

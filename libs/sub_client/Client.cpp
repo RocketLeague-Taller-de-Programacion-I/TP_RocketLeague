@@ -3,55 +3,33 @@
 //
 
 #include <iostream>
+#include <regex>
 #include "Client.h"
-#include "GameLoop.h"
-#include "mainwindow.h"
-#include <cmath>
-#include <iostream>
-#include <QApplication>
-#include <SDL2pp/SDL.hh>
-#include <SDL2pp/SDLImage.hh>
-#include <SDL2pp/Window.hh>
-#include <SDL2pp/Renderer.hh>
-#include <SDL2pp/Texture.hh>
-#include <SDL2pp/Surface.hh>
-#include <SDL.h>
 
 using namespace SDL2pp;
 #define TESTDATA_DIR "../libSDL2pp/testdata"
 static const float pi = 3.14159265358979323846f;
-Client::Client() {
-    //qt_init(argc, argv);
-}
+Client::Client(const char *host, const char *port) : skt_client(host, port) {}
 
 Client::~Client() { }
 
-void Client::view_screen() {
-// Initialize SDL library
-    SDL2pp::SDL sdl(SDL_INIT_VIDEO);
-    SDL2pp::Window sdlWindow("RocketLeague", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                             800, 600,
-                             SDL_WINDOW_RESIZABLE);
-
-    // Creo renderer
-    SDL2pp::Renderer renderer(sdlWindow, -1, SDL_RENDERER_SOFTWARE);
-
-    // Encapsular en un repositorio de texturas para no crear multiples veces la misma textura
-    SDL2pp::Texture im(renderer,
-                       SDL2pp::Surface("../images/car.jpeg").SetColorKey(true, 0));
-
-    GameLoop gameloop(renderer, im);
-    gameloop.run();
-}
-int Client::qt_init(int argc, char *argv[]) {
-    QApplication app(argc, argv);
-    MainWindow mainWindow;
-    mainWindow.show();
-    mainWindow.displayMainMenu();
-    return app.exec();
-}
-
 void Client::start() {
-    qt_init(0, nullptr);
-//    view_screen();
+    // create actions queue
+    BlockingQueue<Action> actionsQueue;
+    // create updates queue
+    BlockingQueue<Action> updatesQueue;
+    //launch ClientSender thread
+     ClientSender sender(skt_client, actionsQueue);
+    //launch ClientReceiver thread
+//     ClientReceiver receiver(skt_client, updatesQueue);
+//     receiver.start();
+    //launch render thread
+
+    RenderThread render_thread(updatesQueue, actionsQueue);
+    sender.start();
+    render_thread.start();
+
+    render_thread.join();
+    sender.join();
+//    receiver.join();
 }
