@@ -84,6 +84,19 @@ void GameManager::listGames() {
      * send the Update with the data
      */
 }
+
+void GameManager::execute(ActionCreate &action) {
+
+}
+
+void GameManager::execute(ActionJoin &action) {
+
+}
+
+void GameManager::execute(ActionList &action) {
+
+}
+
 /*
  * Procesas las actiones move:
  * -left
@@ -95,16 +108,5 @@ void GameManager::listGames() {
  *
  * posible problema cuando tenga que decirle a que jugador mover
  */
-std::string GameManager::move(std::vector<char> data, ClientManager *pManager) {
-    /*
-     * Hay que buscar la partida donde esta el cliente y hacer le update
-     */
-    return std::string();
-}
-
-void GameManager::sendUpdate(Update &update) {
-    //
-}
-
 
 

@@ -1,0 +1,11 @@
+//
+// Created by lucaswaisten on 16/11/22.
+//
+
+#include "ActionJoin.h"
+
+#include <utility>
+
+ActionJoin::ActionJoin(uint8_t id, std::string name) : Action(id,0, std::move(name)){
+
+}

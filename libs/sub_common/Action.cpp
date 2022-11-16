@@ -4,19 +4,21 @@
 
 #include "Action.h"
 
+#include <utility>
+
+/*
+Action::Action(const uint8_t &type,
+               std::vector<char> &data){}
 
 Action::Action(const uint8_t &type,
-               std::vector<char> &data) : Information(type,data){}
-
-Action::Action(const uint8_t &type,
-               std::string &data) : Information(type,std::vector<char>(data.begin(),data.end())){}
-
+               std::string &data){}
+*/
 std::uint8_t Action::getType() const {
-    return type;
+   // return type;
 }
 
 void Action::excecute(GameManager &manager, ClientManager *i) {
-
+/*
     switch (this->type) {
         case CREATE_ROOM:
             manager.createGame(this->data, i);
@@ -26,6 +28,12 @@ void Action::excecute(GameManager &manager, ClientManager *i) {
             manager.listGames();
         case MOVE:
             manager.move(this->data, i);
-    }
+    }*/
 }
+
+Action::Action() {
+
+}
+
+Action::Action(uint8_t id, uint8_t c, std::string  name) : idCreator(id), capacityGame(c),nameGame(std::move(name)){}
 

@@ -3,6 +3,9 @@
 //
 
 #include "protocolo.h"
+#include "ActionCreate.h"
+#include "ActionJoin.h"
+#include "ActionList.h"
 #include <sstream>
 #include <regex>
 
@@ -43,4 +46,37 @@ void Protocolo::parseCreateRoomData(Action &action, std::vector<uint8_t> &result
 
 command_t Protocolo::getMapCommand(uint32_t action) {
     return this->mapCommand.at(action);
+}
+
+Action Protocolo::deserializarData(const std::vector<uint8_t>& data) {
+    uint8_t type(data[1]);
+    switch (type) {
+        case CREATE_ROOM:
+            return parseCreateAction(data);
+        case JOIN_ROOM:
+            return parseJoinAction(data);
+        case LIST_ROOMS:
+            return parseListAction(data);
+    }
+    return Action();
+}
+
+ActionCreate Protocolo::parseCreateAction(const std::vector<uint8_t> &data) {
+    uint8_t id(data[0]);
+    uint8_t capacity(data[2]);
+    std::string name(data.begin()+3,data.end());
+
+    return ActionCreate(id,capacity,name);
+}
+
+ActionJoin Protocolo::parseJoinAction(const std::vector<uint8_t> &data) {
+    uint8_t id(data[0]);
+    std::string name(data.begin()+2,data.end());
+
+    return ActionJoin(id,name);
+}
+
+ActionList Protocolo::parseListAction(const std::vector<uint8_t> &data) {
+    uint8_t id(data[0]);
+    return ActionList(id);
 }

@@ -48,6 +48,14 @@ public:
     std::vector<uint8_t> serializeAction(Action action);
 
     void parseCreateRoomData(Action &action, std::vector<uint8_t> &result) const;
+
+    Action deserializarData(const std::vector<uint8_t>& data);
+
+    ActionCreate parseCreateAction(const std::vector<uint8_t> &data);
+
+    ActionJoin parseJoinAction(const std::vector<uint8_t> &data);
+
+    ActionList parseListAction(const std::vector<uint8_t> &data);
 };
 
 

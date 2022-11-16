@@ -2,11 +2,8 @@
 // Created by lucaswaisten on 07/11/22.
 //
 #pragma once
-#include <sys/socket.h>
 #include "ClientManager.h"
-#include "sub_common/Action.h"
-#include "ClientReceiver.h"
-#include "ClientSender.h"
+#include "sub_common/protocolo.h"
 
 ClientManager::ClientManager(Socket &aClient,
                              GameManager &aGameManager) :
@@ -15,25 +12,29 @@ ClientManager::ClientManager(Socket &aClient,
                              closed(false){}
 
 void ClientManager::run() {
-
-    std::vector<uint8_t> data;
+    /*
+     * inicializo la data a leer con el ID de cliente
+     */
+    std::vector<uint8_t> data(this->id);
     uint8_t byte_to_read;
+    Protocolo protocolo;
     /*
      * type of first byte to read:
      *  - CREATE_ROOM
      *  - JOIN_ROOM
      */
-    this->client.recvall(&byte_to_read, sizeof(byte_to_read), &closed);
-
-    while (byte_to_read != NOP && !closed) {
+    do {
         data.push_back(byte_to_read);
-        this->skt_client.recvall(&byte_to_read, sizeof(byte_to_read), &closed);
-    }
+        this->client.recvall(&byte_to_read, sizeof(byte_to_read), &closed);
+    } while (byte_to_read != NOP && !closed) ;
+
     // form the Action from the data
-    ActionCrearPartida o Joinear action = p.deserializarCrearcionDePartida(data);
+    auto action = protocolo.deserializarData(data);
+
+    gameManager.execute(action);
 
 
-    BlockingQueue<Action> receiverQueue;
+   /* BlockingQueue<Action> receiverQueue;
     BlockingQueue<Update> senderQueue;
     monitor.h
     monitor.ejecutar(ActionCrearPartida action);
@@ -55,7 +56,7 @@ void ClientManager::run() {
 
     threadReceiver->start();
     threadSender->start();
-    /*
+
      * reciv de create o join
 
     client.recvall();
