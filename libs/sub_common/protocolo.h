@@ -1,16 +1,18 @@
 //
 // Created by lucaswaisten on 04/11/22.
 //
+#pragma once
 
 #ifndef ROCKETLEAGUE_PROTOCOLO_H
 #define ROCKETLEAGUE_PROTOCOLO_H
-
 
 #include <cstdint>
 #include <SDL2/SDL_keycode.h>
 #include <string>
 #include <unordered_map>
-#include "Action.h"
+#include "ActionCreate.h"
+#include "ActionJoin.h"
+#include "ActionList.h"
 
 enum actionType {
     CREATE_ROOM,
@@ -51,11 +53,11 @@ public:
 
     Action deserializarData(const std::vector<uint8_t>& data);
 
-    ActionCreate parseCreateAction(const std::vector<uint8_t> &data);
+    Action parseCreateAction(const std::vector<uint8_t> &data);
 
-    ActionJoin parseJoinAction(const std::vector<uint8_t> &data);
+    Action parseJoinAction(const std::vector<uint8_t> &data);
 
-    ActionList parseListAction(const std::vector<uint8_t> &data);
+    Action parseListAction(const std::vector<uint8_t> &data);
 };
 
 

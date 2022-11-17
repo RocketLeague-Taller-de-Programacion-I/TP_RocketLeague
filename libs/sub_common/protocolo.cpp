@@ -3,9 +3,6 @@
 //
 
 #include "protocolo.h"
-#include "ActionCreate.h"
-#include "ActionJoin.h"
-#include "ActionList.h"
 #include <sstream>
 #include <regex>
 
@@ -27,21 +24,21 @@ std::vector<uint8_t> Protocolo::serializeAction(Action action) {
     } else if (action.getType() == MOVE) {
         //insertar el id del jugador previamente otorgado
     }
-    result.insert(result.end(), action.data.begin(), action.data.end());
+   // result.insert(result.end(), action.data.begin(), action.data.end());
     return result;
 }
 
 void Protocolo::parseCreateRoomData(Action &action, std::vector<uint8_t> &result) const {
-    std::string data (action.data.begin(), action.data.end());
+   // std::string data (action.data.begin(), action.data.end());
     std::regex number("[0-9]+");
     std::smatch match;
-    std::regex_search(data, match, number);
+   // std::regex_search(data, match, number);
 
     int players = match.str().empty() ? 0 : std::stoi(match.str());
     result.emplace_back(players);
-    std::string name = data.substr(0, data.find(match.str()));
+    //std::string name = data.substr(0, data.find(match.str()));
 
-    result.insert(result.end(), name.begin(), name.end());
+   // result.insert(result.end(), name.begin(), name.end());
 }
 
 command_t Protocolo::getMapCommand(uint32_t action) {
@@ -61,7 +58,7 @@ Action Protocolo::deserializarData(const std::vector<uint8_t>& data) {
     return Action();
 }
 
-ActionCreate Protocolo::parseCreateAction(const std::vector<uint8_t> &data) {
+Action Protocolo::parseCreateAction(const std::vector<uint8_t> &data) {
     uint8_t id(data[0]);
     uint8_t capacity(data[2]);
     std::string name(data.begin()+3,data.end());
@@ -69,14 +66,14 @@ ActionCreate Protocolo::parseCreateAction(const std::vector<uint8_t> &data) {
     return ActionCreate(id,capacity,name);
 }
 
-ActionJoin Protocolo::parseJoinAction(const std::vector<uint8_t> &data) {
+Action Protocolo::parseJoinAction(const std::vector<uint8_t> &data) {
     uint8_t id(data[0]);
     std::string name(data.begin()+2,data.end());
 
     return ActionJoin(id,name);
 }
 
-ActionList Protocolo::parseListAction(const std::vector<uint8_t> &data) {
+Action Protocolo::parseListAction(const std::vector<uint8_t> &data) {
     uint8_t id(data[0]);
     return ActionList(id);
 }

@@ -17,23 +17,27 @@ std::uint8_t Action::getType() const {
    // return type;
 }
 
-void Action::excecute(GameManager &manager, ClientManager *i) {
-/*
-    switch (this->type) {
-        case CREATE_ROOM:
-            manager.createGame(this->data, i);
-        case JOIN_ROOM:
-            manager.joinGame(this->data, i);
-        case LIST_ROOMS:
-            manager.listGames();
-        case MOVE:
-            manager.move(this->data, i);
-    }*/
+Action::Action() : idCreator(0),
+                    capacityGame(0),
+                    nameGame("") {}
+
+Action::Action(uint8_t id,
+               uint8_t c,
+               std::string  name) :
+               idCreator(id),
+               capacityGame(c),
+               nameGame(std::move(name)) {}
+
+std::string Action::getGameName() {
+    return nameGame;
 }
 
-Action::Action() {
-
+uint8_t Action::getCapacity() {
+    return capacityGame;
 }
 
-Action::Action(uint8_t id, uint8_t c, std::string  name) : idCreator(id), capacityGame(c),nameGame(std::move(name)){}
+uint8_t Action::getIdCreatorGame() {
+    return idCreator;
+}
+
 

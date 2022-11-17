@@ -6,4 +6,8 @@
 
 #include <utility>
 
-ActionCreate::ActionCreate(uint8_t id, uint8_t c, std::string name) : Action(id,c,std::move(name)) {}
+ActionCreate::ActionCreate(uint8_t id,
+                           uint8_t c,
+                           std::string name) : Action(id,
+                                                      c,
+                                                      std::move(name)) {}

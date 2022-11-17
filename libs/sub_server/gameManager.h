@@ -10,7 +10,6 @@
 #include <mutex>
 #include <vector>
 #include "game.h"
-#include "sub_common/Action.h"
 #include "sub_common/ActionCreate.h"
 #include "sub_common/ActionJoin.h"
 #include "sub_common/ActionList.h"
@@ -32,7 +31,7 @@ public:
 
     //void sendUpdate(Update &update);
 
-    virtual void execute(Action &action) = 0;
+    void execute(Action &action);
     void execute(ActionCreate &action);
     void execute(ActionJoin &action);
     void execute(ActionList &action);
