@@ -28,6 +28,8 @@ public:
     // void faceLeft();
     float X();
     float Y();
+
+    float angle();
 };
 
 

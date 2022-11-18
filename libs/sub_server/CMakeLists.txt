@@ -1,1 +1,1 @@
-add_library(lib_server Server.cpp Ball.cpp Ball.h Car.cpp Car.h Match.cpp Match.h)
+add_library(lib_server Server.cpp Ball.cpp Ball.h Car.cpp Car.h Match.cpp Match.h MyContactListener.cpp MyContactListener.h)

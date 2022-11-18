@@ -25,6 +25,12 @@ public:
     void update();
 
     void addPlayer(std::string &name);
+
+    float carsInfo();
+
+    void moveRight(std::string &basicString);
+
+    float info();
 };
 
 
