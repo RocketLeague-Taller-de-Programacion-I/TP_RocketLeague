@@ -3,7 +3,6 @@
 //
 
 #include "Action.h"
-
 #include <utility>
 
 /*
@@ -14,7 +13,7 @@ Action::Action(const uint8_t &type,
                std::string &data){}
 */
 std::uint8_t Action::getType() const {
-   // return type;
+   return 0;
 }
 
 Action::Action() : idCreator(0),
@@ -28,16 +27,19 @@ Action::Action(uint8_t id,
                capacityGame(c),
                nameGame(std::move(name)) {}
 
+
+void Action::execute(GameManager &gameManager, ClientManager *pClientManager) {}
+
 std::string Action::getGameName() {
-    return nameGame;
+    return std::string();
 }
 
 uint8_t Action::getCapacity() {
-    return capacityGame;
+    return 0;
 }
 
 uint8_t Action::getIdCreatorGame() {
-    return idCreator;
+    return 0;
 }
 
 

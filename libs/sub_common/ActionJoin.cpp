@@ -9,3 +9,15 @@
 ActionJoin::ActionJoin(uint8_t id, std::string name) : Action(id,0, std::move(name)){
 
 }
+
+void ActionJoin::execute(GameManager &gameManager, ClientManager *pClientManager) {
+    Action::execute(gameManager, pClientManager);
+}
+
+std::string ActionJoin::getGameName() {
+    return nameGame;
+}
+
+uint8_t ActionJoin::getIdCreatorGame() {
+    return idCreator;
+}

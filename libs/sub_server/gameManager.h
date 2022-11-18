@@ -10,31 +10,22 @@
 #include <mutex>
 #include <vector>
 #include "game.h"
-#include "sub_common/ActionCreate.h"
+#include "ClientManager.h"
 #include "sub_common/ActionJoin.h"
+#include "sub_common/ActionCreate.h"
 #include "sub_common/ActionList.h"
 
+class ClientManager;
 
 class GameManager {
     std::mutex mutex;
     std::map<std::string ,Game&> games;
 public:
-   // void createGame(std::vector<char> &data, ClientManager *pManager);
+   void createGame(unsigned char id, unsigned char capacity, ClientManager *pClientManager, const std::string& name);
+   std::string joinGame(std::vector<char> &data, ClientManager *pManager);
+   void listGames();
+   void cleanGames();
 
-   // std::string joinGame(std::vector<char> &data, ClientManager *pManager);
-
-    void listGames();
-
-    void cleanGames();
-
-    //std::string move(std::vector<char> data, ClientManager *pManager);
-
-    //void sendUpdate(Update &update);
-
-    void execute(Action &action);
-    void execute(ActionCreate &action);
-    void execute(ActionJoin &action);
-    void execute(ActionList &action);
 };
 
 #endif // ROCKETLEAGUE_GAMEMANAGER_H

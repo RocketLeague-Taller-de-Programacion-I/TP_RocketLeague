@@ -13,6 +13,7 @@
 #include "ActionCreate.h"
 #include "ActionJoin.h"
 #include "ActionList.h"
+#include <memory>
 
 enum actionType {
     CREATE_ROOM,
@@ -51,13 +52,13 @@ public:
 
     void parseCreateRoomData(Action &action, std::vector<uint8_t> &result) const;
 
-    Action deserializarData(const std::vector<uint8_t>& data);
+    std::unique_ptr<Action> deserializarData(const std::vector<uint8_t>& data);
 
-    Action parseCreateAction(const std::vector<uint8_t> &data);
+    static std::unique_ptr<Action> parseCreateAction(const std::vector<uint8_t> &data);
 
-    Action parseJoinAction(const std::vector<uint8_t> &data);
+    static std::unique_ptr<Action> parseJoinAction(const std::vector<uint8_t> &data);
 
-    Action parseListAction(const std::vector<uint8_t> &data);
+    static std::unique_ptr<Action> parseListAction(const std::vector<uint8_t> &data);
 };
 
 

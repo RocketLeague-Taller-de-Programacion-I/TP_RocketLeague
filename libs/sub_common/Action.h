@@ -9,7 +9,6 @@
 #include <cstdint>
 #include <string>
 #include <vector>
-#include "Information.h"
 #include "sub_server/ClientManager.h"
 /*
 enum actionType {
@@ -28,15 +27,22 @@ public:
     Action();
     Action(uint8_t id, uint8_t c, std::string  name);
 
-    std::string getGameName();
+    virtual ~Action() = 0;
+    virtual std::string getGameName();
 
-    uint8_t getCapacity();
+    virtual uint8_t getCapacity();
 
-    uint8_t getIdCreatorGame();
+    virtual uint8_t getIdCreatorGame();
    // explicit Action(const std::uint8_t &type, std::vector<char>& data);
    // explicit Action(const std::uint8_t &type, std::string & data);
     std::uint8_t getType() const;
-
+    /*
+     * agregar destructor virtual
+     */
+    /*
+     * smart pointer
+     */
+    virtual void execute(GameManager &gameManager, ClientManager *pClientManager);
 };
 
 

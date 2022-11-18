@@ -8,11 +8,12 @@
 
 #include "../sub_common/thread.h"
 #include "../sub_common/socket.h"
+#include "sub_common/BlockingQueue.h"
 #include "gameManager.h"
 
 class ClientManager : public Thread{
 private:
-    Socket &client;
+    Socket client;
     GameManager &gameManager;
     bool closed;
     unsigned long id;
@@ -27,6 +28,7 @@ public:
 
     void attendClient(unsigned long aId);
 
+    void setQueue(BlockingQueue<Action> *qReceiver, BlockingQueue<Update> *qSender);
 };
 
 

@@ -20,10 +20,12 @@ private:
     int capacity;
     int playerOnLine;
     std::string gameName;
-    std::map<uint8_t ,BlockingQueue<Action>&> mapReceiver;
-    std::map<uint8_t ,BlockingQueue<Update>&> mapSender;
+    //std::map<uint8_t ,BlockingQueue<Action>&> mapReceiver;
+    std::map<uint8_t ,BlockingQueue<Update>*> mapSender;
+
+    BlockingQueue<Action> *queue;
 public:
-    Game(uint8_t aCant, std::string  aName);
+  //  Game(uint8_t aCant, std::string  aName);
 
    // bool joinPlayer();
 
@@ -37,9 +39,14 @@ public:
     Game(const Game&) = delete;
     Game& operator=(const Game&) = delete;
 
-    void joinPlayer(uint8_t i, BlockingQueue<Action> &receiver, BlockingQueue<Update> &sender);
+    void joinPlayer(uint8_t i, BlockingQueue<Update> *sender);
 
     bool isFull() const;
+
+   // Game(uint8_t i, std::string basicString, BlockingQueue<Action> &queue);
+
+
+    Game(uint8_t capacity, std::string  name, BlockingQueue<Action> *pQueue);
 };
 
 

@@ -11,7 +11,10 @@
 class ActionList : public Action{
 
 public:
-    ActionList(uint8_t id);
+    explicit ActionList(uint8_t id);
+    void execute(GameManager &gameManager, ClientManager *pClientManager) override;
+
+    uint8_t getIdCreatorGame() override;
 };
 
 

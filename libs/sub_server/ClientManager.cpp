@@ -4,12 +4,13 @@
 #pragma once
 
 #include <sys/socket.h>
+#include <functional>
 #include "ClientManager.h"
 #include "sub_common/protocolo.h"
 
 ClientManager::ClientManager(Socket &aClient,
                              GameManager &aGameManager) :
-                             client(aClient),
+                             client(std::move(aClient)),
                              gameManager(aGameManager),
                              closed(false){}
 
@@ -32,8 +33,8 @@ void ClientManager::run() {
 
     // form the Action from the data
     auto action = protocolo.deserializarData(data);
-
-    gameManager.execute(action);
+    action->execute(gameManager, this);
+    //gameManager.execute(action);
 }
 
 bool ClientManager::joinThread() {
@@ -53,3 +54,5 @@ void ClientManager::attendClient(unsigned long aId) {
     this->id = aId;
     this->start();
 }
+
+void ClientManager::setQueue(BlockingQueue<Action> *qReceiver, BlockingQueue<Update> *qSender) {}
