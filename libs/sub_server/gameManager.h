@@ -22,7 +22,7 @@ class GameManager {
     std::map<std::string ,Game&> games;
 public:
    void createGame(unsigned char id, unsigned char capacity, ClientManager *pClientManager, const std::string& name);
-   std::string joinGame(std::vector<char> &data, ClientManager *pManager);
+   std::string joinGame(uint8_t id, ClientManager *pManager, const std::string& name);
    void listGames();
    void cleanGames();
 

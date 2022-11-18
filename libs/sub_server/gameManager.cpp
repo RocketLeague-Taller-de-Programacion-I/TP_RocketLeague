@@ -24,46 +24,32 @@ void GameManager::createGame(uint8_t id,
     std::unique_lock<std::mutex> lock(this->mutex);
 
     auto *queueReceiver = new BlockingQueue<Action>;
-    auto *queueSender = new BlockingQueue<Update>;
-
     auto *pGame =  new Game(capacity,
                             name,
                             queueReceiver);
 
 
     std::pair<std::map<std::string,Game&>::iterator,bool> ret;
-    games.insert(std::pair<std::string,
-            Game&>(name,
-                      *pGame));
+    auto iter = games.insert(std::pair<std::string,Game&>(name,*pGame));
 
-    /*
-     * Join Player
-     */
-    pGame->joinPlayer(id,queueSender);
+    if (iter.second) {
+        auto *queueSender = new BlockingQueue<Update>;
+        pGame->joinPlayer(id,queueSender);
+        pClientManager->setQueue(pGame->getQueue(), queueSender);
+    }
 
-    pClientManager->setQueue(queueReceiver, queueSender);
 }
 
-std::string GameManager::joinGame(std::vector<char> &data, ClientManager *pManager) {
+std::string GameManager::joinGame(uint8_t id, ClientManager *pManager, const std::string& name) {
 
-    * std::unique_lock<std::mutex> lock(this->mutex);
-    std::string aGameName(data.begin()+1,data.end());
+    std::unique_lock<std::mutex> lock(this->mutex);
+    auto iter = games.find(name);
 
-    auto iter = games.find(aGameName);
-
-     * iter es una tupla
-     *      - en el primer elemento contiene la key encontrada
-     *      - en el segundo el Game
-     * Si first es igual a la key buscada y la partida tiene espacio
-     * para nuevos jugadores, entonces puede hacer el Update
-
-    if (iter->first == aGameName and iter->second.joinPlayer()) {
-
-         * do update in Game
-
+    if (iter->first == name and iter->second.isFull()) {
+        auto *queueSender = new BlockingQueue<Update>;
+        iter->second.joinPlayer(id,queueSender);
+        pManager->setQueue( iter->second.getQueue(), queueSender);
     } else {
-
-         * not update
 
     }
 }

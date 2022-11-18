@@ -47,6 +47,8 @@ public:
 
 
     Game(uint8_t capacity, std::string  name, BlockingQueue<Action> *pQueue);
+
+    BlockingQueue<Action> *getQueue();
 };
 
 

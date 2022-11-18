@@ -15,17 +15,10 @@ ClientManager::ClientManager(Socket &aClient,
                              closed(false){}
 
 void ClientManager::run() {
-    /*
-     * inicializo la data a leer con el ID de cliente
-     */
-    std::vector<uint8_t> data(this->id);
+    std::vector<uint8_t> data(id);
     uint8_t byte_to_read;
     Protocolo protocolo;
-    /*
-     * type of first byte to read:
-     *  - CREATE_ROOM
-     *  - JOIN_ROOM
-     */
+
     do {
         data.push_back(byte_to_read);
         this->client.recvall(&byte_to_read, sizeof(byte_to_read), &closed);
@@ -34,7 +27,6 @@ void ClientManager::run() {
     // form the Action from the data
     auto action = protocolo.deserializarData(data);
     action->execute(gameManager, this);
-    //gameManager.execute(action);
 }
 
 bool ClientManager::joinThread() {

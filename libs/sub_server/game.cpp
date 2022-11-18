@@ -40,3 +40,7 @@ Game::Game(uint8_t capacity,
            playerOnLine(0),
            gameName(std::move(name)),
            queue(pQueue) {}
+
+BlockingQueue<Action> *Game::getQueue() {
+    return queue;
+}
