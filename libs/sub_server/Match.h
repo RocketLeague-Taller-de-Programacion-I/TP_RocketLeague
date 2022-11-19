@@ -9,6 +9,14 @@
 #include <map>
 #include "box2d/box2d.h"
 #include "Car.h"
+#include "MyContactListener.h"
+
+/*  User data:
+    0 -> nullptr
+    1 -> Ground
+    2 -> Ball
+    3 -> Car
+ */
 
 class Match {
 private:
@@ -17,19 +25,17 @@ private:
     std::map<std::string, Car> players;
     std::map<std::string, Car> scorers;
     std::map<std::string, Car> assistants;
+    b2Body* staticBody; //  Floor
     int playersConnected;
     int playersRequired;
+    MyContactListener collisionListener;
 public:
     Match(std::string name, int required);
     ~Match();
     void update();
-
     void addPlayer(std::string &name);
-
     float carsInfo();
-
     void moveRight(std::string &basicString);
-
     float info();
 };
 

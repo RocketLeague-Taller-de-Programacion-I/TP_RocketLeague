@@ -7,15 +7,21 @@
 #include "box2d/b2_body.h"
 #include "box2d/box2d.h"
 #include <iostream>
+#include <memory>
+#include <vector>
 
+struct MyFixtureUserDataType
+{
+    int mObjectType {};
+    b2Fixture* mOwningFixture {};
+};
 class Car {
     std::string playerName;
     bool turboOn;
     b2Body *m_car;
     b2BodyDef bd;
     b2PolygonShape chassis;
-    b2Fixture* fixture;
-    bool facingRight;
+    b2FixtureDef fixDef;
 public:
     explicit Car(b2World* world);
     ~Car();
