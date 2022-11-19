@@ -7,6 +7,7 @@
 #include "box2d/b2_body.h"
 #include "box2d/box2d.h"
 #include <iostream>
+#include <memory>
 
 struct MyFixtureUserDataType
 {
@@ -21,7 +22,7 @@ class Car {
     b2PolygonShape chassis;
     b2Fixture* fixture;
     b2FixtureDef fixDef;
-    bool facingRight;
+    std::unique_ptr<MyFixtureUserDataType> myUserData;
 public:
     explicit Car(b2World* world);
     ~Car();

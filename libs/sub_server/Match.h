@@ -15,9 +15,9 @@ class Match {
 private:
     std::string name;
     b2World world;
-    std::map<std::string, Car> players;
-    std::map<std::string, Car> scorers;
-    std::map<std::string, Car> assistants;
+    std::map<std::string, Car*> players;
+    std::map<std::string, Car*> scorers;
+    std::map<std::string, Car*> assistants;
     int playersConnected;
     int playersRequired;
     b2Body* staticBody;

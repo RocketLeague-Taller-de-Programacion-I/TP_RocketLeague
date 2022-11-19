@@ -38,13 +38,17 @@ Match::Match(std::string gameName, int required) : name(std::move(gameName)), pl
 
 
 void Match::addPlayer(std::string &name) {
-    Car car(&this->world);
-    std::pair<std::map<std::string,Car>::iterator,bool> ret;
-    ret = this->players.insert( std::pair<std::string,Car>(name,car));
+    this->players[name] = new Car(&this->world);
     this->playersConnected++;
 }
 
-Match::~Match() { }
+Match::~Match() {
+    for ( std::pair<const std::string,Car*> &player : players){
+        //Plaats *p = place.second;
+        delete player.second;
+        player.second = nullptr;
+    }
+}
 
 void Match::update() {
     this->world.Step(0.15, 42, 3);
@@ -57,14 +61,14 @@ float Match::carsInfo() {
     float carsConnected;
     for (auto& player : this->players) {
         //  cppcheck-suppress useStlAlgorithm
-        carsConnected = (player.second.X());
+        carsConnected = (player.second->X());
     }
     return carsConnected;
 }
 
 void Match::moveRight(std::string &basicString) {
-    Car car = this->players.at(basicString);
-    car.goRight();
+    this->players.at(basicString)->goRight();
+
 }
 float Match::info() {
 

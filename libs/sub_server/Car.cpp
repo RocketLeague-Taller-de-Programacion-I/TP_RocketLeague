@@ -9,7 +9,7 @@
 #define DEGTORAD 0.0174533
 #define cojstaxisY 0.35
 
-Car::Car(b2World* world) : turboOn(false), facingRight(true){
+Car::Car(b2World* world) : turboOn(false){
     b2Vec2 vertices[8];
     vertices[0].Set(-1.5f, -0.5f);
     vertices[1].Set(1.5f, -0.5f);
@@ -18,7 +18,8 @@ Car::Car(b2World* world) : turboOn(false), facingRight(true){
     vertices[4].Set(-1.15f, 0.9f);
     vertices[5].Set(-1.5f, 0.2f);
 
-    auto myUserData = std::make_unique<MyFixtureUserDataType>();
+    myUserData = std::make_unique<MyFixtureUserDataType>();
+    fixDef.userData.pointer = reinterpret_cast<uintptr_t>(myUserData.get());
     myUserData->mObjectType = 3;
     chassis.Set(vertices, 6);
     bd.type = b2_dynamicBody;
@@ -28,7 +29,7 @@ Car::Car(b2World* world) : turboOn(false), facingRight(true){
     fixDef.shape = &chassis;
     m_car = world->CreateBody(&bd);
     myUserData->mOwningFixture =  m_car->CreateFixture(&fixDef);
-    fixDef.userData.pointer = reinterpret_cast<uintptr_t>(myUserData.get());
+
 
 }
 void Car::goRight() {
