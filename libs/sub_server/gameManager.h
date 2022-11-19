@@ -11,6 +11,8 @@
 #include <vector>
 #include "game.h"
 
+#include "sub_common/Action.h"
+
 class GameManager {
     std::mutex mutex;
     std::map<std::string ,Game&> games;
@@ -20,9 +22,10 @@ public:
    void cleanGames();
 
     void createGame(uint8_t idCreator, uint8_t capacityGame, const std::string& nameGame,
-                    std::function<void(BlockingQueue<Action> *)> setQueue);
+                    std::function<void(BlockingQueue<Action *> *, BlockingQueue<Action *> *)> setQueue);
 
-    void joinGame(uint8_t idCreator, const std::string& nameGame, std::function<void(BlockingQueue<Action> *)> setQueue);
+    void joinGame(uint8_t idCreator, const std::string& nameGame, std::function<void(BlockingQueue<Action *> *,
+                                                                                     BlockingQueue<Action *> *)> setQueue);
 };
 
 #endif // ROCKETLEAGUE_GAMEMANAGER_H

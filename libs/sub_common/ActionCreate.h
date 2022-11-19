@@ -16,7 +16,7 @@ public:
 
     std::string getGameName() override;
 
-    void execute(GameManager &gameManager, std::function<void(int *)> setQueue) override;
+    void execute(GameManager &gameManager, std::function<void(BlockingQueue<Action *> *,BlockingQueue<Action *> *)> setQueue) override;
 
     uint8_t getCapacity() override;
 

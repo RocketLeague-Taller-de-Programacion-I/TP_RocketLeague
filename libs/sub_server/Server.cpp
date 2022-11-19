@@ -7,11 +7,10 @@
 #include <sys/socket.h>
 #include "Server.h"
 
-Server::Server(const std::string &servname)
+Server::Server(const char *port)
         : closed(false),
-          accept_skt(servname.c_str()) {}
+          accept_skt(port) {}
 
-Server::~Server() = default;
 /*
  * Mientras closed sea false aceptara clientes.
  * A cada manager de cliente le pasará el gameManager y
@@ -34,7 +33,7 @@ void Server::run() {
              */
             Socket client = accept_skt.accept();
 
-            auto *manager = new ClientManager(client,gameManager);
+            auto *manager = new ClientManager(std::move(client),gameManager);
             this->managers.push_back(manager);
             /*
              * Attend client:

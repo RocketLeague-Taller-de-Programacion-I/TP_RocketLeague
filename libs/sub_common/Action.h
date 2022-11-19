@@ -45,7 +45,7 @@ public:
      * smart pointer
      */
 
-    virtual void execute(GameManager &manager, std::function<void(BlockingQueue < Action > *)> setQueue);
+    virtual void execute(GameManager &manager, std::function<void(BlockingQueue<Action *> *,BlockingQueue<Action *> *)> setQueue);
 };
 
 

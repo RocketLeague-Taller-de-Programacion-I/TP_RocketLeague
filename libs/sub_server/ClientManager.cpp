@@ -29,8 +29,7 @@ void ClientManager::run() {
     // form the Action from the data
     auto action = protocolo.deserializarData(data);
     // callback
-    auto queue_setter_callable = std::bind(std::mem_fn(&ClientManager::setQueueReceiver),
-                                           this, std::placeholders::_1);
+    auto queue_setter_callable = std::bind(std::mem_fn(&ClientManager::setQueueReceiver),this, std::placeholders::_2);
 
     action->execute(gameManager,queue_setter_callable);
 }

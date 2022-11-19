@@ -13,6 +13,7 @@ uint8_t ActionList::getIdCreatorGame() {
     return idCreator;
 }
 
-void ActionList::execute(GameManager &manager, std::function<void(BlockingQueue<Action> *)> setQueue) {
+void ActionList::execute(GameManager &manager, std::function<void(BlockingQueue<Action *> *,
+                                                                  BlockingQueue<Action *> *)> setQueue) {
     Action::execute(manager, setQueue);
 }

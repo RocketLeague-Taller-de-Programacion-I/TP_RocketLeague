@@ -8,17 +8,14 @@
 std::string Game::information() {
     return "";
 }
-/*
-Game::Game(uint8_t aCant,
-           std::string aName) :
-           capacity(aCant),
-           playerOnLine(0),
-           gameName(std::move(aName)) {}*/
 
-void Game::joinPlayer(uint8_t i, BlockingQueue<Update> *sender) {
+
+void Game::joinPlayer(uint8_t i, BlockingQueue<Action*> *sender) {
     playerOnLine++;
-   // mapReceiver.insert(std::pair<uint8_t ,BlockingQueue<Action>&>(i,receiver));
-    mapSender.insert(std::pair<uint8_t ,BlockingQueue<Update>*>(i,sender));
+    mapSender.insert(std::pair<uint8_t ,BlockingQueue<Action*>*>(i,sender));
+    if (playerOnLine == capacity){
+        start();
+    }
 }
 void Game::run() {
 
@@ -27,20 +24,17 @@ void Game::run() {
 bool Game::isFull() const {
     return playerOnLine == capacity;
 }
-/*
-Game::Game(uint8_t i, std::string basicString, BlockingQueue<Action> &queue) :
-                    capacity(i),
-                    gameName(basicString),
-                    queue(queue){}*/
 
 Game::Game(uint8_t capacity,
            std::string  name,
-           BlockingQueue<Action> *pQueue) :
+           BlockingQueue<Action *> *pQueue) :
            capacity(capacity),
            playerOnLine(0),
            gameName(std::move(name)),
            queue(pQueue) {}
 
-BlockingQueue<Action> *Game::getQueue() {
+BlockingQueue<Action *> * Game::getQueue() {
     return queue;
 }
+
+void Game::stop() {}

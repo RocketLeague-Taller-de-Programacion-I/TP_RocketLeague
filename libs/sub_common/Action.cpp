@@ -5,13 +5,6 @@
 #include "Action.h"
 #include <utility>
 
-/*
-Action::Action(const uint8_t &type,
-               std::vector<char> &data){}
-
-Action::Action(const uint8_t &type,
-               std::string &data){}
-*/
 std::uint8_t Action::getType() const {
    return 0;
 }
@@ -40,6 +33,6 @@ uint8_t Action::getIdCreatorGame() {
 }
 
 void Action::execute(GameManager &manager,
-                     std::function<void(BlockingQueue<Action> *)> setQueue) {}
+                     std::function<void(BlockingQueue<Action *> *, BlockingQueue<Action *> *)> setQueue) {}
 
 

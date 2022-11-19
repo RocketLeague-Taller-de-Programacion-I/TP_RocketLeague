@@ -19,6 +19,7 @@ uint8_t ActionJoin::getIdCreatorGame() {
     return idCreator;
 }
 
-void ActionJoin::execute(GameManager &gameManager, std::function<void(int *)> setQueue) {
-    gameManager.joinGame(idCreator, nameGame, std::move(setQueue));
+void ActionJoin::execute(GameManager &gameManager, std::function<void(BlockingQueue<Action *> *,
+                                                                      BlockingQueue<Action *> *)> setQueue) {
+    gameManager.joinGame(idCreator, nameGame, setQueue);
 }

@@ -24,6 +24,6 @@ uint8_t ActionCreate::getIdCreatorGame() {
     return idCreator;
 }
 
-void ActionCreate::execute(GameManager &gameManager, std::function<void(int *)> setQueue) {
-    gameManager.createGame(idCreator, capacityGame, nameGame, std::move(setQueue));
+void ActionCreate::execute(GameManager &gameManager, std::function<void(BlockingQueue<Action *> *,BlockingQueue<Action *> *)> setQueue) {
+    gameManager.createGame(idCreator, capacityGame, nameGame, setQueue);
 }
