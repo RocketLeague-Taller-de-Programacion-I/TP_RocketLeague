@@ -1,8 +1,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "sub_common/ActionUpdate.h"
 #include <iostream>
 
-MainWindow::MainWindow(QWidget *parent, BlockingQueue<Action> &updates, BlockingQueue<Action> &actions)
+MainWindow::MainWindow(QWidget *parent, BlockingQueue<Action *> &updates, BlockingQueue<Action *> &actions)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , updatesQueue(updates)
@@ -58,15 +59,26 @@ void MainWindow::drawJoinGameMenu() {
     drawTitle("Join Game");
     //list all the games
     //draw a button for each game
-    std::map<std::string, std::string> games;
-    games["game1"] = "1/2";
-    games["game2"] = "2/2";
-    games["game3"] = "1/3";
+    uint8_t id = 0;
+    std::unique_ptr<Action> action(new ActionList(id));
+    // auto *action = new ActionCreate(id , players, roomName);
+    this->actionsQueue.push(reinterpret_cast<Action *&>(action));
+
+    ActionUpdate* update = dynamic_cast<ActionUpdate *>(this->updatesQueue.pop());
+    /*
+     * [0] -> type (1:Own 2:Other 3:Score 4:Ball 5:Listar)
+     * [1] -> id
+     * UpdateList: [2] -> listado de partidas ("fracno 3/3,hola 4/5")
+     * [2] -> x
+     * [3] -> y
+     * [4] -> angle
+     */
+    std::vector<std::string> games = parseList(update->getGameName());
+
     int i = 200;
     foreach(auto game, games) {
-        QString roomName = QString::fromStdString(game.first);
-        QString players = QString::fromStdString(game.second);
-        Button* button = new Button( QString("%1 %2").arg(roomName,players));
+        QString item = QString::fromStdString(game);
+        Button* button = new Button( QString("%1").arg(item));
         connect(button, SIGNAL(clicked(QString)), this, SLOT(joinParticularGame(QString)));
         this->scene.addItem(button);
         button->setPos(width() / 2 - button->boundingRect().width() / 2, i);
@@ -78,10 +90,11 @@ void MainWindow::drawJoinGameMenu() {
 
 void MainWindow::createRoom() {
     std::string roomName = this->lineEdit->text().toStdString();
-    int cantidadPlayers = this->cantPlayers->value();
-    std::string data = roomName + std::to_string(cantidadPlayers);
-    Action action(CREATE_ROOM, data);
-    this->actionsQueue.push(action);
+    uint8_t players = this->cantPlayers->value();
+    uint8_t id = 0;
+    std::unique_ptr<Action> action(new ActionCreate(id , players, roomName));
+   // auto *action = new ActionCreate(id , players, roomName);
+    this->actionsQueue.push(reinterpret_cast<Action *&>(action));
     close();
 }
 
@@ -90,10 +103,11 @@ void MainWindow::joinParticularGame(QString roomName) {
     this->scene.clear();
 
     // crear evento de join ()
-    std::string data = roomName.toStdString();
-    Action action(JOIN_ROOM,data);
-    // agregar a la cola de eventos
-    this->actionsQueue.push(action);
+    std::string room = roomName.toStdString();
+    uint8_t id = 0;
+    std::unique_ptr<Action> action(new ActionJoin(id, room));
+    // auto *action = new ActionCreate(id , players, roomName);
+    this->actionsQueue.push(reinterpret_cast<Action *&>(action));
     //exit qt
     close();
 }
@@ -208,5 +222,9 @@ void MainWindow::drawSaveAndStartButton() {
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+std::vector<std::string> MainWindow::parseList(std::string basicString) {
+    return std::vector<std::string>();
 }
 
