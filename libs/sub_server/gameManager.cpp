@@ -17,6 +17,7 @@ void GameManager::cleanGames() {
  * [1] -> primer char del nombre de partida
  * [n] -> comando NOP finaliza la data
  */
+/*
 void GameManager::createGame(uint8_t id,
                              uint8_t capacity,
                              ClientManager *pClientManager,
@@ -35,11 +36,11 @@ void GameManager::createGame(uint8_t id,
     if (iter.second) {
         auto *queueSender = new BlockingQueue<Update>;
         pGame->joinPlayer(id,queueSender);
-        pClientManager->setQueue(pGame->getQueue(), queueSender);
+        pClientManager->setQueueReceiver(pGame->getQueue());
     }
 
-}
-
+}*/
+/*
 std::string GameManager::joinGame(uint8_t id, ClientManager *pManager, const std::string& name) {
 
     std::unique_lock<std::mutex> lock(this->mutex);
@@ -48,11 +49,11 @@ std::string GameManager::joinGame(uint8_t id, ClientManager *pManager, const std
     if (iter->first == name and iter->second.isFull()) {
         auto *queueSender = new BlockingQueue<Update>;
         iter->second.joinPlayer(id,queueSender);
-        pManager->setQueue( iter->second.getQueue(), queueSender);
+        pManager->setQueueReceiver(iter->second.getQueue());
     } else {
 
     }
-}
+}*/
 
 void GameManager::listGames() {
     std::unique_lock<std::mutex> lock(this->mutex);
@@ -65,6 +66,43 @@ void GameManager::listGames() {
     /*
      * send the Update with the data
      */
+}
+
+void GameManager::createGame(uint8_t idCreator, uint8_t capacityGame, const std::string& nameGame,
+                             std::function<void(BlockingQueue<Action> *)> setQueue) {
+    std::unique_lock<std::mutex> lock(this->mutex);
+
+    auto *queueReceiver = new BlockingQueue<Action>;
+    auto *pGame =  new Game(capacityGame,
+                            nameGame,
+                            queueReceiver);
+
+
+    std::pair<std::map<std::string,Game&>::iterator,bool> ret;
+    auto iter = games.insert(std::pair<std::string,Game&>(nameGame,*pGame));
+
+    if (iter.second) {
+        auto *queueSender = new BlockingQueue<Update>;
+        pGame->joinPlayer(idCreator,queueSender);
+        setQueue(queueReceiver);
+    }
+}
+
+void
+GameManager::joinGame(uint8_t idCreator, const std::string& nameGame, std::function<void(
+        BlockingQueue<Action> *)> setQueue) {
+
+    std::unique_lock<std::mutex> lock(this->mutex);
+
+    auto iter = games.find(nameGame);
+
+    if (iter->first == nameGame and iter->second.isFull()) {
+        auto *queueSender = new BlockingQueue<Update>;
+        iter->second.joinPlayer(idCreator,queueSender);
+        setQueue(iter->second.getQueue());
+    } else {
+
+    }
 }
 
 

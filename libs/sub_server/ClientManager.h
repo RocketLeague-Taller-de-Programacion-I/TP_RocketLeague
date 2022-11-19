@@ -16,19 +16,19 @@ private:
     Socket client;
     GameManager &gameManager;
     bool closed;
-    unsigned long id;
+    uint8_t id;
 public:
     ClientManager(Socket &aClient, GameManager &aGameManager);
 
     void run() override;
-    void stop() override;
 
     bool joinThread();
+
     bool endManager();
 
     void attendClient(unsigned long aId);
 
-    void setQueue(BlockingQueue<Action> *qReceiver, BlockingQueue<Update> *qSender);
+    void setQueueReceiver(BlockingQueue<Action> *qReceiver);
 };
 
 

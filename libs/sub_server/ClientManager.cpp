@@ -4,6 +4,8 @@
 #pragma once
 
 #include <sys/socket.h>
+#include <iostream>
+#include <memory>
 #include <functional>
 #include "ClientManager.h"
 #include "sub_common/protocolo.h"
@@ -12,7 +14,7 @@ ClientManager::ClientManager(Socket &aClient,
                              GameManager &aGameManager) :
                              client(std::move(aClient)),
                              gameManager(aGameManager),
-                             closed(false){}
+                             closed(false), id(0){}
 
 void ClientManager::run() {
     std::vector<uint8_t> data(id);
@@ -26,7 +28,11 @@ void ClientManager::run() {
 
     // form the Action from the data
     auto action = protocolo.deserializarData(data);
-    action->execute(gameManager, this);
+    // callback
+    auto queue_setter_callable = std::bind(std::mem_fn(&ClientManager::setQueueReceiver),
+                                           this, std::placeholders::_1);
+
+    action->execute(gameManager,queue_setter_callable);
 }
 
 bool ClientManager::joinThread() {
@@ -47,4 +53,4 @@ void ClientManager::attendClient(unsigned long aId) {
     this->start();
 }
 
-void ClientManager::setQueue(BlockingQueue<Action> *qReceiver, BlockingQueue<Update> *qSender) {}
+void ClientManager::setQueueReceiver(BlockingQueue<Action> *qReceiver) {}

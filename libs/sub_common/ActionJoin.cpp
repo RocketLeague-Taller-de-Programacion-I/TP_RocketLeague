@@ -10,9 +10,6 @@ ActionJoin::ActionJoin(uint8_t id, std::string name) : Action(id,0, std::move(na
 
 }
 
-void ActionJoin::execute(GameManager &gameManager, ClientManager *pClientManager) {
-    Action::execute(gameManager, pClientManager);
-}
 
 std::string ActionJoin::getGameName() {
     return nameGame;
@@ -20,4 +17,8 @@ std::string ActionJoin::getGameName() {
 
 uint8_t ActionJoin::getIdCreatorGame() {
     return idCreator;
+}
+
+void ActionJoin::execute(GameManager &gameManager, std::function<void(int *)> setQueue) {
+    gameManager.joinGame(idCreator, nameGame, std::move(setQueue));
 }
