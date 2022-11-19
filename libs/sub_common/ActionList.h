@@ -12,8 +12,7 @@ class ActionList : public Action{
 
 public:
     explicit ActionList(uint8_t id);
-    void execute(GameManager &gameManager, ClientManager *pClientManager) override;
-
+    void execute(GameManager &manager, std::function<void(BlockingQueue < Action > *)> setQueue) override;
     uint8_t getIdCreatorGame() override;
 };
 

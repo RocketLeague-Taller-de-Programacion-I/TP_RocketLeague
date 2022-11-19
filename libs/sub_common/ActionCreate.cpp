@@ -12,10 +12,6 @@ ActionCreate::ActionCreate(uint8_t id,
                                                       c,
                                                       std::move(name)) {}
 
-void ActionCreate::execute(GameManager &gameManager, ClientManager *pClientManager) {
-    gameManager.createGame(idCreator, capacityGame, pClientManager, nameGame);
-}
-
 std::string ActionCreate::getGameName() {
     return nameGame;
 }
@@ -26,4 +22,8 @@ uint8_t ActionCreate::getCapacity() {
 
 uint8_t ActionCreate::getIdCreatorGame() {
     return idCreator;
+}
+
+void ActionCreate::execute(GameManager &gameManager, std::function<void(int *)> setQueue) {
+    gameManager.createGame(idCreator, capacityGame, nameGame, std::move(setQueue));
 }

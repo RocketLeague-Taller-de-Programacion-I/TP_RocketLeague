@@ -27,9 +27,6 @@ Action::Action(uint8_t id,
                capacityGame(c),
                nameGame(std::move(name)) {}
 
-
-void Action::execute(GameManager &gameManager, ClientManager *pClientManager) {}
-
 std::string Action::getGameName() {
     return std::string();
 }
@@ -41,5 +38,8 @@ uint8_t Action::getCapacity() {
 uint8_t Action::getIdCreatorGame() {
     return 0;
 }
+
+void Action::execute(GameManager &manager,
+                     std::function<void(BlockingQueue<Action> *)> setQueue) {}
 
 

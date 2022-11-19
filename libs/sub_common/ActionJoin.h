@@ -12,8 +12,8 @@ class ActionJoin : public Action {
 
 public:
     ActionJoin(uint8_t id, std::string name);
-    void execute(GameManager &gameManager, ClientManager *pClientManager) override;
 
+    void execute(GameManager &gameManager, std::function<void(int *)> setQueue) override;
     std::string getGameName() override;
 
     uint8_t getIdCreatorGame() override;

@@ -9,7 +9,9 @@
 #include <cstdint>
 #include <string>
 #include <vector>
-#include "sub_server/ClientManager.h"
+#include <functional>
+#include "sub_server/gameManager.h"
+
 /*
 enum actionType {
     CREATE_ROOM,
@@ -42,7 +44,8 @@ public:
     /*
      * smart pointer
      */
-    virtual void execute(GameManager &gameManager, ClientManager *pClientManager);
+
+    virtual void execute(GameManager &manager, std::function<void(BlockingQueue < Action > *)> setQueue);
 };
 
 
