@@ -15,9 +15,9 @@ Client::~Client() { }
 
 void Client::start() {
     // create actions queue
-    BlockingQueue<Action> actionsQueue;
+    BlockingQueue<Action*> actionsQueue;
     // create updates queue
-    BlockingQueue<Action> updatesQueue;
+    BlockingQueue<Action*> updatesQueue;
     //launch ClientSender thread
      ClientSender sender(skt_client, actionsQueue);
     //launch ClientReceiver thread

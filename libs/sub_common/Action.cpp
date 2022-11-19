@@ -13,9 +13,9 @@ Action::Action() : idCreator(0),
                     capacityGame(0),
                     nameGame("") {}
 
-Action::Action(uint8_t id,
-               uint8_t c,
-               std::string  name) :
+Action::Action(uint8_t &id,
+               uint8_t &c,
+               std::string name) :
                idCreator(id),
                capacityGame(c),
                nameGame(std::move(name)) {}
@@ -34,5 +34,11 @@ uint8_t Action::getIdCreatorGame() {
 
 void Action::execute(GameManager &manager,
                      std::function<void(BlockingQueue<Action *> *, BlockingQueue<Action *> *)> setQueue) {}
+
+Action::Action(uint8_t &id, std::string name) : idCreator(id),
+                                                capacityGame(0),
+                                                nameGame(std::move(name)) {}
+
+Action::~Action() = default;
 
 

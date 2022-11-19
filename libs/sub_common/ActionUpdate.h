@@ -12,13 +12,12 @@
 class ActionUpdate : public Action {
 
 public:
-    ActionUpdate(uint8_t id, std::string name);
+    ActionUpdate(uint8_t& id, std::string& name);
+    ~ActionUpdate() override;
 
     void execute(GameManager &gameManager, std::function<void(BlockingQueue<Action *> *,
                                                               BlockingQueue<Action *> *)> setQueue) override;
     std::string getGameName() override;
-
-    uint8_t getIdCreatorGame() override;
 };
 
 

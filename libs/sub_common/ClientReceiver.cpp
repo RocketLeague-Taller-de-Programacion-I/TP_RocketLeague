@@ -23,9 +23,9 @@ void ClientReceiver::run() {
                 this->skt_client.recvall(&byte_to_read, sizeof(byte_to_read), &closed);
             }
             // form the Action from the data
-            Action action = p.deserializeToAction(data);
+            auto action = p.deserializeData(data);
             // push the action to the queue
-            updatesQueue.push(action);
+            updatesQueue.push(reinterpret_cast<Action *&>(action));
         }
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;

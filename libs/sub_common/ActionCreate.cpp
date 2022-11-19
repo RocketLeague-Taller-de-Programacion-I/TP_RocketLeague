@@ -6,11 +6,11 @@
 
 #include <utility>
 
-ActionCreate::ActionCreate(uint8_t id,
-                           uint8_t c,
-                           std::string name) : Action(id,
-                                                      c,
-                                                      std::move(name)) {}
+ActionCreate::ActionCreate(uint8_t &id,
+                           uint8_t &c,
+                           const std::string &name) : Action(id,
+                                                             c,
+                                                             name) {}
 
 std::string ActionCreate::getGameName() {
     return nameGame;
@@ -25,5 +25,7 @@ uint8_t ActionCreate::getIdCreatorGame() {
 }
 
 void ActionCreate::execute(GameManager &gameManager, std::function<void(BlockingQueue<Action *> *,BlockingQueue<Action *> *)> setQueue) {
-    gameManager.createGame(idCreator, capacityGame, nameGame, setQueue);
+//    gameManager.createGame(idCreator, capacityGame, nameGame, setQueue);
 }
+
+ActionCreate::~ActionCreate() = default;

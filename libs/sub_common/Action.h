@@ -12,14 +12,6 @@
 #include <functional>
 #include "sub_server/gameManager.h"
 
-/*
-enum actionType {
-    CREATE_ROOM,
-    JOIN_ROOM,
-    LIST_ROOMS,
-    MOVE
-};*/
-
 class Action {
 protected:
     uint8_t idCreator;
@@ -27,9 +19,10 @@ protected:
     std::string nameGame;
 public:
     Action();
-    Action(uint8_t id, uint8_t c, std::string  name);
+    Action(uint8_t &id, uint8_t &c, std::string name);
+    Action(uint8_t &id, std::string name);
 
-    virtual ~Action() = 0;
+    virtual ~Action();
     virtual std::string getGameName();
 
     virtual uint8_t getCapacity();

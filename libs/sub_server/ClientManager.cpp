@@ -18,7 +18,8 @@ ClientManager::ClientManager(Socket &aClient,
                              closed(false), id(0){}
 
 void ClientManager::run() {
-    std::vector<uint8_t> data(id);
+    std::vector<uint8_t> data;
+    data.push_back(id);
     uint8_t byte_to_read;
     Protocolo protocolo;
 
@@ -28,7 +29,7 @@ void ClientManager::run() {
     } while (byte_to_read != NOP && !closed) ;
 
     // form the Action from the data
-    auto action = protocolo.deserializarData(data);
+    auto action = protocolo.deserializeData(data);
     // callback
     auto queue_setter_callable = std::bind(std::mem_fn(&ClientManager::startClientThreads), this, std::placeholders::_2);
 

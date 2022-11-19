@@ -52,7 +52,7 @@ public:
 
     void parseCreateRoomData(Action *action, std::vector<uint8_t> &result) const;
 
-    std::unique_ptr<Action> deserializarData(const std::vector<uint8_t>& data);
+    std::unique_ptr<Action> deserializeData(const std::vector<uint8_t>& data);
 
     static std::unique_ptr<Action> parseCreateAction(const std::vector<uint8_t> &data);
 

@@ -21,6 +21,8 @@ void ClientSender::run() {
             //  send the NOP instruccion
             uint8_t nop = 0;
             skt_client.sendall(&nop, sizeof(nop), &closed);
+            // delete the action
+            delete action;
         }
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;

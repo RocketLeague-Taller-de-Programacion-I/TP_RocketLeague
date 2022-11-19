@@ -18,7 +18,7 @@ std::vector<uint8_t> Protocolo::serializeAction(Action *action) {
     if (action->getType() == CREATE_ROOM) {
         parseCreateRoomData(action, result);
         return result;
-    } else if (action.getType() == MOVE) {
+    } else if (action->getType() == MOVE) {
         //insertar id del jugador previamente otorgado
     }
    // result.insert(result.end(), action.data.begin(), action.data.end());
@@ -42,7 +42,7 @@ command_t Protocolo::getMapCommand(uint32_t action) {
     return this->mapCommand.at(action);
 }
 
-std::unique_ptr<Action> Protocolo::deserializarData(const std::vector<uint8_t>& data) {
+std::unique_ptr<Action> Protocolo::deserializeData(const std::vector<uint8_t>& data) {
     uint8_t type(data[1]);
 
     switch (type) {
@@ -55,7 +55,12 @@ std::unique_ptr<Action> Protocolo::deserializarData(const std::vector<uint8_t>& 
     }
     return {};
 }
-
+/*
+ * [0] -> id
+ * [1] -> players
+ * [2] -> name
+ *
+ */
 std::unique_ptr<Action> Protocolo::parseCreateAction(const std::vector<uint8_t> &data) {
     uint8_t id(data[0]);
     uint8_t capacity(data[2]);
@@ -67,7 +72,7 @@ std::unique_ptr<Action> Protocolo::parseCreateAction(const std::vector<uint8_t> 
 std::unique_ptr<Action> Protocolo::parseJoinAction(const std::vector<uint8_t> &data) {
     uint8_t id(data[0]);
     std::string name(data.begin()+2,data.end());
-    std::unique_ptr<Action> pAction(new ActionJoin(id, std::move(name)));
+    std::unique_ptr<Action> pAction(new ActionJoin(id, name));
     return pAction;
 }
 

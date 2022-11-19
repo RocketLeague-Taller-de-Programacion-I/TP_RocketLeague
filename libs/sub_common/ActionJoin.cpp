@@ -6,7 +6,7 @@
 
 #include <utility>
 
-ActionJoin::ActionJoin(uint8_t id, std::string name) : Action(id,0, std::move(name)){
+ActionJoin::ActionJoin(uint8_t &id, std::string &name) : Action(id, std::move(name)){
 
 }
 
@@ -21,5 +21,7 @@ uint8_t ActionJoin::getIdCreatorGame() {
 
 void ActionJoin::execute(GameManager &gameManager, std::function<void(BlockingQueue<Action *> *,
                                                                       BlockingQueue<Action *> *)> setQueue) {
-    gameManager.joinGame(idCreator, nameGame, setQueue);
+//    gameManager.joinGame(idCreator, nameGame, setQueue);
 }
+
+ActionJoin::~ActionJoin() = default;

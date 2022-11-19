@@ -14,8 +14,8 @@
 class RenderThread : public Thread {
 private:
 protected:
-    BlockingQueue<Action> &updatesQueue;
-    BlockingQueue<Action> &actionsQueue;
+    BlockingQueue<Action*> &updatesQueue;
+    BlockingQueue<Action*> &actionsQueue;
 
     void run() override;
 public:
@@ -23,7 +23,7 @@ public:
     explicit RenderThread();
     ~RenderThread() override;
 
-    RenderThread(BlockingQueue<Action> &updates, BlockingQueue<Action>& actionsQueue);
+    RenderThread(BlockingQueue<Action *> &updates, BlockingQueue<Action *> &actionsQueue);
 };
 
 #endif  //  ROCKETLEAGUE_RENDERTHREAD_H

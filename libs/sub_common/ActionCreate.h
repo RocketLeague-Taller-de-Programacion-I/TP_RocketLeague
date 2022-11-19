@@ -12,7 +12,8 @@
 class ActionCreate : public Action {
 
 public:
-    ActionCreate(uint8_t id, uint8_t c, std::string name);
+    ActionCreate(uint8_t &id, uint8_t &c, const std::string &name);
+    ~ActionCreate() override;
 
     std::string getGameName() override;
 

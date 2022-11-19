@@ -10,7 +10,7 @@
 
 #include "gamescene.h"
 #include "GameLoop.h"
-#include "sub_common/Action.h"
+#include "sub_common/ActionCreate.h"
 #include "Button.h"
 
 QT_BEGIN_NAMESPACE
@@ -23,7 +23,7 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(QWidget *parent = nullptr);
-    MainWindow(QWidget *parent, BlockingQueue<Action> &updates, BlockingQueue<Action> &actions);
+    MainWindow(QWidget *parent, BlockingQueue<Action *> &updates, BlockingQueue<Action *> &actions);
     ~MainWindow();
 
     void displayMainMenu();
@@ -39,8 +39,8 @@ public slots:
 private:
     Ui::MainWindow *ui;
     GameScene scene;
-    BlockingQueue<Action> &updatesQueue;
-    BlockingQueue<Action> &actionsQueue;
+    BlockingQueue<Action*> &updatesQueue;
+    BlockingQueue<Action*> &actionsQueue;
 
     void drawGUI();
 
@@ -60,5 +60,7 @@ private:
     QSpinBox* cantPlayers;
     QLabel *label;
     QString userName = QString("stranger");
+
+    std::vector<std::string> parseList(std::string basicString);
 };
 #endif // MAINWINDOW_H

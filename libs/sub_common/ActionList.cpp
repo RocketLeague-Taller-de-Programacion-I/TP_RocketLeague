@@ -4,7 +4,7 @@
 
 #include "ActionList.h"
 
-ActionList::ActionList(uint8_t id) : Action(id,0,""){
+ActionList::ActionList(uint8_t id) : Action(id,""){
 
 }
 
@@ -14,6 +14,6 @@ uint8_t ActionList::getIdCreatorGame() {
 }
 
 void ActionList::execute(GameManager &manager, std::function<void(BlockingQueue<Action *> *,
-                                                                  BlockingQueue<Action *> *)> setQueue) {
-    Action::execute(manager, setQueue);
-}
+                                                                  BlockingQueue<Action *> *)> setQueue) {}
+
+ActionList::~ActionList() = default;

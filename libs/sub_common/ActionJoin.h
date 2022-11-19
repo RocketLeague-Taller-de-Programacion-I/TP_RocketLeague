@@ -11,7 +11,8 @@
 class ActionJoin : public Action {
 
 public:
-    ActionJoin(uint8_t id, std::string name);
+    ActionJoin(uint8_t &id, std::string &name);
+    ~ActionJoin() override;
 
     void execute(GameManager &gameManager, std::function<void(BlockingQueue<Action *> *,
                                                               BlockingQueue<Action *> *)> setQueue) override;

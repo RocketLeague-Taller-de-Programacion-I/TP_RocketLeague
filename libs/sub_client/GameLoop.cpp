@@ -7,8 +7,8 @@
 #include "GameLoop.h"
 
 GameLoop::GameLoop(SDL2pp::Renderer &renderer, SDL2pp::Texture &texture, int xMax, int yMax,
-                   BlockingQueue<Action> &updates,
-                   BlockingQueue<Action> &actions)
+                   BlockingQueue<Action *> &updates,
+                   BlockingQueue<Action *> &actions)
         : renderer(renderer),
           player(texture),
           updatesQueue(updates),
@@ -59,8 +59,8 @@ bool GameLoop::handle_events() {
                 }
                 std::vector<uint8_t> movement(1);
                 movement[0] = protocolo.getMapCommand(keyEvent.keysym.sym);
-                Action action(MOVE,movement);
-                actionsQueue.push(action);
+//                Action action(MOVE,movement);
+//                actionsQueue.push(action);
             } // Fin KEY_DOWN
                 break;
             case SDL_KEYUP: {

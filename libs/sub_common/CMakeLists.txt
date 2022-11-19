@@ -26,5 +26,7 @@ add_library(lib_common
         ActionJoin.cpp
         ActionJoin.h
         ActionList.cpp
-        ActionList.h ActionUpdate.cpp ActionUpdate.h)
+        ActionList.h
+        ActionUpdate.cpp
+        ActionUpdate.h)
 target_link_libraries(lib_common)

@@ -3,7 +3,7 @@
 #include <QApplication>
 #include "RenderThread.h"
 
-RenderThread::RenderThread(BlockingQueue<Action> &updates, BlockingQueue<Action>& actionsQueue)
+RenderThread::RenderThread(BlockingQueue<Action *> &updates, BlockingQueue<Action *> &actionsQueue)
         : updatesQueue(updates)
         , actionsQueue(actionsQueue){}
 
@@ -45,8 +45,8 @@ void RenderThread::run() {
         SDL2pp::Texture im(renderer,
                            SDL2pp::Surface("../images/car.jpeg").SetColorKey(true, 0));
 
-        GameLoop gameloop(renderer, im, Width, Height, updatesQueue, actionsQueue);
-        gameloop.run();
+        GameLoop gameLoop(renderer, im, Width, Height, updatesQueue, actionsQueue);
+        gameLoop.run();
 
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;

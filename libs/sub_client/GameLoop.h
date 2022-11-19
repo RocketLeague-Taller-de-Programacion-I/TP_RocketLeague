@@ -14,8 +14,8 @@
 class GameLoop {
     SDL2pp::Renderer &renderer;
     Player player;
-    BlockingQueue<Action>& updatesQueue;
-    BlockingQueue<Action>& actionsQueue;
+    BlockingQueue<Action*>& updatesQueue;
+    BlockingQueue<Action*>& actionsQueue;
     bool running;
     int xMax;
     int yMax;
@@ -24,8 +24,9 @@ class GameLoop {
     void render();
 
 public:
-    GameLoop(SDL2pp::Renderer &renderer, SDL2pp::Texture &texture, int xMax, int yMax, BlockingQueue<Action> &updates,
-             BlockingQueue<Action> &actions);
+    GameLoop(SDL2pp::Renderer &renderer, SDL2pp::Texture &texture, int xMax, int yMax, BlockingQueue<Action *> &updates,
+             BlockingQueue<Action *> &actions);
+
     void run();
 };
 #endif //ROCKETLEAGUE_GAMELOOP_H
