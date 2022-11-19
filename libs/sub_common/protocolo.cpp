@@ -12,10 +12,10 @@ Protocolo serializa la acción
 devuelve un vector de char
         Hilo de sender envía el vector de char
         command_t Protocolo::getMapCommand(Action action) { //procesa la accion y devuelve un vector de char}*/
-std::vector<uint8_t> Protocolo::serializeAction(Action action) {
+std::vector<uint8_t> Protocolo::serializeAction(Action *action) {
     std::vector<uint8_t> result;
-    result.emplace_back(action.getType());
-    if (action.getType() == CREATE_ROOM) {
+    result.emplace_back(action->getType());
+    if (action->getType() == CREATE_ROOM) {
         parseCreateRoomData(action, result);
         return result;
     } else if (action.getType() == MOVE) {
@@ -25,7 +25,7 @@ std::vector<uint8_t> Protocolo::serializeAction(Action action) {
     return result;
 }
 
-void Protocolo::parseCreateRoomData(Action &action, std::vector<uint8_t> &result) const {
+void Protocolo::parseCreateRoomData(Action *action, std::vector<uint8_t> &result) const {
    // std::string data (action.data.begin(), action.data.end());
     std::regex number("[0-9]+");
     std::smatch match;

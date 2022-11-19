@@ -18,17 +18,13 @@ add_library(lib_common
         ClientReceiver.h
         ClientSender.cpp
         ClientSender.h
-        Update.cpp
-        Update.h
         ProtectedQueue.h
         QueueIsEmptyException.cpp
         QueueIsEmptyException.h
-        Information.cpp
-        Information.h
         ActionCreate.cpp
         ActionCreate.h
         ActionJoin.cpp
         ActionJoin.h
         ActionList.cpp
-        ActionList.h)
+        ActionList.h ActionUpdate.cpp ActionUpdate.h)
 target_link_libraries(lib_common)

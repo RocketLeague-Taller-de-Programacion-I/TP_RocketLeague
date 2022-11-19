@@ -10,6 +10,8 @@
 #include "../sub_common/socket.h"
 #include "sub_common/BlockingQueue.h"
 #include "gameManager.h"
+#include "sub_common/ClientReceiver.h"
+#include "sub_common/ClientSender.h"
 
 class ClientManager : public Thread{
 private:
@@ -17,7 +19,10 @@ private:
     GameManager &gameManager;
     bool closed;
     uint8_t id;
+    ClientReceiver *clientReceiverThread;
+    ClientSender *clientSenderThread;
 public:
+
     ClientManager(Socket &aClient, GameManager &aGameManager);
 
     void run() override;
@@ -28,7 +33,7 @@ public:
 
     void attendClient(unsigned long aId);
 
-    void setQueueReceiver(BlockingQueue<Action> *qReceiver);
+    void setQueueReceiver(BlockingQueue<Action *> *qReceiver, BlockingQueue<Action *> *senderQueue);
 };
 
 

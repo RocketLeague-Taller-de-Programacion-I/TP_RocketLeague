@@ -4,7 +4,7 @@
 
 #include "ClientReceiver.h"
 
-ClientReceiver::ClientReceiver(Socket &skt_client, BlockingQueue<Action> &updatesQueue)
+ClientReceiver::ClientReceiver(Socket &skt_client, BlockingQueue<Action *> &updatesQueue)
     : skt_client(skt_client), updatesQueue(updatesQueue) {
     this->closed = false;
 }

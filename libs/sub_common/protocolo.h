@@ -48,9 +48,9 @@ private:
 public:
     command_t getMapCommand(uint32_t action);
 
-    std::vector<uint8_t> serializeAction(Action action);
+    std::vector<uint8_t> serializeAction(Action *action);
 
-    void parseCreateRoomData(Action &action, std::vector<uint8_t> &result) const;
+    void parseCreateRoomData(Action *action, std::vector<uint8_t> &result) const;
 
     std::unique_ptr<Action> deserializarData(const std::vector<uint8_t>& data);
 
