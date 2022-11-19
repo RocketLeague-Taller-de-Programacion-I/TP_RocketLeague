@@ -9,6 +9,7 @@
 #include <functional>
 #include "ClientManager.h"
 #include "sub_common/protocolo.h"
+#include "sub_common/ClientReceiver.h"
 
 ClientManager::ClientManager(Socket &aClient,
                              GameManager &aGameManager) :
@@ -29,7 +30,7 @@ void ClientManager::run() {
     // form the Action from the data
     auto action = protocolo.deserializarData(data);
     // callback
-    auto queue_setter_callable = std::bind(std::mem_fn(&ClientManager::setQueueReceiver),this, std::placeholders::_2);
+    auto queue_setter_callable = std::bind(std::mem_fn(&ClientManager::startClientThreads), this, std::placeholders::_2);
 
     action->execute(gameManager,queue_setter_callable);
 }
@@ -52,4 +53,9 @@ void ClientManager::attendClient(unsigned long aId) {
     this->start();
 }
 
-void ClientManager::setQueueReceiver(BlockingQueue<Action> *qReceiver) {}
+void ClientManager::startClientThreads(BlockingQueue<Action *> *qReceiver, BlockingQueue<Action *> *senderQueue) {
+    clientReceiverThread = new ClientReceiver(client, *qReceiver);
+    clientSenderThread = new ClientSender(client, *senderQueue);
+    clientReceiverThread->start();
+    clientSenderThread->start();
+}

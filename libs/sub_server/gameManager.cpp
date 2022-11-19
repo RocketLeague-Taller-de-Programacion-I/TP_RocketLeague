@@ -26,7 +26,7 @@ void GameManager::listGames() {
 }
 
 void GameManager::createGame(uint8_t idCreator, uint8_t capacityGame, const std::string& nameGame,
-                             std::function<void(BlockingQueue<Action *> *, BlockingQueue<Action *> *)> setQueue) {
+                             std::function<void(BlockingQueue<Action *> *, BlockingQueue<Action *> *)> startClientThreads) {
     std::unique_lock<std::mutex> lock(this->mutex);
 
     auto *queueGame = new BlockingQueue<Action*>;
@@ -41,13 +41,13 @@ void GameManager::createGame(uint8_t idCreator, uint8_t capacityGame, const std:
     if (iter.second) {
         auto *queueSender = new BlockingQueue<Action*>;
         pGame->joinPlayer(idCreator,queueSender);
-        setQueue(queueGame, queueSender);
+        startClientThreads(queueGame, queueSender);
     }
 }
 
 void
 GameManager::joinGame(uint8_t idCreator, const std::string& nameGame, std::function<void(BlockingQueue<Action *> *,
-                                                                                         BlockingQueue<Action *> *)> setQueue) {
+                                                                                         BlockingQueue<Action *> *)> startClientThreads) {
 
     std::unique_lock<std::mutex> lock(this->mutex);
 
@@ -56,7 +56,7 @@ GameManager::joinGame(uint8_t idCreator, const std::string& nameGame, std::funct
     if (iter->first == nameGame and not iter->second.isFull()) {
         auto *queueSender = new BlockingQueue<Action*>;
         iter->second->joinPlayer(idCreator,queueSender);
-        setQueue(iter->second.getQueue(), queueSender);
+        startClientThreads(iter->second.getQueue(), queueSender);
     } else {
 
     }

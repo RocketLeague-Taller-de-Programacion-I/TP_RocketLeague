@@ -33,7 +33,7 @@ public:
 
     void attendClient(unsigned long aId);
 
-    void setQueueReceiver(BlockingQueue<Action *> *qReceiver, BlockingQueue<Action *> *senderQueue);
+    void startClientThreads(BlockingQueue<Action *> *qReceiver, BlockingQueue<Action *> *senderQueue);
 };
 
 

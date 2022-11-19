@@ -29,6 +29,9 @@ void ClientSender::run() {
     }
 }
 
-
 void ClientSender::stop() {
+}
+
+ClientSender::~ClientSender() {
+    delete &actionsQueue;
 }

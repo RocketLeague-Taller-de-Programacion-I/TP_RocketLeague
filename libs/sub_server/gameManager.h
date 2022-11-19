@@ -22,10 +22,10 @@ public:
    void cleanGames();
 
     void createGame(uint8_t idCreator, uint8_t capacityGame, const std::string& nameGame,
-                    std::function<void(BlockingQueue<Action *> *, BlockingQueue<Action *> *)> setQueue);
+                    std::function<void(BlockingQueue<Action *> *, BlockingQueue<Action *> *)> startClientThreads);
 
     void joinGame(uint8_t idCreator, const std::string& nameGame, std::function<void(BlockingQueue<Action *> *,
-                                                                                     BlockingQueue<Action *> *)> setQueue);
+                                                                                     BlockingQueue<Action *> *)> startClientThreads);
 };
 
 #endif // ROCKETLEAGUE_GAMEMANAGER_H

@@ -22,7 +22,7 @@ public:
     BlockingQueue<Action*> &actionsQueue;
 
     explicit ClientSender(Socket &skt_client, BlockingQueue <Action*> &actionsQueue);
-
+    ~ClientSender() override;
     void stop() override;
 };
 
