@@ -20,6 +20,7 @@ class Car {
     b2BodyDef bd;
     b2PolygonShape chassis;
     b2Fixture* fixture;
+    b2FixtureDef fixDef;
     bool facingRight;
 public:
     explicit Car(b2World* world);

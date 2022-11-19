@@ -10,25 +10,29 @@
 #include <memory>
 
 Match::Match(std::string gameName, int required) : name(std::move(gameName)), playersRequired(required), playersConnected(0), world(b2World(b2Vec2(0,-10))) {
+    myUserData = std::make_unique<MyFixtureUserDataType>();
+    fixDef.userData.pointer = reinterpret_cast<uintptr_t>(myUserData.get());
+    myUserData->mObjectType = 1;  //  Floor
     //a static body
     b2BodyDef myBodyDef;
     myBodyDef.type = b2_staticBody;
     myBodyDef.position.Set(0, 0);
     staticBody = world.CreateBody(&myBodyDef);
+    b2PolygonShape polygonShape;
+    fixDef.shape = &polygonShape;
+    polygonShape.SetAsBox( 40, 0.5, b2Vec2(0, 0), 0);//ground
+    myUserData->mOwningFixture = staticBody->CreateFixture(&fixDef);
 
     //shape definition
-    b2PolygonShape polygonShape;
+
 
     //fixture definition
-    b2FixtureDef myFixtureDef;
-    myFixtureDef.shape = &polygonShape;
-    polygonShape.SetAsBox( 40, 0.5, b2Vec2(0, 0), 0);//ground
-    auto myUserData = std::make_unique<MyFixtureUserDataType>();
-    myUserData->mObjectType = 1;  //  Floor
-    myUserData->mOwningFixture = staticBody->CreateFixture(&myFixtureDef);
-    myFixtureDef.userData.pointer = reinterpret_cast<uintptr_t>(myUserData.get());
-    //add four walls to the static body
 
+
+
+
+
+    //add four walls to the static body
 
 }
 
@@ -53,14 +57,14 @@ float Match::carsInfo() {
     float carsConnected;
     for (auto& player : this->players) {
         //  cppcheck-suppress useStlAlgorithm
-        carsConnected = (player.second.Y());
+        carsConnected = (player.second.X());
     }
     return carsConnected;
 }
 
 void Match::moveRight(std::string &basicString) {
     Car car = this->players.at(basicString);
-    car.jump();
+    car.goRight();
 }
 float Match::info() {
 

@@ -2,6 +2,7 @@
 // Created by franco on 07/11/22.
 //
 
+#include <memory>
 #include "Car.h"
 #include "box2d/box2d.h"
 #define NO_VEL 0
@@ -17,15 +18,17 @@ Car::Car(b2World* world) : turboOn(false), facingRight(true){
     vertices[4].Set(-1.15f, 0.9f);
     vertices[5].Set(-1.5f, 0.2f);
 
+    auto myUserData = std::make_unique<MyFixtureUserDataType>();
+    myUserData->mObjectType = 3;
     chassis.Set(vertices, 6);
     bd.type = b2_dynamicBody;
     bd.position.Set(0.0f, 1.0f);
-    b2FixtureDef fixDef;
     fixDef.density = 1.f;
     fixDef.restitution = 0.3f;
     fixDef.shape = &chassis;
     m_car = world->CreateBody(&bd);
-    m_car->CreateFixture(&fixDef);
+    myUserData->mOwningFixture =  m_car->CreateFixture(&fixDef);
+    fixDef.userData.pointer = reinterpret_cast<uintptr_t>(myUserData.get());
 
 }
 void Car::goRight() {

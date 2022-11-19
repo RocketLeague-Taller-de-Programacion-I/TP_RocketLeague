@@ -7,6 +7,7 @@
 
 
 #include <map>
+#include <memory>
 #include "box2d/box2d.h"
 #include "Car.h"
 
@@ -20,6 +21,8 @@ private:
     int playersConnected;
     int playersRequired;
     b2Body* staticBody;
+    b2FixtureDef fixDef;
+    std::unique_ptr<MyFixtureUserDataType> myUserData;
 public:
     Match(std::string name, int required);
     ~Match();
