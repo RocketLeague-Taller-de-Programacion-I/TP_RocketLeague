@@ -7,13 +7,14 @@
 #include <utility>
 #include <list>
 #include <unistd.h>
+#include <memory>
 
 Match::Match(std::string gameName, int required) : name(std::move(gameName)), playersRequired(required), playersConnected(0), world(b2World(b2Vec2(0,-10))) {
     //a static body
     b2BodyDef myBodyDef;
     myBodyDef.type = b2_staticBody;
     myBodyDef.position.Set(0, 0);
-    b2Body* staticBody = world.CreateBody(&myBodyDef);
+    staticBody = world.CreateBody(&myBodyDef);
 
     //shape definition
     b2PolygonShape polygonShape;
@@ -21,14 +22,12 @@ Match::Match(std::string gameName, int required) : name(std::move(gameName)), pl
     //fixture definition
     b2FixtureDef myFixtureDef;
     myFixtureDef.shape = &polygonShape;
-
-    //add four walls to the static body
     polygonShape.SetAsBox( 40, 0.5, b2Vec2(0, 0), 0);//ground
-    staticBody->CreateFixture(&myFixtureDef);
-    polygonShape.SetAsBox( 0.5, 5, b2Vec2(-40, 5), 0);//left wall
-    staticBody->CreateFixture(&myFixtureDef);
-    polygonShape.SetAsBox( 0.5, 5, b2Vec2(40, 5), 0);//right wall
-    staticBody->CreateFixture(&myFixtureDef);
+    auto myUserData = std::make_unique<MyFixtureUserDataType>();
+    myUserData->mObjectType = 1;  //  Floor
+    myUserData->mOwningFixture = staticBody->CreateFixture(&myFixtureDef);
+    myFixtureDef.userData.pointer = reinterpret_cast<uintptr_t>(myUserData.get());
+    //add four walls to the static body
 
 
 }
@@ -64,4 +63,5 @@ void Match::moveRight(std::string &basicString) {
     car.jump();
 }
 float Match::info() {
+
 }

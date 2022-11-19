@@ -19,6 +19,7 @@ private:
     std::map<std::string, Car> assistants;
     int playersConnected;
     int playersRequired;
+    b2Body* staticBody;
 public:
     Match(std::string name, int required);
     ~Match();

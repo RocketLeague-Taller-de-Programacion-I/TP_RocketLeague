@@ -8,6 +8,11 @@
 #include "box2d/box2d.h"
 #include <iostream>
 
+struct MyFixtureUserDataType
+{
+    int mObjectType {};
+    b2Fixture* mOwningFixture {};
+};
 class Car {
     std::string playerName;
     bool turboOn;
