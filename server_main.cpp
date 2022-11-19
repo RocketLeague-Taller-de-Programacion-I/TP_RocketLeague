@@ -18,4 +18,12 @@ int main(int argc, char const *argv[])
     std::cout<<match.carsInfo()<<std::endl;
     match.moveRight(name);
     std::cout<<match.carsInfo()<<std::endl;
+    std::cout<<match.carsInfo()<<std::endl;
+    std::cout<<match.carsInfo()<<std::endl;
+    std::cout<<match.carsInfo()<<std::endl;
+    std::cout<<match.carsInfo()<<std::endl;
+    std::cout<<match.carsInfo()<<std::endl;
+    std::cout<<match.carsInfo()<<std::endl;
+    std::cout<<match.carsInfo()<<std::endl;
+    std::cout<<match.carsInfo()<<std::endl;
 }

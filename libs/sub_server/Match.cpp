@@ -10,11 +10,10 @@
 
 Match::Match(std::string gameName, int required) : name(std::move(gameName)), playersRequired(required), playersConnected(0), world(b2World(b2Vec2(0,-10))) {
     //a static body
-    this->world.SetContactListener(&this->collisionListener);
     b2BodyDef myBodyDef;
     myBodyDef.type = b2_staticBody;
     myBodyDef.position.Set(0, 0);
-    staticBody = world.CreateBody(&myBodyDef);
+    b2Body* staticBody = world.CreateBody(&myBodyDef);
 
     //shape definition
     b2PolygonShape polygonShape;
@@ -22,12 +21,15 @@ Match::Match(std::string gameName, int required) : name(std::move(gameName)), pl
     //fixture definition
     b2FixtureDef myFixtureDef;
     myFixtureDef.shape = &polygonShape;
-    auto myUserData = std::make_unique<MyFixtureUserDataType>();
-    myUserData->mObjectType = 1;  //  Floor
 
-    myFixtureDef.userData.pointer = reinterpret_cast<uintptr_t>(myUserData.get());
+    //add four walls to the static body
     polygonShape.SetAsBox( 40, 0.5, b2Vec2(0, 0), 0);//ground
-    myUserData->mOwningFixture = staticBody->CreateFixture(&myFixtureDef);
+    staticBody->CreateFixture(&myFixtureDef);
+    polygonShape.SetAsBox( 0.5, 5, b2Vec2(-40, 5), 0);//left wall
+    staticBody->CreateFixture(&myFixtureDef);
+    polygonShape.SetAsBox( 0.5, 5, b2Vec2(40, 5), 0);//right wall
+    staticBody->CreateFixture(&myFixtureDef);
+
 
 }
 
@@ -39,10 +41,7 @@ void Match::addPlayer(std::string &name) {
     this->playersConnected++;
 }
 
-Match::~Match() {
-    b2Fixture* myFixtureToDestroy = staticBody->GetFixtureList();
-    staticBody->DestroyFixture(myFixtureToDestroy);
-}
+Match::~Match() { }
 
 void Match::update() {
     this->world.Step(0.15, 42, 3);

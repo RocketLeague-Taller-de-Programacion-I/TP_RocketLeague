@@ -8,7 +8,7 @@
 #define DEGTORAD 0.0174533
 #define cojstaxisY 0.35
 
-Car::Car(b2World* world) : turboOn(false) {
+Car::Car(b2World* world) : turboOn(false), facingRight(true){
     b2Vec2 vertices[8];
     vertices[0].Set(-1.5f, -0.5f);
     vertices[1].Set(1.5f, -0.5f);
@@ -17,17 +17,16 @@ Car::Car(b2World* world) : turboOn(false) {
     vertices[4].Set(-1.15f, 0.9f);
     vertices[5].Set(-1.5f, 0.2f);
 
-    auto myUserData = std::make_unique<MyFixtureUserDataType>();
-    myUserData->mObjectType = 3; // Car
     chassis.Set(vertices, 6);
     bd.type = b2_dynamicBody;
     bd.position.Set(0.0f, 1.0f);
-    fixDef.userData.pointer = reinterpret_cast<uintptr_t>(myUserData.get());
+    b2FixtureDef fixDef;
     fixDef.density = 1.f;
     fixDef.restitution = 0.3f;
     fixDef.shape = &chassis;
     m_car = world->CreateBody(&bd);
-    myUserData->mOwningFixture =  m_car->CreateFixture(&fixDef);
+    m_car->CreateFixture(&fixDef);
+
 }
 void Car::goRight() {
     if (this->m_car->GetPosition().y > 4) {
@@ -56,7 +55,7 @@ void Car::goLeft() {
     m_car->ApplyForce(b2Vec2(-100, 0), m_car->GetWorldCenter(), true);
 }
 void Car::stop() {
-
+    fixture->SetFriction(100);
 }
 
 void Car::turbo() {
@@ -67,6 +66,9 @@ void Car::jump() {
     check_y_pos();
     //std::cout<<"Y: "<<this->m_car->GetPosition().y<<std::endl;
 }
+
+Car::~Car() = default;
+
 //  OK
 void Car::check_y_pos() {
     if (Y() > 6) { return; }
@@ -85,8 +87,4 @@ float Car::X() {
 
 float Car::angle() {
     return this->m_car->GetAngle();
-}
-Car::~Car() {
-    b2Fixture* myFixtureToDestroy = m_car->GetFixtureList();
-    m_car->DestroyFixture(myFixtureToDestroy);
 }
