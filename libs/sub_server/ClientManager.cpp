@@ -1,48 +1,32 @@
 //
 // Created by lucaswaisten on 07/11/22.
 //
+#pragma once
 
 #include <sys/socket.h>
+#include <functional>
 #include "ClientManager.h"
-#include "sub_common/Action.h"
-#include "sub_common/Update.h"
-#include "sub_common/ClientReceiver.h"
-#include "sub_common/ClientSender.h"
+#include "sub_common/protocolo.h"
 
 ClientManager::ClientManager(Socket &aClient,
                              GameManager &aGameManager) :
-                             client(aClient),
+                             client(std::move(aClient)),
                              gameManager(aGameManager),
                              closed(false){}
 
 void ClientManager::run() {
-    BlockingQueue<Action> receiverQueue;
-    BlockingQueue<Action> senderQueue;
+    std::vector<uint8_t> data(id);
+    uint8_t byte_to_read;
+    Protocolo protocolo;
 
-    std::vector<uint8_t> data(1);
-    data.push_back(1);
-    Action action(CREATE_ROOM, data);
-    senderQueue.push(action);
+    do {
+        data.push_back(byte_to_read);
+        this->client.recvall(&byte_to_read, sizeof(byte_to_read), &closed);
+    } while (byte_to_read != NOP && !closed) ;
 
-    auto *threadReceiver = new ClientReceiver(client, receiverQueue);
-    auto *threadSender = new ClientSender(client, senderQueue);
-
-    threadReceiver->start();
-    threadSender->start();
-
-    while (not closed) {
-        /*
-         * logica de lectura de los comandos
-         * recividos por el socket
-         */
-       // std::string mensaje(this->recivMesage());
-       /*
-        * gameManager tiene las partidas, por lo tanto
-        * tendre que pasarle los nuevos comandos
-        * y que me devuelva los parametros para enviar
-        * nuevamente por medio del socket
-        */
-        }
+    // form the Action from the data
+    auto action = protocolo.deserializarData(data);
+    action->execute(gameManager, this);
 }
 
 bool ClientManager::joinThread() {
@@ -58,6 +42,9 @@ bool ClientManager::endManager() {
     return closed;
 }
 
-void ClientManager::stop() {
-
+void ClientManager::attendClient(unsigned long aId) {
+    this->id = aId;
+    this->start();
 }
+
+void ClientManager::setQueue(BlockingQueue<Action> *qReceiver, BlockingQueue<Update> *qSender) {}

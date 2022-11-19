@@ -5,6 +5,7 @@
 #ifndef ROCKETLEAGUE_PROTECTEDQUEUE_H
 #define ROCKETLEAGUE_PROTECTEDQUEUE_H
 
+#pragma once
 #include <mutex>
 #include <queue>
 #include <condition_variable>

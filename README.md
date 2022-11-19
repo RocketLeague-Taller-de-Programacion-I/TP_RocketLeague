@@ -9,3 +9,16 @@ toda la fisica, possiciones, socres, etc de lo que hizo el jugador.
 El juego retorna la metada de todos los objetos update, y player retorna esta metadata.
 Por ultimo la partida crea un Update con esta metadata y la pushea a la queueSender.
 clientSender popea este ultimo update y lo envia por medio del socket.
+
+El client manager que lanze los thread reciver y sender
+
+La queue receiver la tiene que crear el Game. De alguna manera se tiene que devolver esa queue para que el client manager 
+le diga a ClientReceiver la cola a la cula tiene que pushear. 
+
+En el join sera lo mismo
+
+
+Que la action le pase un callback del client manager al game manager. 
+Leer la docu pasada por discord. Bindear el setQueueRecivercer para el client manager
+
+Si client manager se va de scope antes que los hilos de receiver, sender y socket. Tenemos el receriver y el sender apuntando a memoria que fue liberada

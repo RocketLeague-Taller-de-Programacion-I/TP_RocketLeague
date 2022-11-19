@@ -4,9 +4,7 @@
 
 #include <iostream>
 #include "gameManager.h"
-
-#define OK_MSG "OK"
-#define ERROR_MSG "ERROR"
+#include "sub_common/Update.h"
 
 void GameManager::cleanGames() {
     for (auto & game: games) {
@@ -19,48 +17,44 @@ void GameManager::cleanGames() {
  * [1] -> primer char del nombre de partida
  * [n] -> comando NOP finaliza la data
  */
-std::string GameManager::createGame(std::vector<uint8_t> &data) {
+void GameManager::createGame(uint8_t id,
+                             uint8_t capacity,
+                             ClientManager *pClientManager,
+                             const std::string& name) {
     std::unique_lock<std::mutex> lock(this->mutex);
 
-    std::string aGameName(data.begin()+1,data.end());
-    auto *pGame =  new Game(data[0],
-                            aGameName);
+    auto *queueReceiver = new BlockingQueue<Action>;
+    auto *pGame =  new Game(capacity,
+                            name,
+                            queueReceiver);
+
 
     std::pair<std::map<std::string,Game&>::iterator,bool> ret;
-    ret = games.insert(std::pair<std::string,
-            Game&>(aGameName,
-                      *pGame));
-    /*
-     *
-     */
-//    pGame->upDateAll();
-   if (ret.second) {
-       return OK_MSG;
-   } else {
-       delete pGame;
-       return ERROR_MSG;
-   }
+    auto iter = games.insert(std::pair<std::string,Game&>(name,*pGame));
+
+    if (iter.second) {
+        auto *queueSender = new BlockingQueue<Update>;
+        pGame->joinPlayer(id,queueSender);
+        pClientManager->setQueue(pGame->getQueue(), queueSender);
+    }
+
 }
 
-std::string GameManager::joinGame(std::vector<uint8_t> &data) {
+std::string GameManager::joinGame(uint8_t id, ClientManager *pManager, const std::string& name) {
+
     std::unique_lock<std::mutex> lock(this->mutex);
-    std::string aGameName(data.begin()+1,data.end());
+    auto iter = games.find(name);
 
-    auto iter = games.find(aGameName);
-
-    if (iter != games.end() and iter->second.joinPlayer()) {
-        std::cout
-                << "Comenzando partida "
-                << aGameName
-                << "..."
-                << std::endl;
-        return OK_MSG;
+    if (iter->first == name and iter->second.isFull()) {
+        auto *queueSender = new BlockingQueue<Update>;
+        iter->second.joinPlayer(id,queueSender);
+        pManager->setQueue( iter->second.getQueue(), queueSender);
     } else {
-        return ERROR_MSG;
+
     }
 }
 
-std::string GameManager::listGames() {
+void GameManager::listGames() {
     std::unique_lock<std::mutex> lock(this->mutex);
     std::string mensaje("OK");
 
@@ -68,25 +62,9 @@ std::string GameManager::listGames() {
         mensaje.append("\n");
         mensaje.append(partida.second.information());
     }
-    return mensaje;
-}
-/*
- * Procesas las actiones move:
- * -left
- * -right
- * -down
- * -up
- * -jump
- * -turbo
- *
- * posible problema cuando tenga que decirle a que jugador mover
- */
-std::string GameManager::move(std::vector<uint8_t> data) {
-    return std::string();
-}
-
-void GameManager::sendUpdate(Update &update) {
-    //
+    /*
+     * send the Update with the data
+     */
 }
 
 

@@ -1,16 +1,26 @@
 //
 // Created by lucaswaisten on 04/11/22.
 //
+#pragma once
 
 #ifndef ROCKETLEAGUE_PROTOCOLO_H
 #define ROCKETLEAGUE_PROTOCOLO_H
-
 
 #include <cstdint>
 #include <SDL2/SDL_keycode.h>
 #include <string>
 #include <unordered_map>
-#include "Action.h"
+#include "ActionCreate.h"
+#include "ActionJoin.h"
+#include "ActionList.h"
+#include <memory>
+
+enum actionType {
+    CREATE_ROOM,
+    JOIN_ROOM,
+    LIST_ROOMS,
+    MOVE
+};
 
 enum action {
     NOP,
@@ -33,16 +43,22 @@ private:
             {SDLK_LEFT, LEFT},
             {SDLK_UP, UP},
             {SDLK_DOWN, DOWN},
-            {SDLK_t, TURBO}
+            {SDLK_SPACE, TURBO}
     };
 public:
     command_t getMapCommand(uint32_t action);
 
-    std::vector<uint8_t> serializeFromAction(Action action);
+    std::vector<uint8_t> serializeAction(Action action);
 
     void parseCreateRoomData(Action &action, std::vector<uint8_t> &result) const;
 
-    Action deserializeToAction(std::vector<uint8_t> &data);
+    std::unique_ptr<Action> deserializarData(const std::vector<uint8_t>& data);
+
+    static std::unique_ptr<Action> parseCreateAction(const std::vector<uint8_t> &data);
+
+    static std::unique_ptr<Action> parseJoinAction(const std::vector<uint8_t> &data);
+
+    static std::unique_ptr<Action> parseListAction(const std::vector<uint8_t> &data);
 };
 
 
