@@ -53,12 +53,13 @@ GameManager::joinGame(uint8_t idCreator, const std::string& nameGame, std::funct
 
     auto iter = games.find(nameGame);
 
-    if (iter->first == nameGame and not iter->second.isFull()) {
+    if (iter->first == nameGame) {
         auto *queueSender = new BlockingQueue<Action*>;
-        iter->second->joinPlayer(idCreator,queueSender);
+        iter->second.joinPlayer(idCreator,queueSender);
         startClientThreads(iter->second.getQueue(), queueSender);
-    } else {
-
+        if(iter->second.isFull()) {
+            iter->second.start();
+        }
     }
 }
 
