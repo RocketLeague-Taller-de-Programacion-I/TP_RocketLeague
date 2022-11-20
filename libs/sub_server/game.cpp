@@ -3,12 +3,11 @@
 //
 
 #include "game.h"
-#include <utility>
+#include "sub_common/Action.h"
 
 std::string Game::information() {
-    return "";
+    return gameName+" "+std::to_string(playerOnLine)+"/"+std::to_string(capacity);
 }
-
 
 void Game::joinPlayer(uint8_t i, BlockingQueue<Action*> *sender) {
     playerOnLine++;
@@ -38,3 +37,16 @@ BlockingQueue<Action *> * Game::getQueue() {
 }
 
 void Game::stop() {}
+
+void Game::broadCastUpdate(Action *update, uint8_t id) {
+    auto it = mapSender.find(id);
+    if (it != mapSender.end()){
+        it->second->push(update);
+    }
+}
+
+void Game::broadCastUpdate(Action *update) {
+    for (auto & sender : mapSender) {
+        sender.second->push(update);
+    }
+}

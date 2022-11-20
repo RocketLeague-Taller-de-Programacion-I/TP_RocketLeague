@@ -10,17 +10,7 @@
 #include <SDL2/SDL_keycode.h>
 #include <string>
 #include <unordered_map>
-#include "ActionCreate.h"
-#include "ActionJoin.h"
-#include "ActionList.h"
 #include <memory>
-
-enum actionType {
-    CREATE_ROOM,
-    JOIN_ROOM,
-    LIST_ROOMS,
-    MOVE
-};
 
 enum action {
     NOP,
@@ -50,14 +40,16 @@ public:
 
     std::vector<uint8_t> serializeAction(Action *action);
 
-    void parseCreateRoomData(Action *action, std::vector<uint8_t> &result) const;
-
     std::unique_ptr<Action> deserializeData(const std::vector<uint8_t>& data);
 
+    static std::vector<uint8_t> serializeCreateAction(const std::vector<uint8_t>& data);
+    static std::vector<uint8_t> serializeJoinAction(const std::vector<uint8_t>& data);
+    static std::vector<uint8_t> serializeListAction(const std::vector<uint8_t>& data);
+    std::vector<uint8_t> serializeMoveAction(const std::vector<uint8_t>& data);
+    static std::vector<uint8_t> serializeUpdateAction(const std::vector<uint8_t>& data);
+
     static std::unique_ptr<Action> parseCreateAction(const std::vector<uint8_t> &data);
-
     static std::unique_ptr<Action> parseJoinAction(const std::vector<uint8_t> &data);
-
     static std::unique_ptr<Action> parseListAction(const std::vector<uint8_t> &data);
 };
 

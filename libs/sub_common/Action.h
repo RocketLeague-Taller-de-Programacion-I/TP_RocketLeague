@@ -3,14 +3,25 @@
 //
 #pragma once
 
+class GameManager;
+
 #ifndef ROCKETLEAGUE_ACTION_H
 #define ROCKETLEAGUE_ACTION_H
 
+#include <utility>
 #include <cstdint>
 #include <string>
 #include <vector>
 #include <functional>
-#include "sub_server/gameManager.h"
+#include "BlockingQueue.h"
+
+enum actionType {
+    CREATE_ROOM = 1,
+    JOIN_ROOM,
+    LIST_ROOMS,
+    MOVE
+};
+
 
 class Action {
 protected:
@@ -28,17 +39,11 @@ public:
     virtual uint8_t getCapacity();
 
     virtual uint8_t getIdCreatorGame();
-   // explicit Action(const std::uint8_t &type, std::vector<char>& data);
-   // explicit Action(const std::uint8_t &type, std::string & data);
-    std::uint8_t getType() const;
-    /*
-     * agregar destructor virtual
-     */
-    /*
-     * smart pointer
-     */
+    virtual std::uint8_t getType() const;
+    virtual std::string getNameGame() const;
 
-    virtual void execute(GameManager &manager, std::function<void(BlockingQueue<Action *> *,BlockingQueue<Action *> *)> setQueue);
+    virtual void execute(GameManager &manager, const std::function<void(BlockingQueue<Action *> *,BlockingQueue<Action *> *)> &setQueue) = 0;
+    virtual std::vector<uint8_t> beSerialized() = 0;
 };
 
 

@@ -15,9 +15,9 @@ public:
     ActionUpdate(uint8_t& id, std::string& name);
     ~ActionUpdate() override;
 
-    void execute(GameManager &gameManager, std::function<void(BlockingQueue<Action *> *,
-                                                              BlockingQueue<Action *> *)> setQueue) override;
     std::string getGameName() override;
+    void execute(GameManager &gameManager, const std::function<void(BlockingQueue<Action *> *, BlockingQueue<Action *> *)> &setQueue) override;
+    std::vector<uint8_t> beSerialized() override;
 };
 
 

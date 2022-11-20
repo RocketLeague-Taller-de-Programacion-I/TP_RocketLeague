@@ -14,11 +14,11 @@ public:
     ActionJoin(uint8_t &id, std::string &name);
     ~ActionJoin() override;
 
-    void execute(GameManager &gameManager, std::function<void(BlockingQueue<Action *> *,
-                                                              BlockingQueue<Action *> *)> setQueue) override;
     std::string getGameName() override;
-
     uint8_t getIdCreatorGame() override;
+    uint8_t getType() const override;
+    void execute(GameManager &gameManager, const std::function<void(BlockingQueue<Action *> *, BlockingQueue<Action *> *)> &setQueue) override;
+    std::vector<uint8_t> beSerialized() override;
 };
 
 

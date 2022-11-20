@@ -61,18 +61,10 @@ void MainWindow::drawJoinGameMenu() {
     //draw a button for each game
     uint8_t id = 0;
     std::unique_ptr<Action> action(new ActionList(id));
-    // auto *action = new ActionCreate(id , players, roomName);
     this->actionsQueue.push(reinterpret_cast<Action *&>(action));
 
     ActionUpdate* update = dynamic_cast<ActionUpdate *>(this->updatesQueue.pop());
-    /*
-     * [0] -> type (1:Own 2:Other 3:Score 4:Ball 5:Listar)
-     * [1] -> id
-     * UpdateList: [2] -> listado de partidas ("fracno 3/3,hola 4/5")
-     * [2] -> x
-     * [3] -> y
-     * [4] -> angle
-     */
+
     std::vector<std::string> games = parseList(update->getGameName());
 
     int i = 200;
@@ -92,9 +84,16 @@ void MainWindow::createRoom() {
     std::string roomName = this->lineEdit->text().toStdString();
     uint8_t players = this->cantPlayers->value();
     uint8_t id = 0;
-    std::unique_ptr<Action> action(new ActionCreate(id , players, roomName));
-   // auto *action = new ActionCreate(id , players, roomName);
+    std::unique_ptr<Action> action(new ActionCreate(id,players,roomName));
     this->actionsQueue.push(reinterpret_cast<Action *&>(action));
+
+    ActionUpdate* update = dynamic_cast<ActionUpdate *>(this->updatesQueue.pop());
+    if (update->getGameName() == "ok") {
+        this->lineEdit->hide();
+        this->cantPlayers->hide();
+        this->label->hide();
+        drawTitle("Waiting for players");
+    }
     close();
 }
 
