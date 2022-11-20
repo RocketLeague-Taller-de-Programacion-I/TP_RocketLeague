@@ -6,10 +6,14 @@
 #include <algorithm>
 #include <sys/socket.h>
 #include "Server.h"
+#include "box2d/b2_world.h"
 
 Server::Server(const char *port)
         : closed(false),
-          accept_skt(port) {}
+          accept_skt(port) {
+    b2Vec2 grav(0.0,0.2);
+    b2World m_world(grav);
+}
 
 /*
  * Mientras closed sea false aceptara clientes.
@@ -33,7 +37,7 @@ void Server::run() {
              */
             Socket client = accept_skt.accept();
 
-            auto *manager = new ClientManager(std::move(client),gameManager);
+            auto *manager = new ClientManager(client,gameManager);
             this->managers.push_back(manager);
             /*
              * Attend client:
