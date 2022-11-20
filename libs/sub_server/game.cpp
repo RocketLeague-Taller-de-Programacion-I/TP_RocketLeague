@@ -20,9 +20,7 @@ void Game::joinPlayer(uint8_t i, BlockingQueue<Action*> *sender) {
 void Game::run() {
     do {
         auto action = queue->pop();
-        std::function<void(uint8_t&,uint8_t&)> setMove
-                = [this](uint8_t & id, uint8_t & move){return this->match.movement(id,move); };
-        action->execute(setMove);
+        action->execute(match);
     } while (not closed);
 }
 

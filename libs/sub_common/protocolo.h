@@ -15,23 +15,6 @@
 #include "ActionList.h"
 #include <memory>
 
-enum actionType {
-    CREATE_ROOM,
-    JOIN_ROOM,
-    LIST_ROOMS,
-    MOVE
-};
-
-enum action {
-    NOP,
-    JUMP,
-    RIGHT,
-    LEFT,
-    UP,
-    DOWN,
-    TURBO
-} ;
-
 typedef uint8_t command_t;
 
 class Protocolo {

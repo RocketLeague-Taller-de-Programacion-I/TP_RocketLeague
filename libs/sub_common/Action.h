@@ -11,6 +11,24 @@
 #include <vector>
 #include <functional>
 #include "sub_server/gameManager.h"
+#include "sub_server/Match.h"
+
+enum actionType {
+    CREATE_ROOM,
+    JOIN_ROOM,
+    LIST_ROOMS,
+    MOVE
+};
+
+enum action {
+    NOP,
+    JUMP,
+    RIGHT,
+    LEFT,
+    UP,
+    DOWN,
+    TURBO
+} ;
 
 class GameManager;
 
@@ -30,19 +48,12 @@ public:
     virtual uint8_t getCapacity();
 
     virtual uint8_t getIdCreatorGame();
-   // explicit Action(const std::uint8_t &type, std::vector<char>& data);
-   // explicit Action(const std::uint8_t &type, std::string & data);
-    std::uint8_t getType() const;
-    /*
-     * agregar destructor virtual
-     */
-    /*
-     * smart pointer
-     */
+
+    virtual std::uint8_t getType() const;
 
     virtual void execute(GameManager &manager, std::function<void(BlockingQueue<Action *> *,BlockingQueue<Action *> *)> startClientThreads);
 
-    void execute(std::function<void(uint8_t &, uint8_t &)> setMove);
+    virtual void execute(Match &match);
 };
 
 

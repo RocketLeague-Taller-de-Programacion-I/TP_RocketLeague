@@ -39,8 +39,10 @@ Action::Action(uint8_t &id, std::string name) : idCreator(id),
                                                 capacityGame(0),
                                                 nameGame(std::move(name)) {}
 
-void Action::execute(std::function<void(uint8_t &, uint8_t &)> setMove) {
+void Action::execute(Match &match) {
+
 }
+
 
 Action::~Action() = default;
 
