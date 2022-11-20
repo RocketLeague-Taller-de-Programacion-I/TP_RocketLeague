@@ -4,7 +4,6 @@
 
 #include <iostream>
 #include "gameManager.h"
-#include "sub_common/Update.h"
 
 void GameManager::cleanGames() {
     for (auto & game: games) {
@@ -18,14 +17,14 @@ void GameManager::listGames() {
 
     for (auto & partida : this->games) {
         mensaje.append("\n");
-        mensaje.append(partida.second.information());
+        mensaje.append(partida.second->information());
     }
     /*
      * send the Update with the data
      */
 }
 
-void GameManager::createGame(uint8_t idCreator, uint8_t capacityGame, const std::string& nameGame,
+void GameManager::createGame(uint8_t &idCreator, uint8_t &capacityGame, const std::string& nameGame,
                              std::function<void(BlockingQueue<Action *> *, BlockingQueue<Action *> *)> startClientThreads) {
     std::unique_lock<std::mutex> lock(this->mutex);
 
@@ -35,8 +34,8 @@ void GameManager::createGame(uint8_t idCreator, uint8_t capacityGame, const std:
                             queueGame);
 
 
-    std::pair<std::map<std::string,Game&>::iterator,bool> ret;
-    auto iter = games.insert(std::pair<std::string,Game&>(nameGame,*pGame));
+    std::pair<std::map<std::string,Game*>::iterator,bool> ret;
+    auto iter = games.insert(std::pair<std::string,Game*>(nameGame,pGame));
 
     if (iter.second) {
         auto *queueSender = new BlockingQueue<Action*>;
@@ -46,8 +45,8 @@ void GameManager::createGame(uint8_t idCreator, uint8_t capacityGame, const std:
 }
 
 void
-GameManager::joinGame(uint8_t idCreator, const std::string& nameGame, std::function<void(BlockingQueue<Action *> *,
-                                                                                         BlockingQueue<Action *> *)> startClientThreads) {
+GameManager::joinGame(uint8_t &idCreator, const std::string& nameGame, std::function<void(BlockingQueue<Action *> *,
+                                                                                          BlockingQueue<Action *> *)> startClientThreads) {
 
     std::unique_lock<std::mutex> lock(this->mutex);
 
@@ -55,10 +54,10 @@ GameManager::joinGame(uint8_t idCreator, const std::string& nameGame, std::funct
 
     if (iter->first == nameGame) {
         auto *queueSender = new BlockingQueue<Action*>;
-        iter->second.joinPlayer(idCreator,queueSender);
-        startClientThreads(iter->second.getQueue(), queueSender);
-        if(iter->second.isFull()) {
-            iter->second.start();
+        iter->second->joinPlayer(idCreator,queueSender);
+        startClientThreads(iter->second->getQueue(), queueSender);
+        if(iter->second->isFull()) {
+            iter->second->start();
         }
     }
 }

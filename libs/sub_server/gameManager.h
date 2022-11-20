@@ -10,22 +10,20 @@
 #include <mutex>
 #include <vector>
 #include "game.h"
-
 #include "sub_common/Action.h"
 
 class GameManager {
     std::mutex mutex;
-    std::map<std::string ,Game&> games;
+    std::map<std::string ,Game*> games;
 public:
-   //std::string joinGame(uint8_t id, ClientManager *pManager, const std::string& name);
    void listGames();
    void cleanGames();
 
-    void createGame(uint8_t idCreator, uint8_t capacityGame, const std::string& nameGame,
+    void createGame(uint8_t &idCreator, uint8_t &capacityGame, const std::string& nameGame,
                     std::function<void(BlockingQueue<Action *> *, BlockingQueue<Action *> *)> startClientThreads);
 
-    void joinGame(uint8_t idCreator, const std::string& nameGame, std::function<void(BlockingQueue<Action *> *,
-                                                                                     BlockingQueue<Action *> *)> startClientThreads);
+    void joinGame(uint8_t &idCreator, const std::string& nameGame, std::function<void(BlockingQueue<Action *> *,
+                                                                                      BlockingQueue<Action *> *)> startClientThreads);
 };
 
 #endif // ROCKETLEAGUE_GAMEMANAGER_H
