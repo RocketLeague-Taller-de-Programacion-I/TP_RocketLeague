@@ -30,13 +30,13 @@ Match::Match(std::string gameName, int required) : name(std::move(gameName)), pl
 }
 
 
-void Match::addPlayer(std::string &name) {
-    this->players[name] = new Car(&this->world);
+void Match::addPlayer(int &id) {
+    this->players[id] = new Car(&this->world);
     this->playersConnected++;
 }
 
 Match::~Match() {
-    for ( std::pair<const std::string,Car*> &player : players){
+    for ( std::pair<const int,Car*> &player : players){
         //Plaats *p = place.second;
         delete player.second;
         player.second = nullptr;
@@ -60,17 +60,17 @@ float Match::carsInfo() {
     return carsConnected;
 
 }
-void Match::moveRight(std::string &basicString) {
-    this->players.at(basicString)->goRight();
+void Match::moveRight(int &id) {
+    this->players.at(id)->goRight();
 }
 float Match::info() {
 
 }
-void Match::moveLeft(std::string &basicString) {
-    this->players.at(basicString)->goLeft();
+void Match::moveLeft(int &id) {
+    this->players.at(id)->goLeft();
 }
-void Match::jump(std::string &basicString) {
-    this->players.at(basicString)->jump();
+void Match::jump(int &id) {
+    this->players.at(id)->jump();
 }
 void Match::checkGoals() {
    if (this->ball->X() <= LOCALGOAL) {  //  LOCALGOAL es el arco del local

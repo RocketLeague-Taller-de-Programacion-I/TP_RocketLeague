@@ -18,9 +18,9 @@ private:
     std::string name;
     b2World world;
     Ball* ball;
-    std::map<std::string, Car*> players;
-    std::map<std::string, Car*> scorers;
-    std::map<std::string, Car*> assistants;
+    std::map<int, Car*> players;
+    std::map<int, Car*> scorers;
+    std::map<int, Car*> assistants;
     int playersConnected;
     int playersRequired;
     int goalsLocal;
@@ -34,17 +34,17 @@ public:
     ~Match();
     void update();
 
-    void addPlayer(std::string &name);
+    void addPlayer(int &id);
 
     float carsInfo();
 
-    void moveRight(std::string &basicString);
+    void moveRight(int &id);
 
     float info();
 
-    void moveLeft(std::string &basicString);
+    void moveLeft(int &id);
 
-    void jump(std::string &basicString);
+    void jump(int &id);
 
     void checkGoals();
 };

@@ -13,10 +13,10 @@ int main(int argc, char const *argv[])
 {
     std::string partida = "partida";
     Match match(partida, 5);
-    std::string name = "franco";
-    match.addPlayer(name);
+    int id = 1;
+    match.addPlayer(id);
     std::cout<<match.carsInfo()<<std::endl;
-    match.moveLeft(name);
+    match.moveRight(id);
     std::cout<<match.carsInfo()<<std::endl;
     std::cout<<match.carsInfo()<<std::endl;
     std::cout<<match.carsInfo()<<std::endl;
