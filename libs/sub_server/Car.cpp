@@ -71,7 +71,8 @@ void Car::jump() {
     //std::cout<<"Y: "<<this->m_car->GetPosition().y<<std::endl;
 }
 
-Car::~Car() = default;
+Car::~Car() {
+}
 
 //  OK
 void Car::check_y_pos() {

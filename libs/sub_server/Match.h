@@ -10,6 +10,7 @@
 #include <memory>
 #include "box2d/box2d.h"
 #include "Car.h"
+#include "MyContactListener.h"
 
 class Match {
 private:
@@ -23,6 +24,7 @@ private:
     b2Body* staticBody;
     b2FixtureDef fixDef;
     std::unique_ptr<MyFixtureUserDataType> myUserData;
+    MyContactListener listener;
 public:
     Match(std::string name, int required);
     ~Match();

@@ -10,6 +10,7 @@
 #include <memory>
 
 Match::Match(std::string gameName, int required) : name(std::move(gameName)), playersRequired(required), playersConnected(0), world(b2World(b2Vec2(0,-10))) {
+    world.SetContactListener(&this->listener);
     myUserData = std::make_unique<MyFixtureUserDataType>();
     fixDef.userData.pointer = reinterpret_cast<uintptr_t>(myUserData.get());
     myUserData->mObjectType = 1;  //  Floor
@@ -61,13 +62,13 @@ float Match::carsInfo() {
     float carsConnected;
     for (auto& player : this->players) {
         //  cppcheck-suppress useStlAlgorithm
-        carsConnected = (player.second->X());
+        carsConnected = (player.second->Y());
     }
     return carsConnected;
 }
 
 void Match::moveRight(std::string &basicString) {
-    this->players.at(basicString)->goRight();
+    this->players.at(basicString)->jump();
 
 }
 float Match::info() {
