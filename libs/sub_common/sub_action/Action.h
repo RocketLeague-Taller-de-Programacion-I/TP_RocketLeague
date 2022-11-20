@@ -11,7 +11,6 @@
 #include <vector>
 #include <functional>
 #include "sub_server/gameManager.h"
-#include "sub_server/Match.h"
 
 enum actionType {
     CREATE_ROOM,
@@ -31,6 +30,7 @@ enum action {
 } ;
 
 class GameManager;
+class Match;
 
 class Action {
 protected:
@@ -53,7 +53,8 @@ public:
 
     virtual void execute(GameManager &manager, std::function<void(BlockingQueue<Action *> *,BlockingQueue<Action *> *)> startClientThreads);
 
-    virtual void execute(Match &match);
+    virtual void executeMove(Match &match, std::function<void(ActionUpdate *update)> updateClientSender);
+
 };
 
 

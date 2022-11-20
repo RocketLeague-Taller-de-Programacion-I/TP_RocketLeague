@@ -39,7 +39,7 @@ Action::Action(uint8_t &id, std::string name) : idCreator(id),
                                                 capacityGame(0),
                                                 nameGame(std::move(name)) {}
 
-void Action::execute(Match &match) {
+void Action::executeMove(Match &match, std::function<void(ActionUpdate *update)> updateClientSender) {
 
 }
 

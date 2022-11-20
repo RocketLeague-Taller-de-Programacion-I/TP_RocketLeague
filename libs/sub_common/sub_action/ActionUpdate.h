@@ -5,12 +5,9 @@
 #ifndef ROCKETLEAGUE_ACTIONUPDATE_H
 #define ROCKETLEAGUE_ACTIONUPDATE_H
 
-
-
 #include "Action.h"
 
-class ActionUpdate : public Action {
-
+class ActionUpdate : public Action{
 public:
     ActionUpdate(uint8_t& id, std::string& name);
     ~ActionUpdate() override;

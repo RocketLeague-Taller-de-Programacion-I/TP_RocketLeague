@@ -12,9 +12,7 @@ class ActionMove : public Action {
 private:
     uint8_t type;
 public:
-    void execute(Match &match) override;
-
-
+    void executeMove(Match &match, std::function<void(ActionUpdate *update)> updateClientSender) override;
 };
 
 
