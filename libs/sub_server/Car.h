@@ -20,7 +20,6 @@ class Car {
     b2Body *m_car;
     b2BodyDef bd;
     b2PolygonShape chassis;
-    b2Fixture* fixture;
     b2FixtureDef fixDef;
     std::unique_ptr<MyFixtureUserDataType> myUserData;
 public:

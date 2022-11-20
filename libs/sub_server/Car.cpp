@@ -23,10 +23,11 @@ Car::Car(b2World* world) : turboOn(false){
     vertices[1].Set(1.5f, -.5f);
     vertices[2].Set(-1.5f, 1.f);
     vertices[3].Set(1.5f, 1.f);
+
     myUserData = std::make_unique<MyFixtureUserDataType>();
     fixDef.userData.pointer = reinterpret_cast<uintptr_t>(myUserData.get());
     myUserData->mObjectType = 3;
-    chassis.Set(vertices, 6);
+    chassis.Set(vertices, 4);
     bd.type = b2_dynamicBody;
     bd.position.Set(0.0f, 1.0f);
     fixDef.density = 1.f;
@@ -63,7 +64,7 @@ void Car::goLeft() {
     m_car->ApplyForce(b2Vec2(-120, 0), m_car->GetWorldCenter(), true);
 }
 void Car::stop() {
-    fixture->SetFriction(100);
+    // fixture->SetFriction(100);
 }
 
 void Car::turbo() {
