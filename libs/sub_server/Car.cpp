@@ -83,7 +83,7 @@ Car::~Car() {
 void Car::check_y_pos() {
     if (Y() > 6) { return; }
     if (Y() > 3) {
-        m_car->ApplyForce(b2Vec2(0, 220), m_car->GetWorldCenter(), true);
+        m_car->ApplyForce(b2Vec2(0, 120), m_car->GetWorldCenter(), true);
         return;
     }
     m_car->ApplyForce(b2Vec2(0, 200), m_car->GetWorldCenter(), true);

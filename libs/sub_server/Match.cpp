@@ -55,7 +55,7 @@ float Match::carsInfo() {
    float carsConnected;
     for (auto& player : this->players) {
         //  cppcheck-suppress useStlAlgorithm
-        carsConnected = (player.second->X());
+        carsConnected = (player.second->Y());
     }
     return carsConnected;
 
