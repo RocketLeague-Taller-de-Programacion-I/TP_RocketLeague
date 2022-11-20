@@ -11,18 +11,20 @@
 #include "sub_common/thread.h"
 #include "sub_common/BlockingQueue.h"
 #include "sub_common/Action.h"
+#include "Match.h"
 
 typedef uint8_t idPlayer_t;
 class Action;
 
 class Game : public Thread {
 private:
+    Match match;
     int capacity;
     int playerOnLine;
     std::string gameName;
-    //std::map<uint8_t ,BlockingQueue<Action>&> mapReceiver;
-    std::map<uint8_t ,BlockingQueue<Action*>*> mapSender;
+    bool closed;
 
+    std::map<uint8_t ,BlockingQueue<Action*>*> mapSender;
     BlockingQueue<Action*> *queue;
 public:
     std::string information();
@@ -39,9 +41,12 @@ public:
 
     bool isFull() const;
 
-    Game(uint8_t capacity, std::string  name, BlockingQueue<Action *> *pQueue);
+    //Game(uint8_t &capacity, std::string &name, BlockingQueue<Action *> *pQueue);
 
     BlockingQueue<Action *> * getQueue();
+
+
+    Game(uint8_t &aCapacity, const std::string &aName, BlockingQueue<Action *> *pQueue);
 };
 
 

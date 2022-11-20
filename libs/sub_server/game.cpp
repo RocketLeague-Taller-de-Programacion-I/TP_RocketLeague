@@ -18,23 +18,31 @@ void Game::joinPlayer(uint8_t i, BlockingQueue<Action*> *sender) {
     }
 }
 void Game::run() {
-
+    do {
+        auto action = queue->pop();
+        std::function<void(uint8_t&,uint8_t&)> setMove
+                = [this](uint8_t & id, uint8_t & move){return this->match.movement(id,move); };
+        action->execute(setMove);
+    } while (not closed);
 }
 
 bool Game::isFull() const {
     return playerOnLine == capacity;
 }
 
-Game::Game(uint8_t capacity,
-           std::string  name,
-           BlockingQueue<Action *> *pQueue) :
-           capacity(capacity),
-           playerOnLine(0),
-           gameName(std::move(name)),
-           queue(pQueue) {}
 
 BlockingQueue<Action *> * Game::getQueue() {
     return queue;
 }
 
 void Game::stop() {}
+
+Game::Game(uint8_t &aCapacity,
+           const std::string &aName,
+           BlockingQueue<Action *> *pQueue) :
+           match(aName,aCapacity),
+           capacity(aCapacity),
+           playerOnLine(0),
+           gameName(aName),
+           closed(false),
+           queue(pQueue) {}

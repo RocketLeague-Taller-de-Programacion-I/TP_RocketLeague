@@ -28,13 +28,15 @@ public:
     ~Match();
     void update();
 
-    void addPlayer(std::string &name);
+    void addPlayer(std::string &string);
 
     float carsInfo();
 
     void moveRight(std::string &basicString);
 
     float info();
+
+    void movement(uint8_t &id, uint8_t &typeMove);
 };
 
 

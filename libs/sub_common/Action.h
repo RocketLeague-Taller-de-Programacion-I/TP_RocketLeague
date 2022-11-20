@@ -41,6 +41,8 @@ public:
      */
 
     virtual void execute(GameManager &manager, std::function<void(BlockingQueue<Action *> *,BlockingQueue<Action *> *)> startClientThreads);
+
+    void execute(std::function<void(uint8_t &, uint8_t &)> setMove);
 };
 
 

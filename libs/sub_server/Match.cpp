@@ -9,7 +9,7 @@
 #include <unistd.h>
 #include <memory>
 
-Match::Match(std::string gameName, int required) : name(std::move(gameName)), playersRequired(required), playersConnected(0), world(b2World(b2Vec2(0,-10))) {
+Match::Match(std::string gameName, int required) : name(std::move(gameName)), world(b2World(b2Vec2(0,-10))), playersConnected(0), playersRequired(required) {
     myUserData = std::make_unique<MyFixtureUserDataType>();
     fixDef.userData.pointer = reinterpret_cast<uintptr_t>(myUserData.get());
     myUserData->mObjectType = 1;  //  Floor
@@ -37,8 +37,8 @@ Match::Match(std::string gameName, int required) : name(std::move(gameName)), pl
 }
 
 
-void Match::addPlayer(std::string &name) {
-    this->players[name] = new Car(&this->world);
+void Match::addPlayer(std::string &string) {
+    this->players[string] = new Car(&this->world);
     this->playersConnected++;
 }
 
@@ -71,5 +71,9 @@ void Match::moveRight(std::string &basicString) {
 
 }
 float Match::info() {
+
+}
+
+void Match::movement(uint8_t &id, uint8_t &typeMove) {
 
 }
