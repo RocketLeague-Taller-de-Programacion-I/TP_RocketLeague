@@ -17,6 +17,7 @@ public:
     b2Body* m_body;
     b2Fixture* ballFixture;
     b2FixtureDef fixDef;
+    b2BodyDef myBodyDef;
     std::unique_ptr<MyFixtureUserDataType> myUserData;
     float m_radius;
 
@@ -25,6 +26,8 @@ public:
     ~Ball();
     float  X() const;
     float  Y() const;
+
+    void restartGame();
 };
 
 

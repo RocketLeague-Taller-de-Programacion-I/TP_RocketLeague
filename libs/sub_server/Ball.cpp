@@ -8,11 +8,10 @@
 Ball::Ball(b2World* world, float radius) {
     myUserData = std::make_unique<MyFixtureUserDataType>();
     fixDef.userData.pointer = reinterpret_cast<uintptr_t>(myUserData.get());
-    myUserData->mObjectType = 3;
+    myUserData->mObjectType = 2;
     m_body = NULL;
     m_radius = radius;
     //set up dynamic body, store in class variable
-    b2BodyDef myBodyDef;
     myBodyDef.type = b2_dynamicBody;
     myBodyDef.position.Set(0, 10);
     m_body = world->CreateBody(&myBodyDef);
@@ -30,6 +29,10 @@ float Ball::X() const {
 }
 float Ball::Y() const {
     return(this->m_body->GetPosition().y);
+}
+void Ball::restartGame() {
+    m_body->SetTransform(b2Vec2(0,10),m_body->GetAngle());
+    m_body->ApplyLinearImpulseToCenter(b2Vec2(0,10), true);
 }
 
 Ball::~Ball() { }

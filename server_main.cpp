@@ -16,7 +16,7 @@ int main(int argc, char const *argv[])
     std::string name = "franco";
     match.addPlayer(name);
     std::cout<<match.carsInfo()<<std::endl;
-    match.moveRight(name);
+    match.moveLeft(name);
     std::cout<<match.carsInfo()<<std::endl;
     std::cout<<match.carsInfo()<<std::endl;
     std::cout<<match.carsInfo()<<std::endl;

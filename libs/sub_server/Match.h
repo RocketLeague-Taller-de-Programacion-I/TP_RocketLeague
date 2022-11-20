@@ -23,6 +23,8 @@ private:
     std::map<std::string, Car*> assistants;
     int playersConnected;
     int playersRequired;
+    int goalsLocal;
+    int goalsVisit;
     b2Body* staticBody;
     b2FixtureDef fixDef;
     std::unique_ptr<MyFixtureUserDataType> myUserData;
@@ -39,6 +41,12 @@ public:
     void moveRight(std::string &basicString);
 
     float info();
+
+    void moveLeft(std::string &basicString);
+
+    void jump(std::string &basicString);
+
+    void checkGoals();
 };
 
 

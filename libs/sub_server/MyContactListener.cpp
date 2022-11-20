@@ -4,6 +4,8 @@
 
 #include <iostream>
 #include "MyContactListener.h"
+#include "Car.h"
+
 MyContactListener::MyContactListener() {
 }
 MyContactListener::~MyContactListener()  = default;
@@ -19,5 +21,8 @@ void MyContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifo
 }
 
 void MyContactListener::PostSolve(b2Contact* contact, const b2ContactImpulse* impulse) {
-    //  std::cout<<"EndSolve"<<std::endl;
+    b2Fixture* fixB = contact->GetFixtureB();
+    auto dataB = fixB->GetUserData();
+    std::cout<<reinterpret_cast<MyFixtureUserDataType*> (dataB.pointer)->mObjectType<<std::endl;
+
 }
