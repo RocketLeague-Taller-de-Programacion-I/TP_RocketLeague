@@ -12,6 +12,8 @@
 #include <functional>
 #include "sub_server/gameManager.h"
 
+class GameManager;
+
 class Action {
 protected:
     uint8_t idCreator;
@@ -38,7 +40,7 @@ public:
      * smart pointer
      */
 
-    virtual void execute(GameManager &manager, std::function<void(BlockingQueue<Action *> *,BlockingQueue<Action *> *)> setQueue);
+    virtual void execute(GameManager &manager, std::function<void(BlockingQueue<Action *> *,BlockingQueue<Action *> *)> startClientThreads);
 };
 
 

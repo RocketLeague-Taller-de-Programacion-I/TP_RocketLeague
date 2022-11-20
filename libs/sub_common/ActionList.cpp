@@ -14,6 +14,6 @@ uint8_t ActionList::getIdCreatorGame() {
 }
 
 void ActionList::execute(GameManager &manager, std::function<void(BlockingQueue<Action *> *,
-                                                                  BlockingQueue<Action *> *)> setQueue) {}
+                                                                  BlockingQueue<Action *> *)> startClientThreads) {}
 
 ActionList::~ActionList() = default;

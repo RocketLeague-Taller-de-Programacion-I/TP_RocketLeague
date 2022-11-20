@@ -33,7 +33,7 @@ uint8_t Action::getIdCreatorGame() {
 }
 
 void Action::execute(GameManager &manager,
-                     std::function<void(BlockingQueue<Action *> *, BlockingQueue<Action *> *)> setQueue) {}
+                     std::function<void(BlockingQueue<Action *> *, BlockingQueue<Action *> *)> startClientThreads) {}
 
 Action::Action(uint8_t &id, std::string name) : idCreator(id),
                                                 capacityGame(0),

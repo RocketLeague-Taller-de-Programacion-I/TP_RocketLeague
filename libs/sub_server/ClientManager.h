@@ -26,6 +26,7 @@ public:
     ClientManager(Socket &aClient, GameManager &aGameManager);
 
     void run() override;
+    void stop() override;
 
     bool joinThread();
 

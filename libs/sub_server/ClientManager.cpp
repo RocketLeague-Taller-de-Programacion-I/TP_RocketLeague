@@ -1,10 +1,7 @@
 //
 // Created by lucaswaisten on 07/11/22.
 //
-#pragma once
-
 #include <sys/socket.h>
-#include <iostream>
 #include <memory>
 #include <functional>
 #include "ClientManager.h"
@@ -31,8 +28,10 @@ void ClientManager::run() {
     // form the Action from the data
     auto action = protocolo.deserializeData(data);
     // callback
-    auto queue_setter_callable = std::bind(std::mem_fn(&ClientManager::startClientThreads), this, std::placeholders::_2);
-
+    std::function<void(BlockingQueue<Action *> *,
+                       BlockingQueue<Action *> *)> queue_setter_callable
+                       = [this](BlockingQueue<Action *> *qr,
+                               BlockingQueue<Action *> *qs){return this->startClientThreads(qr,qs); };
     action->execute(gameManager,queue_setter_callable);
 }
 
@@ -59,4 +58,8 @@ void ClientManager::startClientThreads(BlockingQueue<Action *> *qReceiver, Block
     clientSenderThread = new ClientSender(client, *senderQueue);
     clientReceiverThread->start();
     clientSenderThread->start();
+}
+
+void ClientManager::stop() {
+
 }

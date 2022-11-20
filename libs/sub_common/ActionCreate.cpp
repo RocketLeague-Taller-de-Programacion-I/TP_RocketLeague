@@ -24,8 +24,8 @@ uint8_t ActionCreate::getIdCreatorGame() {
     return idCreator;
 }
 
-void ActionCreate::execute(GameManager &gameManager, std::function<void(BlockingQueue<Action *> *,BlockingQueue<Action *> *)> setQueue) {
-//    gameManager.createGame(idCreator, capacityGame, nameGame, setQueue);
+void ActionCreate::execute(GameManager &gameManager, std::function<void(BlockingQueue<Action *> *,BlockingQueue<Action *> *)> startClientThreads) {
+    gameManager.createGame(idCreator, capacityGame, std::move(nameGame), startClientThreads);
 }
 
 ActionCreate::~ActionCreate() = default;

@@ -20,8 +20,8 @@ uint8_t ActionJoin::getIdCreatorGame() {
 }
 
 void ActionJoin::execute(GameManager &gameManager, std::function<void(BlockingQueue<Action *> *,
-                                                                      BlockingQueue<Action *> *)> setQueue) {
-//    gameManager.joinGame(idCreator, nameGame, setQueue);
+                                                                      BlockingQueue<Action *> *)> startClientThreads) {
+    gameManager.joinGame(idCreator, std::move(nameGame), startClientThreads);
 }
 
 ActionJoin::~ActionJoin() = default;

@@ -15,7 +15,7 @@ public:
     ~ActionJoin() override;
 
     void execute(GameManager &gameManager, std::function<void(BlockingQueue<Action *> *,
-                                                              BlockingQueue<Action *> *)> setQueue) override;
+                                                              BlockingQueue<Action *> *)> startClientThreads) override;
     std::string getGameName() override;
 
     uint8_t getIdCreatorGame() override;

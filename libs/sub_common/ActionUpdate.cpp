@@ -7,7 +7,7 @@
 ActionUpdate::ActionUpdate(uint8_t& id, std::string& name) : Action(id, name){}
 
 void ActionUpdate::execute(GameManager &gameManager,
-                           std::function<void(BlockingQueue<Action *> *, BlockingQueue<Action *> *)> setQueue) {
+                           std::function<void(BlockingQueue<Action *> *, BlockingQueue<Action *> *)> startClientThreads) {
 }
 
 ActionUpdate::~ActionUpdate() = default;
