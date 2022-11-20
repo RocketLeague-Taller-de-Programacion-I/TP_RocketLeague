@@ -6,13 +6,18 @@
 #define ROCKETLEAGUE_BALL_H
 
 
+#include <memory>
 #include "box2d/b2_body.h"
+#include "box2d/box2d.h"
+#include "Car.h"
 
 class Ball {
 public:
     //class member variables
     b2Body* m_body;
     b2Fixture* ballFixture;
+    b2FixtureDef fixDef;
+    std::unique_ptr<MyFixtureUserDataType> myUserData;
     float m_radius;
 
 public:

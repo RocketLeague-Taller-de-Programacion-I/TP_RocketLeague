@@ -11,11 +11,13 @@
 #include "box2d/box2d.h"
 #include "Car.h"
 #include "MyContactListener.h"
+#include "Ball.h"
 
 class Match {
 private:
     std::string name;
     b2World world;
+    Ball* ball;
     std::map<std::string, Car*> players;
     std::map<std::string, Car*> scorers;
     std::map<std::string, Car*> assistants;
