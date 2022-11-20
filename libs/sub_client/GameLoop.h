@@ -7,7 +7,7 @@
 
 #include "SDL2pp/SDL2pp.hh"
 #include "Player.h"
-#include "sub_common/Action.h"
+#include "sub_common/lib_action/Action.h"
 #include "sub_common/BlockingQueue.h"
 #include "sub_common/protocolo.h"
 

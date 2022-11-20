@@ -10,10 +10,12 @@
 #include <string>
 #include "sub_common/thread.h"
 #include "sub_common/BlockingQueue.h"
-#include "sub_common/Action.h"
 #include "Match.h"
+#include "sub_common/sub_action/Action.h"
+#include "sub_common/sub_action/ActionUpdate.h"
 
 typedef uint8_t idPlayer_t;
+
 class Action;
 
 class Game : public Thread {
@@ -47,6 +49,8 @@ public:
 
 
     Game(uint8_t &aCapacity, const std::string &aName, BlockingQueue<Action *> *pQueue);
+
+    void updateClientSender(ActionUpdate *update);
 };
 
 

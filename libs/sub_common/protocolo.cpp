@@ -3,6 +3,9 @@
 //
 
 #include "protocolo.h"
+#include "sub_common/sub_action/ActionCreate.h"
+#include "sub_common/sub_action/ActionJoin.h"
+#include "sub_common/sub_action/ActionList.h"
 #include <sstream>
 #include <regex>
 /*

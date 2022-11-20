@@ -10,10 +10,9 @@
 #include <SDL2/SDL_keycode.h>
 #include <string>
 #include <unordered_map>
-#include "ActionCreate.h"
-#include "ActionJoin.h"
-#include "ActionList.h"
 #include <memory>
+#include <vector>
+#include "sub_common/sub_action/Action.h"
 
 typedef uint8_t command_t;
 

@@ -3,7 +3,6 @@
 //
 
 #include "Match.h"
-
 #include <utility>
 #include <list>
 #include <unistd.h>
@@ -68,12 +67,37 @@ float Match::carsInfo() {
 
 void Match::moveRight(std::string &basicString) {
     this->players.at(basicString)->goRight();
-
+   // ActionUpdate action;
+    //callback(action);
 }
 float Match::info() {
 
 }
 
 void Match::movement(uint8_t &id, uint8_t &typeMove) {
+
+}
+
+void Match::moveDown(uint8_t &id, std::function<void(ActionUpdate *)> updateClientSender) {
+
+}
+
+void Match::moveRight(uint8_t &id, std::function<void(ActionUpdate *)> updateClientSender) {
+
+}
+
+void Match::moveLeft(uint8_t &id, std::function<void(ActionUpdate *)> updateClientSender) {
+
+}
+
+void Match::moveJump(uint8_t &id, std::function<void(ActionUpdate *)> updateClientSender) {
+
+}
+
+void Match::moveUp(uint8_t &id, std::function<void(ActionUpdate *)> updateClientSender) {
+
+}
+
+void Match::moveTurbo(uint8_t &id, std::function<void(ActionUpdate *)> updateClientSender) {
 
 }

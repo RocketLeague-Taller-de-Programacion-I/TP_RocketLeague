@@ -10,7 +10,7 @@
 
 #include "gamescene.h"
 #include "GameLoop.h"
-#include "sub_common/ActionCreate.h"
+#include "sub_common/lib_action/ActionCreate.h"
 #include "Button.h"
 
 QT_BEGIN_NAMESPACE

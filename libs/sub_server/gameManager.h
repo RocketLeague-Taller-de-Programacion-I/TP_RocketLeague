@@ -10,7 +10,6 @@
 #include <mutex>
 #include <vector>
 #include "game.h"
-#include "sub_common/Action.h"
 
 class GameManager {
     std::mutex mutex;

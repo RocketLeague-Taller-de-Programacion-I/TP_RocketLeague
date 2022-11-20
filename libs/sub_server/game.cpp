@@ -20,7 +20,9 @@ void Game::joinPlayer(uint8_t i, BlockingQueue<Action*> *sender) {
 void Game::run() {
     do {
         auto action = queue->pop();
-        action->execute(match);
+        std::function<void(ActionUpdate *update)> updateClientSender
+                = [this](ActionUpdate *update){return this->updateClientSender(update); };
+        action->executeMove(match,updateClientSender);
     } while (not closed);
 }
 
@@ -44,3 +46,7 @@ Game::Game(uint8_t &aCapacity,
            gameName(aName),
            closed(false),
            queue(pQueue) {}
+
+void Game::updateClientSender(ActionUpdate *update) {
+
+}

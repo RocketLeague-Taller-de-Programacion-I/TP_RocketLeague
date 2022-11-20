@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "sub_common/ActionUpdate.h"
+#include "sub_common/lib_action/ActionUpdate.h"
 #include <iostream>
 
 MainWindow::MainWindow(QWidget *parent, BlockingQueue<Action *> &updates, BlockingQueue<Action *> &actions)

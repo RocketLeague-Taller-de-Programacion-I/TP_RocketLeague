@@ -10,6 +10,7 @@
 #include <memory>
 #include "box2d/box2d.h"
 #include "Car.h"
+#include "sub_common/sub_action/ActionUpdate.h"
 
 class Match {
 private:
@@ -37,6 +38,14 @@ public:
     float info();
 
     void movement(uint8_t &id, uint8_t &typeMove);
+
+    void moveDown(uint8_t &id, std::function<void(ActionUpdate *)> updateClientSender);
+    void moveRight(uint8_t &id, std::function<void(ActionUpdate *)> updateClientSender);
+    void moveLeft(uint8_t &id, std::function<void(ActionUpdate *)> updateClientSender);
+    void moveUp(uint8_t &id, std::function<void(ActionUpdate *)> updateClientSender);
+    void moveJump(uint8_t &id, std::function<void(ActionUpdate *)> updateClientSender);
+    void moveTurbo(uint8_t &id, std::function<void(ActionUpdate *)> updateClientSender);
+
 };
 
 
