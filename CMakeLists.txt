@@ -23,6 +23,7 @@ include_directories(${PROJECT_BINARY_DIR})
 add_subdirectory(libs/sub_client)
 add_subdirectory(libs/sub_server)
 add_subdirectory(libs/sub_common)
+add_subdirectory(libs/sub_common/sub_action)
 add_subdirectory(tests)
 
 # Find the QtWidgets library

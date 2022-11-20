@@ -6,5 +6,5 @@ add_executable(tests protocoloTest.cpp
         blockingQueueTest.cpp
         ../libs/sub_common/thread.h
         ../libs/sub_common/thread.cpp
-        actionsTest.cpp ../libs/sub_common/ActionCreate.cpp ../libs/sub_common/ActionCreate.h ../libs/sub_common/ActionJoin.cpp ../libs/sub_common/ActionJoin.h ../libs/sub_common/ActionList.cpp ../libs/sub_common/ActionList.h)
+        actionsTest.cpp ../libs/sub_common/sub_action/ActionCreate.cpp ../libs/sub_common/sub_action/ActionCreate.h ../libs/sub_common/sub_action/ActionJoin.cpp ../libs/sub_common/sub_action/ActionJoin.h ../libs/sub_common/sub_action/ActionList.cpp ../libs/sub_common/sub_action/ActionList.h)
 target_link_libraries(tests PRIVATE Catch2::Catch2WithMain lib_common)
