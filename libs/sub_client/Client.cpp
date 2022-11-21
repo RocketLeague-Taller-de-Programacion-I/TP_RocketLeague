@@ -13,23 +13,69 @@ Client::Client(const char *host, const char *port) : skt_client(host, port) {}
 
 Client::~Client() { }
 
-void Client::start() {
-    // create actions queue
-    BlockingQueue<Action*> actionsQueue;
-    // create updates queue
-    BlockingQueue<Action*> updatesQueue;
-    //launch ClientSender thread
-     ClientSender sender(skt_client, actionsQueue);
-    //launch ClientReceiver thread
-//     ClientReceiver receiver(skt_client, updatesQueue);
-//     receiver.start();
-    //launch render thread
+void Client::startThreads() {
+    for (auto & t : threads){
+        t->start();
+    }
+}
 
-    RenderThread render_thread(updatesQueue, actionsQueue);
-    sender.start();
-    render_thread.start();
+void Client::run() {
+    try {
+        // create actions queue
+        BlockingQueue<Action*> actionsQueue;
+        // create updates queue
+        BlockingQueue<Action*> updatesQueue;
+        //launch ClientSender thread
+        auto sender = new ClientSender(skt_client, actionsQueue);
+        this->threads.push_back(sender);
+        //launch ClientReceiver thread
+        auto receiver = new ClientReceiver(skt_client, updatesQueue);
+        this->threads.push_back(receiver);
+        //launch render thread
+        auto render_thread = new RenderThread(updatesQueue, actionsQueue);
+        this->threads.push_back(render_thread);
 
-    render_thread.join();
-    sender.join();
-//    receiver.join();
+        startThreads();
+        this->garbageCollector();
+
+    } catch (const std::exception &e) {
+        std::cerr << e.what() << std::endl;
+    } catch (...) {
+        std::cerr << "Error desconocido en la función run" << std::endl;
+    }
+    this->cleanThreads();
+}
+
+void Client::cleanThreads() {
+    for (auto & t : threads){
+        t->join();
+        delete t;
+    }
+}
+
+void Client::stop() {
+    closed = true;
+    this->skt_client.shutdown(SHUT_RDWR);
+    this->skt_client.close();
+    this->join();
+}
+
+
+bool waitIfFinished(Thread* thread) {
+    if (not thread->isRunning()) {
+        thread->stop();
+        thread->join();
+        delete thread;
+        return true;
+    } else {
+        return false;
+    }
+}
+
+void Client::garbageCollector() {
+    if (threads.empty()) return;
+    this->threads.erase(std::remove_if(this->threads.begin(),
+                                       this->threads.end(),
+                                       waitIfFinished),
+                        this->threads.end());
 }

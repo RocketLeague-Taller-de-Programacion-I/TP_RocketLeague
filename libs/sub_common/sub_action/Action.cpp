@@ -3,6 +3,7 @@
 //
 
 #include "Action.h"
+#include "sub_server/gameManager.h"
 #include <utility>
 
 std::uint8_t Action::getType() const {
@@ -32,17 +33,20 @@ uint8_t Action::getIdCreatorGame() {
     return 0;
 }
 
-void Action::execute(GameManager &manager,
-                     std::function<void(BlockingQueue<Action *> *, BlockingQueue<Action *> *)> startClientThreads) {}
+
+void Action::execute(GameManager &manager,const std::function<void(BlockingQueue<Action *> *, BlockingQueue<Action *> *)> &setQueue) {}
 
 Action::Action(uint8_t &id, std::string name) : idCreator(id),
                                                 capacityGame(0),
                                                 nameGame(std::move(name)) {}
 
-void Action::executeMove(Match &match, std::function<void(ActionUpdate *update)> updateClientSender) {
-
+std::vector<uint8_t> Action::beSerialized() {
+    return std::vector<uint8_t>();
 }
 
+std::string Action::getNameGame() const {
+    return nameGame;
+}
 
 Action::~Action() = default;
 

@@ -5,14 +5,15 @@
 #ifndef ROCKETLEAGUE_ACTIONMOVE_H
 #define ROCKETLEAGUE_ACTIONMOVE_H
 
-
+#include "ActionUpdate.h"
+#include "../../sub_server/Match.h"
 #include "Action.h"
 
 class ActionMove : public Action {
 private:
     uint8_t type;
 public:
-    void executeMove(Match &match, std::function<void(ActionUpdate *update)> updateClientSender) override;
+    virtual void executeMove(Match &match, std::function<void(ActionUpdate *update)> updateClientSender);
 };
 
 

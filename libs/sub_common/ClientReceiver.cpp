@@ -25,8 +25,9 @@ void ClientReceiver::run() {
             // form the Action from the data
             auto action = p.deserializeData(data);
             // push the action to the queue
-            updatesQueue.push(reinterpret_cast<Action *&>(action));
+            updatesQueue.push(action);
         }
+        running = false;
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
     } catch (...) {

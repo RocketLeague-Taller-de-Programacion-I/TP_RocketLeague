@@ -16,7 +16,7 @@ int main(int argc, char const *argv[])
     int id = 1;
     match.addPlayer(id);
     std::cout<<match.carsInfo()<<std::endl;
-    match.moveRight(id);
+    match.moveRight(id, nullptr);
     std::cout<<match.carsInfo()<<std::endl;
     std::cout<<match.carsInfo()<<std::endl;
     std::cout<<match.carsInfo()<<std::endl;

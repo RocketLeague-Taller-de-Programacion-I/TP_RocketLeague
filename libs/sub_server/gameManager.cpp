@@ -4,6 +4,10 @@
 
 #include <iostream>
 #include "gameManager.h"
+#include "sub_common/sub_action/ActionCreate.h"
+#include "sub_common/sub_action/ActionList.h"
+#include "sub_common/sub_action/ActionJoin.h"
+#include "sub_common/sub_action/ActionUpdate.h"
 
 void GameManager::cleanGames() {
     for (auto & game: games) {
@@ -11,55 +15,67 @@ void GameManager::cleanGames() {
     }
 }
 
-void GameManager::listGames() {
+std::string GameManager::listGames(uint8_t &id, std::string &name) {
     std::unique_lock<std::mutex> lock(this->mutex);
-    std::string mensaje("OK");
+    std::string mensaje("");
 
     for (auto & partida : this->games) {
-        mensaje.append("\n");
         mensaje.append(partida.second->information());
+        mensaje.append(",");
     }
-    /*
-     * send the Update with the data
-     */
+    return mensaje;
 }
 
-void GameManager::createGame(uint8_t &idCreator, uint8_t &capacityGame, const std::string& nameGame,
-                             std::function<void(BlockingQueue<Action *> *, BlockingQueue<Action *> *)> startClientThreads) {
+void GameManager::createGame(uint8_t idCreator, uint8_t capacityGame, const std::string& nameGame,
+                             const std::function<void(BlockingQueue<Action *> *, BlockingQueue<Action *> *)>& startClientThreads) {
     std::unique_lock<std::mutex> lock(this->mutex);
 
     auto *queueGame = new BlockingQueue<Action*>;
-    auto *pGame =  new Game(capacityGame,
-                            nameGame,
-                            queueGame);
 
+    if (games.find(nameGame) == games.end()) {
+        games[nameGame] = new Game(capacityGame,nameGame,queueGame);
+    } else {
+        throw std::runtime_error("Game already exists");
+    }
 
-    std::pair<std::map<std::string,Game*>::iterator,bool> ret;
-    auto iter = games.insert(std::pair<std::string,Game*>(nameGame,pGame));
+    auto *queueSender = new BlockingQueue<Action*>;
+    games[nameGame]->joinPlayer(idCreator,queueSender);
+    startClientThreads(queueGame, queueSender);
+    // only start sending updates after game is full
+}
 
-    if (iter.second) {
+void GameManager::joinGame(uint8_t idCreator, const std::string& nameGame, std::function<void(BlockingQueue<Action *> *,BlockingQueue<Action *> *)> startClientThreads) {
+
+    std::unique_lock<std::mutex> lock(this->mutex);
+    if (this->games.find(nameGame) == this->games.end()) {
+        throw std::runtime_error("Room does not exist");
+    } else if (this->games[nameGame]->isFull()) {
+        throw std::runtime_error("Room is full");
+    } else {
         auto *queueSender = new BlockingQueue<Action*>;
-        pGame->joinPlayer(idCreator,queueSender);
-        startClientThreads(queueGame, queueSender);
+        games[nameGame]->joinPlayer(idCreator,queueSender);
+        startClientThreads(games[nameGame]->getQueue(), queueSender);
     }
 }
 
-void
-GameManager::joinGame(uint8_t &idCreator, const std::string& nameGame, std::function<void(BlockingQueue<Action *> *,
-                                                                                          BlockingQueue<Action *> *)> startClientThreads) {
+// create new function for gameManager that uses doble dispatch to execute an action
+std::string GameManager::executeAction(uint8_t actionType, uint8_t &idCreator, uint8_t &capacity, std::string &name,
+                                const std::function<void(BlockingQueue<Action *> *,
+                                                         BlockingQueue<Action *> *)> &startClientThreads) {
 
-    std::unique_lock<std::mutex> lock(this->mutex);
-
-    auto iter = games.find(nameGame);
-
-    if (iter->first == nameGame) {
-        auto *queueSender = new BlockingQueue<Action*>;
-        iter->second->joinPlayer(idCreator,queueSender);
-        startClientThreads(iter->second->getQueue(), queueSender);
-        if(iter->second->isFull()) {
-            iter->second->start();
-        }
+    std::string mensaje("");
+    switch (actionType) {
+        case CREATE_ROOM:
+            createGame(idCreator,capacity, name,startClientThreads);
+            break;
+        case JOIN_ROOM:
+            joinGame(idCreator,name,startClientThreads);
+            break;
+        case LIST_ROOMS:
+            mensaje = listGames(idCreator,name);
+            break;
     }
+    return mensaje;
 }
 
 

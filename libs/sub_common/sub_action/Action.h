@@ -3,38 +3,31 @@
 //
 #pragma once
 
+class GameManager;
+
 #ifndef ROCKETLEAGUE_ACTION_H
 #define ROCKETLEAGUE_ACTION_H
 
+#include <utility>
 #include <cstdint>
 #include <string>
 #include <vector>
 #include <functional>
-#include "sub_server/gameManager.h"
+#include "../BlockingQueue.h"
+
 
 enum actionType {
-    CREATE_ROOM,
+    CREATE_ROOM = 1,
     JOIN_ROOM,
     LIST_ROOMS,
-    MOVE
+    MOVE,
+    UPDATE
 };
 
-enum action {
-    NOP,
-    JUMP,
-    RIGHT,
-    LEFT,
-    UP,
-    DOWN,
-    TURBO
-} ;
-
-class GameManager;
-class Match;
 
 class Action {
 protected:
-    uint8_t idCreator;
+    int idCreator;
     uint8_t capacityGame;
     std::string nameGame;
 public:
@@ -48,13 +41,11 @@ public:
     virtual uint8_t getCapacity();
 
     virtual uint8_t getIdCreatorGame();
-
     virtual std::uint8_t getType() const;
+    virtual std::string getNameGame() const;
 
-    virtual void execute(GameManager &manager, std::function<void(BlockingQueue<Action *> *,BlockingQueue<Action *> *)> startClientThreads);
-
-    virtual void executeMove(Match &match, std::function<void(ActionUpdate *update)> updateClientSender);
-
+    virtual void execute(GameManager &manager, const std::function<void(BlockingQueue<Action *> *,BlockingQueue<Action *> *)> &setQueue) = 0;
+    virtual std::vector<uint8_t> beSerialized() = 0;
 };
 
 

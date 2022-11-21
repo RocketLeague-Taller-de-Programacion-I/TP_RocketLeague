@@ -11,8 +11,16 @@
 #include <string>
 #include <unordered_map>
 #include <memory>
-#include <vector>
-#include "sub_common/sub_action/Action.h"
+
+enum action {
+    NOP,
+    JUMP,
+    RIGHT,
+    LEFT,
+    UP,
+    DOWN,
+    TURBO
+} ;
 
 typedef uint8_t command_t;
 
@@ -32,15 +40,18 @@ public:
 
     std::vector<uint8_t> serializeAction(Action *action);
 
-    void parseCreateRoomData(Action *action, std::vector<uint8_t> &result) const;
+    Action * deserializeData(const std::vector<uint8_t>& data);
 
-    std::unique_ptr<Action> deserializeData(const std::vector<uint8_t>& data);
+    static std::vector<uint8_t> serializeCreateAction(const std::vector<uint8_t>& data);
+    static std::vector<uint8_t> serializeJoinAction(const std::vector<uint8_t>& data);
+    static std::vector<uint8_t> serializeListAction(const std::vector<uint8_t>& data);
+    std::vector<uint8_t> serializeMoveAction(const std::vector<uint8_t>& data);
+    static std::vector<uint8_t> serializeUpdateAction(const std::vector<uint8_t>& data);
 
-    static std::unique_ptr<Action> parseCreateAction(const std::vector<uint8_t> &data);
-
-    static std::unique_ptr<Action> parseJoinAction(const std::vector<uint8_t> &data);
-
-    static std::unique_ptr<Action> parseListAction(const std::vector<uint8_t> &data);
+    static Action * parseCreateAction(const std::vector<uint8_t> &data);
+    static Action * parseJoinAction(const std::vector<uint8_t> &data);
+    static Action * parseListAction(const std::vector<uint8_t> &data);
+    Action * parseUpdateAction(const std::vector<uint8_t> &vector);
 };
 
 

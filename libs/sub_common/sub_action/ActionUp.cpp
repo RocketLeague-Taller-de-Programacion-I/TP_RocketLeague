@@ -5,5 +5,5 @@
 #include "ActionUp.h"
 
 void ActionUp::executeMove(Match &match, std::function<void(ActionUpdate *update)> updateClientSender) {
-    match.moveUp(idCreator,updateClientSender);
+    match.jump(idCreator,updateClientSender);
 }

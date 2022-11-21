@@ -24,5 +24,4 @@ void MyContactListener::PostSolve(b2Contact* contact, const b2ContactImpulse* im
     b2Fixture* fixB = contact->GetFixtureB();
     auto dataB = fixB->GetUserData();
     std::cout<<reinterpret_cast<MyFixtureUserDataType*> (dataB.pointer)->mObjectType<<std::endl;
-
 }

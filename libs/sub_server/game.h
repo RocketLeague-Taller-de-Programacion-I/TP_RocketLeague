@@ -4,10 +4,10 @@
 
 #ifndef ROCKETLEAGUE_GAME_H
 #define ROCKETLEAGUE_GAME_H
-
-
+class Action;
 #include <cstdint>
 #include <string>
+#include <map>
 #include "sub_common/thread.h"
 #include "sub_common/BlockingQueue.h"
 #include "Match.h"
@@ -15,8 +15,6 @@
 #include "sub_common/sub_action/ActionUpdate.h"
 
 typedef uint8_t idPlayer_t;
-
-class Action;
 
 class Game : public Thread {
 private:
@@ -27,6 +25,7 @@ private:
     bool closed;
 
     std::map<uint8_t ,BlockingQueue<Action*>*> mapSender;
+
     BlockingQueue<Action*> *queue;
 public:
     std::string information();
@@ -37,20 +36,19 @@ public:
     * No copiable
     */
     Game(const Game&) = delete;
+    Game(int capacity, std::string  name, BlockingQueue<Action *> *pQueue);
+
     Game& operator=(const Game&) = delete;
 
-    void joinPlayer(uint8_t i, BlockingQueue<Action*> *sender);
+    void joinPlayer(uint8_t id, BlockingQueue<Action*> *sender);
 
     bool isFull() const;
 
-    //Game(uint8_t &capacity, std::string &name, BlockingQueue<Action *> *pQueue);
-
     BlockingQueue<Action *> * getQueue();
+    void broadcastUpdate(Action* update);
+    void broadcastUpdate(Action* update, uint8_t id);
 
-
-    Game(uint8_t &aCapacity, const std::string &aName, BlockingQueue<Action *> *pQueue);
-
-    void updateClientSender(ActionUpdate *update);
+    void brodcastUpdates(std::vector<Action *> updates);
 };
 
 

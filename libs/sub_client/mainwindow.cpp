@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include "sub_common/lib_action/ActionUpdate.h"
 #include <iostream>
+#include <regex>
 
 MainWindow::MainWindow(QWidget *parent, BlockingQueue<Action *> &updates, BlockingQueue<Action *> &actions)
     : QMainWindow(parent)
@@ -60,21 +61,17 @@ void MainWindow::drawJoinGameMenu() {
     //list all the games
     //draw a button for each game
     uint8_t id = 0;
-    std::unique_ptr<Action> action(new ActionList(id));
-    // auto *action = new ActionCreate(id , players, roomName);
-    this->actionsQueue.push(reinterpret_cast<Action *&>(action));
+    Action* actionList = new ActionList(id);
+    this->actionsQueue.push(actionList);
 
-    ActionUpdate* update = dynamic_cast<ActionUpdate *>(this->updatesQueue.pop());
-    /*
-     * [0] -> type (1:Own 2:Other 3:Score 4:Ball 5:Listar)
-     * [1] -> id
-     * UpdateList: [2] -> listado de partidas ("fracno 3/3,hola 4/5")
-     * [2] -> x
-     * [3] -> y
-     * [4] -> angle
-     */
+    auto update = dynamic_cast<ActionUpdate *>(updatesQueue.pop());
+
     std::vector<std::string> games = parseList(update->getGameName());
-
+    if(games.empty()) {
+//        drawTitle("No games available");
+//        drawBackButton();
+        games.push_back("game_test 1/2");
+    }
     int i = 200;
     foreach(auto game, games) {
         QString item = QString::fromStdString(game);
@@ -92,10 +89,12 @@ void MainWindow::createRoom() {
     std::string roomName = this->lineEdit->text().toStdString();
     uint8_t players = this->cantPlayers->value();
     uint8_t id = 0;
-    std::unique_ptr<Action> action(new ActionCreate(id , players, roomName));
-   // auto *action = new ActionCreate(id , players, roomName);
-    this->actionsQueue.push(reinterpret_cast<Action *&>(action));
-    close();
+    Action* actionCreate = new ActionCreate(id, players, roomName);
+    this->actionsQueue.push(actionCreate);
+
+    std::cout << "Waiting for Update" << std::endl;
+    // draw waiting for players screen
+    drawLoadingScreen();
 }
 
 void MainWindow::joinParticularGame(QString roomName) {
@@ -103,11 +102,17 @@ void MainWindow::joinParticularGame(QString roomName) {
     this->scene.clear();
 
     // crear evento de join ()
-    std::string room = roomName.toStdString();
+    std::string room = retrieveGamaeName(roomName.toStdString());
+    std::cout << "Joining to " << room << std::endl;
     uint8_t id = 0;
-    std::unique_ptr<Action> action(new ActionJoin(id, room));
-    // auto *action = new ActionCreate(id , players, roomName);
-    this->actionsQueue.push(reinterpret_cast<Action *&>(action));
+    Action *actionJoin = new ActionJoin(id, room);
+    this->actionsQueue.push(actionJoin);
+
+    ActionUpdate *update = dynamic_cast<ActionUpdate *>(this->updatesQueue.pop());
+    if (update->getIdCreatorGame()) {
+        std::cout << "Game joined with id: " << (int)(update->getIdCreatorGame()) << std::endl;
+        std::cout << "Waiting for players" << std::endl;
+    }
     //exit qt
     close();
 }
@@ -225,6 +230,59 @@ MainWindow::~MainWindow()
 }
 
 std::vector<std::string> MainWindow::parseList(std::string basicString) {
-    return std::vector<std::string>();
+    // separate the string by commas
+    std::vector<std::string> vec;
+    std::string delimiter = ",";
+    size_t pos = 0;
+    std::string token;
+    while((pos = basicString.find(delimiter)) != std::string::npos) {
+        token = basicString.substr(0, pos);
+        vec.push_back(token);
+        basicString.erase(0, pos + delimiter.length());
+    }
+
+    return vec;
+}
+
+void MainWindow::drawLoadingScreen() {
+    // clear the screen
+    this->scene.clear();
+    this->lineEdit->hide();
+    this->cantPlayers->hide();
+    this->label->hide();
+
+    ui->view->setStyleSheet("border-image: url(/home/roby/Documents/FIUBA/EnCurso/Taller de Programacion I/TP3/TP_RocketLeague/images/loadingScreen.jpeg);");
+
+    // create the title text
+    QGraphicsTextItem* titleText = new QGraphicsTextItem(QString("Waiting for more players to join"));
+    QFont titleFont("comic sans",40);
+    titleText->setFont(titleFont);
+    int txPos = width() / 2 - titleText->boundingRect().width() / 4;
+    int tyPos = height() / 2;
+    titleText->setPos(txPos,tyPos);
+    scene.addItem(titleText);
+    popFirstUpdate();
+
+    close();
+}
+
+void MainWindow::popFirstUpdate() {
+    auto update = dynamic_cast<ActionUpdate *>(updatesQueue.pop());
+    std::cout << "Update received" << std::endl;
+    std::cout << "Game created with id: " << (int)(update->getIdCreatorGame()) << std::endl;
+    delete update;
+}
+
+std::string MainWindow::retrieveGamaeName(std::string basicString) {
+    // create regex to match any substring until first number
+    std::regex re(".+?(?=[0-9])");
+    std::smatch match;
+
+    std::regex_search(basicString, match, re);
+
+//    std::string name = match.str().empty() ? "no name" : match.str();
+    //std::string name = data.substr(0, data.find(match.str()));
+    // result.insert(result.end(), name.begin(), name.end());
+    return match.str().empty() ? "no name" : match.str();
 }
 

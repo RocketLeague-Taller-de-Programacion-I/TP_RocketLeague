@@ -3,8 +3,7 @@
 //
 
 #include "ActionCreate.h"
-
-#include <utility>
+#include "../protocolo.h"
 
 ActionCreate::ActionCreate(uint8_t &id,
                            uint8_t &c,
@@ -24,8 +23,20 @@ uint8_t ActionCreate::getIdCreatorGame() {
     return idCreator;
 }
 
-void ActionCreate::execute(GameManager &gameManager, std::function<void(BlockingQueue<Action *> *,BlockingQueue<Action *> *)> startClientThreads) {
-    gameManager.createGame(idCreator, capacityGame, std::move(nameGame), startClientThreads);
+void ActionCreate::execute(GameManager &gameManager, const std::function<void(BlockingQueue<Action *> *,
+                                                                              BlockingQueue<Action *> *)> &setQueue) {
+//    gameManager.createGame(idCreator, capacityGame, nameGame, setQueue);
+}
+
+uint8_t ActionCreate::getType() const {
+    return CREATE_ROOM;
+}
+
+std::vector<uint8_t> ActionCreate::beSerialized() {
+    // create a string from the name and the capacity
+    std::string nameCapacity = std::to_string(capacityGame) + nameGame;
+    std::vector<uint8_t> createData(nameCapacity.begin(), nameCapacity.end());
+    return Protocolo::serializeCreateAction(createData);
 }
 
 ActionCreate::~ActionCreate() = default;

@@ -29,7 +29,6 @@ add_subdirectory(tests)
 # Find the QtWidgets library
 find_package(Qt5 REQUIRED COMPONENTS Widgets)
 qt5_wrap_ui(UIS_HEADERS
-#        ui/MainWindow.ui
         ui/mainwindow.ui
         )
 

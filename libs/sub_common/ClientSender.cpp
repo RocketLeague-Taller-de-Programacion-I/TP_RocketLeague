@@ -12,7 +12,7 @@ void ClientSender::run() {
     Protocolo p;
     try {
         while (not closed) {
-            Action *action = actionsQueue.pop();
+            auto action = actionsQueue.pop();
             std::vector<uint8_t> v = p.serializeAction(action);
             //  se iteran los comandos parseados y se envian al servidor
             for (uint8_t c : v) {
@@ -24,6 +24,7 @@ void ClientSender::run() {
             // delete the action
             delete action;
         }
+        running = false;
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
     } catch (...) {

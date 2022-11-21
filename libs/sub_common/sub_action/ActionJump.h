@@ -7,8 +7,11 @@
 
 
 #include "ActionMove.h"
+#include "ActionUpdate.h"
+#include "../../sub_server/Match.h"
 
-class ActionJump : public ActionMove{
+
+class ActionJump : public ActionMove {
 public:
     void executeMove(Match &match, std::function<void(ActionUpdate *update)> updateClientSender) override;
 };

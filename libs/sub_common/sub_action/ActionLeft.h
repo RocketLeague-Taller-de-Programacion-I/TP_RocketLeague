@@ -5,7 +5,6 @@
 #ifndef ROCKETLEAGUE_ACTIONLEFT_H
 #define ROCKETLEAGUE_ACTIONLEFT_H
 
-
 #include "ActionMove.h"
 
 class ActionLeft : public ActionMove{

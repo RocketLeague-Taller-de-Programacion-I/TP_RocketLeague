@@ -10,7 +10,11 @@
 
 #include "gamescene.h"
 #include "GameLoop.h"
-#include "sub_common/lib_action/ActionCreate.h"
+#include "sub_common/ActionCreate.h"
+#include "sub_common/ActionUpdate.h"
+#include "sub_common/ActionJoin.h"
+#include "sub_common/ActionList.h"
+
 #include "Button.h"
 
 QT_BEGIN_NAMESPACE
@@ -62,5 +66,11 @@ private:
     QString userName = QString("stranger");
 
     std::vector<std::string> parseList(std::string basicString);
+
+    void drawLoadingScreen();
+
+    void popFirstUpdate();
+
+    std::string retrieveGamaeName(std::string basicString);
 };
 #endif // MAINWINDOW_H
