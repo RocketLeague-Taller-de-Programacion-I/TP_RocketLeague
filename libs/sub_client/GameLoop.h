@@ -10,6 +10,7 @@
 #include "sub_common/Action.h"
 #include "sub_common/BlockingQueue.h"
 #include "sub_common/protocolo.h"
+#include "Worldview.h"
 
 class GameLoop {
     SDL2pp::Renderer &renderer;
@@ -28,5 +29,7 @@ public:
              BlockingQueue<Action *> &actions);
 
     void run();
+private:
+    Worldview &wv;
 };
 #endif //ROCKETLEAGUE_GAMELOOP_H

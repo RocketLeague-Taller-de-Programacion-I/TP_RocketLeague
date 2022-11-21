@@ -90,10 +90,12 @@ bool GameLoop::handle_events() {
 void GameLoop::render() {
     renderer.SetDrawColor(0x00, 0x00, 0x00);
     renderer.Clear();
-    player.render(renderer);
+    wv.render(renderer);
+    //    player.render(renderer);
     renderer.Present();
 }
 
 void GameLoop::update(float dt) {
-    player.update(dt);
+    std::cout << "update" << std::endl;
+    wv.update(dt);
 }
