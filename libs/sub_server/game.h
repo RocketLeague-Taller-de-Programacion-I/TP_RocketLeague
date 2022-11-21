@@ -48,7 +48,7 @@ public:
     void broadcastUpdate(Action* update);
     void broadcastUpdate(Action* update, uint8_t id);
 
-    void brodcastUpdates(std::vector<Action *> updates);
+    void brodcastUpdateGameEvents(std::vector<Action *> updates);
 };
 
 

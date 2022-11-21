@@ -90,3 +90,11 @@ int Match::local() {
 int Match::visit() {
     return this->goalsVisit;
 }
+std::vector<int> Match::ballInfo() {
+    std::vector<int> info;
+    int x = this->ball->X();
+    int y = this->ball->Y();
+    info.emplace_back(x);
+    info.emplace_back(y);
+    return info;
+}

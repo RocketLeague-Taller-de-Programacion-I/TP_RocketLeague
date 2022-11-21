@@ -8,14 +8,13 @@
 
 class ActionUpdateBall : public ActionUpdate {
 public:
-    ActionUpdateBall(uint8_t &id, float &posX, float &posY, float &angle);
-    float getY() const;
-    float getX() const;
+    ActionUpdateBall(uint8_t &id, int &posX, int &posY);
+    int getY() const;
+    int getX() const;
     ~ActionUpdateBall() override;
 private:
-    float x;  //  pixel
-    float y;  //  pixel
-    float angle;  //  deg
+    int x;  //  pixel
+    int y;  //  pixel
 };
 
 

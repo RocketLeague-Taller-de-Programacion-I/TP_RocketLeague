@@ -41,14 +41,12 @@ public:
     void moveLeft(int &id, std::function<void(ActionUpdate * )> function);
     void jump(int &id, std::function<void(ActionUpdate * )> function);
     void checkGoals();
-
     void step();
-
     void updateGame(int &id);
-
     int visit();
-
     int local();
+
+    std::vector<int> ballInfo();
 };
 
 

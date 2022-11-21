@@ -4,15 +4,14 @@
 
 #include "ActionUpdateBall.h"
 
-ActionUpdateBall::ActionUpdateBall(uint8_t &id, float &posX, float &posY, float &angle) : ActionUpdate(id,
-                                                                                                       (std::string &) ""){}
+ActionUpdateBall::ActionUpdateBall(uint8_t &id, int &posX, int &posY) : ActionUpdate(id,(std::string &) ""), x(posX), y(posY){}
 
 
 ActionUpdateBall::~ActionUpdateBall() {
 }
-float ActionUpdateBall::getX() const {
+int ActionUpdateBall::getX() const {
     return this->x;
 }
-float ActionUpdateBall::getY() const {
+int ActionUpdateBall::getY() const {
     return this->y;
 }
