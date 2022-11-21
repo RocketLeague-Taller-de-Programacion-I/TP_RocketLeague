@@ -9,9 +9,9 @@ std::string Game::information() {
     return gameName+" "+std::to_string(playerOnLine)+"/"+std::to_string(capacity);
 }
 
-void Game::joinPlayer(uint8_t i, BlockingQueue<Action*> *sender) {
+void Game::joinPlayer(uint8_t id, BlockingQueue<Action*> *sender) {
     playerOnLine++;
-    mapSender.insert(std::pair<uint8_t ,BlockingQueue<Action*>*>(i,sender));
+    mapSender.insert(std::pair<uint8_t ,BlockingQueue<Action*>*>(id, sender));
     if (playerOnLine == capacity){
         start();
     }
@@ -38,14 +38,14 @@ BlockingQueue<Action *> * Game::getQueue() {
 
 void Game::stop() {}
 
-void Game::broadCastUpdate(Action *update, uint8_t id) {
+void Game::broadcastUpdate(Action *update, uint8_t id) {
     auto it = mapSender.find(id);
     if (it != mapSender.end()){
         it->second->push(update);
     }
 }
 
-void Game::broadCastUpdate(Action *update) {
+void Game::broadcastUpdate(Action *update) {
     for (auto & sender : mapSender) {
         sender.second->push(update);
     }

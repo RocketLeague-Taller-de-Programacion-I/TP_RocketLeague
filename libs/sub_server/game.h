@@ -35,13 +35,13 @@ public:
 
     Game& operator=(const Game&) = delete;
 
-    void joinPlayer(uint8_t i, BlockingQueue<Action*> *sender);
+    void joinPlayer(uint8_t id, BlockingQueue<Action*> *sender);
 
     bool isFull() const;
 
     BlockingQueue<Action *> * getQueue();
-    void broadCastUpdate(Action* update);
-    void broadCastUpdate(Action* update, uint8_t id);
+    void broadcastUpdate(Action* update);
+    void broadcastUpdate(Action* update, uint8_t id);
 };
 
 
