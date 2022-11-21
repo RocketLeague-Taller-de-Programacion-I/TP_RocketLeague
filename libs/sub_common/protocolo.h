@@ -40,7 +40,7 @@ public:
 
     std::vector<uint8_t> serializeAction(Action *action);
 
-    std::unique_ptr<Action> deserializeData(const std::vector<uint8_t>& data);
+    Action * deserializeData(const std::vector<uint8_t>& data);
 
     static std::vector<uint8_t> serializeCreateAction(const std::vector<uint8_t>& data);
     static std::vector<uint8_t> serializeJoinAction(const std::vector<uint8_t>& data);
@@ -48,9 +48,10 @@ public:
     std::vector<uint8_t> serializeMoveAction(const std::vector<uint8_t>& data);
     static std::vector<uint8_t> serializeUpdateAction(const std::vector<uint8_t>& data);
 
-    static std::unique_ptr<Action> parseCreateAction(const std::vector<uint8_t> &data);
-    static std::unique_ptr<Action> parseJoinAction(const std::vector<uint8_t> &data);
-    static std::unique_ptr<Action> parseListAction(const std::vector<uint8_t> &data);
+    static Action * parseCreateAction(const std::vector<uint8_t> &data);
+    static Action * parseJoinAction(const std::vector<uint8_t> &data);
+    static Action * parseListAction(const std::vector<uint8_t> &data);
+    Action * parseUpdateAction(const std::vector<uint8_t> &vector);
 };
 
 

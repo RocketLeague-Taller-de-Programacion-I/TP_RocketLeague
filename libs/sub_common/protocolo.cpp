@@ -36,7 +36,7 @@ command_t Protocolo::getMapCommand(uint32_t action) {
     return this->mapCommand.at(action);
 }
 
-std::unique_ptr<Action> Protocolo::deserializeData(const std::vector<uint8_t>& data) {
+Action * Protocolo::deserializeData(const std::vector<uint8_t>& data) {
     uint8_t type(data[0]);
 
     switch (type) {
@@ -46,6 +46,8 @@ std::unique_ptr<Action> Protocolo::deserializeData(const std::vector<uint8_t>& d
             return parseJoinAction(data);
         case LIST_ROOMS:
             return parseListAction(data);
+        case UPDATE:
+            return parseUpdateAction(data);
     }
     return {};
 }
@@ -55,24 +57,42 @@ std::unique_ptr<Action> Protocolo::deserializeData(const std::vector<uint8_t>& d
  * [2] -> name
  *
  */
-std::unique_ptr<Action> Protocolo::parseCreateAction(const std::vector<uint8_t> &data) {
+Action* Protocolo::parseCreateAction(const std::vector<uint8_t> &data) {
     uint8_t id(data[1]);
     uint8_t capacity(data[2]);
     std::string name(data.begin()+3,data.end());
-    std::unique_ptr<Action> pAction(new ActionCreate(id, capacity, std::move(name)));
+//    std::shared_ptr<Action> pAction = std::make_shared<ActionCreate>(id, capacity, name);
+//    std::unique_ptr<Action> pAction(new ActionCreate(id, capacity, std::move(name)));
+    // create pointer to derived class and store into pointer of base class
+    Action* pAction = new ActionCreate(id, capacity, std::move(name));
     return pAction;
 }
 
-std::unique_ptr<Action> Protocolo::parseJoinAction(const std::vector<uint8_t> &data) {
+Action * Protocolo::parseJoinAction(const std::vector<uint8_t> &data) {
     uint8_t id(data[0]);
     std::string name(data.begin()+2,data.end());
-    std::unique_ptr<Action> pAction(new ActionJoin(id, name));
+//    std::shared_ptr<Action> pAction = std::make_shared<ActionJoin>(id,name);
+//    std::unique_ptr<Action> pAction(new ActionJoin(id, name));
+    // create pointer to derived class and store into pointer of base class
+    Action* pAction = new ActionJoin(id, name);
     return pAction;
 }
 
-std::unique_ptr<Action> Protocolo::parseListAction(const std::vector<uint8_t> &data) {
-    uint8_t id(data[0]);
-    std::unique_ptr<Action> pAction(new ActionList(id));
+Action * Protocolo::parseListAction(const std::vector<uint8_t> &data) {
+//    std::shared_ptr<Action> pAction = std::make_shared<ActionList>(0);
+//    std::unique_ptr<Action> pAction(new ActionList(0));
+    // create pointer to derived class and store into pointer of base class
+    Action* pAction = new ActionList(0);
+    return pAction;
+}
+
+Action * Protocolo::parseUpdateAction(const std::vector<uint8_t> &vector) {
+    uint8_t id(vector[1]);
+    std::string name;
+//    std::shared_ptr<Action> pAction = std::make_shared<ActionUpdate>(id, name);
+//    std::unique_ptr<Action> pAction(new ActionUpdate(id, name));
+    // create pointer to derived class and store into pointer of base class
+    Action* pAction = new ActionUpdate(id, name);
     return pAction;
 }
 
@@ -103,5 +123,8 @@ std::vector<uint8_t> Protocolo::serializeMoveAction(const std::vector<uint8_t> &
 }
 
 std::vector<uint8_t> Protocolo::serializeUpdateAction(const std::vector<uint8_t> &data) {
-    return std::vector<uint8_t>();
+    std::vector<uint8_t> result;
+    result.emplace_back(UPDATE);
+    result.insert(result.end(),data.begin(),data.end());
+    return result;
 }

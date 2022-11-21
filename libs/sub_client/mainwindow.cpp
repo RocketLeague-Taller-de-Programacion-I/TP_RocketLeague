@@ -60,10 +60,10 @@ void MainWindow::drawJoinGameMenu() {
     //list all the games
     //draw a button for each game
     uint8_t id = 0;
-    std::unique_ptr<Action> action(new ActionList(id));
-    this->actionsQueue.push(reinterpret_cast<Action *&>(action));
+    Action* actionList = new ActionList(id);
+    this->actionsQueue.push(actionList);
 
-    ActionUpdate* update = dynamic_cast<ActionUpdate *>(this->updatesQueue.pop());
+    auto update = this->updatesQueue.pop();
 
     std::vector<std::string> games = parseList(update->getGameName());
 
@@ -84,11 +84,17 @@ void MainWindow::createRoom() {
     std::string roomName = this->lineEdit->text().toStdString();
     uint8_t players = this->cantPlayers->value();
     uint8_t id = 0;
-    std::unique_ptr<Action> action(new ActionCreate(id,players,roomName));
-    this->actionsQueue.push(reinterpret_cast<Action *&>(action));
+//    std::shared_ptr<Action> action(new ActionCreate(id,players,roomName));
+//    this->actionsQueue.push(reinterpret_cast<Action *&>(action));
+    Action* actionCreate = new ActionCreate(id, players, roomName);
+    this->actionsQueue.push(actionCreate);
 
-    ActionUpdate* update = dynamic_cast<ActionUpdate *>(this->updatesQueue.pop());
-    if (update->getGameName() == "ok") {
+    std::cout << "Waiting for Update" << std::endl;
+    auto update = dynamic_cast<ActionUpdate *>(this->updatesQueue.pop());
+    std::cout << "Update received" << std::endl;
+
+    if (update->getIdCreatorGame()) {
+        std::cout << "Game created with id: " << (int)(update->getIdCreatorGame()) << std::endl;
         this->lineEdit->hide();
         this->cantPlayers->hide();
         this->label->hide();
@@ -104,9 +110,14 @@ void MainWindow::joinParticularGame(QString roomName) {
     // crear evento de join ()
     std::string room = roomName.toStdString();
     uint8_t id = 0;
-    std::unique_ptr<Action> action(new ActionJoin(id, room));
-    // auto *action = new ActionCreate(id , players, roomName);
-    this->actionsQueue.push(reinterpret_cast<Action *&>(action));
+    Action *actionJoin = new ActionJoin(id, room);
+    this->actionsQueue.push(actionJoin);
+
+    ActionUpdate *update = dynamic_cast<ActionUpdate *>(this->updatesQueue.pop());
+    if (update->getIdCreatorGame()) {
+        std::cout << "Game joined with id: " << (int)(update->getIdCreatorGame()) << std::endl;
+        drawTitle("Waiting for players");
+    }
     //exit qt
     close();
 }
