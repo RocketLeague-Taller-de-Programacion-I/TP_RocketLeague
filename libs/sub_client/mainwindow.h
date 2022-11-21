@@ -66,5 +66,7 @@ private:
     QString userName = QString("stranger");
 
     std::vector<std::string> parseList(std::string basicString);
+
+    void drawLoadingScreen();
 };
 #endif // MAINWINDOW_H

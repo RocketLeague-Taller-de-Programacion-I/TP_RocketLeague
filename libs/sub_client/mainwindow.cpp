@@ -90,17 +90,19 @@ void MainWindow::createRoom() {
     this->actionsQueue.push(actionCreate);
 
     std::cout << "Waiting for Update" << std::endl;
-    auto update = dynamic_cast<ActionUpdate *>(this->updatesQueue.pop());
-    std::cout << "Update received" << std::endl;
-
-    if (update->getIdCreatorGame()) {
-        std::cout << "Game created with id: " << (int)(update->getIdCreatorGame()) << std::endl;
-        this->lineEdit->hide();
-        this->cantPlayers->hide();
-        this->label->hide();
-        drawTitle("Waiting for players");
-    }
-    close();
+//    auto update = dynamic_cast<ActionUpdate *>(this->updatesQueue.pop());
+//    std::cout << "Update received" << std::endl;
+//
+//    if (update->getIdCreatorGame()) {
+//        std::cout << "Game created with id: " << (int)(update->getIdCreatorGame()) << std::endl;
+//        this->lineEdit->hide();
+//        this->cantPlayers->hide();
+//        this->label->hide();
+//        drawTitle("Waiting for players");
+//    }
+//    close();
+    // draw waiting for players screen
+    drawLoadingScreen();
 }
 
 void MainWindow::joinParticularGame(QString roomName) {
@@ -236,5 +238,29 @@ MainWindow::~MainWindow()
 
 std::vector<std::string> MainWindow::parseList(std::string basicString) {
     return std::vector<std::string>();
+}
+
+void MainWindow::drawLoadingScreen() {
+    // clear the screen
+    this->scene.clear();
+    this->lineEdit->hide();
+    this->cantPlayers->hide();
+    this->label->hide();
+
+    ui->view->setStyleSheet("border-image: url(/home/roby/Documents/FIUBA/EnCurso/Taller de Programacion I/TP3/TP_RocketLeague/images/loadingScreen.jpeg);");
+
+    // create the title text
+    QGraphicsTextItem* titleText = new QGraphicsTextItem(QString("Waiting for more players to join"));
+    QFont titleFont("comic sans",40);
+    titleText->setFont(titleFont);
+    int txPos = width() / 2 - titleText->boundingRect().width() / 4;
+    int tyPos = height() / 2;
+    titleText->setPos(txPos,tyPos);
+    scene.addItem(titleText);
+
+    auto update = dynamic_cast<ActionUpdate *>(this->updatesQueue.pop());
+    std::cout << "Update received" << std::endl;
+    std::cout << "Game created with id: " << (int)(update->getIdCreatorGame()) << std::endl;
+
 }
 
