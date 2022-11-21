@@ -15,7 +15,7 @@ void GameManager::cleanGames() {
     }
 }
 
-void GameManager::listGames(uint8_t &id, std::string &name) {
+std::string GameManager::listGames(uint8_t &id, std::string &name) {
     std::unique_lock<std::mutex> lock(this->mutex);
     std::string mensaje("");
 
@@ -23,10 +23,7 @@ void GameManager::listGames(uint8_t &id, std::string &name) {
         mensaje.append(partida.second->information());
         mensaje.append(",");
     }
-    /*
-     * send the Update with the data
-     */
-    games[name]->broadcastUpdate(new ActionUpdate(id, mensaje), id);
+    return mensaje;
 }
 
 void GameManager::createGame(uint8_t idCreator, uint8_t capacityGame, const std::string& nameGame,
@@ -44,34 +41,29 @@ void GameManager::createGame(uint8_t idCreator, uint8_t capacityGame, const std:
     auto *queueSender = new BlockingQueue<Action*>;
     games[nameGame]->joinPlayer(idCreator,queueSender);
     startClientThreads(queueGame, queueSender);
-    // broadcast new update with right id to the client
-    std::string mensaje = "OK";
-    ActionUpdate *update = new ActionUpdate(idCreator, mensaje); //creacion de partida, devuelve el id
-    games[nameGame]->broadcastUpdate(update, idCreator);
+    // only start sending updates after game is full
 }
 
 void GameManager::joinGame(uint8_t idCreator, const std::string& nameGame, std::function<void(BlockingQueue<Action *> *,BlockingQueue<Action *> *)> startClientThreads) {
 
     std::unique_lock<std::mutex> lock(this->mutex);
-
-    auto iter = games.find(nameGame);
-
-    if (iter->first == nameGame) {
+    if (this->games.find(nameGame) == this->games.end()) {
+        throw std::runtime_error("Room does not exist");
+    } else if (this->games[nameGame]->isFull()) {
+        throw std::runtime_error("Room is full");
+    } else {
         auto *queueSender = new BlockingQueue<Action*>;
-        iter->second->joinPlayer(idCreator,queueSender);
-        startClientThreads(iter->second->getQueue(), queueSender);
-        if(iter->second->isFull()) {
-
-            iter->second->start();
-        }
+        games[nameGame]->joinPlayer(idCreator,queueSender);
+        startClientThreads(games[nameGame]->getQueue(), queueSender);
     }
 }
 
 // create new function for gameManager that uses doble dispatch to execute an action
-void GameManager::executeAction(uint8_t actionType, uint8_t &idCreator, uint8_t &capacity, std::string &name,
+std::string GameManager::executeAction(uint8_t actionType, uint8_t &idCreator, uint8_t &capacity, std::string &name,
                                 const std::function<void(BlockingQueue<Action *> *,
                                                          BlockingQueue<Action *> *)> &startClientThreads) {
 
+    std::string mensaje("");
     switch (actionType) {
         case CREATE_ROOM:
             createGame(idCreator,capacity, name,startClientThreads);
@@ -80,9 +72,10 @@ void GameManager::executeAction(uint8_t actionType, uint8_t &idCreator, uint8_t 
             joinGame(idCreator,name,startClientThreads);
             break;
         case LIST_ROOMS:
-            listGames(idCreator,name);
+            mensaje = listGames(idCreator,name);
             break;
     }
+    return mensaje;
 }
 
 

@@ -15,7 +15,7 @@ typedef uint8_t idPlayer_t;
 
 class Game : public Thread {
 private:
-    int capacity;
+    uint8_t capacity;
     int playerOnLine;
     std::string gameName;
     //std::map<uint8_t ,BlockingQueue<Action>&> mapReceiver;
@@ -42,6 +42,8 @@ public:
     BlockingQueue<Action *> * getQueue();
     void broadcastUpdate(Action* update);
     void broadcastUpdate(Action* update, uint8_t id);
+
+    void brodcastUpdates(std::vector<Action *> updates);
 };
 
 

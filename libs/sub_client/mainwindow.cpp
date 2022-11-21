@@ -63,10 +63,14 @@ void MainWindow::drawJoinGameMenu() {
     Action* actionList = new ActionList(id);
     this->actionsQueue.push(actionList);
 
-    auto update = this->updatesQueue.pop();
+    auto update = dynamic_cast<ActionUpdate *>(updatesQueue.pop());
 
     std::vector<std::string> games = parseList(update->getGameName());
-
+    if(games.empty()) {
+//        drawTitle("No games available");
+//        drawBackButton();
+        games.push_back("game_test 1/2");
+    }
     int i = 200;
     foreach(auto game, games) {
         QString item = QString::fromStdString(game);
@@ -84,23 +88,10 @@ void MainWindow::createRoom() {
     std::string roomName = this->lineEdit->text().toStdString();
     uint8_t players = this->cantPlayers->value();
     uint8_t id = 0;
-//    std::shared_ptr<Action> action(new ActionCreate(id,players,roomName));
-//    this->actionsQueue.push(reinterpret_cast<Action *&>(action));
     Action* actionCreate = new ActionCreate(id, players, roomName);
     this->actionsQueue.push(actionCreate);
 
     std::cout << "Waiting for Update" << std::endl;
-//    auto update = dynamic_cast<ActionUpdate *>(this->updatesQueue.pop());
-//    std::cout << "Update received" << std::endl;
-//
-//    if (update->getIdCreatorGame()) {
-//        std::cout << "Game created with id: " << (int)(update->getIdCreatorGame()) << std::endl;
-//        this->lineEdit->hide();
-//        this->cantPlayers->hide();
-//        this->label->hide();
-//        drawTitle("Waiting for players");
-//    }
-//    close();
     // draw waiting for players screen
     drawLoadingScreen();
 }
@@ -237,7 +228,18 @@ MainWindow::~MainWindow()
 }
 
 std::vector<std::string> MainWindow::parseList(std::string basicString) {
-    return std::vector<std::string>();
+    // separate the string by commas
+    std::vector<std::string> vec;
+    std::string delimiter = ",";
+    size_t pos = 0;
+    std::string token;
+    while((pos = basicString.find(delimiter)) != std::string::npos) {
+        token = basicString.substr(0, pos);
+        vec.push_back(token);
+        basicString.erase(0, pos + delimiter.length());
+    }
+
+    return vec;
 }
 
 void MainWindow::drawLoadingScreen() {
@@ -257,10 +259,15 @@ void MainWindow::drawLoadingScreen() {
     int tyPos = height() / 2;
     titleText->setPos(txPos,tyPos);
     scene.addItem(titleText);
+    popFirstUpdate();
 
-    auto update = dynamic_cast<ActionUpdate *>(this->updatesQueue.pop());
+    close();
+}
+
+void MainWindow::popFirstUpdate() {
+    auto update = dynamic_cast<ActionUpdate *>(updatesQueue.pop());
     std::cout << "Update received" << std::endl;
     std::cout << "Game created with id: " << (int)(update->getIdCreatorGame()) << std::endl;
-
+    delete update;
 }
 

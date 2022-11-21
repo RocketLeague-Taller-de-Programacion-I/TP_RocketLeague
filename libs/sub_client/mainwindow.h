@@ -68,5 +68,7 @@ private:
     std::vector<std::string> parseList(std::string basicString);
 
     void drawLoadingScreen();
+
+    void popFirstUpdate();
 };
 #endif // MAINWINDOW_H

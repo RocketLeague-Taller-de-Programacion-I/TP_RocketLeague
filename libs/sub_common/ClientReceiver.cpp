@@ -25,7 +25,6 @@ void ClientReceiver::run() {
             // form the Action from the data
             auto action = p.deserializeData(data);
             // push the action to the queue
-            std::cout << "Action received: " << (action->getType() == 5) << std::endl;
             updatesQueue.push(action);
         }
         running = false;

@@ -16,7 +16,7 @@ class GameManager {
     std::map<std::string, Game*> games;
 public:
    //std::string joinGame(uint8_t id, ClientManager *pManager, const std::string& name);
-   void listGames(uint8_t &id,std::string &name);
+   std::string listGames(uint8_t &id,std::string &name);
    void cleanGames();
 
     void createGame(uint8_t idCreator, uint8_t capacityGame, const std::string& nameGame,
@@ -25,8 +25,8 @@ public:
     void joinGame(uint8_t idCreator, const std::string& nameGame, std::function<void(BlockingQueue<Action*> *,
                                                                                      BlockingQueue<Action*> *)> startClientThreads);
 
-    void executeAction(uint8_t actionType, uint8_t &idCreator, uint8_t &capacity, std::string &name,
-                       const std::function<void(BlockingQueue<Action *> *,
+    std::string executeAction(uint8_t actionType, uint8_t &idCreator, uint8_t &capacity, std::string &name,
+                              const std::function<void(BlockingQueue<Action *> *,
                                                 BlockingQueue<Action *> *)> &startClientThreads);
 };
 

@@ -88,11 +88,16 @@ Action * Protocolo::parseListAction(const std::vector<uint8_t> &data) {
 
 Action * Protocolo::parseUpdateAction(const std::vector<uint8_t> &vector) {
     uint8_t id(vector[1]);
-    std::string name;
+    std::string data;
+    if (not vector.empty()) {
+        data = std::string(vector.begin()+2,vector.end());
+    } else {
+        data = "";
+    }
 //    std::shared_ptr<Action> pAction = std::make_shared<ActionUpdate>(id, name);
 //    std::unique_ptr<Action> pAction(new ActionUpdate(id, name));
     // create pointer to derived class and store into pointer of base class
-    Action* pAction = new ActionUpdate(id, name);
+    Action* pAction = new ActionUpdate(id, data);
     return pAction;
 }
 

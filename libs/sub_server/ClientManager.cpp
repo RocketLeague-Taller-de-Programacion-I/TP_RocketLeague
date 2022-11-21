@@ -36,8 +36,26 @@ void ClientManager::run() {
 
     if (action->getType() == CREATE_ROOM) {
         capacity = action->getCapacity();
+    } else if (action->getType() == LIST_ROOMS) {
+        capacity = 0;
     }
-    gameManager.executeAction(action->getType(), idCreator, capacity, nameGame, queue_setter_callable);
+    std::string result = gameManager.executeAction(action->getType(), idCreator, capacity, nameGame, queue_setter_callable);
+    if (action->getType() == LIST_ROOMS) {
+        //we need to send the data without creating nor joining a game
+        while (not closed) {
+            std::vector<uint8_t> listData;
+            listData.push_back(UPDATE);
+            listData.push_back(id);
+            listData.insert(listData.end(), result.begin(), result.end());
+            //  se iteran los comandos parseados y se envian al servidor
+            for (uint8_t c : listData) {
+                client.sendall(&c, sizeof(c), &closed);
+            }
+            //  send the NOP instruccion
+            uint8_t nop = 0;
+            client.sendall(&nop, sizeof(nop), &closed);
+        }
+    }
 }
 
 bool ClientManager::joinThread() {
