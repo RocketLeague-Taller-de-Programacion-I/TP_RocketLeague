@@ -11,7 +11,7 @@
 class MyContactListener : public b2ContactListener {
 public:
     MyContactListener();
-    ~MyContactListener();
+    ~MyContactListener() override;
     void BeginContact(b2Contact* contact);
 
     void EndContact(b2Contact* contact);

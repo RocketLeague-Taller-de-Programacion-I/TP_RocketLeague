@@ -10,42 +10,43 @@
 #include <memory>
 #include "box2d/box2d.h"
 #include "Car.h"
-#include "sub_common/sub_action/ActionUpdate.h"
+#include "MyContactListener.h"
+#include "Ball.h"
 
 class Match {
 private:
     std::string name;
     b2World world;
-    std::map<std::string, Car*> players;
-    std::map<std::string, Car*> scorers;
-    std::map<std::string, Car*> assistants;
+    Ball* ball;
+    std::map<int, Car*> players;
+    std::map<int, Car*> scorers;
+    std::map<int, Car*> assistants;
     int playersConnected;
     int playersRequired;
+    int goalsLocal;
+    int goalsVisit;
     b2Body* staticBody;
     b2FixtureDef fixDef;
     std::unique_ptr<MyFixtureUserDataType> myUserData;
+    MyContactListener listener;
 public:
     Match(std::string name, int required);
     ~Match();
     void update();
 
-    void addPlayer(std::string &string);
+    void addPlayer(int &id);
 
     float carsInfo();
 
-    void moveRight(std::string &basicString);
+    void moveRight(int &id);
 
     float info();
 
-    void movement(uint8_t &id, uint8_t &typeMove);
+    void moveLeft(int &id);
 
-    void moveDown(uint8_t &id, std::function<void(ActionUpdate *)> updateClientSender);
-    void moveRight(uint8_t &id, std::function<void(ActionUpdate *)> updateClientSender);
-    void moveLeft(uint8_t &id, std::function<void(ActionUpdate *)> updateClientSender);
-    void moveUp(uint8_t &id, std::function<void(ActionUpdate *)> updateClientSender);
-    void moveJump(uint8_t &id, std::function<void(ActionUpdate *)> updateClientSender);
-    void moveTurbo(uint8_t &id, std::function<void(ActionUpdate *)> updateClientSender);
+    void jump(int &id);
 
+    void checkGoals();
 };
 
 
