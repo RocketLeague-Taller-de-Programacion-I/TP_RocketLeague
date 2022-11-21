@@ -70,5 +70,7 @@ private:
     void drawLoadingScreen();
 
     void popFirstUpdate();
+
+    std::string retrieveGamaeName(std::string basicString);
 };
 #endif // MAINWINDOW_H

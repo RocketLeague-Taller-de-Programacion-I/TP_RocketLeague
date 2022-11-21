@@ -70,11 +70,13 @@ Action* Protocolo::parseCreateAction(const std::vector<uint8_t> &data) {
 
 Action * Protocolo::parseJoinAction(const std::vector<uint8_t> &data) {
     uint8_t id(data[0]);
-    std::string name(data.begin()+2,data.end());
+    std::string name(data.begin()+1,data.end());
+    //strip last spaces from name
+    std::string stripped = name.substr(0, name.find_last_of(' '));
 //    std::shared_ptr<Action> pAction = std::make_shared<ActionJoin>(id,name);
 //    std::unique_ptr<Action> pAction(new ActionJoin(id, name));
     // create pointer to derived class and store into pointer of base class
-    Action* pAction = new ActionJoin(id, name);
+    Action* pAction = new ActionJoin(id, stripped);
     return pAction;
 }
 

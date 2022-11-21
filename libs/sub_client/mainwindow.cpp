@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include "sub_common/ActionUpdate.h"
 #include <iostream>
+#include <regex>
 
 MainWindow::MainWindow(QWidget *parent, BlockingQueue<Action *> &updates, BlockingQueue<Action *> &actions)
     : QMainWindow(parent)
@@ -101,7 +102,8 @@ void MainWindow::joinParticularGame(QString roomName) {
     this->scene.clear();
 
     // crear evento de join ()
-    std::string room = roomName.toStdString();
+    std::string room = retrieveGamaeName(roomName.toStdString());
+    std::cout << "Joining to " << room << std::endl;
     uint8_t id = 0;
     Action *actionJoin = new ActionJoin(id, room);
     this->actionsQueue.push(actionJoin);
@@ -109,7 +111,7 @@ void MainWindow::joinParticularGame(QString roomName) {
     ActionUpdate *update = dynamic_cast<ActionUpdate *>(this->updatesQueue.pop());
     if (update->getIdCreatorGame()) {
         std::cout << "Game joined with id: " << (int)(update->getIdCreatorGame()) << std::endl;
-        drawTitle("Waiting for players");
+        std::cout << "Waiting for players" << std::endl;
     }
     //exit qt
     close();
@@ -269,5 +271,18 @@ void MainWindow::popFirstUpdate() {
     std::cout << "Update received" << std::endl;
     std::cout << "Game created with id: " << (int)(update->getIdCreatorGame()) << std::endl;
     delete update;
+}
+
+std::string MainWindow::retrieveGamaeName(std::string basicString) {
+    // create regex to match any substring until first number
+    std::regex re(".+?(?=[0-9])");
+    std::smatch match;
+
+    std::regex_search(basicString, match, re);
+
+//    std::string name = match.str().empty() ? "no name" : match.str();
+    //std::string name = data.substr(0, data.find(match.str()));
+    // result.insert(result.end(), name.begin(), name.end());
+    return match.str().empty() ? "no name" : match.str();
 }
 

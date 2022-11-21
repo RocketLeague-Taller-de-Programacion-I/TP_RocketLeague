@@ -42,7 +42,7 @@ void ClientManager::run() {
     std::string result = gameManager.executeAction(action->getType(), idCreator, capacity, nameGame, queue_setter_callable);
     if (action->getType() == LIST_ROOMS) {
         //we need to send the data without creating nor joining a game
-        while (not closed) {
+        if (not closed) {
             std::vector<uint8_t> listData;
             listData.push_back(UPDATE);
             listData.push_back(id);
@@ -55,6 +55,17 @@ void ClientManager::run() {
             uint8_t nop = 0;
             client.sendall(&nop, sizeof(nop), &closed);
         }
+        // we need to receive the join action
+        data.clear();
+        this->client.recvall(&byte_to_read, sizeof(byte_to_read), &closed);
+        while (byte_to_read != NOP && !closed) {
+            data.push_back(byte_to_read);
+            this->client.recvall(&byte_to_read, sizeof(byte_to_read), &closed);
+        }
+
+        auto joinaction = protocolo.deserializeData(data);
+        std::string gameName = joinaction->getGameName();
+        gameManager.executeAction(joinaction->getType(), idCreator, capacity, gameName, queue_setter_callable);
     }
 }
 

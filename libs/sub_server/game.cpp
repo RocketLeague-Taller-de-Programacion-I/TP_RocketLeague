@@ -22,15 +22,27 @@ void Game::joinPlayer(uint8_t id, BlockingQueue<Action*> *sender) {
     mapSender.insert(std::pair<uint8_t ,BlockingQueue<Action*>*>(id, sender));
     if (playerOnLine == capacity){
         start();
-        // broadcast new update with right id to the client
-        std::string mensaje = "OWN";
-        ActionUpdate *update = new ActionUpdate(id, mensaje); //creacion de partida, devuelve el id
-        broadcastUpdate(update, id);
+        // broadcast new update to all clients
+        std::string mensaje = "START GAME";
+        Action* update = new ActionUpdate(id, mensaje); //creacion de partida, devuelve el id
+        broadcastUpdate(update);
+    } else {
+        std::string mensaje = "WAITING FOR PLAYERS";
+        Action* update = new ActionUpdate(id, mensaje); //creacion de partida, devuelve el id
+        broadcastUpdate(update);
     }
+
 }
 
 void Game::run() {
-
+    // pop actions from queue, processed them and broadcast them
+    while (true) {
+        Action *action = queue->pop();
+        if (action->getType() == UPDATE) {
+            ActionUpdate *actionUpdate = dynamic_cast<ActionUpdate *>(action);
+            std::cout << "Game " << gameName << " received update: " << actionUpdate->getGameName() << std::endl;
+        }
+    }
 }
 
 bool Game::isFull() const {
