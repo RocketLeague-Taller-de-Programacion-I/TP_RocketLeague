@@ -19,7 +19,7 @@ public:
         signal.notify_all();
     }
 
-    T pop() {
+    virtual T pop() {
         std::unique_lock<std::mutex> lock(mutex);
         wait_not_empty(lock);
         T element = queue.front();
@@ -38,7 +38,9 @@ public:
         return queue.empty();
     }
 
-private:
+    virtual ~BlockingQueue() = default;
+
+protected:
     std::queue<T> queue;
     mutable std::mutex mutex;
     std::condition_variable signal;

@@ -2,8 +2,11 @@
 
 #include <QApplication>
 #include "RenderThread.h"
+#include "Worldview.h"
 
-RenderThread::RenderThread(BlockingQueue<Action *> &updates, BlockingQueue<Action *> &actionsQueue)
+using namespace SDL2pp;
+
+RenderThread::RenderThread(ProtectedQueue<Action *> &updates, BlockingQueue<Action *> &actionsQueue)
         : updatesQueue(updates)
         , actionsQueue(actionsQueue){}
 
@@ -29,7 +32,7 @@ void RenderThread::run() {
         // Initialize SDL library
         std::cout << "QT finalizó correctamente con: " << qt_return << std::endl;
 
-        SDL2pp::SDL sdl(SDL_INIT_VIDEO);
+        SDL sdl(SDL_INIT_VIDEO);
         SDL_DisplayMode DM;
         SDL_GetCurrentDisplayMode(0, &DM);
         auto Width = DM.w;
@@ -39,13 +42,74 @@ void RenderThread::run() {
                                  SDL_WINDOW_RESIZABLE);
 
         // Creo renderer
-        SDL2pp::Renderer renderer(sdlWindow, -1, SDL_RENDERER_SOFTWARE);
-
-        // Encapsular en un repositorio de texturas para no crear multiples veces la misma textura
-        SDL2pp::Texture im(renderer,
+        Renderer renderer(sdlWindow, -1, SDL_RENDERER_SOFTWARE);
+        Texture car(renderer,
                            SDL2pp::Surface("../images/car.jpeg").SetColorKey(true, 0));
+        Texture ball(renderer,
+                            SDL2pp::Surface("../images/ball.png").SetColorKey(true, 0));
+//        Texture background(renderer,
+//                                  SDL2pp::Surface("../images/background.jpeg").SetColorKey(true, 0));
+        Texture scoreBoard(renderer,SDL2pp::Surface("../images/clock.png"));
+        textures.emplace("car", &car);
+        textures.emplace("ball", &ball);
+//        textures.emplace("background", &background);
+        textures.emplace("scoreBoard", &scoreBoard);
+        SDL_SetTextureBlendMode(ball.Get(), SDL_BLENDMODE_BLEND);
+        SDL_RenderCopy(renderer.Get(), ball.Get(), NULL, NULL);
+        // map of Sprite
+        std::map<uint8_t, GameSprite> sprites;
+        //pop everything from updates queue
+        //vector of Action*
+        std::vector<Action *> actions;
+//        std::vector<ActionUpdate*> actions;
+        std::string name = "car1";
+        uint8_t id = 1;
+        actions.push_back(new ActionUpdate(id,name));
+        name = "car2";
+        id = 2;
+        actions.push_back(new ActionUpdate(id,name));
+        name = "ball";
+        id = 6;
+        actions.push_back(new ActionUpdate(id,name));
+        name = "scoreBoard";
+        id = 7;
+        actions.push_back(new ActionUpdate(id,name));
 
-        GameLoop gameLoop(renderer, im, Width, Height, updatesQueue, actionsQueue);
+        updatesQueue.tryPop(actions[0]);
+
+//        for(int i = 0; i < 1; i++){ //2 players 1 score 1 ball
+//            updatesQueue.tryPop(actions[i]);
+//             id of players (1,2,3,4)
+//             id score (5)
+//             id ball (6)
+        ActionUpdate *actionUpdate = dynamic_cast<ActionUpdate *>(actions[0]);
+//        for(auto &actionUpdate : actions) {
+            if(actionUpdate->getGameName() == "car1") {
+                sprites.emplace(actionUpdate->getIdCreatorGame(), GameSprite(textures["car"], actionUpdate->getIdCreatorGame(), 0, Height/2, actionUpdate->getAngle()));
+            } else if(actionUpdate->getGameName() == "car2") {
+                sprites.emplace(actionUpdate->getIdCreatorGame(), GameSprite(textures["car"], actionUpdate->getIdCreatorGame(),Height/2, 0, actionUpdate->getAngle()));
+            } else if(actionUpdate->getGameName() == "ball") {
+                sprites.emplace(actionUpdate->getIdCreatorGame(), GameSprite(textures["ball"], actionUpdate->getIdCreatorGame(),Width/2,Height/3, actionUpdate->getAngle()));
+            } else if(actionUpdate->getGameName() == "scoreBoard") {
+                sprites.emplace(SCORE, GameSprite(textures["scoreBoard"],actionUpdate->getIdCreatorGame(), Width/2, 0, 0));
+            }
+
+//            switch(actionUpdate->getIdCreatorGame()) {
+//                case CAR:
+//                    sprites.emplace(actionUpdate->getIdCreatorGame(), GameSprite(textures["car"], actionUpdate->getIdCreatorGame(), actionUpdate->getX(), actionUpdate->getY(), actionUpdate->getAngle()));
+//                    break;
+//                case BALL:
+//                    sprites.emplace(BALL, GameSprite(textures["ball"],actionUpdate->getIdCreatorGame(), actionUpdate->getX(), actionUpdate->getY(), actionUpdate->getAngle()));
+//                    break;
+//                case SCORE:
+//                    sprites.emplace(SCORE, GameSprite(textures["scoreBoard"],actionUpdate->getIdCreatorGame(), Width / 2, 0, 0));
+//                    break;
+//            }
+
+
+        Worldview worldview(textures, sprites);
+
+        GameLoop gameLoop(renderer, Width, Height, updatesQueue, actionsQueue, worldview);
         gameLoop.run();
 
     } catch (const std::exception &e) {

@@ -27,7 +27,7 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(QWidget *parent = nullptr);
-    MainWindow(QWidget *parent, BlockingQueue<Action *> &updates, BlockingQueue<Action *> &actions);
+    MainWindow(QWidget *parent, ProtectedQueue<Action *> &updates, BlockingQueue<Action *> &actions);
     ~MainWindow();
 
     void displayMainMenu();
@@ -43,7 +43,7 @@ public slots:
 private:
     Ui::MainWindow *ui;
     GameScene scene;
-    BlockingQueue<Action*> &updatesQueue;
+    ProtectedQueue<Action*> &updatesQueue;
     BlockingQueue<Action*> &actionsQueue;
 
     void drawGUI();

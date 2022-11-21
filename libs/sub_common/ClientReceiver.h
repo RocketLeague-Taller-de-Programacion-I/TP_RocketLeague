@@ -11,6 +11,7 @@
 #include "Action.h"
 #include "protocolo.h"
 #include "BlockingQueue.h"
+#include "ProtectedQueue.h"
 
 class ClientReceiver : public Thread{
 private:
@@ -20,8 +21,8 @@ protected:
     void run() override;
 public:
     BlockingQueue<Action*> &updatesQueue;
-
     explicit ClientReceiver(Socket &skt_client, BlockingQueue<Action *> &updatesQueue);
+    ClientReceiver(Socket &skt_client, ProtectedQueue<Action *> &updatesQueue);
 
     void stop() override;
 };

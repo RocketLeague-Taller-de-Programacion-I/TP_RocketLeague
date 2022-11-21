@@ -10,18 +10,13 @@
 #include <queue>
 #include <condition_variable>
 #include "QueueIsEmptyException.h"
+#include "BlockingQueue.h"
 
 template<typename T>
-class ProtectedQueue
+class ProtectedQueue : public BlockingQueue<T>
 {
 public:
-    void push(T &element) {
-        std::unique_lock<std::mutex> lock(mutex);
-        queue.push(element);
-        signal.notify_all();
-    }
-
-    T pop(){
+    T pop() override {
         std::unique_lock<std::mutex> lock(mutex);
         if (isEmpty()) {
             throw QueueIsEmptyException("Empty Queue Exception");
@@ -36,6 +31,18 @@ public:
         return queue.empty();
     }
 
+    // pop if not empty
+    bool tryPop(T &element) {
+        std::unique_lock<std::mutex> lock(mutex);
+        if (isEmpty()) {
+            return false;
+        }
+        element = queue.front();
+        queue.pop();
+        return true;
+    }
+
+    ~ProtectedQueue() override = default;
 private:
     std::queue<T> queue;
     mutable std::mutex mutex;

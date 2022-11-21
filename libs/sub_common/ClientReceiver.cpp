@@ -9,6 +9,11 @@ ClientReceiver::ClientReceiver(Socket &skt_client, BlockingQueue<Action *> &upda
     this->closed = false;
 }
 
+ClientReceiver::ClientReceiver(Socket &skt_client, ProtectedQueue<Action *> &updatesQueue)
+        : skt_client(skt_client), updatesQueue(updatesQueue) {
+    this->closed = false;
+}
+
 void ClientReceiver::run() {
     Protocolo p;
     try {

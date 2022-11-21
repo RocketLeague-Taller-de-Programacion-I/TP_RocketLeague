@@ -4,7 +4,7 @@
 #include <iostream>
 #include <regex>
 
-MainWindow::MainWindow(QWidget *parent, BlockingQueue<Action *> &updates, BlockingQueue<Action *> &actions)
+MainWindow::MainWindow(QWidget *parent, ProtectedQueue<Action *> &updates, BlockingQueue<Action *> &actions)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , updatesQueue(updates)
@@ -107,12 +107,6 @@ void MainWindow::joinParticularGame(QString roomName) {
     uint8_t id = 0;
     Action *actionJoin = new ActionJoin(id, room);
     this->actionsQueue.push(actionJoin);
-
-    ActionUpdate *update = dynamic_cast<ActionUpdate *>(this->updatesQueue.pop());
-    if (update->getIdCreatorGame()) {
-        std::cout << "Game joined with id: " << (int)(update->getIdCreatorGame()) << std::endl;
-        std::cout << "Waiting for players" << std::endl;
-    }
     //exit qt
     close();
 }
@@ -261,7 +255,7 @@ void MainWindow::drawLoadingScreen() {
     int tyPos = height() / 2;
     titleText->setPos(txPos,tyPos);
     scene.addItem(titleText);
-    popFirstUpdate();
+//    popFirstUpdate();
 
     close();
 }

@@ -20,6 +20,7 @@ std::string ActionUpdate::getGameName() {
 std::vector<uint8_t> ActionUpdate::beSerialized() {
     std::vector<uint8_t> updateData;
     updateData.push_back(idCreator);
+    updateData.insert(updateData.end(), nameGame.begin(), nameGame.end());
     return Protocolo::serializeUpdateAction(updateData);
 }
 
@@ -29,4 +30,16 @@ uint8_t ActionUpdate::getIdCreatorGame() {
 
 uint8_t ActionUpdate::getType() const {
     return UPDATE;
+}
+
+uint8_t ActionUpdate::getX() {
+    return 0;
+}
+
+uint8_t ActionUpdate::getY() {
+    return 0;
+}
+
+uint8_t ActionUpdate::getAngle() {
+    return 0;
 }

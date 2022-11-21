@@ -24,13 +24,14 @@ void Client::run() {
         // create actions queue
         BlockingQueue<Action*> actionsQueue;
         // create updates queue
-        BlockingQueue<Action*> updatesQueue;
+        ProtectedQueue<Action*> updatesQueue;
         //launch ClientSender thread
         auto sender = new ClientSender(skt_client, actionsQueue);
         this->threads.push_back(sender);
         //launch ClientReceiver thread
         auto receiver = new ClientReceiver(skt_client, updatesQueue);
         this->threads.push_back(receiver);
+        //
         //launch render thread
         auto render_thread = new RenderThread(updatesQueue, actionsQueue);
         this->threads.push_back(render_thread);

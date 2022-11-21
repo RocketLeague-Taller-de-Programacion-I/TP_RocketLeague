@@ -3,25 +3,27 @@
 //
 
 #include <map>
+#include <utility>
 #include <unistd.h>
 #include "GameLoop.h"
 
-GameLoop::GameLoop(SDL2pp::Renderer &renderer, SDL2pp::Texture &texture, int xMax, int yMax,
-                   BlockingQueue<Action *> &updates,
-                   BlockingQueue<Action *> &actions)
+GameLoop::GameLoop(SDL2pp::Renderer &renderer, int xMax, int yMax, ProtectedQueue<Action *> &updates,
+                   BlockingQueue<Action *> &actions, Worldview &wv)
         : renderer(renderer),
-          player(texture),
           updatesQueue(updates),
           actionsQueue(actions),
           running(true),
           xMax(xMax),
-          yMax(yMax) {}
+          yMax(yMax),
+          wv(wv){}
 
 void GameLoop::run() {
     // Gameloop, notar como tenemos desacoplado el procesamiento de los inputs (handleEvents)
     // del update del modelo.
     while (running) {
+        std::cout << "running" << std::endl;
         handle_events();
+        //pop from updates queue
         update(FRAME_RATE);
         render();
         // la cantidad de segundos que debo dormir se debe ajustar en función
@@ -42,16 +44,16 @@ bool GameLoop::handle_events() {
                 SDL_KeyboardEvent& keyEvent = (SDL_KeyboardEvent&) event;
                 switch (keyEvent.keysym.sym) {
                     case SDLK_LEFT:
-                        player.moveLeft(this->xMax);
+//                        player.moveLeft(this->xMax);
                         break;
                     case SDLK_RIGHT:
-                        player.moveRight(this->xMax);
+//                        player.moveRight(this->xMax);
                         break;
                     case SDLK_UP:
-                        player.moveUp(this->yMax);
+//                        player.moveUp(this->yMax);
                         break;
                     case SDLK_DOWN:
-                        player.moveDown(this->yMax);
+//                        player.moveDown(this->yMax);
                         break;
                     case SDLK_ESCAPE:
                         running = false;
@@ -67,16 +69,16 @@ bool GameLoop::handle_events() {
                 SDL_KeyboardEvent& keyEvent = (SDL_KeyboardEvent&) event;
                 switch (keyEvent.keysym.sym) {
                     case SDLK_LEFT:
-                        player.stopMovingX();
+//                        player.stopMovingX();
                         break;
                     case SDLK_RIGHT:
-                        player.stopMovingX();
+//                        player.stopMovingX();
                         break;
                     case SDLK_UP:
-                        player.stopMovingY();
+//                        player.stopMovingY();
                         break;
                     case SDLK_DOWN:
-                        player.stopMovingY();
+//                        player.stopMovingY();
                         break;
                 }
                 // poppear de la cola de updatesQueue
