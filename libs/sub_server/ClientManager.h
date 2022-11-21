@@ -6,10 +6,11 @@
 #ifndef ROCKETLEAGUE_CLIENTMANAGER_H
 #define ROCKETLEAGUE_CLIENTMANAGER_H
 
+#include "gameManager.h"
 #include "../sub_common/thread.h"
 #include "../sub_common/socket.h"
+#include "sub_common/protocolo.h"
 #include "sub_common/BlockingQueue.h"
-#include "gameManager.h"
 #include "sub_common/ClientReceiver.h"
 #include "sub_common/ClientSender.h"
 
@@ -26,6 +27,7 @@ public:
     ClientManager(Socket &aClient, GameManager &aGameManager);
 
     void run() override;
+    void stop() override;
 
     bool joinThread();
 

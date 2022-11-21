@@ -19,7 +19,8 @@ enum actionType {
     CREATE_ROOM = 1,
     JOIN_ROOM,
     LIST_ROOMS,
-    MOVE
+    MOVE,
+    UPDATE
 };
 
 

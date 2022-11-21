@@ -10,7 +10,9 @@
 #include "../sub_common/thread.h"
 #include "../sub_common/socket.h"
 #include "ClientManager.h"
-
+#include <iostream>
+#include <algorithm>
+#include <sys/socket.h>
 
 class Server : public Thread{
  private:

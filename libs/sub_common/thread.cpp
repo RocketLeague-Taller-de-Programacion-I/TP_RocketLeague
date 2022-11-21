@@ -22,4 +22,8 @@ void Thread::join() {
     pthread_join(t, nullptr);
 }
 
+bool Thread::isRunning() {
+    return running;
+}
+
 Thread::~Thread() = default;

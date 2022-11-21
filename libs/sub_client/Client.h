@@ -7,26 +7,32 @@
 
 #include <cmath>
 #include <iostream>
-#include <QApplication>
-#include <SDL2pp/SDL.hh>
-#include <SDL2pp/SDLImage.hh>
-#include <SDL2pp/Window.hh>
-#include <SDL2pp/Renderer.hh>
-#include <SDL2pp/Texture.hh>
-#include <SDL2pp/Surface.hh>
-#include <SDL.h>
+#include <iostream>
+#include <algorithm>
+#include <sys/socket.h>
+#include <vector>
 
 #include "RenderThread.h"
-#include "../sub_common/socket.h"
+#include "sub_common/socket.h"
 #include "sub_common/ClientSender.h"
+#include "sub_common/ClientReceiver.h"
 
-class Client {
+class Client : public Thread {
 private:
     Socket skt_client;
+    bool closed;
+    std::vector<Thread*> threads;
+protected:
+    void run() override;
 public:
     Client(const char *host, const char *port);
     ~Client();
-    void start();
+    void stop() override;
+    void cleanThreads();
+
+    void startThreads();
+
+    void garbageCollector();
 };
 
 

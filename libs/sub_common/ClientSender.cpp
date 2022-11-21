@@ -24,6 +24,7 @@ void ClientSender::run() {
             // delete the action
             delete action;
         }
+        running = false;
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
     } catch (...) {

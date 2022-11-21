@@ -2,9 +2,6 @@
 // Created by franco on 24/10/22.
 //
 
-#include <iostream>
-#include <algorithm>
-#include <sys/socket.h>
 #include "Server.h"
 
 Server::Server(const char *port)
@@ -33,7 +30,7 @@ void Server::run() {
              */
             Socket client = accept_skt.accept();
 
-            auto *manager = new ClientManager(std::move(client),gameManager);
+            auto *manager = new ClientManager(client,gameManager);
             this->managers.push_back(manager);
             /*
              * Attend client:
