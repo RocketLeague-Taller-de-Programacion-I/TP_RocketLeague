@@ -11,7 +11,7 @@
 
 Action *ActionMaker::makeAction(std::vector<uint8_t> &data, GameManager &manager,
                                 std::function<void(BlockingQueue<Action *> *, BlockingQueue<Action *> *)> function) {
-    uint8_t type(data[0]);
+    uint8_t type(data[1]);
 
     switch (type) {
         case CREATE_ROOM:
@@ -29,7 +29,7 @@ Action *ActionMaker::makeAction(std::vector<uint8_t> &data, GameManager &manager
 Action *ActionMaker::makeCreateAction(std::vector<uint8_t> &data, GameManager &manager,
                                       std::function<void(BlockingQueue<Action *> *,
                                                          BlockingQueue<Action *> *)> function) {
-    uint8_t id(data[1]);
+    uint8_t id(data[0]);
     int capacity(data[2]);
     std::string name(data.begin()+3,data.end());
 //    std::shared_ptr<Action> pAction = std::make_shared<ActionCreateServer>(id, capacity, name);

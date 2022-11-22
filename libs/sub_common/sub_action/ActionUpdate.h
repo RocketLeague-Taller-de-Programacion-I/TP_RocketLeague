@@ -13,7 +13,6 @@ public:
     ~ActionUpdate() override;
 
     std::string getGameName();
-    uint8_t getId() override;
     void execute() override;
     std::vector<uint8_t> beSerialized() override;
 

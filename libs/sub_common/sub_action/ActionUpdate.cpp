@@ -26,10 +26,6 @@ std::vector<uint8_t> ActionUpdate::beSerialized() {
     return Protocolo::serializeUpdateAction(updateData);
 }
 
-uint8_t ActionUpdate::getId() {
-    return idInvoker;
-}
-
 uint8_t ActionUpdate::getX() {
     return 0;
 }

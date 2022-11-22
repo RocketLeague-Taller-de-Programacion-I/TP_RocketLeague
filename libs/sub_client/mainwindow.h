@@ -12,6 +12,7 @@
 #include "GameLoop.h"
 
 #include "Button.h"
+#include "sub_common/sub_action/ActionUpdate.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

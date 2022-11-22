@@ -67,13 +67,15 @@ void MainWindow::drawJoinGameMenu() {
     Action* actionList = new ActionList(id);
     this->actionsQueue.push(actionList);
 
-    auto update = dynamic_cast<ActionUpdate *>(updatesQueue.pop());
-
+    auto update = dynamic_cast<ActionUpdate*>(updatesQueue.pop());
+    /*
+     * SEGMENTATION FAUL PORQUE EL SERVER NO ENVIA NINGUN NOMBRE DE LAS PARTIDAS
+     */
     std::vector<std::string> games = parseList(update->getGameName());
     if(games.empty()) {
-//        drawTitle("No games available");
-//        drawBackButton();
-        games.push_back("game_test 1/2");
+       drawTitle("No games available");
+       drawBackButton();
+       games.push_back("game_test 1/2");
     }
     int i = 200;
     foreach(auto game, games) {
@@ -86,6 +88,21 @@ void MainWindow::drawJoinGameMenu() {
     }
     //crear evento de listar juegos
     drawBackButton();
+}
+
+std::vector<std::string> MainWindow::parseList(std::string basicString) {
+    // separate the string by commas
+    std::vector<std::string> vec;
+    std::string delimiter = ",";
+    size_t pos = 0;
+    std::string token;
+    while((pos = basicString.find(delimiter)) != std::string::npos) {
+        token = basicString.substr(0, pos);
+        vec.push_back(token);
+        basicString.erase(0, pos + delimiter.length());
+    }
+
+    return vec;
 }
 
 void MainWindow::createRoom() {
@@ -231,21 +248,6 @@ void MainWindow::drawSaveAndStartButton() {
 MainWindow::~MainWindow()
 {
     delete ui;
-}
-
-std::vector<std::string> MainWindow::parseList(std::string basicString) {
-    // separate the string by commas
-    std::vector<std::string> vec;
-    std::string delimiter = ",";
-    size_t pos = 0;
-    std::string token;
-    while((pos = basicString.find(delimiter)) != std::string::npos) {
-        token = basicString.substr(0, pos);
-        vec.push_back(token);
-        basicString.erase(0, pos + delimiter.length());
-    }
-
-    return vec;
 }
 
 void MainWindow::drawLoadingScreen() {
