@@ -3,24 +3,33 @@
 //
 
 #include <map>
+#include <utility>
 #include <unistd.h>
 #include "GameLoop.h"
 
-GameLoop::GameLoop(SDL2pp::Renderer &renderer, SDL2pp::Texture &texture, int xMax, int yMax): renderer(renderer),
-                                                                          player(texture),running(true), xMax(xMax), yMax(yMax){}
+GameLoop::GameLoop(SDL2pp::Renderer &renderer, int xMax, int yMax, ProtectedQueue<Action *> &updates,
+                   BlockingQueue<Action *> &actions, Worldview &wv)
+        : renderer(renderer),
+          updatesQueue(updates),
+          actionsQueue(actions),
+          running(true),
+          xMax(xMax),
+          yMax(yMax),
+          wv(wv){}
 
 void GameLoop::run() {
     // Gameloop, notar como tenemos desacoplado el procesamiento de los inputs (handleEvents)
     // del update del modelo.
     while (running) {
+        std::cout << "running" << std::endl;
         handle_events();
+        //pop from updates queue
         update(FRAME_RATE);
         render();
         // la cantidad de segundos que debo dormir se debe ajustar en función
         // de la cantidad de tiempo que demoró el handleEvents y el render
         usleep(FRAME_RATE);
     }
-    return;
 }
 
 bool GameLoop::handle_events() {
@@ -28,49 +37,56 @@ bool GameLoop::handle_events() {
     // Para el alumno: Buscar diferencia entre waitEvent y pollEvent
     // Aca estara la cola de eventos!!
     while(SDL_PollEvent(&event)){
+        Protocolo protocolo;
         switch(event.type) {
             case SDL_KEYDOWN: {
                 // ¿Qué pasa si mantengo presionada la tecla?
                 SDL_KeyboardEvent& keyEvent = (SDL_KeyboardEvent&) event;
                 switch (keyEvent.keysym.sym) {
                     case SDLK_LEFT:
-                        player.moveLeft(this->xMax);
-                        // cola_cliente.push(evento)
+//                        player.moveLeft(this->xMax);
                         break;
                     case SDLK_RIGHT:
-                        player.moveRight(this->xMax);
+//                        player.moveRight(this->xMax);
                         break;
                     case SDLK_UP:
-                        player.moveUp(this->yMax);
-                        // cola_cliente.push(evento)
+//                        player.moveUp(this->yMax);
                         break;
                     case SDLK_DOWN:
-                        player.moveDown(this->yMax);
+//                        player.moveDown(this->yMax);
                         break;
                     case SDLK_ESCAPE:
                         running = false;
                         break;
-
                 }
+                std::vector<uint8_t> movement(1);
+                movement[0] = protocolo.getMapCommand(keyEvent.keysym.sym);
+//                Action action(MOVE,movement);
+//                actionsQueue.push(action);
             } // Fin KEY_DOWN
                 break;
             case SDL_KEYUP: {
                 SDL_KeyboardEvent& keyEvent = (SDL_KeyboardEvent&) event;
                 switch (keyEvent.keysym.sym) {
                     case SDLK_LEFT:
-                        player.stopMovingX();
+//                        player.stopMovingX();
                         break;
                     case SDLK_RIGHT:
-                        player.stopMovingX();
+//                        player.stopMovingX();
                         break;
                     case SDLK_UP:
-                        player.stopMovingY();
+//                        player.stopMovingY();
                         break;
                     case SDLK_DOWN:
-                        player.stopMovingY();
+//                        player.stopMovingY();
                         break;
                 }
+                // poppear de la cola de updatesQueue
+                std::cout << "update to be popped of type: MOVE and data: " << std::endl;
             }// Fin KEY_UP
+            case SDLK_ESCAPE:
+                running = false;
+                break;
         } // fin switch(event)
     } // fin while(SDL_PollEvents)
     return true;
@@ -79,10 +95,12 @@ bool GameLoop::handle_events() {
 void GameLoop::render() {
     renderer.SetDrawColor(0x00, 0x00, 0x00);
     renderer.Clear();
-    player.render(renderer);
+    wv.render(renderer);
+    //    player.render(renderer);
     renderer.Present();
 }
 
 void GameLoop::update(float dt) {
-    player.update(dt);
+    std::cout << "update" << std::endl;
+    wv.update(dt);
 }

@@ -5,16 +5,34 @@
 #ifndef ROCKETLEAGUE_SERVER_H
 #define ROCKETLEAGUE_SERVER_H
 
+#include <cmath>
+#include <iostream>
+#include <iostream>
+#include <algorithm>
+#include <sys/socket.h>
+#include <vector>
 
-class Client {
+#include "RenderThread.h"
+#include "sub_common/socket.h"
+#include "sub_common/ClientSender.h"
+#include "sub_common/ClientReceiver.h"
+
+class Client : public Thread {
+private:
+    Socket skt_client;
+    bool closed;
+    std::vector<Thread*> threads;
+protected:
+    void run() override;
 public:
-    Client();
+    Client(const char *host, const char *port);
     ~Client();
-    void view_screen();
-    void hola();
-    void start();
+    void stop() override;
+    void cleanThreads();
 
-    int qt_init(int argc, char **argv);
+    void startThreads();
+
+    void garbageCollector();
 };
 
 

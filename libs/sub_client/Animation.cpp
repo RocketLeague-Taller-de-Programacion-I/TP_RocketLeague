@@ -40,7 +40,7 @@ void Animation::update(float dt) {
 void Animation::render(SDL2pp::Renderer &renderer, const SDL2pp::Rect dst, SDL_RendererFlip &flipType) {
     renderer.Copy(
             texture,
-            SDL2pp::Rect(0, 0, this->size*2.4, this->size),
+            SDL2pp::NullOpt,
             dst,
             0.0,                // don't rotate
             SDL2pp::NullOpt,    // rotation center - not needed

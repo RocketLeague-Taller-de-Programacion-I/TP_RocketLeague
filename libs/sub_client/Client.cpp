@@ -3,64 +3,80 @@
 //
 
 #include <iostream>
+#include <regex>
 #include "Client.h"
-#include "Greeter.h"
-#include <cmath>
-#include <iostream>
-#include "GameLoop.h"
-#include <QApplication>
-#include <QLabel>
-#include <SDL2pp/SDL.hh>
-#include <SDL2pp/SDLImage.hh>
-#include <SDL2pp/Window.hh>
-#include <SDL2pp/Renderer.hh>
-#include <SDL2pp/Texture.hh>
-#include <SDL2pp/Surface.hh>
-#include <SDL.h>
-#include <QPushButton>
-#include <QVBoxLayout>
 
 using namespace SDL2pp;
 #define TESTDATA_DIR "../libSDL2pp/testdata"
 static const float pi = 3.14159265358979323846f;
-Client::Client() {
-    //qt_init(argc, argv);
-}
+Client::Client(const char *host, const char *port) : skt_client(host, port) {}
 
 Client::~Client() { }
 
-void Client::view_screen() {
-// Initialize SDL library
-    SDL2pp::SDL sdl(SDL_INIT_VIDEO);
-    SDL_DisplayMode DM;
-    SDL_GetCurrentDisplayMode(0, &DM);
-    auto Width = DM.w;
-    auto Height = DM.h;
-    SDL2pp::Window sdlWindow("RocketLeague", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                             Width, Height,
-                             SDL_WINDOW_RESIZABLE);
-
-    // Creo renderer
-    SDL2pp::Renderer renderer(sdlWindow, -1, SDL_RENDERER_SOFTWARE);
-
-    // Encapsular en un repositorio de texturas para no crear multiples veces la misma textura
-    SDL2pp::Texture im(renderer,
-                       SDL2pp::Surface("../images/car.jpeg").SetColorKey(true, 0));
-
-    GameLoop gameloop(renderer, im, Width, Height);
-    gameloop.run();
-}
-int Client::qt_init(int argc, char *argv[]) {
-    QApplication app(argc, argv);
-    Greeter greeter;
-    greeter.show();
-    return app.exec();
-}
-void Client::hola() {
-    std::cout<<"nashe"<<std::endl;
+void Client::startThreads() {
+    for (auto & t : threads){
+        t->start();
+    }
 }
 
-void Client::start() {
-    qt_init(0, nullptr);
-    view_screen();
+void Client::run() {
+    try {
+        // create actions queue
+        BlockingQueue<Action*> actionsQueue;
+        // create updates queue
+        ProtectedQueue<Action*> updatesQueue;
+        //launch ClientSender thread
+        auto sender = new ClientSender(skt_client, actionsQueue);
+        this->threads.push_back(sender);
+        //launch ClientReceiver thread
+        auto receiver = new ClientReceiver(skt_client, updatesQueue);
+        this->threads.push_back(receiver);
+        //
+        //launch render thread
+        auto render_thread = new RenderThread(updatesQueue, actionsQueue);
+        this->threads.push_back(render_thread);
+
+        startThreads();
+        this->garbageCollector();
+
+    } catch (const std::exception &e) {
+        std::cerr << e.what() << std::endl;
+    } catch (...) {
+        std::cerr << "Error desconocido en la función run" << std::endl;
+    }
+    this->cleanThreads();
+}
+
+void Client::cleanThreads() {
+    for (auto & t : threads){
+        t->join();
+        delete t;
+    }
+}
+
+void Client::stop() {
+    closed = true;
+    this->skt_client.shutdown(SHUT_RDWR);
+    this->skt_client.close();
+    this->join();
+}
+
+
+bool waitIfFinished(Thread* thread) {
+    if (not thread->isRunning()) {
+        thread->stop();
+        thread->join();
+        delete thread;
+        return true;
+    } else {
+        return false;
+    }
+}
+
+void Client::garbageCollector() {
+    if (threads.empty()) return;
+    this->threads.erase(std::remove_if(this->threads.begin(),
+                                       this->threads.end(),
+                                       waitIfFinished),
+                        this->threads.end());
 }
