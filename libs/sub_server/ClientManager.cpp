@@ -7,12 +7,14 @@
 #include <memory>
 #include <functional>
 #include "ClientManager.h"
+#include "sub_common/protocolo.h"
+#include "sub_common/ClientReceiver.h"
 
 ClientManager::ClientManager(Socket &aClient,
                              GameManager &aGameManager) :
-                             client(std::move(aClient)),
-                             gameManager(aGameManager),
-                             closed(false), id(0){}
+        client(std::move(aClient)),
+        gameManager(aGameManager),
+        closed(false), id(0){}
 
 void ClientManager::run() {
     std::vector<uint8_t> data;

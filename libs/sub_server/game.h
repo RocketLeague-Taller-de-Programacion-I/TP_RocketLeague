@@ -10,15 +10,18 @@ class Action;
 #include <map>
 #include "sub_common/thread.h"
 #include "sub_common/BlockingQueue.h"
+#include "Match.h"
 
 typedef uint8_t idPlayer_t;
 
 class Game : public Thread {
 private:
-    uint8_t capacity;
+    Match match;
+    int capacity;
     int playerOnLine;
     std::string gameName;
-    //std::map<uint8_t ,BlockingQueue<Action>&> mapReceiver;
+    bool closed;
+
     std::map<uint8_t ,BlockingQueue<Action*>*> mapSender;
 
     BlockingQueue<Action*> *queue;
@@ -31,7 +34,8 @@ public:
     * No copiable
     */
     Game(const Game&) = delete;
-    Game(uint8_t capacity, std::string  name, BlockingQueue<Action *> *pQueue);
+    Game(int capacity, std::string  name, BlockingQueue<Action *> *pQueue);
+    ~Game() override;
 
     Game& operator=(const Game&) = delete;
 
@@ -43,7 +47,7 @@ public:
     void broadcastUpdate(Action* update);
     void broadcastUpdate(Action* update, uint8_t id);
 
-    void brodcastUpdates(std::vector<Action *> updates);
+    void brodcastUpdateGameEvents(std::vector<Action *> updates);
 };
 
 

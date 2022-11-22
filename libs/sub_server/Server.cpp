@@ -3,10 +3,14 @@
 //
 
 #include "Server.h"
+#include "box2d/b2_world.h"
 
 Server::Server(const char *port)
         : closed(false),
-          accept_skt(port) {}
+          accept_skt(port) {
+    b2Vec2 grav(0.0,0.2);
+    b2World m_world(grav);
+}
 
 /*
  * Mientras closed sea false aceptara clientes.
@@ -53,15 +57,15 @@ void Server::run() {
  */
 void Server::garbageCollector() {
     managers.erase(std::remove_if(managers.begin(),
-                                 managers.end(),
-                                 [](ClientManager *manager)
-                                     { if (manager->joinThread()) {
-                                         delete manager;
-                                         return true;
-                                     }
-                                         return false;
-                                     }),
-                  managers.end());
+                                  managers.end(),
+                                  [](ClientManager *manager)
+                                  { if (manager->joinThread()) {
+                                      delete manager;
+                                      return true;
+                                  }
+                                      return false;
+                                  }),
+                   managers.end());
 }
 /*
  * Limpia a los senders al igual que

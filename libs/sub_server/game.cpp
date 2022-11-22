@@ -3,12 +3,13 @@
 //
 
 #include "game.h"
-#include "sub_common/Action.h"
+#include "../sub_common/Action.h"
 #include "sub_common/ActionUpdate.h"
 
-Game::Game(uint8_t capacity,
+Game::Game(int capacity,
            std::string  name,
            BlockingQueue<Action *> *pQueue) :
+        match(name, capacity),
         capacity(capacity),
         playerOnLine(0),
         gameName(std::move(name)),
@@ -21,28 +22,33 @@ void Game::joinPlayer(uint8_t id, BlockingQueue<Action*> *sender) {
     playerOnLine++;
     mapSender.insert(std::pair<uint8_t ,BlockingQueue<Action*>*>(id, sender));
     if (playerOnLine == capacity){
-        start();
-        // broadcast new update to all clients
-        std::string mensaje = "START GAME";
-        Action* update = new ActionUpdate(id, mensaje); //creacion de partida, devuelve el id
-        broadcastUpdate(update);
-    } else {
-        std::string mensaje = "WAITING FOR PLAYERS";
-        Action* update = new ActionUpdate(id, mensaje); //creacion de partida, devuelve el id
-        broadcastUpdate(update);
-    }
+//        int local = this->match.local();
+//        int visit = this->match.visit();
+            start();
+            // broadcast new update to all clients
+            std::string mensaje = "START GAME";
+            Action* update = new ActionUpdate(id, mensaje); //creacion de partida, devuelve el id
+            broadcastUpdate(update);
+        } else {
+            std::string mensaje = "WAITING FOR PLAYERS";
+            Action* update = new ActionUpdate(id, mensaje); //creacion de partida, devuelve el id
+            broadcastUpdate(update);
+        }
+
 
 }
 
 void Game::run() {
     // pop actions from queue, processed them and broadcast them
     while (true) {
-        Action *action = queue->pop();
-        if (action->getType() == UPDATE) {
+        /*ActionMove *action = dynamic_cast<ActionMove*>(queue->pop());
+        if (action->getType() == UPDATE) {  //  El tipo movimiento que recibo
             ActionUpdate *actionUpdate = dynamic_cast<ActionUpdate *>(action);
             std::cout << "Game " << gameName << " received update: " << actionUpdate->getGameName() << std::endl;
-        }
+
+         */
     }
+    // ActionMove *action = dynamic_cast<ActionMove*>(queue->pop());
 }
 
 bool Game::isFull() const {
@@ -55,23 +61,23 @@ BlockingQueue<Action *> * Game::getQueue() {
 
 void Game::stop() {}
 
-void Game::broadcastUpdate(Action *update, uint8_t id) {
-    auto it = mapSender.find(id);
-    if (it != mapSender.end()){
-        it->second->push(update);
-    }
-}
-
 void Game::broadcastUpdate(Action *update) {
     for (auto & sender : mapSender) {
         sender.second->push(update);
     }
 }
 
-void Game::brodcastUpdates(std::vector<Action *> updates) {
+void Game::brodcastUpdateGameEvents(std::vector<Action *> updates) {
     for (auto & sender : mapSender) {
         for (auto & update : updates) {
             sender.second->push(update);
         }
     }
+}
+
+Game::~Game() {
+    for (auto & sender : mapSender) {
+        delete sender.second;
+    }
+    join();
 }

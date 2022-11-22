@@ -15,13 +15,13 @@
 #include <sys/socket.h>
 
 class Server : public Thread{
- private:
+private:
     bool closed;
     Socket accept_skt;
     std::vector<ClientManager*> managers;
- protected:
+protected:
     void run() override;
- public:
+public:
     explicit Server(const char *port);
 
     void stop() override;
