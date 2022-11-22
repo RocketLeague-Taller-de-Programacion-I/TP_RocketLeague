@@ -60,8 +60,8 @@ void RenderThread::run() {
         std::map<uint8_t, GameSprite> sprites;
         //pop everything from updates queue
         //vector of Action*
-        std::vector<Action *> actions;
-//        std::vector<ActionUpdate*> actions;
+//        std::vector<Action *> actions;
+        std::vector<ActionUpdate*> actions;
         std::string name = "car1";
         uint8_t id = 1;
         actions.push_back(new ActionUpdate(id,name));
@@ -75,15 +75,15 @@ void RenderThread::run() {
         id = 7;
         actions.push_back(new ActionUpdate(id,name));
 
-        updatesQueue.tryPop(actions[0]);
+//        updatesQueue.tryPop(actions[0]);
 
-//        for(int i = 0; i < 1; i++){ //2 players 1 score 1 ball
+//        for(int i = 0; i < 4; i++){ //2 players 1 score 1 ball
 //            updatesQueue.tryPop(actions[i]);
 //             id of players (1,2,3,4)
 //             id score (5)
 //             id ball (6)
-        ActionUpdate *actionUpdate = dynamic_cast<ActionUpdate *>(actions[0]);
-//        for(auto &actionUpdate : actions) {
+//        ActionUpdate *actionUpdate = dynamic_cast<ActionUpdate *>(actions[0]);
+        for(auto &actionUpdate : actions) {
             if(actionUpdate->getGameName() == "car1") {
                 sprites.emplace(actionUpdate->getIdCreatorGame(), GameSprite(textures["car"], actionUpdate->getIdCreatorGame(), 0, Height/2, actionUpdate->getAngle()));
             } else if(actionUpdate->getGameName() == "car2") {
@@ -105,6 +105,7 @@ void RenderThread::run() {
 //                    sprites.emplace(SCORE, GameSprite(textures["scoreBoard"],actionUpdate->getIdCreatorGame(), Width / 2, 0, 0));
 //                    break;
 //            }
+        }
 
 
         Worldview worldview(textures, sprites);

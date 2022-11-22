@@ -84,6 +84,9 @@ bool GameLoop::handle_events() {
                 // poppear de la cola de updatesQueue
                 std::cout << "update to be popped of type: MOVE and data: " << std::endl;
             }// Fin KEY_UP
+            case SDLK_ESCAPE:
+                running = false;
+                break;
         } // fin switch(event)
     } // fin while(SDL_PollEvents)
     return true;
