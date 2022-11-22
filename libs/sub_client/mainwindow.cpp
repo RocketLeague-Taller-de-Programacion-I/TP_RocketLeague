@@ -1,6 +1,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "sub_common/ActionUpdate.h"
+#include "sub_common/sub_action/ActionList.h"
+#include "sub_common/sub_action/ActionCreate.h"
+#include "sub_common/sub_action/ActionJoin.h"
+#include "sub_common/sub_action/ActionUpdate.h"
 #include <iostream>
 #include <regex>
 
@@ -13,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent, ProtectedQueue<Action *> &updates, Block
     ui->setupUi(this);
     // Seteo un Objeto QGraphicsScene para manejar la escena del juego
     ui->view->setScene(&this->scene);
-    ui->view->setStyleSheet("border-image: url(/home/roby/Documents/FIUBA/EnCurso/Taller de Programacion I/TP3/TP_RocketLeague/images/rocketLig.jpg);");
+    ui->view->setStyleSheet("border-image: url(../images/rocketLig.jpg)");
     this->lineEdit = findChild<QLineEdit*>("lineEditName");
     this->cantPlayers = findChild<QSpinBox*>("cantPlayers");
     this->label = findChild<QLabel*>("label");
@@ -27,7 +30,7 @@ void MainWindow::start() {
     this->label->hide();
 
     //set menu background
-    ui->view->setStyleSheet("border-image: url(/home/roby/Documents/FIUBA/EnCurso/Taller de Programacion I/TP3/TP_RocketLeague/images/menu.png);");
+    ui->view->setStyleSheet("border-image: url(../images/menu.png)");
 
     drawGUI();
 }
@@ -108,12 +111,13 @@ void MainWindow::joinParticularGame(QString roomName) {
     Action *actionJoin = new ActionJoin(id, room);
     this->actionsQueue.push(actionJoin);
 
-    ActionUpdate *update = dynamic_cast<ActionUpdate *>(this->updatesQueue.pop());
-    if (update->getIdCreatorGame()) {
+    auto *update = this->updatesQueue.pop();
+   /* if (update->getIdCreatorGame()) {
         std::cout << "Game joined with id: " << (int)(update->getIdCreatorGame()) << std::endl;
         std::cout << "Waiting for players" << std::endl;
-    }
+    }*/
     //exit qt
+    update->execute();
     close();
 }
 
@@ -156,7 +160,7 @@ void MainWindow::drawGUI() {
 
 void MainWindow::displayMainMenu() {
     //set menu background
-    ui->view->setStyleSheet("border-image: url(/home/roby/Documents/FIUBA/EnCurso/Taller de Programacion I/TP3/TP_RocketLeague/images/rocketLig.jpg);");
+    ui->view->setStyleSheet("border-image: url(../images/rocketLig.jpg)");
     this->lineEdit->show();
     this->cantPlayers->hide();
     this->label->hide();
@@ -251,7 +255,7 @@ void MainWindow::drawLoadingScreen() {
     this->cantPlayers->hide();
     this->label->hide();
 
-    ui->view->setStyleSheet("border-image: url(/home/roby/Documents/FIUBA/EnCurso/Taller de Programacion I/TP3/TP_RocketLeague/images/loadingScreen.jpeg);");
+    ui->view->setStyleSheet("border-image: url(../images/loadingScreen.jpeg)");
 
     // create the title text
     QGraphicsTextItem* titleText = new QGraphicsTextItem(QString("Waiting for more players to join"));
@@ -267,9 +271,8 @@ void MainWindow::drawLoadingScreen() {
 }
 
 void MainWindow::popFirstUpdate() {
-    auto update = dynamic_cast<ActionUpdate *>(updatesQueue.pop());
-    std::cout << "Update received" << std::endl;
-    std::cout << "Game created with id: " << (int)(update->getIdCreatorGame()) << std::endl;
+    auto update = updatesQueue.pop();
+    update->execute();
     delete update;
 }
 

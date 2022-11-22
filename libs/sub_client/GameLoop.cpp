@@ -2,8 +2,6 @@
 // Created by franco on 03/11/22.
 //
 
-#include <map>
-#include <utility>
 #include <unistd.h>
 #include "GameLoop.h"
 

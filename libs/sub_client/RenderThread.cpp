@@ -3,6 +3,7 @@
 #include <QApplication>
 #include "RenderThread.h"
 #include "Worldview.h"
+#include "sub_common/sub_action/ActionUpdate.h"
 
 using namespace SDL2pp;
 

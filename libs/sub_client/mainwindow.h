@@ -10,10 +10,6 @@
 
 #include "gamescene.h"
 #include "GameLoop.h"
-#include "sub_server/ActionCreateServer.h"
-#include "sub_common/ActionUpdate.h"
-#include "sub_server/ActionJoinServer.h"
-#include "sub_server/ActionListServer.h"
 
 #include "Button.h"
 
@@ -26,7 +22,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+    explicit MainWindow(QWidget *parent = nullptr);
     MainWindow(QWidget *parent, ProtectedQueue<Action *> &updates, BlockingQueue<Action *> &actions);
     ~MainWindow();
 
