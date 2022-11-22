@@ -4,7 +4,7 @@
 
 #ifndef ROCKETLEAGUE_GAME_H
 #define ROCKETLEAGUE_GAME_H
-class Action;
+
 #include <cstdint>
 #include <string>
 #include <map>

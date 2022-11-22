@@ -11,7 +11,7 @@
 #define LOCALGOAL (-37.985)
 #define VISITGOAL  (37.985)
 
-Match::Match(std::string gameName, int required) : name(std::move(gameName)), playersRequired(required), playersConnected(0), world(b2World(b2Vec2(0,-10))), goalsLocal(0), goalsVisit(0) {
+Match::Match(std::string gameName, int required) : name(std::move(gameName)), world(b2World(b2Vec2(0,-10))), playersConnected(0), playersRequired(required), goalsLocal(0), goalsVisit(0) {
     world.SetContactListener(&this->listener);
     myUserData = std::make_unique<MyFixtureUserDataType>();
     fixDef.userData.pointer = reinterpret_cast<uintptr_t>(myUserData.get());
@@ -30,13 +30,13 @@ Match::Match(std::string gameName, int required) : name(std::move(gameName)), pl
 }
 
 
-void Match::addPlayer(int &id) {
+void Match::addPlayer(uint8_t &id) {
     this->players[id] = new Car(&this->world);
     this->playersConnected++;
 }
 
 Match::~Match() {
-    for ( std::pair<const int,Car*> &player : players){
+    for ( auto &player : players){
         //Plaats *p = place.second;
         delete player.second;
         player.second = nullptr;
@@ -51,7 +51,7 @@ void Match::step() {
 }
 float Match::carsInfo() {
    step();
-   float carsConnected;
+   float carsConnected(0);
     for (auto& player : this->players) {
         //  cppcheck-suppress useStlAlgorithm
         carsConnected = (player.second->X());
@@ -60,16 +60,16 @@ float Match::carsInfo() {
     return carsConnected;
 
 }
-void Match::moveRight(int &id, std::function<void(ActionUpdate * )> function) {
+void Match::moveRight(uint8_t &id, std::function<void(ActionUpdate * )> function) {
     this->players.at(id)->goRight();
     // update
 }
 void Match::info() {
 }
-void Match::moveLeft(int &id, std::function<void(ActionUpdate * )> function) {
+void Match::moveLeft(uint8_t &id, std::function<void(ActionUpdate * )> function) {
     this->players.at(id)->goLeft();
 }
-void Match::jump(int &id, std::function<void(ActionUpdate * )> function) {
+void Match::jump(uint8_t &id, std::function<void(ActionUpdate * )> function) {
     this->players.at(id)->jump();
 }
 void Match::checkGoals() {
@@ -82,7 +82,7 @@ void Match::checkGoals() {
        this->ball->restartGame();
    }
 }
-void Match::updateGame(int &id) {
+void Match::updateGame(uint8_t &id) {
 }
 int Match::local() {
     return this->goalsLocal;

@@ -3,10 +3,6 @@
 //
 
 #include "game.h"
-#include "../sub_common/sub_action/Action.h"
-#include "../sub_common/sub_action/ActionMove.h"
-#include "sub_common/sub_action/ActionUpdate.h"
-#include "sub_common/sub_action/ActionUpdateScore.h"
 #include "sub_common/sub_action/ActionUpdateBall.h"
 
 Game::Game(int capacity,
@@ -24,16 +20,17 @@ std::string Game::information() {
 void Game::joinPlayer(uint8_t id, BlockingQueue<Action*> *sender) {
     playerOnLine++;
     mapSender.insert(std::pair<uint8_t ,BlockingQueue<Action*>*>(id, sender));
-    if (playerOnLine == capacity){
-        int local = this->match.local();
-        int visit = this->match.visit();
+
+    if (isFull()){
+       // int local = this->match.local();
+        //int visit = this->match.visit();
         std::vector<int> ballInfo = this->match.ballInfo();
         Action* updateBall = new ActionUpdateBall(id ,ballInfo[0], ballInfo[1]);
         sender->push(updateBall);
         start();
     } else {
-        int local = this->match.local();
-        int visit = this->match.visit();
+        //int local = this->match.local();
+        //int visit = this->match.visit();
         std::vector<int> ballInfo = this->match.ballInfo();
         Action* updateBall = new ActionUpdateBall(id ,ballInfo[0], ballInfo[1]);
         sender->push(updateBall);

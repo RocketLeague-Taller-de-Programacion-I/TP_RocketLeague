@@ -4,11 +4,11 @@
 #ifndef ROCKETLEAGUE_PROTOCOLO_H
 #define ROCKETLEAGUE_PROTOCOLO_H
 
-#include <cstdint>
 #include <SDL2/SDL_keycode.h>
-#include <string>
 #include <unordered_map>
-#include <memory>
+#include <vector>
+#include "sub_common/sub_action/Action.h"
+
 
 enum action {
     NOP,

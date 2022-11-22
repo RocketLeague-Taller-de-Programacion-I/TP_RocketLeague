@@ -4,11 +4,10 @@
 
 #include <iostream>
 #include "gameManager.h"
-#include "sub_common/ActionUpdate.h"
 
 void GameManager::cleanGames() {
     for (auto & game: games) {
-        delete &game.second;
+        delete game.second;
     }
 }
 
@@ -52,6 +51,8 @@ void GameManager::joinGame(uint8_t idCreator, const std::string& nameGame, std::
         games[nameGame]->joinPlayer(idCreator,queueSender);
         startClientThreads(games[nameGame]->getQueue(), queueSender);
     }
+
+
 }
 
 /* create new function for gameManager that uses doble dispatch to execute an action

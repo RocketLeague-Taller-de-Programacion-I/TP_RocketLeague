@@ -2,13 +2,11 @@
 // Created by lucaswaisten on 04/11/22.
 //
 
-#include "Action.h"
 #include "protocolo.h"
-#include "ActionCreate.h"
-#include "ActionList.h"
-#include "ActionJoin.h"
-#include "ActionUpdate.h"
-
+#include "sub_common/sub_action/ActionCreate.h"
+#include "sub_common/sub_action/ActionJoin.h"
+#include "sub_common/sub_action/ActionList.h"
+#include "sub_common/sub_action/ActionUpdate.h"
 #include <sstream>
 #include <regex>
 /*
@@ -64,7 +62,7 @@ Action* Protocolo::parseCreateAction(const std::vector<uint8_t> &data) {
 //    std::shared_ptr<Action> pAction = std::make_shared<ActionCreateServer>(id, capacity, name);
 //    std::unique_ptr<Action> pAction(new ActionCreateServer(id, capacity, std::move(name)));
     // create pointer to derived class and store into pointer of base class
-    Action* pAction = new ActionCreate(id, capacity, std::move(name));
+    Action* pAction = new ActionCreate(id, capacity, name);
     return pAction;
 }
 
@@ -84,7 +82,8 @@ Action * Protocolo::parseListAction(const std::vector<uint8_t> &data) {
 //    std::shared_ptr<Action> pAction = std::make_shared<ActionListServer>(0);
 //    std::unique_ptr<Action> pAction(new ActionListServer(0));
     // create pointer to derived class and store into pointer of base class
-    Action* pAction = new ActionList(0);
+    uint8_t id = 0;
+    Action* pAction = new ActionList(id);
     return pAction;
 }
 
