@@ -12,6 +12,15 @@ add_library(lib_server
         ActionJoinServer.h
         ActionListServer.cpp
         ActionListServer.h
-        ActionMaker.cpp ActionMaker.h)
+        ActionMaker.cpp
+        ActionMaker.h
+        Ball.cpp
+        Ball.h
+        Car.cpp
+        Car.h
+        Match.cpp
+        Match.h
+        MyContactListener.cpp
+        MyContactListener.h)
 
 target_link_libraries(lib_server lib_common)
