@@ -11,10 +11,10 @@
 
 class ActionCreateServer : public Action {
 public:
-    explicit ActionCreateServer(uint8_t &id, int &c, const std::string &name, GameManager &gameManager,
+    explicit ActionCreateServer(uint8_t &id, uint8_t &c, const std::string &name, GameManager &gameManager,
                                 std::function<void(BlockingQueue<Action *> *, BlockingQueue<Action *> *)> function);
 
-    int getCapacity() const;
+    uint8_t getCapacity() const;
 
     std::string getGameName();
 
@@ -28,7 +28,7 @@ public:
 private:
     GameManager &gameManager;
     std::function<void(BlockingQueue<Action *> *, BlockingQueue<Action *> *)> startClientThreads;
-    int &capacityGame;
+    uint8_t &capacityGame;
     const std::string &nameGame;
 };
 

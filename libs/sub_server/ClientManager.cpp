@@ -56,7 +56,12 @@ void ClientManager::startClientThreads(BlockingQueue<Action *> *qReceiver, Block
     clientSenderThread->start();
 }
 
-void ClientManager::stop() {}
+void ClientManager::stop() {
+    this->clientReceiverThread->stop();
+    this->clientSenderThread->stop();
+    this->clientReceiverThread->join();
+    this->clientSenderThread->join();
+}
 
 void ClientManager::execute(std::vector<uint8_t> &data) {
     uint8_t byte_to_read;

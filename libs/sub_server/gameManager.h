@@ -12,7 +12,7 @@
 
 class GameManager {
     std::mutex mutex;
-    std::map<std::string, Game*> games;
+    std::map<std::string, Game&> games;
 public:
    std::string listGames();
 

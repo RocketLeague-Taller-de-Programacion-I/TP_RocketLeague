@@ -15,7 +15,7 @@ Game::Game(int capacity,
            queue(pQueue) {}
 
 std::string Game::information() {
-    return gameName+" "+std::to_string(playerOnLine)+"/"+std::to_string(capacity);
+    return (gameName+" "+std::to_string(playerOnLine)+"/"+std::to_string(capacity));
 }
 void Game::joinPlayer(uint8_t id, BlockingQueue<Action*> *sender) {
     playerOnLine++;

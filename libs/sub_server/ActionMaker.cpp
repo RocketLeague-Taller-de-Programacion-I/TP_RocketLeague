@@ -30,7 +30,7 @@ Action *ActionMaker::makeCreateAction(std::vector<uint8_t> &data, GameManager &m
                                       std::function<void(BlockingQueue<Action *> *,
                                                          BlockingQueue<Action *> *)> function) {
     uint8_t id(data[0]);
-    int capacity(data[2]);
+    uint8_t capacity(data[2]);
     std::string name(data.begin()+3,data.end());
 //    std::shared_ptr<Action> pAction = std::make_shared<ActionCreateServer>(id, capacity, name);
 //    std::unique_ptr<Action> pAction(new ActionCreateServer(id, capacity, std::move(name)));
