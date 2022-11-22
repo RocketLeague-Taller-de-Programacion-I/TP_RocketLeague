@@ -12,6 +12,8 @@
 #include "Car.h"
 #include "MyContactListener.h"
 #include "Ball.h"
+#include "../sub_common/sub_action/ActionUpdate.h"
+
 
 class Match {
 private:
@@ -32,21 +34,19 @@ private:
 public:
     Match(std::string name, int required);
     ~Match();
-    void update();
-
     void addPlayer(int &id);
-
     float carsInfo();
-
-    void moveRight(int &id);
-
-    float info();
-
-    void moveLeft(int &id);
-
-    void jump(int &id);
-
+    void moveRight(int &id, std::function<void(ActionUpdate * )> function);
+    void info();
+    void moveLeft(int &id, std::function<void(ActionUpdate * )> function);
+    void jump(int &id, std::function<void(ActionUpdate * )> function);
     void checkGoals();
+    void step();
+    void updateGame(int &id);
+    int visit();
+    int local();
+
+    std::vector<int> ballInfo();
 };
 
 

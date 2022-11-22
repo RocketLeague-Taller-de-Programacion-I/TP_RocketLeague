@@ -44,32 +44,32 @@ Match::~Match() {
     delete this->ball;
 }
 
-void Match::update() {
+void Match::step() {
     this->world.Step(0.15, 42, 3);
-     usleep(0.015*1000000);
+    usleep(0.015*1000000);
     //  enviar a todos los clientes la respuesta
-
 }
 float Match::carsInfo() {
-    update();
+   step();
    float carsConnected;
     for (auto& player : this->players) {
         //  cppcheck-suppress useStlAlgorithm
-        carsConnected = (player.second->Y());
+        carsConnected = (player.second->X());
     }
+
     return carsConnected;
 
 }
-void Match::moveRight(int &id) {
+void Match::moveRight(int &id, std::function<void(ActionUpdate * )> function) {
     this->players.at(id)->goRight();
+    // update
 }
-float Match::info() {
-
+void Match::info() {
 }
-void Match::moveLeft(int &id) {
+void Match::moveLeft(int &id, std::function<void(ActionUpdate * )> function) {
     this->players.at(id)->goLeft();
 }
-void Match::jump(int &id) {
+void Match::jump(int &id, std::function<void(ActionUpdate * )> function) {
     this->players.at(id)->jump();
 }
 void Match::checkGoals() {
@@ -81,4 +81,20 @@ void Match::checkGoals() {
        this->goalsLocal++;
        this->ball->restartGame();
    }
+}
+void Match::updateGame(int &id) {
+}
+int Match::local() {
+    return this->goalsLocal;
+}
+int Match::visit() {
+    return this->goalsVisit;
+}
+std::vector<int> Match::ballInfo() {
+    std::vector<int> info;
+    int x = this->ball->X();
+    int y = this->ball->Y();
+    info.emplace_back(x);
+    info.emplace_back(y);
+    return info;
 }

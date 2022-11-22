@@ -1,9 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "sub_common/ActionUpdate.h"
-#include "sub_common/ActionList.h"
-#include "sub_common/ActionCreate.h"
-#include "sub_common/ActionJoin.h"
 #include <iostream>
 #include <regex>
 
@@ -110,6 +107,12 @@ void MainWindow::joinParticularGame(QString roomName) {
     uint8_t id = 0;
     Action *actionJoin = new ActionJoin(id, room);
     this->actionsQueue.push(actionJoin);
+
+    ActionUpdate *update = dynamic_cast<ActionUpdate *>(this->updatesQueue.pop());
+    if (update->getIdCreatorGame()) {
+        std::cout << "Game joined with id: " << (int)(update->getIdCreatorGame()) << std::endl;
+        std::cout << "Waiting for players" << std::endl;
+    }
     //exit qt
     close();
 }
@@ -258,7 +261,7 @@ void MainWindow::drawLoadingScreen() {
     int tyPos = height() / 2;
     titleText->setPos(txPos,tyPos);
     scene.addItem(titleText);
-//    popFirstUpdate();
+    popFirstUpdate();
 
     close();
 }
@@ -266,7 +269,7 @@ void MainWindow::drawLoadingScreen() {
 void MainWindow::popFirstUpdate() {
     auto update = dynamic_cast<ActionUpdate *>(updatesQueue.pop());
     std::cout << "Update received" << std::endl;
-    std::cout << "Game created with id: " << (int)(update->getId()) << std::endl;
+    std::cout << "Game created with id: " << (int)(update->getIdCreatorGame()) << std::endl;
     delete update;
 }
 

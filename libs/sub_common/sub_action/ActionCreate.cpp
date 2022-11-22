@@ -3,7 +3,7 @@
 //
 
 #include "ActionCreate.h"
-#include "protocolo.h"
+#include "../protocolo.h"
 
 ActionCreate::ActionCreate(uint8_t &id, uint8_t &players, std::string &name) : Action(id), players(players), gameName(name) { }
 

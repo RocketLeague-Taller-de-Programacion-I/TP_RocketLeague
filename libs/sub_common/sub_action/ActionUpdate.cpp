@@ -3,7 +3,7 @@
 //
 
 #include "ActionUpdate.h"
-#include "protocolo.h"
+#include "sub_common/protocolo.h"
 
 ActionUpdate::ActionUpdate(uint8_t& id, std::string& returnMessage) : Action(id) {}
 

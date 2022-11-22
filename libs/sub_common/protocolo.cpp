@@ -4,6 +4,9 @@
 
 #include "Action.h"
 #include "protocolo.h"
+#include "ActionCreate.h"
+#include "ActionList.h"
+#include "ActionJoin.h"
 #include "ActionUpdate.h"
 
 #include <sstream>

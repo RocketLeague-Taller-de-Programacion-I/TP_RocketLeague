@@ -3,7 +3,7 @@
 //
 
 #include "ActionJoin.h"
-#include "protocolo.h"
+#include "sub_common/protocolo.h"
 
 ActionJoin::ActionJoin(uint8_t &id, std::string &name) : Action(id), gameName(name) { }
 
