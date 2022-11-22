@@ -39,10 +39,7 @@ public:
 
     void startClientThreads(BlockingQueue<Action *> *qReceiver, BlockingQueue<Action *> *senderQueue);
 
-    void exectue(Action *pAction);
-    void exectue(ActionCreateServer *pAction);
-    void exectue(ActionJoinServer *pAction);
-    void exectue(ActionListServer *pAction);
+    void execute(std::vector<uint8_t> &data);
 };
 
 

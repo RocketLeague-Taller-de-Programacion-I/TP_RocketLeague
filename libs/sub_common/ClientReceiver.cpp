@@ -5,16 +5,9 @@
 #include <functional>
 #include "ClientReceiver.h"
 
-ClientReceiver::ClientReceiver(Socket &skt_client, BlockingQueue<Action *> &updatesQueue)
-    : skt_client(skt_client), updatesQueue(updatesQueue) {
-    this->closed = false;
-}
-
 ClientReceiver::ClientReceiver(Socket &skt_client, ProtectedQueue<Action *> &updatesQueue)
-        : skt_client(skt_client), updatesQueue(updatesQueue) {
-    this->closed = false;
-}
-
+        : skt_client(skt_client), updatesQueue(updatesQueue), closed(false) {}
+ClientReceiver::ClientReceiver(Socket &skt_client, BlockingQueue<Action *> &updatesQueue) : skt_client(skt_client), updatesQueue(updatesQueue), closed(false) {}
 void ClientReceiver::run() {
     Protocolo p;
     try {
@@ -41,3 +34,5 @@ void ClientReceiver::run() {
     }
 }
 void ClientReceiver::stop() {}
+
+

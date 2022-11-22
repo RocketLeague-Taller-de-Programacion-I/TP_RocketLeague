@@ -105,7 +105,7 @@ Action * Protocolo::parseUpdateAction(const std::vector<uint8_t> &vector) {
 std::vector<uint8_t> Protocolo::serializeCreateAction(const std::vector<uint8_t> &data) {
     std::vector<uint8_t> result;
     result.emplace_back(CREATE_ROOM); //type
-    result.emplace_back(1); //id to be received
+   // result.emplace_back(1); //id to be received
     result.insert(result.end(), data.begin(), data.end());
     return result;
 }

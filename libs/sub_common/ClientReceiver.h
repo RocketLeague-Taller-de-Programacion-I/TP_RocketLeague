@@ -17,12 +17,13 @@ class ClientReceiver : public Thread{
 private:
     Socket &skt_client;
     bool closed;
+    BlockingQueue<Action*> &updatesQueue;
 protected:
     void run() override;
 public:
-    BlockingQueue<Action*> &updatesQueue;
-    explicit ClientReceiver(Socket &skt_client, BlockingQueue<Action *> &updatesQueue);
+
     ClientReceiver(Socket &skt_client, ProtectedQueue<Action *> &updatesQueue);
+    ClientReceiver(Socket &skt_client, BlockingQueue<Action *> &updatesQueue);
 
     void stop() override;
 };
