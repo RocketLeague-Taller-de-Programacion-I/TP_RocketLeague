@@ -22,5 +22,5 @@ add_library(lib_common
         QueueIsEmptyException.cpp
         QueueIsEmptyException.h
         ActionUpdate.cpp
-        ActionUpdate.h)
+        ActionUpdate.h ActionList.cpp ActionList.h ActionCreate.cpp ActionCreate.h ActionJoin.cpp ActionJoin.h)
 target_link_libraries(lib_common)

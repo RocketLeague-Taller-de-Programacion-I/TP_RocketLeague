@@ -1,6 +1,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "sub_common/ActionUpdate.h"
+#include "sub_common/ActionList.h"
+#include "sub_common/ActionCreate.h"
+#include "sub_common/ActionJoin.h"
 #include <iostream>
 #include <regex>
 
@@ -61,8 +64,7 @@ void MainWindow::drawJoinGameMenu() {
     //list all the games
     //draw a button for each game
     uint8_t id = 0;
-    Action* actionList = new ActionListServer(id, <#initializer#>,
-                                              std::function<void(BlockingQueue<Action *> *, BlockingQueue<Action *> *)>());
+    Action* actionList = new ActionList(id);
     this->actionsQueue.push(actionList);
 
     auto update = dynamic_cast<ActionUpdate *>(updatesQueue.pop());
@@ -90,9 +92,7 @@ void MainWindow::createRoom() {
     std::string roomName = this->lineEdit->text().toStdString();
     uint8_t players = this->cantPlayers->value();
     uint8_t id = 0;
-    Action* actionCreate = new ActionCreateServer(id, players, roomName, <#initializer#>,
-                                                  std::function<void(BlockingQueue<Action *> *,
-                                                               BlockingQueue<Action *> *)>());
+    Action* actionCreate = new ActionCreate(id, players, roomName);
     this->actionsQueue.push(actionCreate);
 
     std::cout << "Waiting for Update" << std::endl;
@@ -108,8 +108,7 @@ void MainWindow::joinParticularGame(QString roomName) {
     std::string room = retrieveGamaeName(roomName.toStdString());
     std::cout << "Joining to " << room << std::endl;
     uint8_t id = 0;
-    Action *actionJoin = new ActionJoinServer(id, room, <#initializer#>,
-                                              std::function<void(BlockingQueue<Action *> *, BlockingQueue<Action *> *)>());
+    Action *actionJoin = new ActionJoin(id, room);
     this->actionsQueue.push(actionJoin);
     //exit qt
     close();
