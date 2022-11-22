@@ -14,9 +14,9 @@ public:
     ~ActionUpdate() override;
 
     std::string getGameName() override;
-    uint8_t getIdCreatorGame() override;
+    uint8_t getId() override;
     uint8_t getType() const override;
-    void execute(GameManager &gameManager, const std::function<void(BlockingQueue<Action *> *, BlockingQueue<Action *> *)> &setQueue) override;
+    void execute() override;
     std::vector<uint8_t> beSerialized() override;
 
     uint8_t getX();

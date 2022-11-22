@@ -61,7 +61,8 @@ void MainWindow::drawJoinGameMenu() {
     //list all the games
     //draw a button for each game
     uint8_t id = 0;
-    Action* actionList = new ActionList(id);
+    Action* actionList = new ActionListServer(id, <#initializer#>,
+                                              std::function<void(BlockingQueue<Action *> *, BlockingQueue<Action *> *)>());
     this->actionsQueue.push(actionList);
 
     auto update = dynamic_cast<ActionUpdate *>(updatesQueue.pop());
@@ -89,7 +90,9 @@ void MainWindow::createRoom() {
     std::string roomName = this->lineEdit->text().toStdString();
     uint8_t players = this->cantPlayers->value();
     uint8_t id = 0;
-    Action* actionCreate = new ActionCreate(id, players, roomName);
+    Action* actionCreate = new ActionCreateServer(id, players, roomName, <#initializer#>,
+                                                  std::function<void(BlockingQueue<Action *> *,
+                                                               BlockingQueue<Action *> *)>());
     this->actionsQueue.push(actionCreate);
 
     std::cout << "Waiting for Update" << std::endl;
@@ -105,7 +108,8 @@ void MainWindow::joinParticularGame(QString roomName) {
     std::string room = retrieveGamaeName(roomName.toStdString());
     std::cout << "Joining to " << room << std::endl;
     uint8_t id = 0;
-    Action *actionJoin = new ActionJoin(id, room);
+    Action *actionJoin = new ActionJoinServer(id, room, <#initializer#>,
+                                              std::function<void(BlockingQueue<Action *> *, BlockingQueue<Action *> *)>());
     this->actionsQueue.push(actionJoin);
     //exit qt
     close();
@@ -263,7 +267,7 @@ void MainWindow::drawLoadingScreen() {
 void MainWindow::popFirstUpdate() {
     auto update = dynamic_cast<ActionUpdate *>(updatesQueue.pop());
     std::cout << "Update received" << std::endl;
-    std::cout << "Game created with id: " << (int)(update->getIdCreatorGame()) << std::endl;
+    std::cout << "Game created with id: " << (int)(update->getId()) << std::endl;
     delete update;
 }
 

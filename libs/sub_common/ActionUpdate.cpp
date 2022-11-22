@@ -5,10 +5,9 @@
 #include "ActionUpdate.h"
 #include "protocolo.h"
 
-ActionUpdate::ActionUpdate(uint8_t& id, std::string& returnMessage) : Action(id, returnMessage){}
+ActionUpdate::ActionUpdate(uint8_t& id, std::string& returnMessage) : Action(id) {}
 
-void ActionUpdate::execute(GameManager &gameManager,
-                           const std::function<void(BlockingQueue<Action *> *, BlockingQueue<Action *> *)> &setQueue) {
+void ActionUpdate::execute() {
 }
 
 ActionUpdate::~ActionUpdate() = default;
@@ -19,13 +18,13 @@ std::string ActionUpdate::getGameName() {
 
 std::vector<uint8_t> ActionUpdate::beSerialized() {
     std::vector<uint8_t> updateData;
-    updateData.push_back(idCreator);
+    updateData.push_back(idInvoker);
     updateData.insert(updateData.end(), nameGame.begin(), nameGame.end());
     return Protocolo::serializeUpdateAction(updateData);
 }
 
-uint8_t ActionUpdate::getIdCreatorGame() {
-    return idCreator;
+uint8_t ActionUpdate::getId() {
+    return idInvoker;
 }
 
 uint8_t ActionUpdate::getType() const {

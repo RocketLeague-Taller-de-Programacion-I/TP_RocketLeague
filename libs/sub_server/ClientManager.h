@@ -7,12 +7,15 @@
 #define ROCKETLEAGUE_CLIENTMANAGER_H
 
 #include "gameManager.h"
-#include "../sub_common/thread.h"
-#include "../sub_common/socket.h"
+#include "sub_common/thread.h"
+#include "sub_common/socket.h"
 #include "sub_common/protocolo.h"
 #include "sub_common/BlockingQueue.h"
 #include "sub_common/ClientReceiver.h"
 #include "sub_common/ClientSender.h"
+#include "ActionCreateServer.h"
+#include "ActionJoinServer.h"
+#include "ActionListServer.h"
 
 class ClientManager : public Thread{
 private:
@@ -36,6 +39,11 @@ public:
     void attendClient(unsigned long aId);
 
     void startClientThreads(BlockingQueue<Action *> *qReceiver, BlockingQueue<Action *> *senderQueue);
+
+    void exectue(Action *pAction);
+    void exectue(ActionCreateServer *pAction);
+    void exectue(ActionJoinServer *pAction);
+    void exectue(ActionListServer *pAction);
 };
 
 

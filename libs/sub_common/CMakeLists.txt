@@ -21,12 +21,6 @@ add_library(lib_common
         ProtectedQueue.h
         QueueIsEmptyException.cpp
         QueueIsEmptyException.h
-        ActionCreate.cpp
-        ActionCreate.h
-        ActionJoin.cpp
-        ActionJoin.h
-        ActionList.cpp
-        ActionList.h
         ActionUpdate.cpp
         ActionUpdate.h)
 target_link_libraries(lib_common)

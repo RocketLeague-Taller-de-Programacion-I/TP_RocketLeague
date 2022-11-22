@@ -6,6 +6,12 @@ add_library(lib_server
         game.cpp game.h
         ClientManager.cpp
         ClientManager.h
-        )
+        ActionCreateServer.cpp
+        ActionCreateServer.h
+        ActionJoinServer.cpp
+        ActionJoinServer.h
+        ActionListServer.cpp
+        ActionListServer.h
+        ActionMaker.cpp ActionMaker.h)
 
 target_link_libraries(lib_server lib_common)

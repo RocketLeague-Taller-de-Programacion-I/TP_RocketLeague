@@ -7,6 +7,7 @@
 #include <memory>
 #include <functional>
 #include "ClientManager.h"
+#include "ActionMaker.h"
 
 ClientManager::ClientManager(Socket &aClient,
                              GameManager &aGameManager) :
@@ -17,56 +18,21 @@ ClientManager::ClientManager(Socket &aClient,
 void ClientManager::run() {
     std::vector<uint8_t> data;
     uint8_t byte_to_read;
-    Protocolo protocolo;
+    ActionMaker maker;
     this->client.recvall(&byte_to_read, sizeof(byte_to_read), &closed);
     while (byte_to_read != NOP && !closed) {
         data.push_back(byte_to_read);
         this->client.recvall(&byte_to_read, sizeof(byte_to_read), &closed);
     }
 
-    // form the Action from the data
-    auto action = protocolo.deserializeData(data);
     // create a callback function to start the client threads
     std::function<void(BlockingQueue<Action *> *, BlockingQueue<Action *> *)> queue_setter_callable =
-            std::bind(&ClientManager::startClientThreads, this, std::placeholders::_1, std::placeholders::_2);
+            [this](BlockingQueue<Action*> *qr,BlockingQueue<Action*> *qs){return this->startClientThreads(qr,qs);};
 
-//    action->execute(gameManager,startClientThreads);
-    uint8_t idCreator = id,capacity;
-    std::string nameGame = action->getGameName();
+    // form the Action from the data
+    auto action = maker.makeAction(data, gameManager, queue_setter_callable);
 
-    if (action->getType() == CREATE_ROOM) {
-        capacity = action->getCapacity();
-    } else if (action->getType() == LIST_ROOMS) {
-        capacity = 0;
-    }
-    std::string result = gameManager.executeAction(action->getType(), idCreator, capacity, nameGame, queue_setter_callable);
-    if (action->getType() == LIST_ROOMS) {
-        //we need to send the data without creating nor joining a game
-        if (not closed) {
-            std::vector<uint8_t> listData;
-            listData.push_back(UPDATE);
-            listData.push_back(id);
-            listData.insert(listData.end(), result.begin(), result.end());
-            //  se iteran los comandos parseados y se envian al servidor
-            for (uint8_t c : listData) {
-                client.sendall(&c, sizeof(c), &closed);
-            }
-            //  send the NOP instruccion
-            uint8_t nop = 0;
-            client.sendall(&nop, sizeof(nop), &closed);
-        }
-        // we need to receive the join action
-        data.clear();
-        this->client.recvall(&byte_to_read, sizeof(byte_to_read), &closed);
-        while (byte_to_read != NOP && !closed) {
-            data.push_back(byte_to_read);
-            this->client.recvall(&byte_to_read, sizeof(byte_to_read), &closed);
-        }
-
-        auto joinaction = protocolo.deserializeData(data);
-        std::string gameName = joinaction->getGameName();
-        gameManager.executeAction(joinaction->getType(), idCreator, capacity, gameName, queue_setter_callable);
-    }
+    exectue(action);
 }
 
 bool ClientManager::joinThread() {
@@ -96,3 +62,50 @@ void ClientManager::startClientThreads(BlockingQueue<Action *> *qReceiver, Block
 }
 
 void ClientManager::stop() {}
+
+void ClientManager::exectue(Action *pAction) {
+
+}
+
+void ClientManager::exectue(ActionCreateServer *pAction) {
+    pAction->execute();
+}
+
+void ClientManager::exectue(ActionJoinServer *pAction) {
+    pAction->execute();
+}
+
+void ClientManager::exectue(ActionListServer *pAction) {
+    std::vector<uint8_t> data;
+    uint8_t byte_to_read;
+    ActionMaker maker;
+
+    std::string result(gameManager.listGames());
+
+    //we need to send the data without creating nor joining a game
+    if (not closed) {
+        std::vector<uint8_t> listData;
+        listData.push_back(UPDATE);
+        listData.push_back(id);
+        listData.insert(listData.end(), result.begin(), result.end());
+        //  se iteran los comandos parseados y se envian al servidor
+        for (uint8_t c : listData) {
+            client.sendall(&c, sizeof(c), &closed);
+        }
+        //  send the NOP instruccion
+        uint8_t nop = 0;
+        client.sendall(&nop, sizeof(nop), &closed);
+    }
+    // we need to receive the join action
+    data.clear();
+    this->client.recvall(&byte_to_read, sizeof(byte_to_read), &closed);
+    while (byte_to_read != NOP && !closed) {
+        data.push_back(byte_to_read);
+        this->client.recvall(&byte_to_read, sizeof(byte_to_read), &closed);
+    }
+    std::function<void(BlockingQueue<Action *> *, BlockingQueue<Action *> *)> queue_setter_callable =
+            [this](BlockingQueue<Action*> *qr,BlockingQueue<Action*> *qs){return this->startClientThreads(qr,qs);};
+
+    auto joinaction = maker.makeAction(data, gameManager, queue_setter_callable);
+    joinaction->execute();
+}

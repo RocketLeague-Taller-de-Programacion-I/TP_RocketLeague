@@ -1,8 +1,6 @@
 //
 // Created by lucaswaisten on 04/11/22.
 //
-#pragma once
-
 #ifndef ROCKETLEAGUE_PROTOCOLO_H
 #define ROCKETLEAGUE_PROTOCOLO_H
 

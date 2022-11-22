@@ -4,9 +4,6 @@
 
 #include <iostream>
 #include "gameManager.h"
-#include "sub_common/ActionCreate.h"
-#include "sub_common/ActionList.h"
-#include "sub_common/ActionJoin.h"
 #include "sub_common/ActionUpdate.h"
 
 void GameManager::cleanGames() {
@@ -15,11 +12,10 @@ void GameManager::cleanGames() {
     }
 }
 
-std::string GameManager::listGames(uint8_t &id, std::string &name) {
+std::string GameManager::listGames() {
     std::unique_lock<std::mutex> lock(this->mutex);
-    std::string mensaje("");
-
-    for (auto & partida : this->games) {
+    std::string mensaje;
+    for (auto & partida : games) {
         mensaje.append(partida.second->information());
         mensaje.append(",");
     }
@@ -58,7 +54,7 @@ void GameManager::joinGame(uint8_t idCreator, const std::string& nameGame, std::
     }
 }
 
-// create new function for gameManager that uses doble dispatch to execute an action
+/* create new function for gameManager that uses doble dispatch to execute an action
 std::string GameManager::executeAction(uint8_t actionType, uint8_t &idCreator, uint8_t &capacity, std::string &name,
                                 const std::function<void(BlockingQueue<Action *> *,
                                                          BlockingQueue<Action *> *)> &startClientThreads) {
@@ -76,7 +72,7 @@ std::string GameManager::executeAction(uint8_t actionType, uint8_t &idCreator, u
             break;
     }
     return mensaje;
-}
+}*/
 
 
 

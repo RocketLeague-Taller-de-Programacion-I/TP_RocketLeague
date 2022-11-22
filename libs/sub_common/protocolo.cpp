@@ -4,9 +4,6 @@
 
 #include "Action.h"
 #include "protocolo.h"
-#include "ActionCreate.h"
-#include "ActionList.h"
-#include "ActionJoin.h"
 #include "ActionUpdate.h"
 
 #include <sstream>
@@ -61,8 +58,8 @@ Action* Protocolo::parseCreateAction(const std::vector<uint8_t> &data) {
     uint8_t id(data[1]);
     uint8_t capacity(data[2]);
     std::string name(data.begin()+3,data.end());
-//    std::shared_ptr<Action> pAction = std::make_shared<ActionCreate>(id, capacity, name);
-//    std::unique_ptr<Action> pAction(new ActionCreate(id, capacity, std::move(name)));
+//    std::shared_ptr<Action> pAction = std::make_shared<ActionCreateServer>(id, capacity, name);
+//    std::unique_ptr<Action> pAction(new ActionCreateServer(id, capacity, std::move(name)));
     // create pointer to derived class and store into pointer of base class
     Action* pAction = new ActionCreate(id, capacity, std::move(name));
     return pAction;
@@ -73,16 +70,16 @@ Action * Protocolo::parseJoinAction(const std::vector<uint8_t> &data) {
     std::string name(data.begin()+1,data.end());
     //strip last spaces from name
     std::string stripped = name.substr(0, name.find_last_of(' '));
-//    std::shared_ptr<Action> pAction = std::make_shared<ActionJoin>(id,name);
-//    std::unique_ptr<Action> pAction(new ActionJoin(id, name));
+//    std::shared_ptr<Action> pAction = std::make_shared<ActionJoinServer>(id,name);
+//    std::unique_ptr<Action> pAction(new ActionJoinServer(id, name));
     // create pointer to derived class and store into pointer of base class
     Action* pAction = new ActionJoin(id, stripped);
     return pAction;
 }
 
 Action * Protocolo::parseListAction(const std::vector<uint8_t> &data) {
-//    std::shared_ptr<Action> pAction = std::make_shared<ActionList>(0);
-//    std::unique_ptr<Action> pAction(new ActionList(0));
+//    std::shared_ptr<Action> pAction = std::make_shared<ActionListServer>(0);
+//    std::unique_ptr<Action> pAction(new ActionListServer(0));
     // create pointer to derived class and store into pointer of base class
     Action* pAction = new ActionList(0);
     return pAction;

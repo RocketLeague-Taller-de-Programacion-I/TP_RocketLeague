@@ -85,24 +85,24 @@ void RenderThread::run() {
         ActionUpdate *actionUpdate = dynamic_cast<ActionUpdate *>(actions[0]);
 //        for(auto &actionUpdate : actions) {
             if(actionUpdate->getGameName() == "car1") {
-                sprites.emplace(actionUpdate->getIdCreatorGame(), GameSprite(textures["car"], actionUpdate->getIdCreatorGame(), 0, Height/2, actionUpdate->getAngle()));
+                sprites.emplace(actionUpdate->getId(), GameSprite(textures["car"], actionUpdate->getId(), 0, Height / 2, actionUpdate->getAngle()));
             } else if(actionUpdate->getGameName() == "car2") {
-                sprites.emplace(actionUpdate->getIdCreatorGame(), GameSprite(textures["car"], actionUpdate->getIdCreatorGame(),Height/2, 0, actionUpdate->getAngle()));
+                sprites.emplace(actionUpdate->getId(), GameSprite(textures["car"], actionUpdate->getId(), Height / 2, 0, actionUpdate->getAngle()));
             } else if(actionUpdate->getGameName() == "ball") {
-                sprites.emplace(actionUpdate->getIdCreatorGame(), GameSprite(textures["ball"], actionUpdate->getIdCreatorGame(),Width/2,Height/3, actionUpdate->getAngle()));
+                sprites.emplace(actionUpdate->getId(), GameSprite(textures["ball"], actionUpdate->getId(), Width / 2, Height / 3, actionUpdate->getAngle()));
             } else if(actionUpdate->getGameName() == "scoreBoard") {
-                sprites.emplace(SCORE, GameSprite(textures["scoreBoard"],actionUpdate->getIdCreatorGame(), Width/2, 0, 0));
+                sprites.emplace(SCORE, GameSprite(textures["scoreBoard"], actionUpdate->getId(), Width / 2, 0, 0));
             }
 
-//            switch(actionUpdate->getIdCreatorGame()) {
+//            switch(actionUpdate->getId()) {
 //                case CAR:
-//                    sprites.emplace(actionUpdate->getIdCreatorGame(), GameSprite(textures["car"], actionUpdate->getIdCreatorGame(), actionUpdate->getX(), actionUpdate->getY(), actionUpdate->getAngle()));
+//                    sprites.emplace(actionUpdate->getIdCreatorGame(), GameSprite(textures["car"], actionUpdate->getId(), actionUpdate->getX(), actionUpdate->getY(), actionUpdate->getAngle()));
 //                    break;
 //                case BALL:
-//                    sprites.emplace(BALL, GameSprite(textures["ball"],actionUpdate->getIdCreatorGame(), actionUpdate->getX(), actionUpdate->getY(), actionUpdate->getAngle()));
+//                    sprites.emplace(BALL, GameSprite(textures["ball"],actionUpdate->getId(), actionUpdate->getX(), actionUpdate->getY(), actionUpdate->getAngle()));
 //                    break;
 //                case SCORE:
-//                    sprites.emplace(SCORE, GameSprite(textures["scoreBoard"],actionUpdate->getIdCreatorGame(), Width / 2, 0, 0));
+//                    sprites.emplace(SCORE, GameSprite(textures["scoreBoard"],actionUpdate->getId(), Width / 2, 0, 0));
 //                    break;
 //            }
 

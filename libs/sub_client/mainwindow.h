@@ -10,10 +10,10 @@
 
 #include "gamescene.h"
 #include "GameLoop.h"
-#include "sub_common/ActionCreate.h"
+#include "sub_server/ActionCreateServer.h"
 #include "sub_common/ActionUpdate.h"
-#include "sub_common/ActionJoin.h"
-#include "sub_common/ActionList.h"
+#include "sub_server/ActionJoinServer.h"
+#include "sub_server/ActionListServer.h"
 
 #include "Button.h"
 
