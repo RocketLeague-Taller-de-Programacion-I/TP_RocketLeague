@@ -5,9 +5,9 @@
 #ifndef ROCKETLEAGUE_ACTIONCREATESERVER_H
 #define ROCKETLEAGUE_ACTIONCREATESERVER_H
 
-
-#include "sub_common/Action.h"
+#include "../sub_common/sub_action/Action.h"
 #include "gameManager.h"
+
 
 class ActionCreateServer : public Action {
 public:
@@ -24,6 +24,7 @@ public:
     beSerialized() override;
 
     ~ActionCreateServer() override;
+
 private:
     GameManager &gameManager;
     std::function<void(BlockingQueue<Action *> *, BlockingQueue<Action *> *)> startClientThreads;

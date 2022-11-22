@@ -5,3 +5,7 @@
 #include "ActionMove.h"
 
 void ActionMove::executeMove(Match &match, std::function<void(ActionUpdate *update)> updateClientSender) {}
+
+void ActionMove::execute() {
+    Action::execute();
+}

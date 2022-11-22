@@ -5,7 +5,6 @@
 #ifndef ROCKETLEAGUE_ACTIONLISTSERVER_H
 #define ROCKETLEAGUE_ACTIONLISTSERVER_H
 
-#include "sub_common/Action.h"
 #include "gameManager.h"
 
 class ActionListServer : public Action{

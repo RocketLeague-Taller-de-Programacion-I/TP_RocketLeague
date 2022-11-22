@@ -1,4 +1,6 @@
 add_library( lib_action
+        Action.cpp
+        Action.h
         ActionCreate.cpp
         ActionCreate.h
         ActionJoin.cpp
@@ -8,5 +10,23 @@ add_library( lib_action
         ActionUpdate.cpp
         ActionUpdate.h
         ActionMove.cpp
-        ActionMove.h ActionLeft.cpp ActionLeft.h ActionRight.cpp ActionRight.h ActionUp.cpp ActionUp.h ActionDown.cpp ActionDown.h ActionJump.cpp ActionJump.h ActionTurbo.cpp ActionTurbo.h ActionUpdateCar.cpp ActionUpdateCar.h ActionUpdateScore.cpp ActionUpdateScore.h ActionUpdateBall.cpp ActionUpdateBall.h)
+        ActionMove.h
+        ActionLeft.cpp
+        ActionLeft.h
+        ActionRight.cpp
+        ActionRight.h
+        ActionUp.cpp
+        ActionUp.h
+        ActionDown.cpp
+        ActionDown.h
+        ActionJump.cpp
+        ActionJump.h
+        ActionTurbo.cpp
+        ActionTurbo.h
+        ActionUpdateCar.cpp
+        ActionUpdateCar.h
+        ActionUpdateScore.cpp
+        ActionUpdateScore.h
+        ActionUpdateBall.cpp
+        ActionUpdateBall.h)
 target_link_libraries(lib_action)

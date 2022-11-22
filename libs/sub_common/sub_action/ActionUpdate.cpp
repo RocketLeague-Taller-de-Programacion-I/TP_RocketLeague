@@ -2,12 +2,15 @@
 // Created by roby on 19/11/22.
 //
 
+#include <iostream>
 #include "ActionUpdate.h"
 #include "sub_common/protocolo.h"
 
-ActionUpdate::ActionUpdate(uint8_t& id, std::string& returnMessage) : Action(id) {}
+ActionUpdate::ActionUpdate(uint8_t& id, std::string& returnMessage) : Action(id),nameGame(returnMessage) {}
 
 void ActionUpdate::execute() {
+    std::cout << "Game joined with id: " << idInvoker << std::endl;
+    std::cout << "Waiting for players" << std::endl;
 }
 
 ActionUpdate::~ActionUpdate() = default;
@@ -25,10 +28,6 @@ std::vector<uint8_t> ActionUpdate::beSerialized() {
 
 uint8_t ActionUpdate::getId() {
     return idInvoker;
-}
-
-uint8_t ActionUpdate::getType() const {
-    return UPDATE;
 }
 
 uint8_t ActionUpdate::getX() {

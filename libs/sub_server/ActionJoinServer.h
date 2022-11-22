@@ -5,7 +5,6 @@
 #ifndef ROCKETLEAGUE_ACTIONJOINSERVER_H
 #define ROCKETLEAGUE_ACTIONJOINSERVER_H
 
-#include "sub_common/Action.h"
 #include "gameManager.h"
 
 class ActionJoinServer : public Action {

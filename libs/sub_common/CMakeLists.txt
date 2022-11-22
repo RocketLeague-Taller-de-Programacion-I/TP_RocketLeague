@@ -12,15 +12,11 @@ add_library(lib_common
         protocolo.h
         protocolo.cpp
         BlockingQueue.h
-        Action.cpp
-        Action.h
         ClientReceiver.cpp
         ClientReceiver.h
         ClientSender.cpp
         ClientSender.h
         ProtectedQueue.h
         QueueIsEmptyException.cpp
-        QueueIsEmptyException.h
-        ActionUpdate.cpp
-        ActionUpdate.h ActionList.cpp ActionList.h ActionCreate.cpp ActionCreate.h ActionJoin.cpp ActionJoin.h)
-target_link_libraries(lib_common)
+        QueueIsEmptyException.h )
+target_link_libraries(lib_common lib_action)

@@ -5,7 +5,6 @@
 #ifndef ROCKETLEAGUE_ACTIONCREATE_H
 #define ROCKETLEAGUE_ACTIONCREATE_H
 
-#include "../BlockingQueue.h"
 #include "Action.h"
 
 class ActionCreate : public Action {

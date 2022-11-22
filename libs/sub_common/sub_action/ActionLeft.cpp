@@ -5,5 +5,5 @@
 #include "ActionLeft.h"
 
 void ActionLeft::executeMove(Match &match, std::function<void(ActionUpdate *)> updateClientSender) {
-    match.moveLeft(idCreator,updateClientSender);
+    match.moveLeft(idInvoker,updateClientSender);
 }
