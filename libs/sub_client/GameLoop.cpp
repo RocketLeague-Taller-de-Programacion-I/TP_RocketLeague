@@ -18,10 +18,7 @@ GameLoop::GameLoop(SDL2pp::Renderer &renderer, int xMax, int yMax, ProtectedQueu
           wv(wv){}
 
 void GameLoop::run() {
-    // Gameloop, notar como tenemos desacoplado el procesamiento de los inputs (handleEvents)
-    // del update del modelo.
     while (running) {
-        std::cout << "running" << std::endl;
         handle_events();
         //pop from updates queue
         update(FRAME_RATE);
@@ -34,8 +31,6 @@ void GameLoop::run() {
 
 bool GameLoop::handle_events() {
     SDL_Event event;
-    // Para el alumno: Buscar diferencia entre waitEvent y pollEvent
-    // Aca estara la cola de eventos!!
     while(SDL_PollEvent(&event)){
         Protocolo protocolo;
         switch(event.type) {
@@ -61,8 +56,6 @@ bool GameLoop::handle_events() {
                 }
                 std::vector<uint8_t> movement(1);
                 movement[0] = protocolo.getMapCommand(keyEvent.keysym.sym);
-//                Action action(MOVE,movement);
-//                actionsQueue.push(action);
             } // Fin KEY_DOWN
                 break;
             case SDL_KEYUP: {
@@ -83,7 +76,7 @@ bool GameLoop::handle_events() {
                 }
                 // poppear de la cola de updatesQueue
                 std::cout << "update to be popped of type: MOVE and data: " << std::endl;
-            }// Fin KEY_UP
+            }
             case SDLK_ESCAPE:
                 running = false;
                 break;
@@ -101,6 +94,5 @@ void GameLoop::render() {
 }
 
 void GameLoop::update(float dt) {
-    std::cout << "update" << std::endl;
     wv.update(dt);
 }
