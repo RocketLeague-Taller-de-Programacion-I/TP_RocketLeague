@@ -23,18 +23,20 @@ GameUpdate *ClientProtocol::deserializeData(const std::vector<uint8_t> &data) {
 GameUpdate *ClientProtocol::parseCreateACK(const std::vector<uint8_t> &data) {
     std::vector<uint8_t> updateData;
     uint8_t id = data[1];
-    uint8_t returnCode = data[2];
+    //  uint8_t returnCode = data[2];
+    std::string list = std::string(data.begin() + 2, data.end());
     updateData.push_back(id);
-    updateData.push_back(returnCode);
+    updateData.insert(updateData.end(), list.begin(), list.end());
+    //  updateData.push_back(returnCode);
     return new GameUpdate(updateData);
 }
 // TODO: maybe implement some parseAck to avoid code duplication
 GameUpdate *ClientProtocol::parseJoinACK(const std::vector<uint8_t> &data) {
     std::vector<uint8_t> updateData;
     uint8_t id = data[1];
-    uint8_t returnCode = data[2];
+    std::string list = std::string(data.begin() + 2, data.end());
     updateData.push_back(id);
-    updateData.push_back(returnCode);
+    updateData.insert(updateData.end(), list.begin(), list.end());
     return new GameUpdate(updateData);
 }
 

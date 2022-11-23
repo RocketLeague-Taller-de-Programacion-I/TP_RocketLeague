@@ -37,8 +37,7 @@ command_t Protocolo::getMapCommand(uint32_t action) {
 }
 
 Action * Protocolo::deserializeData(const std::vector<uint8_t>& data) {
-    uint8_t type(data[1]);
-
+    uint8_t type(data[0]);
     switch (type) {
         case CREATE_ROOM:
             return parseCreateAction(data);
@@ -59,25 +58,25 @@ Action * Protocolo::deserializeData(const std::vector<uint8_t>& data) {
  *
  */
 Action* Protocolo::parseCreateAction(const std::vector<uint8_t> &data) {
-    uint8_t id(data[0]);
-    uint8_t capacity(data[2]);
-    std::string name(data.begin()+3,data.end());
+    uint8_t capacity(data[1]);
+    std::string name(data.begin()+2,data.end());
 //    std::shared_ptr<Action> pAction = std::make_shared<ActionCreate>(id, capacity, name);
 //    std::unique_ptr<Action> pAction(new ActionCreate(id, capacity, std::move(name)));
     // create pointer to derived class and store into pointer of base class
-    Action* pAction = new ActionCreate(id, capacity, std::move(name));
+    uint8_t id_que_hay_que_borrar = 0;
+    Action* pAction = new ActionCreate(id_que_hay_que_borrar, capacity, name);
     return pAction;
 }
 
 Action * Protocolo::parseJoinAction(const std::vector<uint8_t> &data) {
-    uint8_t id(data[0]);
     std::string name(data.begin()+1,data.end());
     //strip last spaces from name
     std::string stripped = name.substr(0, name.find_last_of(' '));
 //    std::shared_ptr<Action> pAction = std::make_shared<ActionJoin>(id,name);
 //    std::unique_ptr<Action> pAction(new ActionJoin(id, name));
     // create pointer to derived class and store into pointer of base class
-    Action* pAction = new ActionJoin(id, stripped);
+    uint8_t id_que_hay_que_borrar = 0;
+    Action* pAction = new ActionJoin(id_que_hay_que_borrar, stripped);
     return pAction;
 }
 
@@ -89,8 +88,7 @@ Action * Protocolo::parseListAction(const std::vector<uint8_t> &data) {
     return pAction;
 }
 
-Action * Protocolo::parseUpdateAction(const std::vector<uint8_t> &vector) {
-    uint8_t id(vector[1]);
+Action * Protocolo::parseUpdateAction(const std::vector<uint8_t> &vector) {;
     std::string data;
     if (not vector.empty()) {
         data = std::string(vector.begin()+2,vector.end());
@@ -100,7 +98,8 @@ Action * Protocolo::parseUpdateAction(const std::vector<uint8_t> &vector) {
 //    std::shared_ptr<Action> pAction = std::make_shared<ActionUpdate>(id, name);
 //    std::unique_ptr<Action> pAction(new ActionUpdate(id, name));
     // create pointer to derived class and store into pointer of base class
-    Action* pAction = new ActionUpdate(id, data);
+    uint8_t id_que_hay_que_borrar = 0;
+    Action* pAction = new ActionUpdate(id_que_hay_que_borrar, data);
     return pAction;
 }
 
