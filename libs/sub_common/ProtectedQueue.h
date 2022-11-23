@@ -19,7 +19,7 @@ class ProtectedQueue
 public:
     T pop() {
         std::lock_guard<std::mutex> lock(mutex);
-        if (isEmpty()) {
+        if (queue.empty()) {
             throw QueueIsEmptyException("Empty Queue Exception");
         }
         T element = queue.front();
@@ -38,7 +38,7 @@ public:
     // pop if not empty
     bool tryPop(T &element) {
         std::lock_guard<std::mutex> lock(mutex);
-        if (isEmpty()) {
+        if (queue.empty()) {
             return false;
         }
         element = queue.front();
@@ -48,7 +48,7 @@ public:
     std::vector<T> popAll() {
         std::lock_guard<std::mutex> lock(mutex);
         std::vector<T> elements;
-        while(!isEmpty()) {
+        while(queue.empty()) {
             T element = queue.front();
             queue.pop();
             elements.push_back(element);

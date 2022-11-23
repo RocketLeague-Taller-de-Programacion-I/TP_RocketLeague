@@ -5,8 +5,8 @@
 #include "ClientReceiver.h"
 
 
-ClientReceiver::ClientReceiver(Socket &skt_client, BlockingQueue<Action *> *updatesQueue)
-        : skt_client(skt_client), updatesQueue((updatesQueue)) {
+ClientReceiver::ClientReceiver(Socket &skt_client, ProtectedQueue<Action *> *updatesQueue, uint8_t idClient)
+        : skt_client(skt_client), idClient(idClient), updatesQueue((updatesQueue)) {
     this->closed = false;
 }
 
@@ -15,6 +15,7 @@ void ClientReceiver::run() {
     try {
         while (!closed) {
             std::vector<uint8_t> data;
+            data.push_back(idClient);
             uint8_t byte_to_read;
 
             this->skt_client.recvall(&byte_to_read, sizeof(byte_to_read), &closed);
@@ -37,7 +38,7 @@ void ClientReceiver::run() {
 }
 void ClientReceiver::stop() {}
 
-void ClientReceiver::setQueue(BlockingQueue<Action *> *pQueue) {
+void ClientReceiver::setQueue(ProtectedQueue<Action *> *pQueue) {
     clearQueue();
     this->updatesQueue = pQueue;
 }

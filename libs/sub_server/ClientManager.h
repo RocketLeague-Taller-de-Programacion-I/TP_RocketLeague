@@ -35,9 +35,9 @@ public:
 
     void attendClient(unsigned long aId);
 
-    void startClientThreads(BlockingQueue<Action *> *qReceiver, BlockingQueue<Action *> *senderQueue);
+    void startClientThreads(ProtectedQueue<Action *> *qReceiver, BlockingQueue<Action *> *senderQueue);
 
-    BlockingQueue<Action *>* setQueues(BlockingQueue<Action *> *gameQueue);
+    BlockingQueue<Action *>* setQueues(ProtectedQueue<Action *> *gameQueue);
 };
 
 

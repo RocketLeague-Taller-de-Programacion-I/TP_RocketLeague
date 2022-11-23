@@ -10,21 +10,21 @@
 #include "sub_common/thread.h"
 #include "sub_server/Action.h"
 #include "protocolo.h"
-#include "sub_common/BlockingQueue.h"
 #include "sub_common/ProtectedQueue.h"
 
 class ClientReceiver : public Thread{
 private:
     Socket &skt_client;
     bool closed;
+    uint8_t idClient;
 protected:
     void run() override;
 public:
-    BlockingQueue<Action*> *updatesQueue;
-    ClientReceiver(Socket &skt_client, BlockingQueue<Action *> *updatesQueue);
+    ProtectedQueue<Action *> *updatesQueue;
+    ClientReceiver(Socket &skt_client, ProtectedQueue<Action *> *updatesQueue, uint8_t idClient);
     ~ClientReceiver() override;
     void stop() override;
-    void setQueue(BlockingQueue<Action *> *pQueue);
+    void setQueue(ProtectedQueue<Action *> *pQueue);
     void clearQueue();
 };
 

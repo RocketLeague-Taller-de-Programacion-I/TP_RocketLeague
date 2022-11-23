@@ -4,7 +4,8 @@
 
 #include "ClientSender.h"
 
-ClientSender::ClientSender(Socket &skt_client, BlockingQueue<Action *> *queue) : skt_client(skt_client), actionsQueue(queue) {
+ClientSender::ClientSender(Socket &skt_client, BlockingQueue<Action *> *queue, uint8_t idClient)
+        : skt_client(skt_client), idClient(idClient), actionsQueue(queue) {
     this->closed = false;
 }
 

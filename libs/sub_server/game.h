@@ -24,7 +24,7 @@ private:
 
     std::map<uint8_t ,BlockingQueue<Action*>*> mapSender;
 
-    BlockingQueue<Action*> *queue;
+    ProtectedQueue<Action *> *queue;
 public:
     std::string information();
 
@@ -34,7 +34,7 @@ public:
     * No copiable
     */
     Game(const Game&) = delete;
-    Game(int capacity, std::string  name, BlockingQueue<Action *> *pQueue);
+    Game(int capacity, std::string  name, ProtectedQueue<Action *> *pQueue);
     ~Game() override;
 
     Game& operator=(const Game&) = delete;
@@ -43,7 +43,7 @@ public:
 
     bool isFull() const;
 
-    BlockingQueue<Action *> * getQueue();
+    ProtectedQueue<Action *> * getQueue();
     void broadcastUpdate(Action* update);
     void broadcastUpdate(Action* update, uint8_t id);
 

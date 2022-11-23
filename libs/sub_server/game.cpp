@@ -8,7 +8,7 @@
 
 Game::Game(int capacity,
            std::string  name,
-           BlockingQueue<Action *> *pQueue) :
+           ProtectedQueue<Action *> *pQueue) :
         match(name, capacity),
         capacity(capacity),
         playerOnLine(0),
@@ -24,18 +24,12 @@ void Game::joinPlayer(uint8_t id, BlockingQueue<Action*> *sender) {
     if (playerOnLine == capacity){
 //        int local = this->match.local();
 //        int visit = this->match.visit();
-            start();
-            // broadcast new update to all clients
-            std::string mensaje = "START GAME";
-            Action* update = new ActionUpdate(id, mensaje); //creacion de partida, devuelve el id
-            broadcastUpdate(update);
-        } else {
-            std::string mensaje = "WAITING FOR PLAYERS";
-            Action* update = new ActionUpdate(id, mensaje); //creacion de partida, devuelve el id
-            broadcastUpdate(update);
-        }
-
-
+        start();
+        // broadcast new update to all clients
+        std::string mensaje = "OK";
+        Action* update = new ActionUpdate(id, mensaje); //creacion de partida, devuelve el id
+        broadcastUpdate(update);
+    }
 }
 
 void Game::run() {
@@ -55,7 +49,7 @@ bool Game::isFull() const {
     return playerOnLine == capacity;
 }
 
-BlockingQueue<Action *> * Game::getQueue() {
+ProtectedQueue<Action *> * Game::getQueue() {
     return queue;
 }
 
