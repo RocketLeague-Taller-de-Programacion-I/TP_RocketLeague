@@ -9,6 +9,7 @@
 
 #include "sub_common/socket.h"
 #include "sub_common/thread.h"
+#include "../sub_common/BlockingQueue.h"
 #include "../sub_common/ProtectedQueue.h"
 
 #include "ClientProtocol.h"
@@ -21,7 +22,7 @@ private:
 protected:
     void run() override;
 public:
-    BlockingQueue<GameUpdate*> &updatesQueue;
+    ProtectedQueue<GameUpdate*> &updatesQueue;
     explicit UpdatesReceiverThread(Socket &skt_client, ProtectedQueue<GameUpdate*> &updatesQueue);
 
     void stop() override;
