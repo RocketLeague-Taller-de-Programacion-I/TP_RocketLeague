@@ -15,10 +15,10 @@ uint8_t ActionJoin::getIdCreatorGame() {
     return idCreator;
 }
 
-void ActionJoin::execute(GameManager &gameManager, const std::function<void(BlockingQueue<Action *> *,
-                                                                            BlockingQueue<Action *> *)> &setQueue) {
-//    gameManager.joinGame(idCreator, nameGame, setQueue);
-}
+//Action * ActionJoin::execute(GameManager &gameManager, const std::function<BlockingQueue<Action *> *(
+//        BlockingQueue<Action *> *)> &setQueue) {
+//   gameManager.joinGame(idCreator, nameGame, setQueue);
+//}
 
 uint8_t ActionJoin::getType() const {
     return JOIN_ROOM;
@@ -27,6 +27,9 @@ uint8_t ActionJoin::getType() const {
 std::vector<uint8_t> ActionJoin::beSerialized() {
     std::vector<uint8_t> joinData(this->getGameName().begin(), this->getGameName().end());
     return Protocolo::serializeJoinAction(joinData);
+}
+std::string ActionJoin::getReturnMessage() {
+    return nameGame;
 }
 
 ActionJoin::~ActionJoin() = default;

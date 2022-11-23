@@ -16,8 +16,11 @@ public:
     uint8_t getIdCreatorGame() override;
     uint8_t getType() const override;
 
-    void execute(GameManager &manager, const std::function<void(BlockingQueue<Action *> *,BlockingQueue<Action *> *)> &setQueue) override;
+//    Action * execute(GameManager &manager, const std::function<BlockingQueue<Action *> *(
+//            BlockingQueue<Action *> *)> &setQueue);
     std::vector<uint8_t> beSerialized() override;
+
+    std::string getReturnMessage();
 };
 
 

@@ -14,6 +14,7 @@ class GameManager;
 #include <vector>
 #include <functional>
 #include "sub_common/BlockingQueue.h"
+#include "sub_common/ProtectedQueue.h"
 
 enum actionType {
     CREATE_ROOM = 1,
@@ -43,9 +44,11 @@ public:
     virtual std::uint8_t getType() const;
     virtual std::string getNameGame() const;
 
-    virtual void execute(GameManager &manager, const std::function<void(BlockingQueue<Action *> *,BlockingQueue<Action *> *)> &setQueue) = 0;
+    Action * execute(GameManager &manager, const std::function<BlockingQueue<Action *> *(
+            ProtectedQueue<Action *> *)> &setQueue);
     virtual std::vector<uint8_t> beSerialized() = 0;
 };
+
 
 
 #endif //ROCKETLEAGUE_ACTION_H

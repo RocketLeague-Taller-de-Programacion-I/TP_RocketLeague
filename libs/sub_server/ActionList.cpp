@@ -13,9 +13,9 @@ uint8_t ActionList::getIdCreatorGame() {
     return idCreator;
 }
 
-void ActionList::execute(GameManager &manager, const std::function<void(BlockingQueue<Action *> *,
-                                                                        BlockingQueue<Action *> *)> &setQueue) {
-}
+//Action * ActionList::execute(GameManager &manager, const std::function<BlockingQueue<Action *> *(
+//        BlockingQueue<Action *> *)> &setQueue) {
+//}
 
 uint8_t ActionList::getType() const {
     return LIST_ROOMS;
@@ -24,6 +24,9 @@ uint8_t ActionList::getType() const {
 std::vector<uint8_t> ActionList::beSerialized() {
     std::vector<uint8_t> dummyData;
     return Protocolo::serializeListAction(dummyData);
+}
+std::string ActionList::getReturnMessage() {
+    return nameGame;
 }
 
 ActionList::~ActionList() = default;

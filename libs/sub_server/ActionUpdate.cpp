@@ -6,10 +6,12 @@
 #include "protocolo.h"
 
 ActionUpdate::ActionUpdate(uint8_t& id, std::string& returnMessage) : Action(id, returnMessage){}
-
-void ActionUpdate::execute(GameManager &gameManager,
-                           const std::function<void(BlockingQueue<Action *> *, BlockingQueue<Action *> *)> &setQueue) {
+// TODO: tiene que tener ID y return code
+/*Action * ActionUpdate::execute(GameManager &gameManager,
+                               const std::function<BlockingQueue<Action *> *(BlockingQueue<Action *> *)> &setQueue) {
+    return this;
 }
+ */
 
 ActionUpdate::~ActionUpdate() = default;
 

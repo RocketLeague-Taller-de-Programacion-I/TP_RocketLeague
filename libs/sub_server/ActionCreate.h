@@ -15,13 +15,15 @@ public:
 
     std::string getGameName() override;
 
-    void execute(GameManager &gameManager, const std::function<void(BlockingQueue<Action *> *,BlockingQueue<Action *> *)> &setQueue) override;
+//    Action * execute(GameManager &gameManager, const std::function<BlockingQueue<Action *> *(
+//            BlockingQueue<Action *> *)> &setQueue);
     std::vector<uint8_t> beSerialized() override;
 
     uint8_t getCapacity() override;
     uint8_t getIdCreatorGame() override;
     uint8_t getType() const override;
 
+    std::string getReturnMessage();
 };
 
 

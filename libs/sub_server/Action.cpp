@@ -33,7 +33,11 @@ std::uint8_t Action::getType() const {
     return 0;
 }
 
-void Action::execute(GameManager &manager,const std::function<void(BlockingQueue<Action *> *, BlockingQueue<Action *> *)> &setQueue) {}
+Action * Action::execute(GameManager &manager, const std::function<BlockingQueue<Action *> *(ProtectedQueue<Action *> *)> &setQueue) {
+    uint8_t id = 0;
+    std::string returnMessage;
+    return new ActionUpdate(id, returnMessage);
+}
 
 Action::Action(uint8_t &id, std::string name) : idCreator(id),
                                                 capacityGame(0),
