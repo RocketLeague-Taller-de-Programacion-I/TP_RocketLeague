@@ -37,6 +37,16 @@ public:
         std::lock_guard<std::mutex> lock(mutex);
         return queue.empty();
     }
+    std::vector<T> popAll() {
+        std::unique_lock<std::mutex> lock(mutex);
+        std::vector<T> elements;
+        while(!isEmpty()) {
+            T element = queue.front();
+            queue.pop();
+            elements.push_back(element);
+        }
+        return elements;
+    }
 
     virtual ~BlockingQueue() = default;
 
