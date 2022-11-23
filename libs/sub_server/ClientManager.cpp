@@ -17,14 +17,14 @@ ClientManager::ClientManager(Socket &aClient,
         closed(false), id(0){}
 
 void ClientManager::run() {
-    auto initialActionsQueue = new ProtectedQueue<Action*>;
+    auto initialActionsQueue = new BlockingQueue<Action*>;
     auto initialUpdatesQueue = new BlockingQueue <Action*>;
 
     startClientThreads(initialActionsQueue, initialUpdatesQueue);
 
     Action* command;
 
-    std::function<BlockingQueue<Action*>*(ProtectedQueue<Action *>*)> queue_setter_callable =
+    std::function<BlockingQueue<Action*>*(BlockingQueue<Action *>*)> queue_setter_callable =
             std::bind(&ClientManager::setQueues, this, std::placeholders::_1);
 
     bool playing = false; //  Mientras no se una o no cree una partida == no este jugando
@@ -120,14 +120,14 @@ void ClientManager::attendClient(unsigned long aId) {
     this->start();
 }
 
-void ClientManager::startClientThreads(ProtectedQueue<Action *> *qReceiver, BlockingQueue<Action *> *senderQueue) {
+void ClientManager::startClientThreads(BlockingQueue<Action *> *qReceiver, BlockingQueue<Action *> *senderQueue) {
     clientReceiverThread = new ClientReceiver(client, qReceiver);
     clientSenderThread = new ClientSender(client, senderQueue);
     std::cout << "Starting client threads" << std::endl;
     clientReceiverThread->start();
     clientSenderThread->start();
 }
-BlockingQueue<Action*>* ClientManager::setQueues(ProtectedQueue<Action *> *gameQueue) {
+BlockingQueue<Action*>* ClientManager::setQueues(BlockingQueue<Action *> *gameQueue) {
     clientReceiverThread->setQueue(gameQueue);
     return (clientSenderThread->getQueue());
 }

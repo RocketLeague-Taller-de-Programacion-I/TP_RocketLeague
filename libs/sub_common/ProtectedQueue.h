@@ -9,6 +9,7 @@
 #include <mutex>
 #include <queue>
 #include <condition_variable>
+#include <shared_mutex>
 #include "QueueIsEmptyException.h"
 
 
@@ -17,16 +18,17 @@ class ProtectedQueue
 {
 public:
     T pop() {
-        std::unique_lock<std::mutex> lock(mutex);
+        std::lock_guard<std::mutex> lock(mutex);
         if (isEmpty()) {
             throw QueueIsEmptyException("Empty Queue Exception");
         }
         T element = queue.front();
         queue.pop();
         return element;
+
     }
     void push(T &element) {
-        std::unique_lock<std::mutex> lock(mutex);
+        std::lock_guard<std::mutex> lock(mutex);
         queue.push(element);
     }
     bool isEmpty() {
@@ -35,7 +37,7 @@ public:
     }
     // pop if not empty
     bool tryPop(T &element) {
-        std::unique_lock<std::mutex> lock(mutex);
+        std::lock_guard<std::mutex> lock(mutex);
         if (isEmpty()) {
             return false;
         }
@@ -44,7 +46,7 @@ public:
         return true;
     }
     std::vector<T> popAll() {
-        std::unique_lock<std::mutex> lock(mutex);
+        std::lock_guard<std::mutex> lock(mutex);
         std::vector<T> elements;
         while(!isEmpty()) {
             T element = queue.front();
@@ -60,6 +62,6 @@ public:
 
 private:
     std::queue<T> queue;
-    mutable std::mutex mutex;
+    std::mutex mutex;
 };
 #endif //ROCKETLEAGUE_PROTECTEDQUEUE_H

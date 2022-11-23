@@ -44,8 +44,7 @@ public:
     virtual std::uint8_t getType() const;
     virtual std::string getNameGame() const;
 
-    Action * execute(GameManager &manager, const std::function<BlockingQueue<Action *> *(
-            ProtectedQueue<Action *> *)> &setQueue);
+    Action * execute(GameManager &manager, const std::function<BlockingQueue<Action *> *(BlockingQueue<Action *> *)> &setQueue);
     virtual std::vector<uint8_t> beSerialized() = 0;
 };
 
