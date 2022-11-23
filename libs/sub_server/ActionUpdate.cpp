@@ -49,3 +49,8 @@ uint8_t ActionUpdate::getAngle() {
 std::string ActionUpdate::getReturnMessage() {
     return nameGame;
 }
+
+Action *ActionUpdate::execute(GameManager &gameManager,
+                              const std::function<BlockingQueue<Action *> *(ProtectedQueue<Action *> *)> &setQueue) {
+    return nullptr;
+}

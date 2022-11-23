@@ -13,10 +13,6 @@ uint8_t ActionList::getIdCreatorGame() {
     return idCreator;
 }
 
-//Action * ActionList::execute(GameManager &manager, const std::function<BlockingQueue<Action *> *(
-//        BlockingQueue<Action *> *)> &setQueue) {
-//}
-
 uint8_t ActionList::getType() const {
     return LIST_ROOMS;
 }
@@ -27,6 +23,12 @@ std::vector<uint8_t> ActionList::beSerialized() {
 }
 std::string ActionList::getReturnMessage() {
     return nameGame;
+}
+
+Action *ActionList::execute(GameManager &manager,
+                            const std::function<BlockingQueue<Action *> *(ProtectedQueue<Action *> *)> &setQueue) {
+    std::string list = manager.listGames(idCreator);
+    return new ActionUpdate(idCreator, list);
 }
 
 ActionList::~ActionList() = default;

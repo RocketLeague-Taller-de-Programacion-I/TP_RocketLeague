@@ -3,6 +3,7 @@
 //
 
 #include "ActionCreate.h"
+#include "sub_server/gameManager.h"
 #include "protocolo.h"
 
 ActionCreate::ActionCreate(uint8_t &id,
@@ -41,6 +42,14 @@ std::vector<uint8_t> ActionCreate::beSerialized() {
 }
 std::string ActionCreate::getReturnMessage() {
     return nameGame;
+}
+
+Action *ActionCreate::execute(GameManager &gameManager,
+                              const std::function<BlockingQueue<Action *> *(ProtectedQueue<Action *> *)> &setQueue) {
+
+    gameManager.createGame(idCreator, capacityGame, nameGame, setQueue);
+    std::string returnMessage = "OK";
+    return new ActionUpdate(idCreator, returnMessage);
 }
 
 ActionCreate::~ActionCreate() = default;

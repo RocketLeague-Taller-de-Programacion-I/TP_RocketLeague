@@ -3,6 +3,7 @@
 //
 
 #include "ActionJoin.h"
+#include "sub_server/gameManager.h"
 #include "protocolo.h"
 
 ActionJoin::ActionJoin(uint8_t &id, std::string &name) : Action(id, std::move(name)){}
@@ -30,6 +31,13 @@ std::vector<uint8_t> ActionJoin::beSerialized() {
 }
 std::string ActionJoin::getReturnMessage() {
     return nameGame;
+}
+
+Action *ActionJoin::execute(GameManager &gameManager,
+                            const std::function<BlockingQueue<Action *> *(ProtectedQueue<Action *> *)> &setQueue) {
+    gameManager.joinGame(idCreator, nameGame, setQueue);
+    std::string message = "OK";
+    return new ActionUpdate(idCreator, message);
 }
 
 ActionJoin::~ActionJoin() = default;
