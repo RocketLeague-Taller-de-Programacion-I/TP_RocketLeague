@@ -19,11 +19,12 @@ private:
 protected:
     void run() override;
 public:
-    BlockingQueue<Action*> &actionsQueue;
+    BlockingQueue<Action*> *actionsQueue;
 
-    explicit ClientSender(Socket &skt_client, BlockingQueue <Action*> &actionsQueue);
+    explicit ClientSender(Socket &skt_client, BlockingQueue<Action *> *queue);
     ~ClientSender() override;
     void stop() override;
+    BlockingQueue<Action *>* getQueue() const;
 };
 
 

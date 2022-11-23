@@ -20,11 +20,12 @@ private:
 protected:
     void run() override;
 public:
-    BlockingQueue<Action*> &updatesQueue;
-    explicit ClientReceiver(Socket &skt_client, BlockingQueue<Action *> &updatesQueue);
-    ClientReceiver(Socket &skt_client, ProtectedQueue<Action *> &updatesQueue);
-
+    ProtectedQueue<Action*> *updatesQueue;
+    ClientReceiver(Socket &skt_client, ProtectedQueue<Action *> *updatesQueue);
+    ~ClientReceiver() override;
     void stop() override;
+    void setQueue(ProtectedQueue<Action *> *pQueue);
+    void clearQueue();
 };
 
 

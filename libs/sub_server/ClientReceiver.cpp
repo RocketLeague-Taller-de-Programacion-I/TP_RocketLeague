@@ -4,13 +4,9 @@
 
 #include "ClientReceiver.h"
 
-ClientReceiver::ClientReceiver(Socket &skt_client, BlockingQueue<Action *> &updatesQueue)
-    : skt_client(skt_client), updatesQueue(updatesQueue) {
-    this->closed = false;
-}
 
-ClientReceiver::ClientReceiver(Socket &skt_client, ProtectedQueue<Action *> &updatesQueue)
-        : skt_client(skt_client), updatesQueue(updatesQueue) {
+ClientReceiver::ClientReceiver(Socket &skt_client, ProtectedQueue<Action *> *updatesQueue)
+        : skt_client(skt_client), updatesQueue((updatesQueue)) {
     this->closed = false;
 }
 
@@ -30,7 +26,7 @@ void ClientReceiver::run() {
             // form the Action from the data
             auto action = p.deserializeData(data);
             // push the action to the queue
-            updatesQueue.push(action);
+            updatesQueue->push(action);
         }
         running = false;
     } catch (const std::exception &e) {
@@ -40,3 +36,21 @@ void ClientReceiver::run() {
     }
 }
 void ClientReceiver::stop() {}
+
+void ClientReceiver::setQueue(ProtectedQueue<Action *> *pQueue) {
+    clearQueue();
+    this->updatesQueue = pQueue;
+}
+void ClientReceiver::clearQueue() {
+    std::vector<Action*> elements = this->updatesQueue->popAll();
+    for (auto &element : elements) {
+        delete element;
+    }
+    elements.clear();
+}
+
+ClientReceiver::~ClientReceiver() {
+    delete this->updatesQueue;
+    closed = false;
+    this->join();
+}
