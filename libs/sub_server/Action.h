@@ -46,6 +46,9 @@ public:
 
     Action * execute(GameManager &manager, const std::function<BlockingQueue<Action *> *(BlockingQueue<Action *> *)> &setQueue);
     virtual std::vector<uint8_t> beSerialized() = 0;
+
+    virtual std::string getReturnMessage() = 0;
+
 };
 
 

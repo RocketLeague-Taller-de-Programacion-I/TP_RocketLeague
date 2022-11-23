@@ -19,6 +19,7 @@ public:
     // Action * execute(GameManager &gameManager, const std::function<BlockingQueue<Action *> *(
             //  BlockingQueue<Action *> *)> &setQueue);
     std::vector<uint8_t> beSerialized() override;
+    std::string getReturnMessage() override;
 
     uint8_t getX();
     uint8_t getY();

@@ -45,3 +45,7 @@ uint8_t ActionUpdate::getY() {
 uint8_t ActionUpdate::getAngle() {
     return 0;
 }
+
+std::string ActionUpdate::getReturnMessage() {
+    return nameGame;
+}
