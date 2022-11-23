@@ -9,10 +9,10 @@
 #include "gameManager.h"
 #include "../sub_common/thread.h"
 #include "../sub_common/socket.h"
-#include "sub_common/protocolo.h"
+#include "protocolo.h"
 #include "sub_common/BlockingQueue.h"
-#include "sub_common/ClientReceiver.h"
-#include "sub_common/ClientSender.h"
+#include "ClientReceiver.h"
+#include "ClientSender.h"
 
 class ClientManager : public Thread{
 private:

@@ -8,9 +8,9 @@
 
 #include "sub_common/socket.h"
 #include "sub_common/thread.h"
-#include "Action.h"
+#include "sub_server/Action.h"
 #include "protocolo.h"
-#include "BlockingQueue.h"
+#include "sub_common/BlockingQueue.h"
 
 class ClientSender : public Thread{
 private:

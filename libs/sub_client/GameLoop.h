@@ -7,15 +7,15 @@
 
 #include "SDL2pp/SDL2pp.hh"
 #include "Player.h"
-#include "sub_common/Action.h"
+#include "GameUpdate.h"
+#include "ClientAction.h"
 #include "sub_common/ProtectedQueue.h"
-#include "sub_common/protocolo.h"
 #include "Worldview.h"
 
 class GameLoop {
     SDL2pp::Renderer &renderer;
-    ProtectedQueue<Action*>& updatesQueue;
-    BlockingQueue<Action*>& actionsQueue;
+    ProtectedQueue<GameUpdate*>& updatesQueue;
+    BlockingQueue<ClientAction*>& actionsQueue;
     bool running;
     int xMax;
     int yMax;
@@ -23,8 +23,8 @@ class GameLoop {
     void update(float dt);
     void render();
 public:
-    GameLoop(SDL2pp::Renderer &renderer, int xMax, int yMax, ProtectedQueue<Action *> &updates,
-             BlockingQueue<Action *> &actions, Worldview &wv);
+    GameLoop(SDL2pp::Renderer &renderer, int xMax, int yMax, ProtectedQueue<GameUpdate*> &updates,
+             BlockingQueue<ClientAction*> &actions, Worldview &wv);
 
     void run();
 private:

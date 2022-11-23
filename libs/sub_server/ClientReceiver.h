@@ -8,10 +8,10 @@
 
 #include "sub_common/socket.h"
 #include "sub_common/thread.h"
-#include "Action.h"
+#include "sub_server/Action.h"
 #include "protocolo.h"
-#include "BlockingQueue.h"
-#include "ProtectedQueue.h"
+#include "sub_common/BlockingQueue.h"
+#include "sub_common/ProtectedQueue.h"
 
 class ClientReceiver : public Thread{
 private:

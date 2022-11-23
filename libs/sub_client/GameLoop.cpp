@@ -7,8 +7,8 @@
 #include <unistd.h>
 #include "GameLoop.h"
 
-GameLoop::GameLoop(SDL2pp::Renderer &renderer, int xMax, int yMax, ProtectedQueue<Action *> &updates,
-                   BlockingQueue<Action *> &actions, Worldview &wv)
+GameLoop::GameLoop(SDL2pp::Renderer &renderer, int xMax, int yMax, ProtectedQueue<GameUpdate*> &updates,
+                   BlockingQueue<ClientAction*> &actions, Worldview &wv)
         : renderer(renderer),
           updatesQueue(updates),
           actionsQueue(actions),
@@ -21,7 +21,6 @@ void GameLoop::run() {
     // Gameloop, notar como tenemos desacoplado el procesamiento de los inputs (handleEvents)
     // del update del modelo.
     while (running) {
-        std::cout << "running" << std::endl;
         handle_events();
         //pop from updates queue
         update(FRAME_RATE);
@@ -37,7 +36,6 @@ bool GameLoop::handle_events() {
     // Para el alumno: Buscar diferencia entre waitEvent y pollEvent
     // Aca estara la cola de eventos!!
     while(SDL_PollEvent(&event)){
-        Protocolo protocolo;
         switch(event.type) {
             case SDL_KEYDOWN: {
                 // ¿Qué pasa si mantengo presionada la tecla?
@@ -59,8 +57,8 @@ bool GameLoop::handle_events() {
                         running = false;
                         break;
                 }
-                std::vector<uint8_t> movement(1);
-                movement[0] = protocolo.getMapCommand(keyEvent.keysym.sym);
+//                std::vector<uint8_t> movement(1);
+//                movement[0] = protocolo.getMapCommand(keyEvent.keysym.sym);
 //                Action action(MOVE,movement);
 //                actionsQueue.push(action);
             } // Fin KEY_DOWN
@@ -101,6 +99,5 @@ void GameLoop::render() {
 }
 
 void GameLoop::update(float dt) {
-    std::cout << "update" << std::endl;
     wv.update(dt);
 }

@@ -4,10 +4,10 @@
 
 #include <iostream>
 #include "gameManager.h"
-#include "sub_common/ActionCreate.h"
-#include "sub_common/ActionList.h"
-#include "sub_common/ActionJoin.h"
-#include "sub_common/ActionUpdate.h"
+#include "ActionCreate.h"
+#include "ActionList.h"
+#include "ActionJoin.h"
+#include "ActionUpdate.h"
 
 void GameManager::cleanGames() {
     for (auto & game: games) {

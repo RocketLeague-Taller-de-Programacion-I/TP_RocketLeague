@@ -2,7 +2,7 @@
 // Created by roby on 13/11/22.
 //
 #include <catch2/catch_test_macros.hpp>
-#include "../libs/sub_common/Action.h"
+#include "sub_server/Action.h"
 
 
 TEST_CASE("Action type is set correctly", "[Action]") {

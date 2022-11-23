@@ -2,12 +2,12 @@
 // Created by lucaswaisten on 04/11/22.
 //
 
-#include "Action.h"
+#include "sub_server/Action.h"
 #include "protocolo.h"
-#include "ActionCreate.h"
-#include "ActionList.h"
-#include "ActionJoin.h"
-#include "ActionUpdate.h"
+#include "sub_server/ActionCreate.h"
+#include "sub_server/ActionList.h"
+#include "sub_server/ActionJoin.h"
+#include "sub_server/ActionUpdate.h"
 
 #include <sstream>
 #include <regex>

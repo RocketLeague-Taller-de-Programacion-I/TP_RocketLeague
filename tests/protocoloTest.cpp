@@ -3,7 +3,7 @@
 //
 #include <catch2/catch_test_macros.hpp>
 #include <SDL2/SDL_keycode.h>
-#include "sub_common/protocolo.h"
+#include "sub_server/protocolo.h"
 
 
 /*

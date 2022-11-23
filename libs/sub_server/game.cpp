@@ -3,8 +3,8 @@
 //
 
 #include "game.h"
-#include "../sub_common/Action.h"
-#include "sub_common/ActionUpdate.h"
+#include "Action.h"
+#include "ActionUpdate.h"
 
 Game::Game(int capacity,
            std::string  name,

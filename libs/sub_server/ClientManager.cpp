@@ -7,8 +7,8 @@
 #include <memory>
 #include <functional>
 #include "ClientManager.h"
-#include "sub_common/protocolo.h"
-#include "sub_common/ClientReceiver.h"
+#include "protocolo.h"
+#include "ClientReceiver.h"
 
 ClientManager::ClientManager(Socket &aClient,
                              GameManager &aGameManager) :
