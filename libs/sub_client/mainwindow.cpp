@@ -65,12 +65,12 @@ void MainWindow::drawJoinGameMenu() {
     this->actionsQueue.push(action);
 
     GameUpdate* update =updatesQueue.pop();
-
-    std::vector<std::string> games = parseList(update->getList());
+    std::string list = update->getList();
+    std::vector<std::string> games = parseList(list);
     if(games.empty()) {
-//        drawTitle("No games available");
-//        drawBackButton();
-        games.push_back("game_test 1/2");
+        drawTitle("No games available");
+        drawBackButton();
+
     }
     int i = 200;
     foreach(auto game, games) {
@@ -223,7 +223,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-std::vector<std::string> MainWindow::parseList(std::string basicString) {
+std::vector<std::string> MainWindow::parseList(std::string &basicString) {
     // separate the string by commas
     std::vector<std::string> vec;
     std::string delimiter = ",";

@@ -37,7 +37,7 @@ command_t Protocolo::getMapCommand(uint32_t action) {
 }
 
 Action * Protocolo::deserializeData(const std::vector<uint8_t>& data) {
-    uint8_t type(data[0]);
+    uint8_t type(data[1]);
 
     switch (type) {
         case CREATE_ROOM:
@@ -53,12 +53,13 @@ Action * Protocolo::deserializeData(const std::vector<uint8_t>& data) {
 }
 /*
  * [0] -> id
- * [1] -> players
- * [2] -> name
+ * [1] -> type
+ * [2] -> playersRequired
+ * [3] -> [end] -> string
  *
  */
 Action* Protocolo::parseCreateAction(const std::vector<uint8_t> &data) {
-    uint8_t id(data[1]);
+    uint8_t id(data[0]);
     uint8_t capacity(data[2]);
     std::string name(data.begin()+3,data.end());
 //    std::shared_ptr<Action> pAction = std::make_shared<ActionCreate>(id, capacity, name);

@@ -18,6 +18,7 @@ ClientManager::ClientManager(Socket &aClient,
 
 void ClientManager::run() {
     std::vector<uint8_t> data;
+    data.push_back(this->id);
     uint8_t byte_to_read;
     Protocolo protocolo;
     this->client.recvall(&byte_to_read, sizeof(byte_to_read), &closed);
@@ -46,14 +47,15 @@ void ClientManager::run() {
         //we need to send the data without creating nor joining a game
         if (not closed) {
             std::vector<uint8_t> listData;
-            listData.push_back(UPDATE);
+            listData.push_back(LIST_ROOMS);
             listData.push_back(id);
-            listData.insert(listData.end(), result.begin(), result.end());
+            // listData.insert(listData.end(), result.begin(), result.end());
             //  se iteran los comandos parseados y se envian al servidor
             for (uint8_t c : listData) {
                 client.sendall(&c, sizeof(c), &closed);
             }
             //  send the NOP instruccion
+            client.sendall(result.c_str(), result.size(), &closed);
             uint8_t nop = 0;
             client.sendall(&nop, sizeof(nop), &closed);
         }

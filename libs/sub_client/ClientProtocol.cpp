@@ -7,8 +7,6 @@
 GameUpdate *ClientProtocol::deserializeData(const std::vector<uint8_t> &data) {
     //type is sent as first byte (by server)
     uint8_t type = data[0];
-    // id is sent as second byte (by server)
-//    uint8_t id = data[1];
     switch (type) {
         case CREATE_ACK:
             return parseCreateACK(data);
