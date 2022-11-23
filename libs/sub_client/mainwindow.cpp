@@ -1,10 +1,11 @@
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "sub_common/ActionUpdate.h"
+#include "sub_server/ActionUpdate.h"
 #include <iostream>
 #include <regex>
 
-MainWindow::MainWindow(QWidget *parent, ProtectedQueue<Action *> &updates, BlockingQueue<Action *> &actions)
+MainWindow::MainWindow(QWidget *parent, ProtectedQueue<GameUpdate*> &updates, BlockingQueue<ClientAction *> &actions)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , updatesQueue(updates)
@@ -60,13 +61,12 @@ void MainWindow::drawJoinGameMenu() {
     drawTitle("Join Game");
     //list all the games
     //draw a button for each game
-    uint8_t id = 0;
-    Action* actionList = new ActionList(id);
-    this->actionsQueue.push(actionList);
+    ClientAction* action = new ActionListRooms();
+    this->actionsQueue.push(action);
 
-    auto update = dynamic_cast<ActionUpdate *>(updatesQueue.pop());
+    GameUpdate* update =updatesQueue.pop();
 
-    std::vector<std::string> games = parseList(update->getGameName());
+    std::vector<std::string> games = parseList(update->getList());
     if(games.empty()) {
 //        drawTitle("No games available");
 //        drawBackButton();
@@ -88,8 +88,8 @@ void MainWindow::drawJoinGameMenu() {
 void MainWindow::createRoom() {
     std::string roomName = this->lineEdit->text().toStdString();
     uint8_t players = this->cantPlayers->value();
-    uint8_t id = 0;
-    Action* actionCreate = new ActionCreate(id, players, roomName);
+//    Action* actionCreate = new ActionCreate(id, players, roomName);
+    ClientAction* actionCreate = new ActionCreateRoom(players, roomName);
     this->actionsQueue.push(actionCreate);
 
     std::cout << "Waiting for Update" << std::endl;
@@ -104,8 +104,8 @@ void MainWindow::joinParticularGame(QString roomName) {
     // crear evento de join ()
     std::string room = retrieveGamaeName(roomName.toStdString());
     std::cout << "Joining to " << room << std::endl;
-    uint8_t id = 0;
-    Action *actionJoin = new ActionJoin(id, room);
+//    Action *actionJoin = new ActionJoin(id, room);
+    ClientAction *actionJoin = new ActionJoinRoom(room);
     this->actionsQueue.push(actionJoin);
     //exit qt
     close();
@@ -261,9 +261,9 @@ void MainWindow::drawLoadingScreen() {
 }
 
 void MainWindow::popFirstUpdate() {
-    auto update = dynamic_cast<ActionUpdate *>(updatesQueue.pop());
+    auto update = updatesQueue.pop();
     std::cout << "Update received" << std::endl;
-    std::cout << "Game created with id: " << (int)(update->getIdCreatorGame()) << std::endl;
+    std::cout << "Game created with id: " << (int)(update->getId()) << std::endl;
     delete update;
 }
 

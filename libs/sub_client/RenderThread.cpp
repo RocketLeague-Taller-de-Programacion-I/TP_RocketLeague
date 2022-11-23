@@ -6,7 +6,7 @@
 
 using namespace SDL2pp;
 
-RenderThread::RenderThread(ProtectedQueue<Action *> &updates, BlockingQueue<Action *> &actionsQueue)
+RenderThread::RenderThread(ProtectedQueue<GameUpdate*> &updates, BlockingQueue<ClientAction *> &actionsQueue)
         : updatesQueue(updates)
         , actionsQueue(actionsQueue){}
 
@@ -61,19 +61,26 @@ void RenderThread::run() {
         //pop everything from updates queue
         //vector of Action*
 //        std::vector<Action *> actions;
-        std::vector<ActionUpdate*> actions;
+        std::vector<GameUpdate*> actions;
         std::string name = "car1";
-        uint8_t id = 1;
-        actions.push_back(new ActionUpdate(id,name));
+        std::vector<uint8_t> gameUpdate;
+        gameUpdate.insert(gameUpdate.end(), name.begin(), name.end());
+        actions.push_back(new GameUpdate(gameUpdate));
+
         name = "car2";
-        id = 2;
-        actions.push_back(new ActionUpdate(id,name));
+        gameUpdate.clear();
+        gameUpdate.insert(gameUpdate.end(), name.begin(), name.end());
+        actions.push_back(new GameUpdate(gameUpdate));
+
         name = "ball";
-        id = 6;
-        actions.push_back(new ActionUpdate(id,name));
+        gameUpdate.clear();
+        gameUpdate.insert(gameUpdate.end(), name.begin(), name.end());
+        actions.push_back(new GameUpdate(gameUpdate));
+
         name = "scoreBoard";
-        id = 7;
-        actions.push_back(new ActionUpdate(id,name));
+        gameUpdate.clear();
+        gameUpdate.insert(gameUpdate.end(), name.begin(), name.end());
+        actions.push_back(new GameUpdate(gameUpdate));
 
 //        updatesQueue.tryPop(actions[0]);
 
@@ -82,21 +89,21 @@ void RenderThread::run() {
 //             id of players (1,2,3,4)
 //             id score (5)
 //             id ball (6)
-//        ActionUpdate *actionUpdate = dynamic_cast<ActionUpdate *>(actions[0]);
+//        GameUpdate *actionUpdate = dynamic_cast<GameUpdate *>(actions[0]);
         for(auto &actionUpdate : actions) {
-            if(actionUpdate->getGameName() == "car1") {
-                sprites.emplace(actionUpdate->getIdCreatorGame(), GameSprite(textures["car"], actionUpdate->getIdCreatorGame(), 0, Height/2, actionUpdate->getAngle()));
-            } else if(actionUpdate->getGameName() == "car2") {
-                sprites.emplace(actionUpdate->getIdCreatorGame(), GameSprite(textures["car"], actionUpdate->getIdCreatorGame(),Height/2, 0, actionUpdate->getAngle()));
-            } else if(actionUpdate->getGameName() == "ball") {
-                sprites.emplace(actionUpdate->getIdCreatorGame(), GameSprite(textures["ball"], actionUpdate->getIdCreatorGame(),Width/2,Height/3, actionUpdate->getAngle()));
-            } else if(actionUpdate->getGameName() == "scoreBoard") {
-                sprites.emplace(SCORE, GameSprite(textures["scoreBoard"],actionUpdate->getIdCreatorGame(), Width/2, 0, 0));
+            if(actionUpdate->getList() == "car1") {
+                sprites.emplace(1, GameSprite(textures["car"],1, 0, Height/2, 0));
+            } else if(actionUpdate->getList() == "car2") {
+                sprites.emplace(2, GameSprite(textures["car"], 2,Height/2, 0, 0));
+            } else if(actionUpdate->getList() == "ball") {
+                sprites.emplace(BALL, GameSprite(textures["ball"], BALL,Width/2,Height/3, 0));
+            } else if(actionUpdate->getList() == "scoreBoard") {
+                sprites.emplace(SCORE, GameSprite(textures["scoreBoard"],SCORE, Width/2, 0, 0));
             }
 
 //            switch(actionUpdate->getIdCreatorGame()) {
 //                case CAR:
-//                    sprites.emplace(actionUpdate->getIdCreatorGame(), GameSprite(textures["car"], actionUpdate->getIdCreatorGame(), actionUpdate->getX(), actionUpdate->getY(), actionUpdate->getAngle()));
+//                    sprites.emplace(actionUpdate->getIdCreatorGame(), GameSprite(textures["car"], actionUpdate->getIdCreatorGame(), actionUpdate->getX(), actionUpdate->getY(), 0));
 //                    break;
 //                case BALL:
 //                    sprites.emplace(BALL, GameSprite(textures["ball"],actionUpdate->getIdCreatorGame(), actionUpdate->getX(), actionUpdate->getY(), actionUpdate->getAngle()));

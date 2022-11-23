@@ -9,7 +9,7 @@
 using namespace SDL2pp;
 #define TESTDATA_DIR "../libSDL2pp/testdata"
 static const float pi = 3.14159265358979323846f;
-Client::Client(const char *host, const char *port) : skt_client(host, port) {}
+Client::Client(const char *host, const char *port) : skt_client(host, port), closed(false) {}
 
 Client::~Client() { }
 
@@ -22,14 +22,18 @@ void Client::startThreads() {
 void Client::run() {
     try {
         // create actions queue
-        BlockingQueue<Action*> actionsQueue;
+//        BlockingQueue<Action*> actionsQueue;
+        BlockingQueue<ClientAction*> actionsQueue;
         // create updates queue
-        ProtectedQueue<Action*> updatesQueue;
+//        ProtectedQueue<Action*> updatesQueue;
+        ProtectedQueue<GameUpdate*> updatesQueue;
         //launch ClientSender thread
-        auto sender = new ClientSender(skt_client, actionsQueue);
+//        auto sender = new ClientSender(skt_client, actionsQueue);
+        auto sender = new ThreadActionsSender(skt_client, actionsQueue);
         this->threads.push_back(sender);
         //launch ClientReceiver thread
-        auto receiver = new ClientReceiver(skt_client, updatesQueue);
+//        auto receiver = new ClientReceiver(skt_client, updatesQueue);
+        auto receiver = new UpdatesReceiverThread(skt_client, updatesQueue);
         this->threads.push_back(receiver);
         //
         //launch render thread

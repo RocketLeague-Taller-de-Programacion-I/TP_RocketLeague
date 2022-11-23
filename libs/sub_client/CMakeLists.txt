@@ -14,5 +14,40 @@ message("Client - Agregando '${PROJECT_SOURCE_DIR}/sub_client' como directorio d
 
 #add_executable(client ../../client_main.cpp ${UIS_HEADERS})
 #include_directories(${SDL2PP_INCLUDE_DIRS})
-add_library(lib_client Client.cpp Client.h Animation.cpp Animation.h Player.cpp Player.h GameLoop.cpp GameLoop.h mainwindow.cpp mainwindow.h gamescene.cpp gamescene.h Button.cpp Button.h RenderThread.cpp RenderThread.h Worldview.cpp Worldview.h GameSprite.cpp GameSprite.h)
+add_library(lib_client
+        Client.cpp
+        Client.h
+        Animation.cpp
+        Animation.h
+        Player.cpp
+        Player.h
+        GameLoop.cpp
+        GameLoop.h
+        mainwindow.cpp
+        mainwindow.h
+        gamescene.cpp
+        gamescene.h
+        Button.cpp
+        Button.h
+        RenderThread.cpp
+        RenderThread.h
+        Worldview.cpp
+        Worldview.h
+        GameSprite.cpp
+        GameSprite.h
+        UpdatesReceiverThread.cpp
+        UpdatesReceiverThread.h
+        ThreadActionsSender.cpp
+        ThreadActionsSender.h
+        ClientAction.cpp
+        ClientAction.h
+        ActionCreateRoom.cpp
+        ActionCreateRoom.h
+        GameUpdate.cpp
+        GameUpdate.h
+        ActionJoinRoom.cpp
+        ActionJoinRoom.h
+        ActionListRooms.h
+        ClientProtocol.cpp
+        ClientProtocol.h)
 target_link_libraries(lib_client SDL2pp::SDL2pp Qt5::Widgets)

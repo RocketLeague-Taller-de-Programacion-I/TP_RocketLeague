@@ -9,24 +9,25 @@ add_library(lib_common
         resolver.h
         resolvererror.h
         resolvererror.cpp
-        protocolo.h
-        protocolo.cpp
+#        ../sub_server/protocolo.h
+#        ../sub_server/protocolo.cpp
         BlockingQueue.h
-        Action.cpp
-        Action.h
-        ClientReceiver.cpp
-        ClientReceiver.h
-        ClientSender.cpp
-        ClientSender.h
+#        ../sub_server/Action.cpp
+#        ../sub_server/Action.h
+#        ../sub_server/ClientReceiver.cpp
+#        ../sub_server/ClientReceiver.h
+#        ../sub_server/ClientSender.cpp
+#        ../sub_server/ClientSender.h
         ProtectedQueue.h
         QueueIsEmptyException.cpp
         QueueIsEmptyException.h
-        ActionCreate.cpp
-        ActionCreate.h
-        ActionJoin.cpp
-        ActionJoin.h
-        ActionList.cpp
-        ActionList.h
-        ActionUpdate.cpp
-        ActionUpdate.h)
+#        ../sub_server/ActionCreate.cpp
+#        ../sub_server/ActionCreate.h
+#        ../sub_server/ActionJoin.cpp
+#        ../sub_server/ActionJoin.h
+#        ../sub_server/ActionList.cpp
+#        ../sub_server/ActionList.h
+#        ../sub_server/ActionUpdate.cpp
+#        ../sub_server/ActionUpdate.h
+        )
 target_link_libraries(lib_common)

@@ -13,9 +13,12 @@
 #include <vector>
 
 #include "RenderThread.h"
+#include "UpdatesReceiverThread.h"
+#include "ThreadActionsSender.h"
+
 #include "sub_common/socket.h"
-#include "sub_common/ClientSender.h"
-#include "sub_common/ClientReceiver.h"
+//#include "sub_common/ClientSender.h"
+//#include "sub_common/ClientReceiver.h"
 
 class Client : public Thread {
 private:
