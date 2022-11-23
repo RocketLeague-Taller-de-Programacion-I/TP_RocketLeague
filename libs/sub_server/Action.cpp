@@ -3,7 +3,7 @@
 //
 
 #include "Action.h"
-#include "../sub_server/gameManager.h"
+#include "gameManager.h"
 #include <utility>
 
 Action::Action() : idCreator(0),
