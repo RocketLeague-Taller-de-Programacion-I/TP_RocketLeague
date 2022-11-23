@@ -10,6 +10,7 @@
 #include "GameUpdate.h"
 #include "ClientAction.h"
 #include "sub_common/ProtectedQueue.h"
+#include "sub_common/BlockingQueue.h"
 #include "Worldview.h"
 
 class GameLoop {
