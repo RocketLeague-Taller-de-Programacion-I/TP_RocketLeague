@@ -5,9 +5,10 @@
 #ifndef ROCKETLEAGUE_ACTIONLIST_H
 #define ROCKETLEAGUE_ACTIONLIST_H
 
+
 #include "Action.h"
 
-class ActionList : public Action{
+class ActionList : public Action {
 
 public:
     explicit ActionList(uint8_t id);
@@ -16,8 +17,7 @@ public:
     uint8_t getIdCreatorGame() override;
     uint8_t getType() const override;
 
-    Action * execute(GameManager &manager, const std::function<BlockingQueue<Action *> *(
-            ProtectedQueue<Action *> *)> &setQueue) override;
+    Action * execute(GameManager &manager, const std::function<BlockingQueue<Action *> *(ProtectedQueue<Action *> *)> &setQueue) override;
     std::vector<uint8_t> beSerialized() override;
 
     std::string getReturnMessage() override;

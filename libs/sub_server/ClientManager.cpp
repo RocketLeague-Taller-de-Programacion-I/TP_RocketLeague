@@ -19,14 +19,10 @@ ClientManager::ClientManager(Socket &aClient,
 void ClientManager::run() {
     auto initialActionsQueue = new ProtectedQueue<Action*>;
     auto initialUpdatesQueue = new BlockingQueue<Action*>;
-
     startClientThreads(initialActionsQueue, initialUpdatesQueue);
-
     Action* command;
-
     std::function<BlockingQueue<Action*>*(ProtectedQueue<Action *> *)> queue_setter_callable =
             std::bind(&ClientManager::setQueues, this, std::placeholders::_1);
-
     bool playing = false; //  Mientras no se una o no cree una partida == no este jugando
     while (!playing) {
         try {

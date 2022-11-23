@@ -95,7 +95,7 @@ std::vector<uint8_t> Protocolo::serializeJoinAction(const std::vector<uint8_t> &
 std::vector<uint8_t> Protocolo::serializeListAction(const std::vector<uint8_t> &data) {
     std::vector<uint8_t> result;
     result.emplace_back(LIST_ROOMS);
-//    result.insert(result.end(),data.begin(),data.end());
+    result.insert(result.end(),data.begin(),data.end());
     return result;
 }
 

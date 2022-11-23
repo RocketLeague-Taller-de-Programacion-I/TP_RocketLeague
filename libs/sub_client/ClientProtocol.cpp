@@ -30,7 +30,6 @@ GameUpdate *ClientProtocol::parseCreateACK(const std::vector<uint8_t> &data) {
     //  updateData.push_back(returnCode);
     return new GameUpdate(updateData);
 }
-// TODO: maybe implement some parseAck to avoid code duplication
 GameUpdate *ClientProtocol::parseJoinACK(const std::vector<uint8_t> &data) {
     std::vector<uint8_t> updateData;
     uint8_t id = data[1];
@@ -42,7 +41,6 @@ GameUpdate *ClientProtocol::parseJoinACK(const std::vector<uint8_t> &data) {
 
 GameUpdate *ClientProtocol::parseListUpdate(const std::vector<uint8_t> &data) {
     std::vector<uint8_t> listData;
-//    uint8_t id = data[1];
     std::string list = std::string(data.begin() + 2, data.end());
     listData.insert(listData.end(), list.begin(), list.end());
     return new GameUpdate(listData);
