@@ -13,7 +13,7 @@
 #include "../sub_common/ProtectedQueue.h"
 
 #include "ClientProtocol.h"
-#include "GameUpdate.h"
+#include "sub_client/client_updates/ClientUpdate.h"
 
 class UpdatesReceiverThread : public Thread{
 private:
@@ -22,8 +22,8 @@ private:
 protected:
     void run() override;
 public:
-    ProtectedQueue<GameUpdate*> &updatesQueue;
-    explicit UpdatesReceiverThread(Socket &skt_client, ProtectedQueue<GameUpdate*> &updatesQueue);
+    ProtectedQueue<ClientUpdate*> &updatesQueue;
+    explicit UpdatesReceiverThread(Socket &skt_client, ProtectedQueue<ClientUpdate*> &updatesQueue);
 
     void stop() override;
 };

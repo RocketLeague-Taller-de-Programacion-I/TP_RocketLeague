@@ -39,21 +39,21 @@ add_library(lib_client
         UpdatesReceiverThread.h
         ThreadActionsSender.cpp
         ThreadActionsSender.h
-        ClientAction.cpp
-        ClientAction.h
-        ActionCreateRoom.cpp
-        ActionCreateRoom.h
-        GameUpdate.cpp
-        GameUpdate.h
-        ActionJoinRoom.cpp
-        ActionJoinRoom.h
-        ActionListRooms.h
         ClientProtocol.cpp
         ClientProtocol.h
-        CreateACK.cpp
-        CreateACK.h
-        JoinACK.cpp
-        JoinACK.h
-        ListACK.cpp
-        ListACK.h)
+        client_actions/ClientAction.h
+        client_actions/ActionCreateRoom.cpp
+        client_actions/ActionCreateRoom.h
+        client_actions/ActionJoinRoom.cpp
+        client_actions/ActionJoinRoom.h
+        client_actions/ActionListRooms.h
+        client_updates/ClientUpdate.cpp
+        client_updates/ClientUpdate.h
+        client_updates/ClientCreateACK.cpp
+        client_updates/ClientCreateACK.h
+        client_updates/ClientJoinACK.cpp
+        client_updates/ClientJoinACK.h
+        client_updates/ClientListACK.cpp
+        client_updates/ClientListACK.h)
+
 target_link_libraries(lib_client SDL2pp::SDL2pp Qt5::Widgets)

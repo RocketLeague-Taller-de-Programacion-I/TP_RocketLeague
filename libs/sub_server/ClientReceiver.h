@@ -8,9 +8,10 @@
 
 #include "sub_common/socket.h"
 #include "sub_common/thread.h"
-#include "sub_server/Action.h"
 #include "protocolo.h"
 #include "sub_common/ProtectedQueue.h"
+
+#include "server_actions/ServerAction.h"
 
 class ClientReceiver : public Thread{
 private:
@@ -20,11 +21,11 @@ private:
 protected:
     void run() override;
 public:
-    ProtectedQueue<Action *> *updatesQueue;
-    ClientReceiver(Socket &skt_client, ProtectedQueue<Action *> *updatesQueue, uint8_t idClient);
+    ProtectedQueue<ServerAction*> *updatesQueue;
+    ClientReceiver(Socket &skt_client, ProtectedQueue<ServerAction *> *updatesQueue, uint8_t idClient);
     ~ClientReceiver() override;
     void stop() override;
-    void setQueue(ProtectedQueue<Action *> *pQueue);
+    void setQueue(ProtectedQueue<ServerAction *> *pQueue);
     void clearQueue();
 };
 

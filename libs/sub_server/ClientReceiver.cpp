@@ -5,7 +5,7 @@
 #include "ClientReceiver.h"
 
 
-ClientReceiver::ClientReceiver(Socket &skt_client, ProtectedQueue<Action *> *updatesQueue, uint8_t idClient)
+ClientReceiver::ClientReceiver(Socket &skt_client, ProtectedQueue<ServerAction *> *updatesQueue, uint8_t idClient)
         : skt_client(skt_client), idClient(idClient), updatesQueue((updatesQueue)) {
     this->closed = false;
 }
@@ -38,12 +38,12 @@ void ClientReceiver::run() {
 }
 void ClientReceiver::stop() {}
 
-void ClientReceiver::setQueue(ProtectedQueue<Action *> *pQueue) {
+void ClientReceiver::setQueue(ProtectedQueue<ServerAction *> *pQueue) {
     clearQueue();
     this->updatesQueue = pQueue;
 }
 void ClientReceiver::clearQueue() {
-    std::vector<Action*> elements = this->updatesQueue->popAll();
+    std::vector<ServerAction*> elements = this->updatesQueue->popAll();
     for (auto &element : elements) {
         delete element;
     }

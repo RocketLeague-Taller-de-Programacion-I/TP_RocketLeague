@@ -7,7 +7,7 @@
 #include <unistd.h>
 #include "GameLoop.h"
 
-GameLoop::GameLoop(SDL2pp::Renderer &renderer, int xMax, int yMax, ProtectedQueue<GameUpdate*> &updates,
+GameLoop::GameLoop(SDL2pp::Renderer &renderer, int xMax, int yMax, ProtectedQueue<ClientUpdate*> &updates,
                    BlockingQueue<ClientAction*> &actions, Worldview &wv)
         : renderer(renderer),
           updatesQueue(updates),

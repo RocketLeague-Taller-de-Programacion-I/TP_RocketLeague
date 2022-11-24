@@ -8,9 +8,11 @@
 
 #include "sub_common/socket.h"
 #include "sub_common/thread.h"
-#include "sub_server/Action.h"
 #include "protocolo.h"
 #include "sub_common/BlockingQueue.h"
+
+#include "server_updates/ServerUpdate.h"
+//WorldUpdate
 
 class ClientSender : public Thread{
 private:
@@ -20,12 +22,12 @@ private:
 protected:
     void run() override;
 public:
-    BlockingQueue<Action*> *actionsQueue;
+    BlockingQueue<ServerUpdate*> *actionsQueue;
 
-    explicit ClientSender(Socket &skt_client, BlockingQueue<Action *> *queue, uint8_t idClient);
+    explicit ClientSender(Socket &skt_client, BlockingQueue<ServerUpdate *> *queue, uint8_t idClient);
     ~ClientSender() override;
     void stop() override;
-    BlockingQueue<Action *>* getQueue() const;
+    BlockingQueue<ServerUpdate *> * getQueue() const;
 };
 
 

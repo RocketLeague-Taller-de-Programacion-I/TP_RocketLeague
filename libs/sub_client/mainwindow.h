@@ -11,13 +11,13 @@
 #include "gamescene.h"
 #include "GameLoop.h"
 
-#include "ActionCreateRoom.h"
-#include "ActionJoinRoom.h"
-#include "ActionListRooms.h"
+#include "sub_client/client_actions/ActionCreateRoom.h"
+#include "sub_client/client_actions/ActionJoinRoom.h"
+#include "sub_client/client_actions/ActionListRooms.h"
 
-#include "CreateACK.h"
-#include "JoinACK.h"
-#include "ListACK.h"
+#include "sub_client/client_updates/ClientCreateACK.h"
+#include "sub_client/client_updates/ClientJoinACK.h"
+#include "sub_client/client_updates/ClientListACK.h"
 
 #include "Button.h"
 
@@ -31,7 +31,7 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(QWidget *parent = nullptr);
-    MainWindow(QWidget *parent, ProtectedQueue<GameUpdate*> &updates, BlockingQueue<ClientAction *> &actions);
+    MainWindow(QWidget *parent, ProtectedQueue<ClientUpdate*> &updates, BlockingQueue<ClientAction *> &actions);
     ~MainWindow();
 
     void displayMainMenu();
@@ -47,7 +47,7 @@ public slots:
 private:
     Ui::MainWindow *ui;
     GameScene scene;
-    ProtectedQueue<GameUpdate*> &updatesQueue;
+    ProtectedQueue<ClientUpdate*> &updatesQueue;
     BlockingQueue<ClientAction*> &actionsQueue;
 
     void drawGUI();

@@ -6,7 +6,7 @@
 
 #define NOP 0x00
 
-UpdatesReceiverThread::UpdatesReceiverThread(Socket &skt_client, ProtectedQueue<GameUpdate*> &updatesQueue)
+UpdatesReceiverThread::UpdatesReceiverThread(Socket &skt_client, ProtectedQueue<ClientUpdate*> &updatesQueue)
         : skt_client(skt_client), updatesQueue(updatesQueue) {
     this->closed = false;
 }

@@ -4,7 +4,7 @@
 
 #include "ClientSender.h"
 
-ClientSender::ClientSender(Socket &skt_client, BlockingQueue<Action *> *queue, uint8_t idClient)
+ClientSender::ClientSender(Socket &skt_client, BlockingQueue<ServerUpdate *> *queue, uint8_t idClient)
         : skt_client(skt_client), idClient(idClient), actionsQueue(queue) {
     this->closed = false;
 }
@@ -14,7 +14,8 @@ void ClientSender::run() {
     try {
         while (not closed) {
             auto action = actionsQueue->pop();
-            std::vector<uint8_t> v = p.serializeAction(action);
+//            std::vector<uint8_t> v = p.serializeAction(action);
+            std::vector<uint8_t> v = action->beSerialized();
             //  se iteran los comandos parseados y se envian al servidor
             for (uint8_t c : v) {
                 skt_client.sendall(&c, sizeof(c), &closed);
@@ -40,6 +41,6 @@ ClientSender::~ClientSender() {
     delete actionsQueue;
 }
 
-BlockingQueue<Action *>* ClientSender::getQueue() const {
+BlockingQueue<ServerUpdate *> * ClientSender::getQueue() const {
     return this->actionsQueue;
 }

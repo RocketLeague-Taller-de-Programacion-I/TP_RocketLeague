@@ -17,11 +17,13 @@ ClientManager::ClientManager(Socket &aClient,
         closed(false){}
 
 void ClientManager::run() {
-    auto initialActionsQueue = new ProtectedQueue<Action*>;
-    auto initialUpdatesQueue = new BlockingQueue<Action*>;
+    auto initialActionsQueue = new ProtectedQueue<ServerAction*>;
+    //ProtectedQueue<ServerAction*>
+    auto initialUpdatesQueue = new BlockingQueue<ServerUpdate*>;
+    //BlockingQueue<ServerUpdate*>
     startClientThreads(initialActionsQueue, initialUpdatesQueue);
-    Action* command;
-    std::function<BlockingQueue<Action*>*(ProtectedQueue<Action *> *)> queue_setter_callable =
+    ServerAction* command;
+    std::function<BlockingQueue<ServerUpdate*>*(ProtectedQueue<ServerAction *> *)> queue_setter_callable =
             std::bind(&ClientManager::setQueues, this, std::placeholders::_1);
     bool playing = false; //  Mientras no se una o no cree una partida == no este jugando
     while (!playing) {
@@ -31,7 +33,8 @@ void ClientManager::run() {
             continue;
         }
         auto action = command->execute(this->gameManager, queue_setter_callable);
-        if (action->getReturnMessage() == "OK") {
+        //create,join y list
+        if (action->getReturnData() == "OK") {
             playing = true;
             std::cout<<"playing"<<std::endl;
         }
@@ -61,14 +64,16 @@ void ClientManager::attendClient(unsigned long aId) {
     this->start();
 }
 
-void ClientManager::startClientThreads(ProtectedQueue<Action *> *qReceiver, BlockingQueue<Action *> *senderQueue) {
+void ClientManager::startClientThreads(ProtectedQueue<ServerAction *> *qReceiver, BlockingQueue<ServerUpdate *> *senderQueue) {
+    //qReceiver -> ServerAction
+    //senderQueue -> ServerUpdate
     clientReceiverThread = new ClientReceiver(client, qReceiver, id);
     clientSenderThread = new ClientSender(client, senderQueue, id);
     std::cout << "Starting client threads" << std::endl;
     clientReceiverThread->start();
     clientSenderThread->start();
 }
-BlockingQueue<Action*>* ClientManager::setQueues(ProtectedQueue<Action *> *gameQueue) {
+BlockingQueue<ServerUpdate *> * ClientManager::setQueues(ProtectedQueue<ServerAction *> *gameQueue) {
     clientReceiverThread->setQueue(gameQueue);
     return (clientSenderThread->getQueue());
 }

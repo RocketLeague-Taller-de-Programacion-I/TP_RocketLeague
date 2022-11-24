@@ -26,7 +26,7 @@ void Client::run() {
         BlockingQueue<ClientAction*> actionsQueue;
         // create updates queue
 //        ProtectedQueue<Action*> updatesQueue;
-        ProtectedQueue<GameUpdate*> updatesQueue;
+        ProtectedQueue<ClientUpdate*> updatesQueue;
         //launch ClientSender thread
 //        auto sender = new ClientSender(skt_client, actionsQueue);
         auto sender = new ThreadActionsSender(skt_client, actionsQueue);

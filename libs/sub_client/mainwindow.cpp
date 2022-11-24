@@ -4,7 +4,7 @@
 #include <iostream>
 #include <regex>
 
-MainWindow::MainWindow(QWidget *parent, ProtectedQueue<GameUpdate*> &updates, BlockingQueue<ClientAction *> &actions)
+MainWindow::MainWindow(QWidget *parent, ProtectedQueue<ClientUpdate*> &updates, BlockingQueue<ClientAction *> &actions)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , updatesQueue(updates)
@@ -61,12 +61,12 @@ void MainWindow::drawJoinGameMenu() {
     ClientAction* action = new ActionListRooms();
     this->actionsQueue.push(action);
     //list all the games
-    GameUpdate* update;
+    ClientUpdate* update;
     while (!updatesQueue.tryPop(update)) {
         //  wait for updates
     }
     //draw a button for each game
-    std::vector<std::string> games = dynamic_cast<ListACK*>(update)->getList();
+    std::vector<std::string> games = dynamic_cast<ClientListACK*>(update)->getList();
     if(games.empty()) {
         drawTitle("No games available");
         drawBackButton();
@@ -259,7 +259,7 @@ void MainWindow::drawLoadingScreen() {
 }
 
 void MainWindow::popFirstUpdate() {
-    GameUpdate* update;
+    ClientUpdate* update;
     bool popping = true;
     while (popping) {
         //  wait for updates

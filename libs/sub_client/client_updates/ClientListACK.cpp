@@ -2,12 +2,12 @@
 // Created by roby on 24/11/22.
 //
 
-#include "ListACK.h"
+#include "ClientListACK.h"
 
-ListACK::ListACK(uint8_t &id, std::string &list) : GameUpdate(id, list) {}
+ClientListACK::ClientListACK(uint8_t &id, std::string &list) : ClientUpdate(id, list) {}
 
 // TODO: a mejorar que devuelve, capaz un map?
-std::vector<std::string> ListACK::getList() {
+std::vector<std::string> ClientListACK::getList() {
     std::vector<std::string> vec;
     std::string delimiter = ",";
     size_t pos = 0;

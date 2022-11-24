@@ -9,7 +9,7 @@
 #include "sub_common/socket.h"
 #include "sub_common/thread.h"
 #include "../sub_common/BlockingQueue.h"
-#include "ClientAction.h"
+#include "sub_client/client_actions/ClientAction.h"
 
 class ThreadActionsSender : public Thread{
 private:
