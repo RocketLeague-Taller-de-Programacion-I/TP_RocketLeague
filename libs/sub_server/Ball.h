@@ -24,10 +24,10 @@ public:
 public:
     Ball(b2World* world, float radius);
     ~Ball();
-    float  X() const;
-    float  Y() const;
+    int X() const;
+    int Y() const;
 
-    void restartGame();
+    void restartGame() const;
 };
 
 
