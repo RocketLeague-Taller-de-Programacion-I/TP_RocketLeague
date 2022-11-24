@@ -261,9 +261,17 @@ void MainWindow::drawLoadingScreen() {
 }
 
 void MainWindow::popFirstUpdate() {
-    auto update = updatesQueue.pop();
+    GameUpdate* update;
+    bool popping = true;
+    while (popping) {
+        //  wait for updates
+        if(updatesQueue.tryPop(update)) {
+            popping = false;
+        }
+    }
     std::cout << "Update received" << std::endl;
     std::cout << "Game created with id: " << (int)(update->getId()) << std::endl;
+    std::cout << "Game created with returnmesage: " << update->getList() << std::endl;
     delete update;
 }
 
