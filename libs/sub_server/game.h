@@ -12,6 +12,9 @@ class Action;
 #include "sub_common/BlockingQueue.h"
 #include "Match.h"
 
+#include "server_updates/ServerUpdate.h"
+#include "server_actions/ServerAction.h"
+
 typedef uint8_t idPlayer_t;
 
 class Game : public Thread {
@@ -22,9 +25,11 @@ private:
     std::string gameName;
     bool closed;
 
-    std::map<uint8_t ,BlockingQueue<Action*>*> mapSender;
+    std::map<uint8_t ,BlockingQueue<ServerUpdate*>*> mapSender;
+    //map {id, BlockingQueue<ServerUpdate*>}
 
-    ProtectedQueue<Action *> *queue;
+    ProtectedQueue<ServerAction *> *queue;
+    //BlockingQueue<ServerAction*> *queue;
 public:
     std::string information();
 
@@ -34,20 +39,19 @@ public:
     * No copiable
     */
     Game(const Game&) = delete;
-    Game(int capacity, std::string  name, ProtectedQueue<Action *> *pQueue);
+    Game(int capacity, std::string  name, ProtectedQueue<ServerAction *> *pQueue);
     ~Game() override;
 
     Game& operator=(const Game&) = delete;
 
-    void joinPlayer(uint8_t id, BlockingQueue<Action*> *sender);
+    void joinPlayer(uint8_t id, BlockingQueue<ServerUpdate *> *sender);
 
     bool isFull() const;
 
-    ProtectedQueue<Action *> * getQueue();
-    void broadcastUpdate(Action* update);
-    void broadcastUpdate(Action* update, uint8_t id);
+    ProtectedQueue<ServerAction *> * getQueue();
 
-    void brodcastUpdateGameEvents(std::vector<Action *> updates);
+    void broadcastUpdate(ServerUpdate *update);
+    void brodcastUpdateGameEvents(std::vector<ServerUpdate *> updates);
 };
 
 

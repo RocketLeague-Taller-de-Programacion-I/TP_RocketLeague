@@ -12,6 +12,13 @@
 #include <unordered_map>
 #include <memory>
 
+#include "server_updates/ServerUpdate.h"
+
+#include "sub_server/server_actions/ServerCreateRoom.h"
+#include "sub_server/server_actions/ServerJoinRoom.h"
+#include "sub_server/server_actions/ServerListRooms.h"
+
+
 enum action {
     NOP,
     JUMP,
@@ -38,20 +45,16 @@ private:
 public:
     command_t getMapCommand(uint32_t action);
 
-    std::vector<uint8_t> serializeAction(Action *action);
+//    std::vector<uint8_t> serializeAction(ServerAction *action);
 
-    Action * deserializeData(const std::vector<uint8_t>& data);
+    ServerAction * deserializeData(const std::vector<uint8_t>& data);
 
     static std::vector<uint8_t> serializeCreateAction(const std::vector<uint8_t>& data);
-    static std::vector<uint8_t> serializeJoinAction(const std::vector<uint8_t>& data);
-    static std::vector<uint8_t> serializeListAction(const std::vector<uint8_t>& data);
-    std::vector<uint8_t> serializeMoveAction(const std::vector<uint8_t>& data);
     static std::vector<uint8_t> serializeUpdateAction(const std::vector<uint8_t>& data);
 
-    static Action * parseCreateAction(const std::vector<uint8_t> &data);
-    static Action * parseJoinAction(const std::vector<uint8_t> &data);
-    static Action * parseListAction(const std::vector<uint8_t> &data);
-    Action * parseUpdateAction(const std::vector<uint8_t> &vector);
+    static ServerAction * parseCreateAction(const std::vector<uint8_t> &data);
+    static ServerAction * parseJoinAction(const std::vector<uint8_t> &data);
+    static ServerAction * parseListAction(const std::vector<uint8_t> &data);
 };
 
 

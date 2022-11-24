@@ -2,25 +2,13 @@
 // Created by lucaswaisten on 04/11/22.
 //
 
-#include "sub_server/Action.h"
 #include "protocolo.h"
-#include "sub_server/ActionCreate.h"
-#include "sub_server/ActionList.h"
-#include "sub_server/ActionJoin.h"
-#include "sub_server/ActionUpdate.h"
-
-#include <sstream>
-#include <regex>
-
-std::vector<uint8_t> Protocolo::serializeAction(Action *action) {
-    return action->beSerialized();
-}
 
 command_t Protocolo::getMapCommand(uint32_t action) {
     return this->mapCommand.at(action);
 }
 
-Action * Protocolo::deserializeData(const std::vector<uint8_t>& data) {
+ServerAction * Protocolo::deserializeData(const std::vector<uint8_t>& data) {
     uint8_t type(data[1]);
     switch (type) {
         case CREATE_ROOM:
@@ -29,8 +17,8 @@ Action * Protocolo::deserializeData(const std::vector<uint8_t>& data) {
             return parseJoinAction(data);
         case LIST_ROOMS:
             return parseListAction(data);
-        case UPDATE:
-            return parseUpdateAction(data);
+//        case MOVE:
+//            return parseUpdateAction(data);
     }
     return {};
 }
@@ -41,41 +29,30 @@ Action * Protocolo::deserializeData(const std::vector<uint8_t>& data) {
  * [3] -> [end] -> string
  *
  */
-Action* Protocolo::parseCreateAction(const std::vector<uint8_t> &data) {
+ServerAction * Protocolo::parseCreateAction(const std::vector<uint8_t> &data) {
     uint8_t id = data[0];
     uint8_t capacity(data[2]);
     std::string name(data.begin()+3,data.end());
 
-    Action* pAction = new ActionCreate(id, capacity, name);
+//    Action* pAction = new ActionCreate(id, capacity, name);
+    ServerAction* pAction = new ServerCreateRoom(id, capacity, name);
     return pAction;
 }
 
-Action * Protocolo::parseJoinAction(const std::vector<uint8_t> &data) {
+ServerAction * Protocolo::parseJoinAction(const std::vector<uint8_t> &data) {
     uint8_t id = data[0];
     std::string name(data.begin()+2,data.end());
     //strip last spaces from name
     std::string stripped = name.substr(0, name.find_last_of(' '));
-    Action* pAction = new ActionJoin(id, stripped);
+//    Action* pAction = new ActionJoin(id, stripped);
+    ServerAction* pAction = new ServerJoinRoom(id, stripped);
     return pAction;
 }
 
-Action * Protocolo::parseListAction(const std::vector<uint8_t> &data) {
+ServerAction * Protocolo::parseListAction(const std::vector<uint8_t> &data) {
     uint8_t id = data[0];
-    std::string gameList;
-    gameList.insert(gameList.end(), data.begin(), data.end());
-    Action* pAction = new ActionList(id, gameList);
-    return pAction;
-}
-
-Action * Protocolo::parseUpdateAction(const std::vector<uint8_t> &vector) {;
-    std::string data;
-    if (not vector.empty()) {
-        data = std::string(vector.begin()+2,vector.end());
-    } else {
-        data = "";
-    }
-    uint8_t id_que_hay_que_borrar = 0;
-    Action* pAction = new ActionUpdate(id_que_hay_que_borrar, data);
+//    Action* pAction = new ActionList(id, gameList);
+    ServerAction* pAction = new ServerListRooms(id);
     return pAction;
 }
 
@@ -85,26 +62,6 @@ std::vector<uint8_t> Protocolo::serializeCreateAction(const std::vector<uint8_t>
     result.emplace_back(1); //id to be received
     result.insert(result.end(), data.begin(), data.end());
     return result;
-}
-
-std::vector<uint8_t> Protocolo::serializeJoinAction(const std::vector<uint8_t> &data) {
-    std::vector<uint8_t> result;
-    result.emplace_back(JOIN_ROOM);
-    result.insert(result.end(), data.begin(), data.end());
-    return result;
-}
-
-std::vector<uint8_t> Protocolo::serializeListAction(const std::vector<uint8_t> &data) {
-    std::vector<uint8_t> result;
-    uint8_t id = data[0];
-    result.emplace_back(LIST_ROOMS);
-    result.emplace_back(id);
-    result.insert(result.end(),data.begin()+1,data.end());
-    return result;
-}
-
-std::vector<uint8_t> Protocolo::serializeMoveAction(const std::vector<uint8_t> &data) {
-    return std::vector<uint8_t>();
 }
 
 std::vector<uint8_t> Protocolo::serializeUpdateAction(const std::vector<uint8_t> &data) {

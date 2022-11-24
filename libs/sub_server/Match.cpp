@@ -8,6 +8,7 @@
 #include <list>
 #include <unistd.h>
 #include <memory>
+
 #define LOCALGOAL (-37.985)
 #define VISITGOAL  (37.985)
 
@@ -60,16 +61,16 @@ float Match::carsInfo() {
     return carsConnected;
 
 }
-void Match::moveRight(int &id, std::function<void(ActionUpdate * )> function) {
+void Match::moveRight(int &id, std::function<void(ServerUpdate*)> function) {
     this->players.at(id)->goRight();
     // update
 }
 void Match::info() {
 }
-void Match::moveLeft(int &id, std::function<void(ActionUpdate * )> function) {
+void Match::moveLeft(int &id, std::function<void(ServerUpdate*)> function) {
     this->players.at(id)->goLeft();
 }
-void Match::jump(int &id, std::function<void(ActionUpdate * )> function) {
+void Match::jump(int &id, std::function<void(ServerUpdate*)> function) {
     this->players.at(id)->jump();
 }
 void Match::checkGoals() {

@@ -8,12 +8,15 @@
 
 #include <map>
 #include <memory>
-#include "box2d/box2d.h"
-#include "Car.h"
-#include "MyContactListener.h"
-#include "Ball.h"
-#include "ActionUpdate.h"
+#include <functional>
 
+#include "box2d/box2d.h"
+
+#include "Car.h"
+#include "Ball.h"
+#include "MyContactListener.h"
+
+#include "server_updates/ServerUpdate.h"
 
 class Match {
 private:
@@ -36,10 +39,10 @@ public:
     ~Match();
     void addPlayer(int &id);
     float carsInfo();
-    void moveRight(int &id, std::function<void(ActionUpdate * )> function);
+    void moveRight(int &id, std::function<void(ServerUpdate*)> function);
     void info();
-    void moveLeft(int &id, std::function<void(ActionUpdate * )> function);
-    void jump(int &id, std::function<void(ActionUpdate * )> function);
+    void moveLeft(int &id, std::function<void(ServerUpdate*)> function);
+    void jump(int &id, std::function<void(ServerUpdate*)> function);
     void checkGoals();
     void step();
     void updateGame(int &id);

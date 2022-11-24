@@ -3,12 +3,10 @@
 //
 
 #include "game.h"
-#include "Action.h"
-#include "ActionUpdate.h"
 
 Game::Game(int capacity,
            std::string  name,
-           ProtectedQueue<Action *> *pQueue) :
+           ProtectedQueue<ServerAction *> *pQueue) :
         match(name, capacity),
         capacity(capacity),
         playerOnLine(0),
@@ -18,9 +16,9 @@ Game::Game(int capacity,
 std::string Game::information() {
     return gameName+" "+std::to_string(playerOnLine)+"/"+std::to_string(capacity);
 }
-void Game::joinPlayer(uint8_t id, BlockingQueue<Action*> *sender) {
+void Game::joinPlayer(uint8_t id, BlockingQueue<ServerUpdate *> *sender) {
     playerOnLine++;
-    mapSender.insert(std::pair<uint8_t ,BlockingQueue<Action*>*>(id, sender));
+    mapSender.insert(std::pair<uint8_t ,BlockingQueue<ServerUpdate*>*>(id, sender));
     if (playerOnLine == capacity){
 //        int local = this->match.local();
 //        int visit = this->match.visit();
@@ -45,19 +43,19 @@ bool Game::isFull() const {
     return playerOnLine == capacity;
 }
 
-ProtectedQueue<Action *> * Game::getQueue() {
+ProtectedQueue<ServerAction *> * Game::getQueue() {
     return queue;
 }
 
 void Game::stop() {}
 
-void Game::broadcastUpdate(Action *update) {
+void Game::broadcastUpdate(ServerUpdate *update) {
     for (auto & sender : mapSender) {
         sender.second->push(update);
     }
 }
 
-void Game::brodcastUpdateGameEvents(std::vector<Action *> updates) {
+void Game::brodcastUpdateGameEvents(std::vector<ServerUpdate *> updates) {
     for (auto & sender : mapSender) {
         for (auto & update : updates) {
             sender.second->push(update);

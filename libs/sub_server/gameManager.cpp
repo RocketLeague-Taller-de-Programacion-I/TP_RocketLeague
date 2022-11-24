@@ -4,15 +4,38 @@
 
 #include <iostream>
 #include "gameManager.h"
-#include "ActionCreate.h"
-#include "ActionList.h"
-#include "ActionJoin.h"
-#include "ActionUpdate.h"
 
-void GameManager::cleanGames() {
-    for (auto & game: games) {
-        delete &game.second;
+bool GameManager::createGame(uint8_t idCreator, uint8_t capacityGame, const std::string& nameGame,
+                             const std::function<BlockingQueue<ServerUpdate *> *(
+                                     ProtectedQueue<ServerAction *> *)> &setQueue) {
+
+    std::unique_lock<std::mutex> lock(this->mutex);
+
+    if (games.find(nameGame) == games.end()) {
+        auto *queueGame = new ProtectedQueue<ServerAction *>;
+        games[nameGame] = new Game(capacityGame,nameGame,queueGame);
+    } else {
+//        throw std::runtime_error("Game already exists");
+        return false;
     }
+    auto *queueSender = setQueue(games[nameGame]->getQueue());
+    games[nameGame]->joinPlayer(idCreator,queueSender);
+
+    return true;
+}
+
+bool GameManager::joinGame(uint8_t idCreator, const std::string& nameGame, std::function<BlockingQueue<ServerUpdate *> *(
+        ProtectedQueue<ServerAction *> *)> setQueue) {
+
+    std::unique_lock<std::mutex> lock(this->mutex);
+    if (this->games[nameGame]->isFull()) {
+        // TODO: return update with ERROR message
+        return false;
+    } else {
+        auto *queueSender = setQueue(games[nameGame]->getQueue());
+        games[nameGame]->joinPlayer(idCreator,queueSender);
+    }
+    return true;
 }
 
 std::string GameManager::listGames(uint8_t &id) {
@@ -27,36 +50,10 @@ std::string GameManager::listGames(uint8_t &id) {
     return message;
 }
 
-bool GameManager::createGame(uint8_t idCreator, uint8_t capacityGame, const std::string& nameGame,
-                             const std::function<BlockingQueue<Action *> *(ProtectedQueue<Action *> *)> &setQueue) {
-
-    std::unique_lock<std::mutex> lock(this->mutex);
-
-    if (games.find(nameGame) == games.end()) {
-        auto *queueGame = new ProtectedQueue<Action *>;
-        games[nameGame] = new Game(capacityGame,nameGame,queueGame);
-    } else {
-//        throw std::runtime_error("Game already exists");
-        return false;
+void GameManager::cleanGames() {
+    for (auto & game: games) {
+        delete &game.second;
     }
-    auto *queueSender = setQueue(games[nameGame]->getQueue());
-    games[nameGame]->joinPlayer(idCreator,queueSender);
-
-    return true;
-}
-
-bool GameManager::joinGame(uint8_t idCreator, const std::string& nameGame, std::function<BlockingQueue<Action *> *(
-        ProtectedQueue<Action *> *)> setQueue) {
-
-    std::unique_lock<std::mutex> lock(this->mutex);
-    if (this->games[nameGame]->isFull()) {
-        // TODO: return update with ERROR message
-        return false;
-    } else {
-        auto *queueSender = setQueue(games[nameGame]->getQueue());
-        games[nameGame]->joinPlayer(idCreator,queueSender);
-    }
-    return true;
 }
 
 
