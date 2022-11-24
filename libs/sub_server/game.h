@@ -39,7 +39,7 @@ public:
 
     Game& operator=(const Game&) = delete;
 
-    void joinPlayer(uint8_t id, BlockingQueue<Action*> *sender);
+    void joinPlayer(uint8_t &id, BlockingQueue<Action*> *sender);
 
     bool isFull() const;
 

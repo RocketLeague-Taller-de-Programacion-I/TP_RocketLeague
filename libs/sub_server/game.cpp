@@ -18,8 +18,9 @@ Game::Game(int capacity,
 std::string Game::information() {
     return gameName+" "+std::to_string(playerOnLine)+"/"+std::to_string(capacity);
 }
-void Game::joinPlayer(uint8_t id, BlockingQueue<Action*> *sender) {
+void Game::joinPlayer(uint8_t &id, BlockingQueue<Action*> *sender) {
     playerOnLine++;
+    this->match.addPlayer(id);
     mapSender.insert(std::pair<uint8_t ,BlockingQueue<Action*>*>(id, sender));
     if (playerOnLine == capacity){
 //        int local = this->match.local();
