@@ -27,7 +27,7 @@ std::string GameManager::listGames(uint8_t &id) {
     return message;
 }
 
-void GameManager::createGame(uint8_t idCreator, uint8_t capacityGame, const std::string& nameGame,
+bool GameManager::createGame(uint8_t idCreator, uint8_t capacityGame, const std::string& nameGame,
                              const std::function<BlockingQueue<Action *> *(ProtectedQueue<Action *> *)> &setQueue) {
 
     std::unique_lock<std::mutex> lock(this->mutex);
@@ -36,26 +36,27 @@ void GameManager::createGame(uint8_t idCreator, uint8_t capacityGame, const std:
         auto *queueGame = new ProtectedQueue<Action *>;
         games[nameGame] = new Game(capacityGame,nameGame,queueGame);
     } else {
-        throw std::runtime_error("Game already exists");
+//        throw std::runtime_error("Game already exists");
+        return false;
     }
     auto *queueSender = setQueue(games[nameGame]->getQueue());
     games[nameGame]->joinPlayer(idCreator,queueSender);
+
+    return true;
 }
 
-void GameManager::joinGame(uint8_t idCreator, const std::string& nameGame, std::function<BlockingQueue<Action *> *(
+bool GameManager::joinGame(uint8_t idCreator, const std::string& nameGame, std::function<BlockingQueue<Action *> *(
         ProtectedQueue<Action *> *)> setQueue) {
 
     std::unique_lock<std::mutex> lock(this->mutex);
-    if (this->games.find(nameGame) == this->games.end()) {
+    if (this->games[nameGame]->isFull()) {
         // TODO: return update with ERROR message
-        throw std::runtime_error("Room does not exist");
-    } else if (this->games[nameGame]->isFull()) {
-        // TODO: return update with ERROR message
-        throw std::runtime_error("Room is full");
+        return false;
     } else {
         auto *queueSender = setQueue(games[nameGame]->getQueue());
         games[nameGame]->joinPlayer(idCreator,queueSender);
     }
+    return true;
 }
 
 

@@ -4,13 +4,7 @@
 
 #include "GameUpdate.h"
 
-GameUpdate::GameUpdate(std::vector<uint8_t>& data) : data(data){}
+//GameUpdate::GameUpdate(std::vector<uint8_t>& data) : data(data){}
 
-std::string GameUpdate:: getList() {
-//    data {nombre,online,total,nombre,online,total}
-    return std::string(data.begin(), data.end());
-}
+GameUpdate::GameUpdate(uint8_t &id, std::string &returnCode) : id(id), data(returnCode){}
 
-uint8_t GameUpdate::getId() {
-    return data[0];
-}

@@ -38,8 +38,10 @@ std::string ActionJoin::getReturnMessage() {
 
 Action *ActionJoin::execute(GameManager &gameManager,
                             const std::function<BlockingQueue<Action *> *(ProtectedQueue<Action *> *)> &setQueue) {
-    gameManager.joinGame(idCreator, nameGame, setQueue);
     std::string message = "OK";
+    if(!gameManager.joinGame(idCreator, nameGame, setQueue)) {
+        message = "ERROR";
+    }
     return new ActionJoin(idCreator, message);
 }
 

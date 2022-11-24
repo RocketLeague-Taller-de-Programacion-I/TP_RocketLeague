@@ -14,7 +14,10 @@
 #include "ActionCreateRoom.h"
 #include "ActionJoinRoom.h"
 #include "ActionListRooms.h"
-#include "GameUpdate.h"
+
+#include "CreateACK.h"
+#include "JoinACK.h"
+#include "ListACK.h"
 
 #include "Button.h"
 

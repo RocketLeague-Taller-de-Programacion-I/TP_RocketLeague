@@ -10,28 +10,23 @@
 
 enum updateType {
     CREATE_ACK = 1,
-    JOIN_ACK,
-    LIST_INFO,
-    WORLD
-};
-
-enum returnCode {
-    OK = 1,
-    NAME_TAKEN,
-    GAME_FULL,
-    GAME_NOT_FOUND
+    JOIN_ACK = 2,
+    LIST_INFO = 3,
+    WORLD = 4
 };
 
 class GameUpdate {
-private:
-    std::vector<uint8_t> data;
+protected:
+    uint8_t id;
+    std::string data;
 public:
-    GameUpdate(std::vector<uint8_t>& data);
-    ~GameUpdate() = default;
+    GameUpdate() = default;
+    GameUpdate(uint8_t& id, std::string &returnCode);
 
-    std::string getList();
-//    std::string getReturnCode();
-    uint8_t getId();
+    virtual ~GameUpdate() = default;
+
+    virtual uint8_t getId() const { return id;};
+    virtual std::string getData() const { return data;};
 };
 
 
