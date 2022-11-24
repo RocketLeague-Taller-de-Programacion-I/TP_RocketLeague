@@ -6,7 +6,7 @@
 #include "sub_server/gameManager.h"
 #include "protocolo.h"
 
-ActionJoin::ActionJoin(uint8_t &id, std::string &name) : Action(id, std::move(name)){}
+ActionJoin::ActionJoin(uint8_t &id, std::string &name) : ActionUpdate(id, name){}
 
 std::string ActionJoin::getGameName() {
     return nameGame;
@@ -26,8 +26,11 @@ uint8_t ActionJoin::getType() const {
 }
 
 std::vector<uint8_t> ActionJoin::beSerialized() {
-    std::vector<uint8_t> joinData(this->getGameName().begin(), this->getGameName().end());
-    return Protocolo::serializeJoinAction(joinData);
+    std::vector<uint8_t> joinData;
+    joinData.emplace_back(this->getType());
+    joinData.emplace_back(this->idCreator);
+    joinData.insert(joinData.end(),this->nameGame.begin(), this->nameGame.end());
+    return joinData;
 }
 std::string ActionJoin::getReturnMessage() {
     return nameGame;
@@ -37,7 +40,7 @@ Action *ActionJoin::execute(GameManager &gameManager,
                             const std::function<BlockingQueue<Action *> *(ProtectedQueue<Action *> *)> &setQueue) {
     gameManager.joinGame(idCreator, nameGame, setQueue);
     std::string message = "OK";
-    return new ActionUpdate(idCreator, message);
+    return new ActionJoin(idCreator, message);
 }
 
 ActionJoin::~ActionJoin() = default;

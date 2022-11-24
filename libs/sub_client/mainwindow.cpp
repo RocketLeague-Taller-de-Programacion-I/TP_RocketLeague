@@ -106,11 +106,10 @@ void MainWindow::joinParticularGame(QString roomName) {
     // crear evento de join ()
     std::string room = retrieveGameName(roomName.toStdString());
     std::cout << "Joining to " << room << std::endl;
-//    Action *actionJoin = new ActionJoin(id, room);
     ClientAction *actionJoin = new ActionJoinRoom(room);
     this->actionsQueue.push(actionJoin);
     //exit qt
-    close();
+    drawLoadingScreen();
 }
 
 void MainWindow::back() {
@@ -257,8 +256,7 @@ void MainWindow::drawLoadingScreen() {
     int tyPos = height() / 2;
     titleText->setPos(txPos,tyPos);
     scene.addItem(titleText);
-//    popFirstUpdate();
-
+    popFirstUpdate();
     close();
 }
 

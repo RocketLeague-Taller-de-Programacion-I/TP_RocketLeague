@@ -25,10 +25,6 @@ void Game::joinPlayer(uint8_t id, BlockingQueue<Action*> *sender) {
 //        int local = this->match.local();
 //        int visit = this->match.visit();
         start();
-        // broadcast new update to all clients
-        std::string mensaje = "OK";
-        Action* update = new ActionUpdate(id, mensaje); //creacion de partida, devuelve el id
-        broadcastUpdate(update);
     }
 }
 

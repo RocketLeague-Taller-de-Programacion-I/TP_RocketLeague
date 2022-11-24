@@ -6,9 +6,9 @@
 #ifndef ROCKETLEAGUE_ACTIONJOIN_H
 #define ROCKETLEAGUE_ACTIONJOIN_H
 
-#include "Action.h"
+#include "ActionUpdate.h"
 
-class ActionJoin : public Action {
+class ActionJoin : public ActionUpdate {
 
 public:
     ActionJoin(uint8_t &id, std::string &name);
