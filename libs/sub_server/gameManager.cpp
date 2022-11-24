@@ -17,13 +17,14 @@ void GameManager::cleanGames() {
 
 std::string GameManager::listGames(uint8_t &id) {
     std::unique_lock<std::mutex> lock(this->mutex);
-    std::string mensaje("");
+    std::string message("");
+    if (this->games.empty()) { return message; }
 
     for (auto & partida : this->games) {
-        mensaje.append(partida.second->information());
-        mensaje.append(",");
+        message.append(partida.second->information());
+        message.append(",");
     }
-    return mensaje;
+    return message;
 }
 
 void GameManager::createGame(uint8_t idCreator, uint8_t capacityGame, const std::string& nameGame,

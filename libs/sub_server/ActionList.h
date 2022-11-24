@@ -6,12 +6,12 @@
 #define ROCKETLEAGUE_ACTIONLIST_H
 
 
-#include "Action.h"
+#include "ActionUpdate.h"
 
-class ActionList : public Action {
+class ActionList : public ActionUpdate {
 
 public:
-    explicit ActionList(uint8_t id);
+    explicit ActionList(uint8_t& id, std::string& gamesList);
     ~ActionList() override;
 
     uint8_t getIdCreatorGame() override;

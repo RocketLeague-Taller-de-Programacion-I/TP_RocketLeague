@@ -6,7 +6,7 @@
 #include "sub_server/gameManager.h"
 #include "protocolo.h"
 
-ActionList::ActionList(uint8_t id) : Action(id,""){}
+ActionList::ActionList(uint8_t& id, std::string& gamesList) : ActionUpdate(id,gamesList){}
 
 
 uint8_t ActionList::getIdCreatorGame() {
@@ -18,8 +18,11 @@ uint8_t ActionList::getType() const {
 }
 
 std::vector<uint8_t> ActionList::beSerialized() {
-    std::vector<uint8_t> dummyData;
-    return Protocolo::serializeListAction(dummyData);
+    std::vector<uint8_t> listData;
+    listData.emplace_back(this->getType());
+    listData.emplace_back(this->getIdCreatorGame());
+    listData.insert(listData.end(), this->nameGame.begin(), this->nameGame.end());
+    return listData;
 }
 std::string ActionList::getReturnMessage() {
     return nameGame;
@@ -28,7 +31,7 @@ std::string ActionList::getReturnMessage() {
 Action *ActionList::execute(GameManager &manager,
                             const std::function<BlockingQueue<Action *> *(ProtectedQueue<Action *> *)> &setQueue) {
     std::string list = manager.listGames(idCreator);
-    return new ActionUpdate(idCreator, list);
+    return new ActionList(idCreator, list);
 }
 
 ActionList::~ActionList() = default;

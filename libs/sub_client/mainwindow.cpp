@@ -59,12 +59,14 @@ void MainWindow::drawJoinGameMenu() {
     this->scene.clear();
 
     drawTitle("Join Game");
-    //list all the games
-    //draw a button for each game
     ClientAction* action = new ActionListRooms();
     this->actionsQueue.push(action);
-
-    GameUpdate* update =updatesQueue.pop();
+    //list all the games
+    GameUpdate* update;
+    while (!updatesQueue.tryPop(update)) {
+        //  wait for updates
+    }
+    //draw a button for each game
     std::string list = update->getList();
     std::vector<std::string> games = parseList(list);
     if(games.empty()) {
@@ -102,7 +104,7 @@ void MainWindow::joinParticularGame(QString roomName) {
     this->scene.clear();
 
     // crear evento de join ()
-    std::string room = retrieveGamaeName(roomName.toStdString());
+    std::string room = retrieveGameName(roomName.toStdString());
     std::cout << "Joining to " << room << std::endl;
 //    Action *actionJoin = new ActionJoin(id, room);
     ClientAction *actionJoin = new ActionJoinRoom(room);
@@ -267,7 +269,7 @@ void MainWindow::popFirstUpdate() {
     delete update;
 }
 
-std::string MainWindow::retrieveGamaeName(std::string basicString) {
+std::string MainWindow::retrieveGameName(std::string basicString) {
     // create regex to match any substring until first number
     std::regex re(".+?(?=[0-9])");
     std::smatch match;

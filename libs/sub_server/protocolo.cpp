@@ -61,7 +61,9 @@ Action * Protocolo::parseJoinAction(const std::vector<uint8_t> &data) {
 
 Action * Protocolo::parseListAction(const std::vector<uint8_t> &data) {
     uint8_t id = data[0];
-    Action* pAction = new ActionList(id);
+    std::string gameList;
+    gameList.insert(gameList.end(), data.begin(), data.end());
+    Action* pAction = new ActionList(id, gameList);
     return pAction;
 }
 
@@ -94,8 +96,10 @@ std::vector<uint8_t> Protocolo::serializeJoinAction(const std::vector<uint8_t> &
 
 std::vector<uint8_t> Protocolo::serializeListAction(const std::vector<uint8_t> &data) {
     std::vector<uint8_t> result;
+    uint8_t id = data[0];
     result.emplace_back(LIST_ROOMS);
-    result.insert(result.end(),data.begin(),data.end());
+    result.emplace_back(id);
+    result.insert(result.end(),data.begin()+1,data.end());
     return result;
 }
 
@@ -104,6 +108,7 @@ std::vector<uint8_t> Protocolo::serializeMoveAction(const std::vector<uint8_t> &
 }
 
 std::vector<uint8_t> Protocolo::serializeUpdateAction(const std::vector<uint8_t> &data) {
+
     std::vector<uint8_t> result;
     //TODO: cambiar el UPDATE
     result.emplace_back(1);
