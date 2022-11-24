@@ -49,5 +49,11 @@ add_library(lib_client
         ActionJoinRoom.h
         ActionListRooms.h
         ClientProtocol.cpp
-        ClientProtocol.h)
+        ClientProtocol.h
+        CreateACK.cpp
+        CreateACK.h
+        JoinACK.cpp
+        JoinACK.h
+        ListACK.cpp
+        ListACK.h)
 target_link_libraries(lib_client SDL2pp::SDL2pp Qt5::Widgets)

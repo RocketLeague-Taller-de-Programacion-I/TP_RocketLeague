@@ -1,7 +1,6 @@
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "sub_server/ActionUpdate.h"
 #include <iostream>
 #include <regex>
 
@@ -67,8 +66,7 @@ void MainWindow::drawJoinGameMenu() {
         //  wait for updates
     }
     //draw a button for each game
-    std::string list = update->getList();
-    std::vector<std::string> games = parseList(list);
+    std::vector<std::string> games = dynamic_cast<ListACK*>(update)->getList();
     if(games.empty()) {
         drawTitle("No games available");
         drawBackButton();
@@ -271,7 +269,14 @@ void MainWindow::popFirstUpdate() {
     }
     std::cout << "Update received" << std::endl;
     std::cout << "Game created with id: " << (int)(update->getId()) << std::endl;
-    std::cout << "Game created with returnmesage: " << update->getList() << std::endl;
+    std::cout << "Game created with returnmesage: " << update->getData() << std::endl;
+
+    if(update->getData() == "ERROR") {
+        // error partida exisistia
+        // error partida full
+        // volver a home game
+        drawGUI();
+    }
     delete update;
 }
 

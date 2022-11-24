@@ -47,8 +47,10 @@ std::string ActionCreate::getReturnMessage() {
 Action *ActionCreate::execute(GameManager &gameManager,
                               const std::function<BlockingQueue<Action *> *(ProtectedQueue<Action *> *)> &setQueue) {
 
-    gameManager.createGame(idCreator, capacityGame, nameGame, setQueue);
     std::string returnMessage = "OK";
+    if(!gameManager.createGame(idCreator, capacityGame, nameGame, setQueue)) {
+        returnMessage = "ERROR";
+    }
     return new ActionUpdate(idCreator, returnMessage);
 }
 

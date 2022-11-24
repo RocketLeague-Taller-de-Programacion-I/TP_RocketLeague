@@ -21,29 +21,23 @@ GameUpdate *ClientProtocol::deserializeData(const std::vector<uint8_t> &data) {
 }
 
 GameUpdate *ClientProtocol::parseCreateACK(const std::vector<uint8_t> &data) {
-    std::vector<uint8_t> updateData;
     uint8_t id = data[1];
-    //  uint8_t returnCode = data[2];
-    std::string list = std::string(data.begin() + 2, data.end());
-    updateData.push_back(id);
-    updateData.insert(updateData.end(), list.begin(), list.end());
-    //  updateData.push_back(returnCode);
-    return new GameUpdate(updateData);
+    std::string returnCode = std::string(data.begin() + 2, data.end());
+    return new CreateACK(id, returnCode);
+    //CreateACK -> CreateACK(id,returnCode) returnCode = 1 OK, 2 ERROR_Existe
 }
 GameUpdate *ClientProtocol::parseJoinACK(const std::vector<uint8_t> &data) {
-    std::vector<uint8_t> updateData;
     uint8_t id = data[1];
-    std::string list = std::string(data.begin() + 2, data.end());
-    updateData.push_back(id);
-    updateData.insert(updateData.end(), list.begin(), list.end());
-    return new GameUpdate(updateData);
+    std::string returnCode = std::string(data.begin() + 2, data.end());
+    return new JoinACK(id, returnCode);
+    //JoinAck -> JoinAck(id,returnCode) returnCode = 1 OK, 2 ERROR_LLENO
 }
 
 GameUpdate *ClientProtocol::parseListUpdate(const std::vector<uint8_t> &data) {
-    std::vector<uint8_t> listData;
+    uint8_t id = data[1];
     std::string list = std::string(data.begin() + 2, data.end());
-    listData.insert(listData.end(), list.begin(), list.end());
-    return new GameUpdate(listData);
+    return new ListACK(id,list);
+    //ListInfo -> ListInfo(id,lista)
 }
 // TODO: implement this
 GameUpdate *ClientProtocol::parseWorldUpdate(const std::vector<uint8_t> &vector) {

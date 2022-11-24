@@ -19,10 +19,10 @@ public:
    std::string listGames(uint8_t &id);
    void cleanGames();
 
-    void createGame(uint8_t idCreator, uint8_t capacityGame, const std::string& nameGame,
+    bool createGame(uint8_t idCreator, uint8_t capacityGame, const std::string& nameGame,
                     const std::function<BlockingQueue<Action *> *(ProtectedQueue<Action *> *)> &setQueue);
 
-    void joinGame(uint8_t idCreator, const std::string& nameGame, std::function<BlockingQueue<Action *> *(
+    bool joinGame(uint8_t idCreator, const std::string& nameGame, std::function<BlockingQueue<Action *> *(
             ProtectedQueue<Action *> *)> setQueue);
 
 };

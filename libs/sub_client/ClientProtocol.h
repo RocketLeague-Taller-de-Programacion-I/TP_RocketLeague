@@ -5,7 +5,10 @@
 #ifndef ROCKETLEAGUE_CLIENTPROTOCOL_H
 #define ROCKETLEAGUE_CLIENTPROTOCOL_H
 
-#include "GameUpdate.h"
+#include "CreateACK.h"
+#include "JoinACK.h"
+#include "ListACK.h"
+
 #include "ClientAction.h"
 
 class ClientProtocol {
