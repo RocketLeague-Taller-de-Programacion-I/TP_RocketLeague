@@ -20,9 +20,9 @@ private:
     std::string name;
     b2World world;
     Ball* ball;
-    std::map<int, Car*> players;
-    std::map<int, Car*> scorers;
-    std::map<int, Car*> assistants;
+    std::map<uint8_t, Car*> players;
+    std::map<uint8_t, Car*> scorers;
+    std::map<uint8_t, Car*> assistants;
     int playersConnected;
     int playersRequired;
     int goalsLocal;
@@ -34,19 +34,17 @@ private:
 public:
     Match(std::string name, int required);
     ~Match();
-    void addPlayer(int &id);
-    float carsInfo();
-    void moveRight(int &id, std::function<void(ActionUpdate * )> function);
+    void addPlayer(uint8_t &id);
+    void moveRight(uint8_t  &id, std::function<void(ActionUpdate * )> function);
     void info();
-    void moveLeft(int &id, std::function<void(ActionUpdate * )> function);
-    void jump(int &id, std::function<void(ActionUpdate * )> function);
+    void moveLeft(uint8_t &id, std::function<void(ActionUpdate * )> function);
+    void jump(uint8_t &id, std::function<void(ActionUpdate * )> function);
     void checkGoals();
     void step();
-    void updateGame(int &id);
     int visit();
     int local();
-
-    std::vector<int> ballInfo();
+    std::vector<uint8_t> matchUpdate();
+    std::vector<uint8_t> ballInfo();
 };
 
 
