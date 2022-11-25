@@ -2,7 +2,7 @@
 
 #include <QApplication>
 #include "RenderThread.h"
-#include "Worldview.h"
+#include "client_sdl/Worldview.h"
 
 using namespace SDL2pp;
 

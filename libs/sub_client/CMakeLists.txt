@@ -25,8 +25,6 @@ add_library(lib_client
         client_sdl/GameLoop.h
         client_qt/mainwindow.cpp
         client_qt/mainwindow.h
-        client_sdl/gamescene.cpp
-        client_sdl/gamescene.h
         client_qt/Button.cpp
         client_qt/Button.h
         RenderThread.cpp

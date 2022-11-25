@@ -7,6 +7,7 @@
 #include <QLabel>
 #include <QString>
 #include <QAction>
+#include <QGraphicsScene>
 
 #include "sub_client/client_sdl/GameLoop.h"
 
