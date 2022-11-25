@@ -2,7 +2,7 @@
 
 #include <QApplication>
 #include "RenderThread.h"
-#include "sub_client/client_sdl/Worldview.h"
+#include "Worldview.h"
 
 using namespace SDL2pp;
 
@@ -35,46 +35,29 @@ void RenderThread::run() {
         SDL sdl(SDL_INIT_VIDEO);
         SDL_DisplayMode DM;
         SDL_GetCurrentDisplayMode(0, &DM);
-        auto Width = 1544;
-        auto Height = 600;
+        auto Width = DM.w;
+        auto Height = DM.h;
         SDL2pp::Window sdlWindow("RocketLeague", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                                 Width, Height,SDL_WINDOW_RESIZABLE);
-        SDL_SetWindowResizable(sdlWindow.Get(), SDL_FALSE);
+                                 Width, Height,
+                                 SDL_WINDOW_RESIZABLE);
 
         // Creo renderer
         Renderer renderer(sdlWindow, -1, SDL_RENDERER_SOFTWARE);
-
-        // creo textures
-        Texture car(renderer,SDL2pp::Surface("../images/car.jpeg").SetColorKey(true, 0));
-        Texture ball(renderer,SDL2pp::Surface("../images/ball.png").SetColorKey(true, 0));
-        Texture field(renderer,SDL2pp::Surface("../images/field.png").SetColorKey(true, 0));
+        Texture car(renderer,
+                           SDL2pp::Surface("../images/car.jpeg").SetColorKey(true, 0));
+        Texture ball(renderer,
+                            SDL2pp::Surface("../images/ball.png").SetColorKey(true, 0));
+//        Texture background(renderer,
+//                                  SDL2pp::Surface("../images/background.jpeg").SetColorKey(true, 0));
         Texture scoreBoard(renderer,SDL2pp::Surface("../images/clock.png"));
-
         textures.emplace("car", &car);
         textures.emplace("ball", &ball);
-        textures.emplace("field", &field);
+//        textures.emplace("background", &background);
         textures.emplace("scoreBoard", &scoreBoard);
-
-        SDL_Event event;
-        bool quit = false;
-        while(!quit) {
-            SDL_WaitEvent(&event);
-
-            switch (event.type)
-            {
-                case SDL_QUIT:
-                    quit = true;
-                    break;
-            }
-            SDL_RenderCopy(renderer.Get(), field.Get(), NULL, NULL);
-            SDL_RenderPresent(renderer.Get());
-        }
-
-
-//        SDL_SetTextureBlendMode(ball.Get(), SDL_BLENDMODE_BLEND);
-//        SDL_RenderCopy(renderer.Get(), ball.Get(), NULL, NULL);
+        SDL_SetTextureBlendMode(ball.Get(), SDL_BLENDMODE_BLEND);
+        SDL_RenderCopy(renderer.Get(), ball.Get(), NULL, NULL);
         // map of Sprite
-//        std::map<uint8_t, GameSprite> sprites;
+        std::map<uint8_t, GameSprite> sprites;
         //pop everything from updates queue
         //vector of Action*
 //        std::vector<Action *> actions;

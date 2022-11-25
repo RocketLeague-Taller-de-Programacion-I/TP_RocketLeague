@@ -21,7 +21,7 @@
 
 #include "../sub_common/thread.h"
 #include "sub_common/liberror.h"
-#include "sub_client/client_qt/mainwindow.h"
+#include "mainwindow.h"
 
 class RenderThread : public Thread {
 private:
