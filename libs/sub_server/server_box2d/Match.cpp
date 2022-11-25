@@ -98,6 +98,9 @@ std::vector<uint8_t> Match::ballInfo() {
     uint8_t x = this->ball->X();
     uint8_t y = this->ball->Y();
     toSend.emplace_back(x);
+    toSend.emplace_back(' ');
     toSend.emplace_back(y);
+    toSend.emplace_back(',');
     return toSend;
 }
+// TODO: Match info

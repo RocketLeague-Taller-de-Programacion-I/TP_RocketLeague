@@ -28,15 +28,14 @@ void Game::joinPlayer(uint8_t& id, BlockingQueue<ServerUpdate *> *sender) {
 
 void Game::run() {
     // pop actions from queue, processed them and broadcast them
+    /* ServerUpdateWorld
+     * * std::vector<uint8_t> matchInfo = this->match.matchInfo();
+     * ServerUpdateWorld* update(id, matchInfo)
+     *
+     */
     while (true) {
-        /*ActionMove *action = dynamic_cast<ActionMove*>(queue->pop());
-        if (action->getType() == UPDATE) {  //  El tipo movimiento que recibo
-            ActionUpdate *actionUpdate = dynamic_cast<ActionUpdate *>(action);
-            std::cout << "Game " << gameName << " received update: " << actionUpdate->getGameName() << std::endl;
 
-         */
     }
-    // ActionMove *action = dynamic_cast<ActionMove*>(queue->pop());
 }
 
 bool Game::isFull() const {

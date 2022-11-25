@@ -23,6 +23,7 @@ protected:
     std::string returnData; // TODO: cambiar a vector?
 public:
     ServerUpdate(uint8_t &id, std::string &returnData) : id(id), returnData(returnData) {};
+//     ServerUpdate(uint8_t &id, std::vector<uint8_t> &data) {};
     virtual ~ServerUpdate() = default;
 
     virtual std::uint8_t getType() const = 0;
