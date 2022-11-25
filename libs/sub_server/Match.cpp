@@ -31,13 +31,13 @@ Match::Match(std::string gameName, int required) : name(std::move(gameName)), wo
 }
 
 
-void Match::addPlayer(int &id) {
-    this->players[id] = new Car(&this->world);
+void Match::addPlayer(uint8_t &id) {
+    this->players[id] = new Car(&this->world, id);
     this->playersConnected++;
 }
 
 Match::~Match() {
-    for ( std::pair<const int,Car*> &player : players){
+    for ( std::pair<const uint8_t,Car*> &player : players){
         //Plaats *p = place.second;
         delete player.second;
         player.second = nullptr;
@@ -50,27 +50,17 @@ void Match::step() {
     usleep(0.015*1000000);
     //  enviar a todos los clientes la respuesta
 }
-float Match::carsInfo() {
-    step();
-    float carsConnected = 0;
-    for (auto& player : this->players) {
-        //  cppcheck-suppress useStlAlgorithm
-        carsConnected = (player.second->X());
-    }
 
-    return carsConnected;
-
-}
-void Match::moveRight(int &id, std::function<void(ServerUpdate*)> function) {
+void Match::moveRight(uint8_t &id, std::function<void(ServerUpdate* )> function) {
     this->players.at(id)->goRight();
     // update
 }
 void Match::info() {
 }
-void Match::moveLeft(int &id, std::function<void(ServerUpdate*)> function) {
+void Match::moveLeft(uint8_t &id, std::function<void(ServerUpdate* )> function) {
     this->players.at(id)->goLeft();
 }
-void Match::jump(int &id, std::function<void(ServerUpdate*)> function) {
+void Match::jump(uint8_t &id, std::function<void(ServerUpdate* )> function) {
     this->players.at(id)->jump();
 }
 void Match::checkGoals() {
@@ -83,7 +73,19 @@ void Match::checkGoals() {
         this->ball->restartGame();
     }
 }
-void Match::updateGame(int &id) {
+std::vector<uint8_t> Match::matchUpdate() {
+    std::vector<uint8_t> toSend;
+    for (auto &player : this->players) {
+        toSend.emplace_back(player.second->getId());
+        toSend.emplace_back(' ');
+        toSend.emplace_back((player.second->X()));
+        toSend.emplace_back(' ');
+        toSend.emplace_back((player.second->Y()));
+        toSend.emplace_back(' ');
+        toSend.emplace_back((player.second->angleDeg()));
+        toSend.emplace_back(',');
+    }
+    return toSend;
 }
 int Match::local() {
     return this->goalsLocal;
@@ -91,11 +93,11 @@ int Match::local() {
 int Match::visit() {
     return this->goalsVisit;
 }
-std::vector<int> Match::ballInfo() {
-    std::vector<int> info;
-    int x = this->ball->X();
-    int y = this->ball->Y();
-    info.emplace_back(x);
-    info.emplace_back(y);
-    return info;
+std::vector<uint8_t> Match::ballInfo() {
+    std::vector<uint8_t> toSend;
+    uint8_t x = this->ball->X();
+    uint8_t y = this->ball->Y();
+    toSend.emplace_back(x);
+    toSend.emplace_back(y);
+    return toSend;
 }

@@ -5,11 +5,11 @@
 #include <memory>
 #include "Car.h"
 #include "box2d/box2d.h"
-#define NO_VEL 0
-#define DEGTORAD 0.0174533
-#define cojstaxisY 0.35
+#define RADTODEG 57.2958
 
-Car::Car(b2World* world) : turboOn(false){
+
+
+Car::Car(b2World* world, uint8_t& id) : id(id), turboOn(false) {
     b2Vec2 vertices[8];
     /*
     vertices[0].Set(-1.5f, -0.5f);
@@ -88,13 +88,21 @@ void Car::check_y_pos() {
     }
     m_car->ApplyForce(b2Vec2(0, 200), m_car->GetWorldCenter(), true);
 }
-float Car::Y() {
+int Car::Y() {
     return this->m_car->GetPosition().y;
 }
-float Car::X() {
+int Car::X() {
     return this->m_car->GetPosition().x;
 }
 
 float Car::angle() {
     return this->m_car->GetAngle();
+}
+
+int Car::angleDeg() {
+    return int(angle()*RADTODEG);
+}
+
+uint8_t Car::getId() {
+    return this->id;
 }

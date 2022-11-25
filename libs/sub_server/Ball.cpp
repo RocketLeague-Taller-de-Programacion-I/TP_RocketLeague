@@ -24,13 +24,13 @@ Ball::Ball(b2World* world, float radius) {
     myUserData->mOwningFixture =  m_body->CreateFixture(&fixDef);
     this->ballFixture = myUserData->mOwningFixture;
 }
-float Ball::X() const {
-    return(this->m_body->GetPosition().x);
+int Ball::X() const {
+    return int(this->m_body->GetPosition().x);
 }
-float Ball::Y() const {
-    return(this->m_body->GetPosition().y);
+int Ball::Y() const {
+    return int(this->m_body->GetPosition().y);
 }
-void Ball::restartGame() {
+void Ball::restartGame() const {
     m_body->SetTransform(b2Vec2(0,10),m_body->GetAngle());
     m_body->ApplyLinearImpulseToCenter(b2Vec2(0,10), true);
 }

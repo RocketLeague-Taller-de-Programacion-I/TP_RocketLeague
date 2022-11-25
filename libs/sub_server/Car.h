@@ -15,6 +15,7 @@ struct MyFixtureUserDataType
     b2Fixture* mOwningFixture {};
 };
 class Car {
+    uint8_t id;
     std::string playerName;
     bool turboOn;
     b2Body *m_car;
@@ -23,7 +24,7 @@ class Car {
     b2FixtureDef fixDef;
     std::unique_ptr<MyFixtureUserDataType> myUserData;
 public:
-    explicit Car(b2World* world);
+    explicit Car(b2World* world, uint8_t& id);
     ~Car();
     void goRight();
     void goLeft();
@@ -31,11 +32,11 @@ public:
     void jump();
     void turbo();
     void check_y_pos();
-    // void faceLeft();
-    float X();
-    float Y();
-
+    int X();
+    int Y();
     float angle();
+    int angleDeg();
+    uint8_t getId();
 };
 
 

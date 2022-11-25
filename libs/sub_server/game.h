@@ -4,7 +4,7 @@
 
 #ifndef ROCKETLEAGUE_GAME_H
 #define ROCKETLEAGUE_GAME_H
-class Action;
+
 #include <cstdint>
 #include <string>
 #include <map>
@@ -44,7 +44,7 @@ public:
 
     Game& operator=(const Game&) = delete;
 
-    void joinPlayer(uint8_t id, BlockingQueue<ServerUpdate *> *sender);
+    void joinPlayer(uint8_t& id, BlockingQueue<ServerUpdate *> *sender);
 
     bool isFull() const;
 
