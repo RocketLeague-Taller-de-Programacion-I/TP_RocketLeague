@@ -70,7 +70,7 @@ void MainWindow::drawJoinGameMenu() {
     //draw a button for each game
     std::vector<std::string> games = dynamic_cast<ClientListACK*>(update)->getList();
     if(games.empty()) {
-        QLabel* label = new QLabel("No games available");
+        label = new QLabel("No games available");
         label->setGeometry(width() / 2 - 110 , 200 , 301, 71);
         label->setStyleSheet("font: 20pt; color: white;");
         this->scene.addWidget(label);
@@ -288,7 +288,7 @@ void MainWindow::popFirstUpdate() {
     delete update;
 }
 
-std::string MainWindow::retrieveGameName(std::string basicString) {
+std::string MainWindow::retrieveGameName(const std::string& basicString) {
     // create regex to match any substring until first number
     std::regex re(".+?(?=[0-9])");
     std::smatch match;

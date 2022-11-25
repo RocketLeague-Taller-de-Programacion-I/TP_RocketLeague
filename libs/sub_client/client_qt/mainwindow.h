@@ -75,6 +75,6 @@ private:
 
     void popFirstUpdate();
 
-    std::string retrieveGameName(std::string basicString);
+    std::string retrieveGameName(const std::string& basicString);
 };
 #endif // MAINWINDOW_H

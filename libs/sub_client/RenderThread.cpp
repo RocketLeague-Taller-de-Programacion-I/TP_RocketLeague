@@ -2,8 +2,7 @@
 
 #include <QApplication>
 #include "RenderThread.h"
-#include "client_sdl/Worldview.h"
-
+#include "sub_client/client_sdl/Worldview.h"
 using namespace SDL2pp;
 
 RenderThread::RenderThread(ProtectedQueue<ClientUpdate*> &updates, BlockingQueue<ClientAction *> &actionsQueue)
@@ -35,27 +34,39 @@ void RenderThread::run() {
         SDL sdl(SDL_INIT_VIDEO);
         SDL_DisplayMode DM;
         SDL_GetCurrentDisplayMode(0, &DM);
-        auto Width = DM.w;
-        auto Height = DM.h;
+        auto Width = 1544;
+        auto Height = 600;
         SDL2pp::Window sdlWindow("RocketLeague", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                                 Width, Height,
-                                 SDL_WINDOW_RESIZABLE);
+                                 Width, Height,SDL_WINDOW_RESIZABLE);
+        SDL_SetWindowResizable(sdlWindow.Get(), SDL_FALSE);
 
         // Creo renderer
         Renderer renderer(sdlWindow, -1, SDL_RENDERER_SOFTWARE);
-        Texture car(renderer,
-                           SDL2pp::Surface("../images/car.jpeg").SetColorKey(true, 0));
-        Texture ball(renderer,
-                            SDL2pp::Surface("../images/ball.png").SetColorKey(true, 0));
+        Texture car(renderer,SDL2pp::Surface("../images/car.jpeg").SetColorKey(true, 0));
+        Texture ball(renderer,SDL2pp::Surface("../images/ball.png").SetColorKey(true, 0));
+        Texture field(renderer,SDL2pp::Surface("../images/field.jpeg").SetColorKey(true, 0));
 //        Texture background(renderer,
 //                                  SDL2pp::Surface("../images/background.jpeg").SetColorKey(true, 0));
         Texture scoreBoard(renderer,SDL2pp::Surface("../images/clock.png"));
         textures.emplace("car", &car);
         textures.emplace("ball", &ball);
-//        textures.emplace("background", &background);
+        textures.emplace("field", &field);
         textures.emplace("scoreBoard", &scoreBoard);
-        SDL_SetTextureBlendMode(ball.Get(), SDL_BLENDMODE_BLEND);
-        SDL_RenderCopy(renderer.Get(), ball.Get(), NULL, NULL);
+        SDL_Event event;
+        bool quit = false;
+        while(!quit) {
+            SDL_WaitEvent(&event);
+
+            switch (event.type)
+            {
+                case SDL_QUIT:
+                    quit = true;
+                    break;
+            }
+            SDL_RenderCopy(renderer.Get(), field.Get(), NULL, NULL);
+            SDL_RenderPresent(renderer.Get());
+        }
+
         // map of Sprite
         std::map<uint8_t, GameSprite> sprites;
         //pop everything from updates queue
