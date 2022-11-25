@@ -46,8 +46,10 @@ public:
     void step();
     int visit();
     int local();
-    std::vector<uint8_t> matchUpdate();
     std::vector<uint8_t> ballInfo();
+    std::vector<uint8_t> scoreInfo();
+    std::vector<uint8_t> matchUpdate();
+    std::vector<uint8_t> matchInfo();
 };
 
 
