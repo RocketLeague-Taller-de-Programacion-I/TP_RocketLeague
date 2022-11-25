@@ -10,8 +10,11 @@ ServerCreateRoom::ServerCreateRoom(uint8_t &id, uint8_t &capacity, std::string &
 ServerUpdate * ServerCreateRoom::execute(GameManager &manager, const std::function<BlockingQueue<ServerUpdate *> *(
         ProtectedQueue<ServerAction *> *)> &setQueue) {
     std::string returnMessage = "OK";
+    std::vector<uint8_t> returnData = std::vector<uint8_t>(returnMessage.begin(), returnMessage.end());
     if(!manager.createGame(id, capacity, roomName, setQueue)) {
         returnMessage = "ERROR";
+        returnData = std::vector<uint8_t>(returnMessage.begin(), returnMessage.end());
     }
-    return new ServerCreateACK(id, returnMessage);
+//    return new ServerCreateACK(id, returnMessage);
+    return new ServerCreateACK(id, returnData);
 }

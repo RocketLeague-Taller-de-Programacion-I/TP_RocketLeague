@@ -9,9 +9,11 @@ ServerJoinRoom::ServerJoinRoom(uint8_t &id, std::string &data) : ServerAction(id
 
 ServerUpdate * ServerJoinRoom::execute(GameManager &manager, const std::function<BlockingQueue<ServerUpdate *> *(
         ProtectedQueue<ServerAction *> *)> &setQueue) {
-    std::string message = "OK";
+    std::string returnMessage = "OK";
+    std::vector<uint8_t> returnData = std::vector<uint8_t>(returnMessage.begin(), returnMessage.end());
     if(!manager.joinGame(id, roomName, setQueue)) {
-        message = "ERROR";
+        returnMessage = "ERROR";
+        returnData = std::vector<uint8_t>(returnMessage.begin(), returnMessage.end());
     }
-    return new ServerJoinACK(id, message);
+    return new ServerJoinACK(id, returnData);
 }

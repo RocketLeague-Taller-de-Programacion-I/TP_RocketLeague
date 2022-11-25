@@ -9,7 +9,8 @@
 
 class ServerJoinACK : public ServerUpdate{
 public:
-    ServerJoinACK(uint8_t &id, std::string &returnData) : ServerUpdate(id,returnData) {};
+//    ServerJoinACK(uint8_t &id, std::string &returnData) : ServerUpdate(id,returnData) {};
+    ServerJoinACK(uint8_t &id, std::vector<uint8_t> &returnData) : ServerUpdate(id,returnData) {};
     ~ServerJoinACK() override = default;
 
     uint8_t getType() const override;

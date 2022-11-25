@@ -9,7 +9,7 @@
 
 class ServerCreateACK : public ServerUpdate{
 public:
-    ServerCreateACK(uint8_t &id, std::string &returnData) : ServerUpdate(id,returnData) {};
+    ServerCreateACK(uint8_t &id, std::vector<uint8_t> &data) : ServerUpdate(id,data) {};
     ~ServerCreateACK() override = default;
 
     uint8_t getType() const override;

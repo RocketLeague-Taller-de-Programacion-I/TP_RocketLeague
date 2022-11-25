@@ -9,7 +9,8 @@
 
 class ServerListACK : public ServerUpdate{
 public:
-    ServerListACK(uint8_t &id, std::string &returnData) : ServerUpdate(id,returnData) {};
+//    ServerListACK(uint8_t &id, std::string &returnData) : ServerUpdate(id,returnData) {};
+    ServerListACK(uint8_t &id, std::vector<uint8_t> &returnData) : ServerUpdate(id,returnData) {};
     ~ServerListACK() override = default;
 
     uint8_t getType() const override;

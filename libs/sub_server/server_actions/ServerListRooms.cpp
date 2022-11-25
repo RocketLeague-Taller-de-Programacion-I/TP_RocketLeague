@@ -9,5 +9,6 @@
 ServerUpdate * ServerListRooms::execute(GameManager &manager, const std::function<BlockingQueue<ServerUpdate *> *(
         ProtectedQueue<ServerAction *> *)> &setQueue) {
     std::string list = manager.listGames(id);
-    return new ServerListACK(id, list);
+    std::vector<uint8_t> returndata(list.begin(), list.end());
+    return new ServerListACK(id, returndata);
 }

@@ -20,14 +20,15 @@ enum upodate_type { // TODO: cambiarles el nombre?
 class ServerUpdate {
 protected:
     uint8_t id;
-    std::string returnData; // TODO: cambiar a vector?
+    std::vector<uint8_t> returnData;
 public:
-    ServerUpdate(uint8_t &id, std::string &returnData) : id(id), returnData(returnData) {};
-//     ServerUpdate(uint8_t &id, std::vector<uint8_t> &data) {};
+    ServerUpdate(uint8_t &id, std::vector<uint8_t> &returnData) : id(id), returnData(returnData) {};
+//    ServerUpdate(uint8_t &id, std::vector<uint8_t> &data) : id(id), data(data) {};
     virtual ~ServerUpdate() = default;
 
     virtual std::uint8_t getType() const = 0;
-    virtual std::string getReturnData() const { return returnData; };
+    virtual std::string getReturnData() const { return std::string(returnData.begin(), returnData.end()); }; //TODO> to change name or remove
+    virtual std::vector<uint8_t> getData() const { return returnData; };
     virtual std::vector<uint8_t> beSerialized() = 0;
 };
 
