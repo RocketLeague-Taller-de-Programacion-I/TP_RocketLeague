@@ -12,11 +12,11 @@
 
 #include "box2d/box2d.h"
 
-#include "Car.h"
+#include "sub_server/server_box2d/Car.h"
 #include "MyContactListener.h"
-#include "Ball.h"
+#include "sub_server/server_box2d/Ball.h"
 
-#include "server_updates/ServerUpdate.h"
+#include "sub_server/server_updates/ServerUpdate.h"
 
 class Match {
 private:

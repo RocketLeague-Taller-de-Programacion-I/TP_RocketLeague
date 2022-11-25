@@ -6,7 +6,7 @@ add_library(lib_server
         game.cpp game.h
         ClientManager.cpp
         ClientManager.h
-        Ball.cpp Ball.h Car.cpp Car.h Match.cpp Match.h MyContactListener.cpp MyContactListener.h
+        server_box2d/Ball.cpp server_box2d/Ball.h server_box2d/Car.cpp server_box2d/Car.h server_box2d/Match.cpp server_box2d/Match.h server_box2d/MyContactListener.cpp server_box2d/MyContactListener.h
         ClientReceiver.cpp
         ClientReceiver.h
         ClientSender.cpp

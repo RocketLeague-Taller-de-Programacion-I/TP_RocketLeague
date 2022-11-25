@@ -10,7 +10,7 @@
 #include <map>
 #include "sub_common/thread.h"
 #include "sub_common/BlockingQueue.h"
-#include "Match.h"
+#include "sub_server/server_box2d/Match.h"
 
 #include "server_updates/ServerUpdate.h"
 #include "server_actions/ServerAction.h"

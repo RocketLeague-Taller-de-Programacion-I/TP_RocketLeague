@@ -8,7 +8,6 @@
 #include <QString>
 #include <QAction>
 
-#include "sub_client/client_sdl/gamescene.h"
 #include "sub_client/client_sdl/GameLoop.h"
 
 #include "sub_client/client_actions/ActionCreateRoom.h"
@@ -46,7 +45,7 @@ public slots:
 
 private:
     Ui::MainWindow *ui;
-    GameScene scene;
+    QGraphicsScene scene;
     ProtectedQueue<ClientUpdate*> &updatesQueue;
     BlockingQueue<ClientAction*> &actionsQueue;
 

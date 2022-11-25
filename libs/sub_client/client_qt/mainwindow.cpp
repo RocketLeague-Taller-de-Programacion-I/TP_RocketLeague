@@ -12,7 +12,9 @@ MainWindow::MainWindow(QWidget *parent, ProtectedQueue<ClientUpdate*> &updates, 
 {
     ui->setupUi(this);
     // Seteo un Objeto QGraphicsScene para manejar la escena del juego
-    ui->view->setScene(&this->scene);
+    this->scene.setSceneRect(0,0,1500,750);
+
+    ui->view->setScene(&scene);
     ui->view->setStyleSheet("border-image: url(../images/rocketLig.jpg);");
     this->lineEdit = findChild<QLineEdit*>("lineEditName");
     this->cantPlayers = findChild<QSpinBox*>("cantPlayers");
@@ -68,7 +70,11 @@ void MainWindow::drawJoinGameMenu() {
     //draw a button for each game
     std::vector<std::string> games = dynamic_cast<ClientListACK*>(update)->getList();
     if(games.empty()) {
-        drawTitle("No games available");
+        QLabel* label = new QLabel("No games available");
+        label->setGeometry(width() / 2 - 110 , 200 , 301, 71);
+        label->setStyleSheet("font: 20pt; color: white;");
+        this->scene.addWidget(label);
+
         drawBackButton();
 
     }
@@ -95,6 +101,7 @@ void MainWindow::createRoom() {
     ClientAction* actionCreate = new ActionCreateRoom(players, roomName);
     this->actionsQueue.push(actionCreate);
 
+//    exit(1); // TODO: usar exit para salir del juego
     close();
 }
 
