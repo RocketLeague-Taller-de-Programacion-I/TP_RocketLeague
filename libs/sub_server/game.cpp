@@ -16,7 +16,7 @@ Game::Game(int capacity,
 std::string Game::information() {
     return gameName+" "+std::to_string(playerOnLine)+"/"+std::to_string(capacity);
 }
-void Game::joinPlayer(uint8_t id, BlockingQueue<ServerUpdate *> *sender) {
+void Game::joinPlayer(uint8_t& id, BlockingQueue<ServerUpdate *> *sender) {
     playerOnLine++;
     mapSender.insert(std::pair<uint8_t ,BlockingQueue<ServerUpdate*>*>(id, sender));
     if (playerOnLine == capacity){
