@@ -4,7 +4,7 @@
 #ifndef __ANIMATION_H__
 #define __ANIMATION_H__
 
-#include <SDL2pp/SDL2pp.hh>
+#include "libSDL2pp/SDL2pp/SDL2pp.hh"
 
 #define FRAME_RATE (1000.0f/25.0f)
 

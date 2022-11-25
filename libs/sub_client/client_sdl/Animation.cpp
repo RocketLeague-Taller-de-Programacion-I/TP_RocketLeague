@@ -3,7 +3,7 @@
 //
 
 #include "Animation.h"
-#include <SDL2pp/SDL2pp.hh>
+#include "libSDL2pp/SDL2pp/SDL2pp.hh"
 
 #include <algorithm>
 #include <cassert>
@@ -47,3 +47,11 @@ void Animation::render(SDL2pp::Renderer &renderer, const SDL2pp::Rect dst, SDL_R
             flipType
     );
 }
+
+
+//QT
+//SDL (create-> posicion, join, join con la partida epezo)
+// creanos el car propio --> hardocdeadola posicion
+// cear el score --> 0:0
+// crear el ball -> piso
+//gamelopop

@@ -5,7 +5,7 @@
 #ifndef ROCKETLEAGUE_WORLDVIEW_H
 #define ROCKETLEAGUE_WORLDVIEW_H
 
-#include <SDL2pp/SDL2pp.hh>
+#include "libSDL2pp/SDL2pp/SDL2pp.hh"
 #include <map>
 #include "Animation.h"
 #include "GameSprite.h"

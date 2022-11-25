@@ -5,7 +5,7 @@
 #ifndef ROCKETLEAGUE_GAMESPRITE_H
 #define ROCKETLEAGUE_GAMESPRITE_H
 
-#include <SDL2pp/SDL2pp.hh>
+#include "libSDL2pp/SDL2pp/SDL2pp.hh"
 #include "Animation.h"
 struct Color {
     uint8_t r, g, b;

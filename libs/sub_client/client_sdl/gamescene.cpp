@@ -1,5 +1,5 @@
 #include "gamescene.h"
-#include "Button.h"
+#include "sub_client/client_qt/Button.h"
 
 GameScene::GameScene()
 {

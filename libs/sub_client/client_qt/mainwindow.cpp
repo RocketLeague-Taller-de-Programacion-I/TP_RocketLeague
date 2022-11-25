@@ -86,15 +86,16 @@ void MainWindow::drawJoinGameMenu() {
 }
 
 void MainWindow::createRoom() {
+
+    this->scene.clear();
+
     std::string roomName = this->lineEdit->text().toStdString();
     uint8_t players = this->cantPlayers->value();
 //    Action* actionCreate = new ActionCreate(id, players, roomName);
     ClientAction* actionCreate = new ActionCreateRoom(players, roomName);
     this->actionsQueue.push(actionCreate);
 
-    std::cout << "Waiting for Update" << std::endl;
-    // draw waiting for players screen
-    drawLoadingScreen();
+    close();
 }
 
 void MainWindow::joinParticularGame(QString roomName) {
@@ -107,7 +108,7 @@ void MainWindow::joinParticularGame(QString roomName) {
     ClientAction *actionJoin = new ActionJoinRoom(room);
     this->actionsQueue.push(actionJoin);
     //exit qt
-    drawLoadingScreen();
+    close();
 }
 
 void MainWindow::back() {
@@ -254,7 +255,7 @@ void MainWindow::drawLoadingScreen() {
     int tyPos = height() / 2;
     titleText->setPos(txPos,tyPos);
     scene.addItem(titleText);
-    popFirstUpdate();
+
     close();
 }
 

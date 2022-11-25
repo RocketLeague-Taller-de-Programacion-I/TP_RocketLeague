@@ -17,24 +17,24 @@ message("Client - Agregando '${PROJECT_SOURCE_DIR}/sub_client' como directorio d
 add_library(lib_client
         Client.cpp
         Client.h
-        Animation.cpp
-        Animation.h
-        Player.cpp
-        Player.h
-        GameLoop.cpp
-        GameLoop.h
-        mainwindow.cpp
-        mainwindow.h
-        gamescene.cpp
-        gamescene.h
-        Button.cpp
-        Button.h
+        client_sdl/Animation.cpp
+        client_sdl/Animation.h
+        client_sdl/Player.cpp
+        client_sdl/Player.h
+        client_sdl/GameLoop.cpp
+        client_sdl/GameLoop.h
+        client_qt/mainwindow.cpp
+        client_qt/mainwindow.h
+        client_sdl/gamescene.cpp
+        client_sdl/gamescene.h
+        client_qt/Button.cpp
+        client_qt/Button.h
         RenderThread.cpp
         RenderThread.h
-        Worldview.cpp
-        Worldview.h
-        GameSprite.cpp
-        GameSprite.h
+        client_sdl/Worldview.cpp
+        client_sdl/Worldview.h
+        client_sdl/GameSprite.cpp
+        client_sdl/GameSprite.h
         UpdatesReceiverThread.cpp
         UpdatesReceiverThread.h
         ThreadActionsSender.cpp

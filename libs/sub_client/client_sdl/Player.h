@@ -5,7 +5,7 @@
 #ifndef ROCKETLEAGUE_PLAYER_H
 #define ROCKETLEAGUE_PLAYER_H
 
-#include <SDL2pp/SDL2pp.hh>
+#include "libSDL2pp/SDL2pp/SDL2pp.hh"
 #include "Animation.h"
 class Player {
 public:

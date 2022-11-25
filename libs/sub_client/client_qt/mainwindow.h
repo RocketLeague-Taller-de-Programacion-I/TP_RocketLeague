@@ -8,8 +8,8 @@
 #include <QString>
 #include <QAction>
 
-#include "gamescene.h"
-#include "GameLoop.h"
+#include "sub_client/client_sdl/gamescene.h"
+#include "sub_client/client_sdl/GameLoop.h"
 
 #include "sub_client/client_actions/ActionCreateRoom.h"
 #include "sub_client/client_actions/ActionJoinRoom.h"
