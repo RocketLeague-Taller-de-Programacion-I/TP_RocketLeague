@@ -20,22 +20,24 @@ void Game::joinPlayer(uint8_t& id, BlockingQueue<ServerUpdate *> *sender) {
     playerOnLine++;
     mapSender.insert(std::pair<uint8_t ,BlockingQueue<ServerUpdate*>*>(id, sender));
     if (playerOnLine == capacity){
-//        int local = this->match.local();
-//        int visit = this->match.visit();
+        running = true;
         start();
+
     }
 }
 
 void Game::run() {
-    // pop actions from queue, processed them and broadcast them
-    /* ServerUpdateWorld
-     * * std::vector<uint8_t> matchInfo = this->match.matchInfo();
-     * ServerUpdateWorld* update(id, matchInfo)
+/*
+    std::vector<uint8_t> matchInfo = this->match.matchInfo();
+    ServerUpdateWorld * update = new ServerUpdateWorld(id, matchInfo);
+       broadcastUpdateGameEvents(update);
      *
-     */
-    while (true) {
+
+
+    while (running) {
 
     }
+         */
 }
 
 bool Game::isFull() const {

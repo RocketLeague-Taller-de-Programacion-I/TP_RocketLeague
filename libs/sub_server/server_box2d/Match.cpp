@@ -26,6 +26,7 @@ Match::Match(std::string gameName, int required) : name(std::move(gameName)), wo
     fixDef.shape = &polygonShape;
     polygonShape.SetAsBox( 40, 0.5, b2Vec2(0, 0), 0);//ground
     myUserData->mOwningFixture = staticBody->CreateFixture(&fixDef);
+    fixDef.friction = 0.2;
     //  Creo ball
     this->ball = new Ball(&this->world, 0.7);
 }
@@ -73,55 +74,9 @@ void Match::checkGoals() {
         this->ball->restartGame();
     }
 }
-std::vector<uint8_t> Match::matchUpdate() {
-    std::vector<uint8_t> toSend;
-    for (auto &player : this->players) {
-        toSend.emplace_back(player.second->getId());
-        toSend.emplace_back(' ');
-        toSend.emplace_back((player.second->X()));
-        toSend.emplace_back(' ');
-        toSend.emplace_back((player.second->Y()));
-        toSend.emplace_back(' ');
-        toSend.emplace_back((player.second->angleDeg()));
-        toSend.emplace_back(',');
-    }
-    return toSend;
-}
 int Match::local() {
     return this->goalsLocal;
 }
 int Match::visit() {
     return this->goalsVisit;
-}
-std::vector<uint8_t> Match::ballInfo() {
-    std::vector<uint8_t> toSend;
-    uint8_t x = this->ball->X();
-    uint8_t y = this->ball->Y();
-    toSend.emplace_back(x);
-    toSend.emplace_back(' ');
-    toSend.emplace_back(y);
-    toSend.emplace_back(',');
-    return toSend;
-}
-std::vector<uint8_t> Match::scoreInfo() {
-    uint8_t local = uint8_t(this->goalsLocal);
-    uint8_t visit = uint8_t(this->goalsVisit);
-    std::vector<uint8_t> score;
-    score.emplace_back(local);
-    score.emplace_back(' ');
-    score.emplace_back(visit);
-    score.emplace_back(',');
-    return score;
-}
-
-std::vector<uint8_t> Match::matchInfo() {
-    std::vector<uint8_t> toSend;
-    std::vector<uint8_t> ballData = ballInfo();
-    toSend.insert( toSend.end(), ballData.begin(), ballData.end());
-    std::vector<uint8_t> scoreData;
-    scoreData = scoreInfo();
-    toSend.insert( toSend.end(), scoreData.begin(), scoreData.end());
-    std::vector<uint8_t> cars = matchUpdate();
-    toSend.insert( toSend.end(), cars.begin(), cars.end());
-    return toSend;
 }

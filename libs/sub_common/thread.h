@@ -16,7 +16,7 @@ private:
     static void *runExpecting(void *self);
 protected:
     virtual void run() = 0;
-    std::atomic<bool> running = true;
+    std::atomic<bool> running = false;
 public:
     void start();
     void join();

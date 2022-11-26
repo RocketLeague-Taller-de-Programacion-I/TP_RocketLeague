@@ -24,6 +24,7 @@ void ClientReceiver::run() {
                 data.push_back(byte_to_read);
                 this->skt_client.recvall(&byte_to_read, sizeof(byte_to_read), &closed);
             }
+            // TODO: Cambiar protocolo
             // form the Action from the data
             auto action = p.deserializeData(data);
             // push the action to the queue
