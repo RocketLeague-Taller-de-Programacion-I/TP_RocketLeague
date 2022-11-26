@@ -38,6 +38,16 @@ public:
         return queue.empty();
     }
     std::vector<T> popAll() {
+        /*
+         * // cambiar el tipo de retorno
+         * std::queue<T> old;
+         * {
+         *      std::unique_lock<std::mutex> scopedUnique(mutex);
+         *      std::swap(old, this.queue);
+         * }
+         * return old;
+         */
+
         std::unique_lock<std::mutex> lock(mutex);
         std::vector<T> elements;
         while(queue.empty()) {

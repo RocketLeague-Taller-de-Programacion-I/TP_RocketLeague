@@ -15,6 +15,7 @@ int main(int argc, char const *argv[]) {
     try {
         Server server(argv[1]);
         server.start();
+        // podrían esperar una "q" para cerrar el socket aceptador y hacer un forced pero graceful shutdown
         server.join();
     } catch (const std::exception& e) {
         std::cerr << e.what() << std::endl;

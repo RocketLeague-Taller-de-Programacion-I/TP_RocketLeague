@@ -29,7 +29,7 @@ protected:
     void run() override;
 public:
     Client(const char *host, const char *port);
-    ~Client();
+    ~Client() override;
     void stop() override;
     void cleanThreads();
 

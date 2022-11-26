@@ -17,6 +17,7 @@ GameLoop::GameLoop(SDL2pp::Renderer &renderer, int xMax, int yMax, ProtectedQueu
           yMax(yMax),
           wv(wv){}
 
+// falta el loop a tiempo constante
 void GameLoop::run() {
     // Gameloop, notar como tenemos desacoplado el procesamiento de los inputs (handleEvents)
     // del update del modelo.
@@ -35,10 +36,17 @@ bool GameLoop::handle_events() {
     SDL_Event event;
     // Para el alumno: Buscar diferencia entre waitEvent y pollEvent
     // Aca estara la cola de eventos!!
+
+    /*
+     * Podrian leer una cantidad N de eventos por frame (por decir algo, 10)
+     * para que no les quede tan limitada la cantidad de acciones que se pueden hacer en un frame
+     * (sería loopear esto N veces...)
+     */
     while(SDL_PollEvent(&event)){
         switch(event.type) {
             case SDL_KEYDOWN: {
                 // ¿Qué pasa si mantengo presionada la tecla?
+                // mantener presionada la tecla es otro tipo de evento (no se va a volver a disparar un key down)
                 SDL_KeyboardEvent& keyEvent = (SDL_KeyboardEvent&) event;
                 switch (keyEvent.keysym.sym) {
                     case SDLK_LEFT:

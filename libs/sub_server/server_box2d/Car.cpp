@@ -42,6 +42,8 @@ void Car::goRight() {
         m_car->ApplyTorque(-500.0, true);
         return;
     }
+    // les convendría que el turbo se maneje mediante otro metodo
+    // si tengo el flag de turbo porque el cliente apreto y no solto la tecla de turbo, aplico la fuerza siempre y cuando siga teniendo turbo
     if (turboOn) {
         m_car->ApplyForce(b2Vec2(200, 0), m_car->GetWorldCenter(), true);
         turboOn = false;
@@ -81,6 +83,7 @@ Car::~Car() {
 
 //  OK
 void Car::check_y_pos() {
+    // que es 6? que es 3? XD
     if (Y() > 6) { return; }
     if (Y() > 3) {
         m_car->ApplyForce(b2Vec2(0, 120), m_car->GetWorldCenter(), true);

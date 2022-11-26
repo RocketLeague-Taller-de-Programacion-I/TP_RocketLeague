@@ -25,6 +25,7 @@ private:
     std::string gameName;
     bool closed;
 
+    // usen unique_ptrs en vez de punteros raw para updates y actions
     std::map<uint8_t ,BlockingQueue<ServerUpdate*>*> mapSender;
     //map {id, BlockingQueue<ServerUpdate*>}
 

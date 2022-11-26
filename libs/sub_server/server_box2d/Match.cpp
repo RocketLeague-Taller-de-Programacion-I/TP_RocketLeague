@@ -1,3 +1,5 @@
+// si van a poner comentarios de este estilo, que represente al grupo entero
+
 //
 // Created by franco on 16/11/22.
 //
@@ -9,11 +11,13 @@
 #include <unistd.h>
 #include <memory>
 
+// creo que les convendría estar en el primer cuadrante
 #define LOCALGOAL (-37.985)
 #define VISITGOAL  (37.985)
 
 Match::Match(std::string gameName, int required) : name(std::move(gameName)), world(b2World(b2Vec2(0,-10))), playersConnected(0), playersRequired(required), goalsLocal(0), goalsVisit(0) {
     world.SetContactListener(&this->listener);
+    // están usando un unique pointer como shared
     myUserData = std::make_unique<MyFixtureUserDataType>();
     fixDef.userData.pointer = reinterpret_cast<uintptr_t>(myUserData.get());
     myUserData->mObjectType = 1;  //  Floor
@@ -27,11 +31,13 @@ Match::Match(std::string gameName, int required) : name(std::move(gameName)), wo
     polygonShape.SetAsBox( 40, 0.5, b2Vec2(0, 0), 0);//ground
     myUserData->mOwningFixture = staticBody->CreateFixture(&fixDef);
     //  Creo ball
+    // al stack
     this->ball = new Ball(&this->world, 0.7);
 }
 
 
 void Match::addPlayer(uint8_t &id) {
+    // en el stack
     this->players[id] = new Car(&this->world, id);
     this->playersConnected++;
 }
@@ -73,6 +79,21 @@ void Match::checkGoals() {
         this->ball->restartGame();
     }
 }
+// esta es logica de protocolo (no tiene que estar dentro del Match!)
+// recordar no mezclar protocolo binario con protocolo de texto
+// un update del match podría ser de la siguiente manera:
+/*
+ * ```
+ * |-------------------|-------------------|--------------------------------------------------|.. ~~~ ..|--------------------------------------------------|
+ * |  MatchUpdateCode  |    PlayerCount    |                       State 1                    |.. ~~~ ..|               State Player Count                 |
+ * |      (1 byte)     |      (1 byte)     |                      (7 bytes)                   |.. ~~~ ..|                   (7 bytes)                      |
+ * |-------------------|-------------------|--------------------------------------------------|.. ~~~ ..|--------------------------------------------------|
+ *                                         / idPlayer /  posX (mm) / posY (mm) / angle (deg) /
+ *                                           (1 byte)   (2 bytes)   (2 bytes)    (2 bytes)
+ * ```
+ * Recibir esto es bastante facil, sabiendo el opcode del mensaje (MatchUpdateCode)
+ * se que tengo que leer un byte mas (PlayerCount) y luego recibir 7 * PlayerCount bytes
+ */
 std::vector<uint8_t> Match::matchUpdate() {
     std::vector<uint8_t> toSend;
     for (auto &player : this->players) {

@@ -13,10 +13,16 @@ void ClientSender::run() {
     Protocolo p;
     try {
         while (not closed) {
+
+            // tecnicamente es una cola de updates, no de actions
+
             auto action = actionsQueue->pop();
 //            std::vector<uint8_t> v = p.serializeAction(action);
             std::vector<uint8_t> v = action->beSerialized();
             //  se iteran los comandos parseados y se envian al servidor
+
+            // skt_client.sendall(v.data(), v.size(), ...);
+
             for (uint8_t c : v) {
                 skt_client.sendall(&c, sizeof(c), &closed);
             }

@@ -12,6 +12,8 @@ bool GameManager::createGame(uint8_t idCreator, uint8_t capacityGame, const std:
     std::unique_lock<std::mutex> lock(this->mutex);
 
     if (games.find(nameGame) == games.end()) {
+        // el game podría crear su propia queue (en el stack)
+        // el game debería estar en el stack (no hay motivo para que esté en el heap)
         auto *queueGame = new ProtectedQueue<ServerAction *>;
         games[nameGame] = new Game(capacityGame,nameGame,queueGame);
     } else {
@@ -52,7 +54,9 @@ std::string GameManager::listGames(uint8_t &id) {
 
 void GameManager::cleanGames() {
     for (auto & game: games) {
-        delete &game.second;
+        // el segundo parametro es un puntero, la referencia no va
+        // delete &game.second;
+        delete game.second;
     }
 }
 

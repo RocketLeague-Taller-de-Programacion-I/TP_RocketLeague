@@ -8,6 +8,7 @@
 Server::Server(const char *port)
         : closed(false),
           accept_skt(port) {
+    // y esto que hace acá?
     b2Vec2 grav(0.0,0.2);
     b2World m_world(grav);
 }
@@ -28,6 +29,8 @@ void Server::run() {
     idPlayer_t idPlayer = 1;
     try {
         while (not closed) {
+            // Error, el socket no debería ser monitoreado si un hilo accede para lectura (recv) y otro para escritura (send)
+            // esto es asi ya que esas operaciones son atomicas (POSIX)
             /*
              * El socket como son dos hilos los que acceden, tiene que tener un lock para resguardar
              * ver si se puede crear el socket dinamico
@@ -41,6 +44,7 @@ void Server::run() {
              *  - Set the ID manager
              *  - Start the thread
              */
+            // podrían pasarle idPlayer en el constructor...
             manager->attendClient(idPlayer);
             idPlayer++;
 
@@ -78,6 +82,8 @@ void Server::cleanManagers() {
         delete manager;
     }
 }
+
+// closed debería ser atomic_bool
 /*
  * Cierra el socket y el hilo.
  */

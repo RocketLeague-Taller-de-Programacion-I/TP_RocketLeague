@@ -20,6 +20,10 @@ void ClientReceiver::run() {
 
             this->skt_client.recvall(&byte_to_read, sizeof(byte_to_read), &closed);
 
+            // Recuerden refactorizar el protocolo
+            // ya sea, metiendo un opcode de 4 bytes delimitador del mensaje, por ejemplo 0xcafebeb0,
+            // o definiendo el tamaño de mensaje luego del opcode
+
             while (byte_to_read != NOP && !closed) {
                 data.push_back(byte_to_read);
                 this->skt_client.recvall(&byte_to_read, sizeof(byte_to_read), &closed);

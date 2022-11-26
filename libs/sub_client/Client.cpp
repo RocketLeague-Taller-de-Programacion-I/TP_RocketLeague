@@ -29,14 +29,17 @@ void Client::run() {
         ProtectedQueue<ClientUpdate*> updatesQueue;
         //launch ClientSender thread
 //        auto sender = new ClientSender(skt_client, actionsQueue);
+        // al stack
         auto sender = new ThreadActionsSender(skt_client, actionsQueue);
         this->threads.push_back(sender);
         //launch ClientReceiver thread
 //        auto receiver = new ClientReceiver(skt_client, updatesQueue);
+        // al stack
         auto receiver = new UpdatesReceiverThread(skt_client, updatesQueue);
         this->threads.push_back(receiver);
         //
         //launch render thread
+        // al stack
         auto render_thread = new RenderThread(updatesQueue, actionsQueue);
         this->threads.push_back(render_thread);
 
