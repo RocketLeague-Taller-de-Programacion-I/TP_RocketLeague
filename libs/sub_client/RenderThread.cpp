@@ -38,6 +38,8 @@ void RenderThread::run() {
         auto Height = 600;
         SDL2pp::Window sdlWindow("RocketLeague", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                                  Width, Height,SDL_WINDOW_RESIZABLE);
+        // No esta tan buena esta trampita. 
+        // Lo ideal es que la pantalla sea resizable y las texturas las rendericen en posiciones relativas al ancho y alto de la Window. 
         SDL_SetWindowResizable(sdlWindow.Get(), SDL_FALSE);
 
         // Creo renderer

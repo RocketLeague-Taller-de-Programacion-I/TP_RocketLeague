@@ -9,6 +9,19 @@
 #include <mutex>
 #include <condition_variable>
 
+
+/*
+    Falta agregar un `bool closed` y un método para cerrar la cola. Este consiste en 
+      1) tomar el lock
+      2) setear este booleano
+      3) notify all
+
+    El push debe lanzar una excepción si la cola está closed. 
+
+    A su vez, el pop debe lanzar una excepción si la cola esta vacia y cerrada. 
+    De este modo los hilos Sender (tanto del server como del client) se van a enterar que deben dejar de hacer pop de la cola y finalizan su método run. 
+*/
+
 template<typename T>
 class BlockingQueue
 {

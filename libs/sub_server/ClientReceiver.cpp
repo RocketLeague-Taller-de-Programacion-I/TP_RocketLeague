@@ -21,9 +21,13 @@ void ClientReceiver::run() {
             this->skt_client.recvall(&byte_to_read, sizeof(byte_to_read), &closed);
 
             // Recuerden refactorizar el protocolo
-            // ya sea, metiendo un opcode de 4 bytes delimitador del mensaje, por ejemplo 0xcafebeb0,
+            // ya sea, metiendo un opcode de 4 bytes delimitador del mensaje, por ejemplo 0xcafebeb0 (ahi usarian recv_some),
             // o definiendo el tamaño de mensaje luego del opcode
 
+            // Esto funciona. A modo de comentario, 
+            // recuerden que por cada recvall se hace al menos una llamada a una syscall y por lo tanto un context switch. 
+            // Lo ideal, con su protocolo por como esta ahora, es recibir con recv_some y guardar el remanente, tal como lo explico fefo en la presentación del tp2. 
+            // El mismo coment aplica para el sender. Pero para este es mas facil solucionarlo: se crean el vector antes y luego lo envian con sendall. 
             while (byte_to_read != NOP && !closed) {
                 data.push_back(byte_to_read);
                 this->skt_client.recvall(&byte_to_read, sizeof(byte_to_read), &closed);

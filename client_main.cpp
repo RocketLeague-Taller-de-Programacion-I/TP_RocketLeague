@@ -42,10 +42,12 @@ using namespace SDL2pp;
 static const float pi = 3.14159265358979323846f;
 
 int main(int argc, char* argv[]) try {
-    Client client(argv[1], argv[2]);
-    client.start();
-    client.join();
+   Client client(argv[1], argv[2]);
+   // Lanzan dos hilos de mas. Client podría ejecutarse en el hilo main (en donde renderizarían). Solamente lanzarían el hilo sender y el receiver. 
+   // No creen hilos para esperarlos inmediatamente.  
+   client.start();
+   client.join();
 } catch (std::exception & e) {
-        std::cerr << "Error: " << e.what() << std::endl;
-        return 1;
+      std::cerr << "Error: " << e.what() << std::endl;
+      return 1;
 }

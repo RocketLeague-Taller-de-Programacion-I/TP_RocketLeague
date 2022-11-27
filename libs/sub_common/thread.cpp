@@ -2,6 +2,8 @@
 
 #include "./thread.h"
 
+
+// Prefieran usar la clase Thread de c++ de Eze, no la que esta implementada con las funciones a lo C. (std::thread)
 void *Thread::runExpecting(void *self) {
     try {
         //  cppcheck-suppress cstyleCast

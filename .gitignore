@@ -1,6 +1,7 @@
-/build
-/cmake-build-debug
-/cmake-build-debug-coverage
-/Testing
-.idea
+**/build
+**/cmake-build-debug
+**/cmake-build-debug-coverage
+**/Testing
+**/.idea
+**/.vscode
 
