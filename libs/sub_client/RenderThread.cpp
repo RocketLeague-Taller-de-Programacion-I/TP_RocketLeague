@@ -18,11 +18,7 @@ void RenderThread::run() {
         MainWindow mainWindow(nullptr, updatesQueue, actionsQueue);
         mainWindow.show();
         mainWindow.displayMainMenu();
-        /*
-         * QApplication::exec inicia el event loop y se queda esperando que finalice la aplicación. Cuando el usuario
-         * realice una acción que haga un exit de QT, entonces esta función retorna (con el código de error
-         * si lo hubo) y entonces se podrá crear la ventana de SDL.
-         */
+
         // exec es una función bloqueante, cuando QT finaliza su ejecución, se realiza un return con el codigo de error
         int qt_return = app.exec();
         if (qt_return) {
@@ -44,7 +40,7 @@ void RenderThread::run() {
         Renderer renderer(sdlWindow, -1, SDL_RENDERER_SOFTWARE);
         Texture car(renderer,SDL2pp::Surface("../images/car.jpeg").SetColorKey(true, 0));
         Texture ball(renderer,SDL2pp::Surface("../images/ball.png").SetColorKey(true, 0));
-        Texture field(renderer,SDL2pp::Surface("../images/field.jpeg").SetColorKey(true, 0));
+        Texture field(renderer,SDL2pp::Surface("../images/field.png").SetColorKey(true, 0));
 //        Texture background(renderer,
 //                                  SDL2pp::Surface("../images/background.jpeg").SetColorKey(true, 0));
         Texture scoreBoard(renderer,SDL2pp::Surface("../images/clock.png"));
@@ -140,6 +136,9 @@ void RenderThread::run() {
 
 //  Closes the accepting socket and forces all the client managers to finish
 void RenderThread::stop() {
+    join();
 }
 
-RenderThread::~RenderThread() = default;
+RenderThread::~RenderThread() {
+    join();
+}

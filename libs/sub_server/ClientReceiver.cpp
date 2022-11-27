@@ -14,19 +14,15 @@ void ClientReceiver::run() {
     Protocolo p;
     try {
         while (!closed) {
-            std::vector<uint8_t> data;
-            data.push_back(idClient);
             uint8_t byte_to_read;
 
             this->skt_client.recvall(&byte_to_read, sizeof(byte_to_read), &closed);
 
-            while (byte_to_read != NOP && !closed) {
-                data.push_back(byte_to_read);
-                this->skt_client.recvall(&byte_to_read, sizeof(byte_to_read), &closed);
-            }
-            // TODO: Cambiar protocolo
+            std::function<void(std::vector<uint8_t>&, uint8_t&)> bytes_receiver_callable =
+                    std::bind(&ClientReceiver::receiveBytes, this, std::placeholders::_1 ,std::placeholders::_2);
+
             // form the Action from the data
-            auto action = p.deserializeData(data);
+            auto action = p.deserializeData(idClient, byte_to_read, bytes_receiver_callable);
             // push the action to the queue
             updatesQueue->push(action);
         }
@@ -43,6 +39,12 @@ void ClientReceiver::setQueue(ProtectedQueue<ServerAction *> *pQueue) {
     clearQueue();
     this->updatesQueue = pQueue;
 }
+void ClientReceiver::receiveBytes(std::vector<uint8_t>& bytes_to_read, uint8_t& size) {
+    if(!closed) {
+        this->skt_client.recvall(bytes_to_read.data(), size, &closed);
+    }
+}
+
 void ClientReceiver::clearQueue() {
     std::vector<ServerAction*> elements = this->updatesQueue->popAll();
     for (auto &element : elements) {

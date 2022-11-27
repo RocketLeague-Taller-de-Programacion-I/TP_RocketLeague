@@ -3,8 +3,8 @@
 //
 #pragma once
 
-#ifndef ROCKETLEAGUE_PROTOCOLO_H
-#define ROCKETLEAGUE_PROTOCOLO_H
+#ifndef ROCKETLEAGUE_SERVERPROTOCOLO_H
+#define ROCKETLEAGUE_SERVERPROTOCOLO_H
 
 #include <cstdint>
 #include <SDL2/SDL_keycode.h>
@@ -47,15 +47,18 @@ public:
 
 //    std::vector<uint8_t> serializeAction(ServerAction *action);
 
-    ServerAction * deserializeData(const std::vector<uint8_t>& data);
+    ServerAction *deserializeData(const uint8_t &id, const uint8_t &type,
+                                  const std::function<void(std::vector<uint8_t> &, uint8_t &)> &receiveBytes);
 
     static std::vector<uint8_t> serializeCreateAction(const std::vector<uint8_t>& data);
     static std::vector<uint8_t> serializeUpdateAction(const std::vector<uint8_t>& data);
 
-    static ServerAction * parseCreateAction(const std::vector<uint8_t> &data);
-    static ServerAction * parseJoinAction(const std::vector<uint8_t> &data);
-    static ServerAction * parseListAction(const std::vector<uint8_t> &data);
+    static ServerAction *parseCreateAction(const uint8_t &id, const std::function<void(std::vector<uint8_t> &,
+                                                                                       uint8_t &)> &receiveBytes);
+    static ServerAction *parseJoinAction(const uint8_t &id, const std::function<void(std::vector<uint8_t> &,
+                                                                                     uint8_t &)> &receiveBytes);
+    static ServerAction *parseListAction(const uint8_t &id);
 };
 
 
-#endif //ROCKETLEAGUE_PROTOCOLO_H
+#endif //ROCKETLEAGUE_SERVERPROTOCOLO_H

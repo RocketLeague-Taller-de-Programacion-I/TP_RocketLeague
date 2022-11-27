@@ -11,7 +11,7 @@
 class ServerJoinRoom : public ServerAction {
 
 public:
-    ServerJoinRoom(uint8_t &id, std::string &data);
+    ServerJoinRoom(const uint8_t &id, std::string &data);
     ~ServerJoinRoom() override = default;
 
     virtual ServerUpdate * execute(GameManager &manager, const std::function<BlockingQueue<ServerUpdate *> *(

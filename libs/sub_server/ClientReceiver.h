@@ -8,7 +8,7 @@
 
 #include "sub_common/socket.h"
 #include "sub_common/thread.h"
-#include "protocolo.h"
+#include "ServerProtocolo.h"
 #include "sub_common/ProtectedQueue.h"
 
 #include "server_actions/ServerAction.h"
@@ -27,6 +27,8 @@ public:
     void stop() override;
     void setQueue(ProtectedQueue<ServerAction *> *pQueue);
     void clearQueue();
+
+    void receiveBytes(std::vector<uint8_t> &bytes_to_read, uint8_t &size);
 };
 
 

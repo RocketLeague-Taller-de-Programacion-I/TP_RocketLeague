@@ -7,7 +7,7 @@
 #include <memory>
 #include <functional>
 #include "ClientManager.h"
-#include "protocolo.h"
+#include "ServerProtocolo.h"
 #include "ClientReceiver.h"
 
 ClientManager::ClientManager(Socket &aClient,
@@ -32,13 +32,13 @@ void ClientManager::run() {
         } catch (...) {
             continue;
         }
-        auto action = command->execute(this->gameManager, queue_setter_callable);
+        auto update = command->execute(this->gameManager, queue_setter_callable);
         //create,join y list
-        if (action->getReturnData() == "OK") {
+        if (update->getType()!= LIST_INFO and update->getReturnCode() == OK) {
             playing = true;
             std::cout<<"playing"<<std::endl;
         }
-        initialUpdatesQueue->push(action);
+        initialUpdatesQueue->push(update);
     }
 }
 

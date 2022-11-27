@@ -8,7 +8,9 @@
 
 ServerUpdate * ServerListRooms::execute(GameManager &manager, const std::function<BlockingQueue<ServerUpdate *> *(
         ProtectedQueue<ServerAction *> *)> &setQueue) {
-    std::string list = manager.listGames(id);
-    std::vector<uint8_t> returndata(list.begin(), list.end());
-    return new ServerListACK(id, returndata);
+
+    std::vector<uint8_t> listData;
+    uint8_t numberOfGames = manager.listGames(id, listData);
+    uint8_t returnCode = numberOfGames ? OK : ERROR_FULL; //TODO: change ERROR_FULL to ERROR_EMPTY
+    return new ServerListACK(id, returnCode, numberOfGames, listData);
 }

@@ -38,16 +38,15 @@ bool GameManager::joinGame(uint8_t idCreator, const std::string& nameGame, std::
     return true;
 }
 
-std::string GameManager::listGames(uint8_t &id) {
+uint8_t GameManager::listGames(uint8_t &id, std::vector<uint8_t> &listData) {
     std::unique_lock<std::mutex> lock(this->mutex);
-    std::string message("");
-    if (this->games.empty()) { return message; }
+    if (this->games.empty()) { return 0; }
 
     for (auto & partida : this->games) {
-        message.append(partida.second->information());
-        message.append(",");
+        std::vector<uint8_t> data = partida.second->information();
+        listData.insert(listData.end(), data.begin(), data.end());
     }
-    return message;
+    return games.size();
 }
 
 void GameManager::cleanGames() {

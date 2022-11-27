@@ -52,6 +52,10 @@ add_library(lib_client
         client_updates/ClientJoinACK.cpp
         client_updates/ClientJoinACK.h
         client_updates/ClientListACK.cpp
-        client_updates/ClientListACK.h)
+        client_updates/ClientListACK.h
+        WaitingForGameToStartThread.cpp
+        WaitingForGameToStartThread.h
+        client_updates/ClientStartedGameACK.cpp
+        client_updates/ClientStartedGameACK.h)
 
 target_link_libraries(lib_client SDL2pp::SDL2pp Qt5::Widgets)

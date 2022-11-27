@@ -2,20 +2,18 @@
 // Created by roby on 24/11/22.
 //
 
+#include <map>
 #include "ClientListACK.h"
 
-ClientListACK::ClientListACK(uint8_t &id, std::string &list) : ClientUpdate(id, list) {}
+ClientListACK::ClientListACK(uint8_t &id, uint8_t &returnCode, std::map<std::string, std::string> &listMap) :
+    ClientUpdate(id, returnCode),
+    listData(listMap){}
 
 // TODO: a mejorar que devuelve, capaz un map?
-std::vector<std::string> ClientListACK::getList() {
-    std::vector<std::string> vec;
-    std::string delimiter = ",";
-    size_t pos = 0;
-    std::string token;
-    while((pos = data.find(delimiter)) != std::string::npos) {
-        token = data.substr(0, pos);
-        vec.push_back(token);
-        data.erase(0, pos + delimiter.length());
-    }
-    return vec;
+std::map<std::string, std::string> ClientListACK::getList() {
+    return listData;
+}
+
+ClientListACK::ClientListACK(uint8_t &id, uint8_t &returnCode) : ClientUpdate(id,returnCode) {
+    listData = std::map<std::string,std::string>();
 }

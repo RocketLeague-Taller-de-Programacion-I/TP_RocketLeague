@@ -13,7 +13,7 @@ class ServerCreateRoom : public ServerAction {
 private:
     uint8_t capacity;
 public:
-    ServerCreateRoom(uint8_t &id, uint8_t &capacity, std::string &data);
+    ServerCreateRoom(const uint8_t &id, uint8_t &capacity, std::string &data);
     ~ServerCreateRoom() override = default;
 
     uint8_t getCapacity() { return capacity; }

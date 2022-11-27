@@ -29,8 +29,8 @@ protected:
     std::string roomName;
 public:
     ServerAction() = default;
-    ServerAction(uint8_t &id) : id(id) {};
-    ServerAction(uint8_t& id, std::string &roomName) : id(id), roomName(roomName){};
+    explicit ServerAction(const uint8_t &id) : id(id) {};
+    ServerAction(const uint8_t &id, std::string &roomName) : id(id), roomName(roomName){};
     virtual ~ServerAction() = default;
 
     virtual uint8_t getId() const { return id;};

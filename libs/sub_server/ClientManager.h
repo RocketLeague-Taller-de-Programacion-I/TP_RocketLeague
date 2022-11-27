@@ -9,7 +9,7 @@
 #include "gameManager.h"
 #include "../sub_common/thread.h"
 #include "../sub_common/socket.h"
-#include "protocolo.h"
+#include "ServerProtocolo.h"
 #include "sub_common/BlockingQueue.h"
 #include "ClientReceiver.h"
 #include "ClientSender.h"

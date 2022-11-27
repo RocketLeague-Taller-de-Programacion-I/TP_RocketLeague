@@ -11,6 +11,7 @@ ActionJoinRoom::ActionJoinRoom(std::string &roomName) : roomName(roomName){
 void ActionJoinRoom::serializeData(){
     std::vector<uint8_t> joinData;
     joinData.push_back(type);
+    joinData.push_back(roomName.length());
     joinData.insert(joinData.end(), roomName.begin(), roomName.end()); //append?
     data = joinData;
 }

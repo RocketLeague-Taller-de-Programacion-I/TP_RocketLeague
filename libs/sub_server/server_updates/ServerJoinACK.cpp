@@ -3,13 +3,13 @@
 //
 
 #include "ServerJoinACK.h"
-#include "sub_server/protocolo.h"
+#include "sub_server/ServerProtocolo.h"
 
 std::vector<uint8_t> ServerJoinACK::beSerialized() {
     std::vector<uint8_t> joinACKData;
     joinACKData.push_back(getType());
     joinACKData.push_back(id);
-    joinACKData.insert(joinACKData.end(), returnData.begin(), returnData.end());
+    joinACKData.push_back(returnCode);
     return joinACKData;
 }
 

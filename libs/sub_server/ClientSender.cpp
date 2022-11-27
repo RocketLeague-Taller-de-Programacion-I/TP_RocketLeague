@@ -20,9 +20,6 @@ void ClientSender::run() {
             for (uint8_t c : v) {
                 skt_client.sendall(&c, sizeof(c), &closed);
             }
-            //  send the NOP instruccion
-            uint8_t nop = 0;
-            skt_client.sendall(&nop, sizeof(nop), &closed);
             // delete the action
             delete action;
         }
