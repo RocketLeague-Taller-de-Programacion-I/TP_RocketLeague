@@ -69,6 +69,14 @@ void RenderThread::run() {
 
         // map of Sprite
         std::map<uint8_t, GameSprite> sprites;
+        /*
+         * ESTO ME SIRVE PARA HARCODEAR
+         * LA TEXTURA SE CREAN ANTES, CUANDO CREO EL WORDVIEW LE MANDO LAS TEXTURAS??
+         *
+         * CADA VEZQUE SE UNAN AUTOS SE CREAN SPRITE, DENTRO DEL GAME LOOP
+         *
+         * EN EL WHILE DONDE POPEO DE LAS COLAS
+         */
         //pop everything from updates queue
         //vector of Action*
 //        std::vector<Action *> actions;
@@ -124,12 +132,10 @@ void RenderThread::run() {
 //                    break;
 //            }
 //        }
+      Worldview worldview(textures, sprites);
 
-
-//        Worldview worldview(textures, sprites);
-//
-//        GameLoop gameLoop(renderer, Width, Height, updatesQueue, actionsQueue, worldview);
-//        gameLoop.run();
+        GameLoop gameLoop(renderer, Width, Height, updatesQueue, actionsQueue, worldview);
+        gameLoop.run();
 
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;

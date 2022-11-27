@@ -52,7 +52,7 @@ std::string GameManager::listGames(uint8_t &id) {
 
 void GameManager::cleanGames() {
     for (auto & game: games) {
-        delete &game.second;
+        delete game.second;
     }
 }
 
