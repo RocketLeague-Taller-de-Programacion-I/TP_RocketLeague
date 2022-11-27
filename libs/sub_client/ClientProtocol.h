@@ -5,6 +5,9 @@
 #ifndef ROCKETLEAGUE_CLIENTPROTOCOL_H
 #define ROCKETLEAGUE_CLIENTPROTOCOL_H
 
+#include <iostream>
+#include <map>
+
 #include "sub_client/client_updates/ClientCreateACK.h"
 #include "sub_client/client_updates/ClientJoinACK.h"
 #include "sub_client/client_updates/ClientListACK.h"

@@ -69,8 +69,6 @@ private:
     QLabel *label;
     QString userName = QString("stranger");
 
-    std::vector<std::string> parseList(std::string &basicString);
-
     void drawLoadingScreen();
 
     void popFirstUpdate();

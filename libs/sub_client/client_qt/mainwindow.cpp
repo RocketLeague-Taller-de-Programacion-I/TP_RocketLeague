@@ -68,25 +68,26 @@ void MainWindow::drawJoinGameMenu() {
         //  wait for updates
     }
     //draw a button for each game
-    std::vector<std::string> games = dynamic_cast<ClientListACK*>(update)->getList();
-    if(games.empty()) {
+    if(update->getReturnCode() != OK){
         QLabel* label = new QLabel("No games available");
         label->setGeometry(width() / 2 - 110 , 200 , 301, 71);
         label->setStyleSheet("font: 20pt; color: white;");
         this->scene.addWidget(label);
 
-        drawBackButton();
+    } else {
+        std::map<std::string,std::string> games = dynamic_cast<ClientListACK*>(update)->getList();
+        int i = 200;
+                foreach(auto game, games) {
+                QString name = QString::fromStdString(game.first);
+                QString online_vs_max = QString::fromStdString(game.second);
+                Button* button = new Button( QString("%1 %2").arg(name).arg(online_vs_max));
+                connect(button, SIGNAL(clicked(QString)), this, SLOT(joinParticularGame(QString)));
+                this->scene.addItem(button);
+                button->setPos(width() / 2 - button->boundingRect().width() / 2, i);
+                i += 100;
+            }
+    }
 
-    }
-    int i = 200;
-    foreach(auto game, games) {
-        QString item = QString::fromStdString(game);
-        Button* button = new Button( QString("%1").arg(item));
-        connect(button, SIGNAL(clicked(QString)), this, SLOT(joinParticularGame(QString)));
-        this->scene.addItem(button);
-        button->setPos(width() / 2 - button->boundingRect().width() / 2, i);
-        i += 100;
-    }
     //crear evento de listar juegos
     drawBackButton();
 }
@@ -230,21 +231,6 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-std::vector<std::string> MainWindow::parseList(std::string &basicString) {
-    // separate the string by commas
-    std::vector<std::string> vec;
-    std::string delimiter = ",";
-    size_t pos = 0;
-    std::string token;
-    while((pos = basicString.find(delimiter)) != std::string::npos) {
-        token = basicString.substr(0, pos);
-        vec.push_back(token);
-        basicString.erase(0, pos + delimiter.length());
-    }
-
-    return vec;
-}
-
 void MainWindow::drawLoadingScreen() {
     // clear the screen
     this->scene.clear();
@@ -271,7 +257,7 @@ void MainWindow::popFirstUpdate() {
     bool popping = true;
     while (popping) {
         //  wait for updates
-        if(updatesQueue.tryPop(update)) {
+        if(updatesQueue.tryPop(update) and update) {
             popping = false;
         }
     }
@@ -298,6 +284,8 @@ std::string MainWindow::retrieveGameName(std::string basicString) {
 //    std::string name = match.str().empty() ? "no name" : match.str();
     //std::string name = data.substr(0, data.find(match.str()));
     // result.insert(result.end(), name.begin(), name.end());
-    return match.str().empty() ? "no name" : match.str();
+    std::string name = match.str().empty() ? "no name" : match.str();
+    std::string stripped = name.substr(0, name.find_last_of(' '));
+    return stripped;
 }
 

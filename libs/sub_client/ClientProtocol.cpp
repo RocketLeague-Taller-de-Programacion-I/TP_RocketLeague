@@ -2,7 +2,6 @@
 // Created by roby on 22/11/22.
 //
 
-#include <iostream>
 #include "ClientProtocol.h"
 
 ClientUpdate *ClientProtocol::deserializeData(const uint8_t &type, const std::function<void(std::vector<uint8_t>&, uint8_t&)> &receiveBytes) {
@@ -52,7 +51,7 @@ ClientUpdate *ClientProtocol::parseListUpdate(const std::function<void(std::vect
     receiveBytes(id_and_returncode, size);
 
     if (id_and_returncode[1] == ERROR_FULL) {
-        std::vector<std::string> games;
+        std::map<std::string,std::string> games;
         return new ClientListACK(id_and_returncode[0],id_and_returncode[1], games);
     }
 
@@ -60,7 +59,7 @@ ClientUpdate *ClientProtocol::parseListUpdate(const std::function<void(std::vect
     size = cantGames.size();
     receiveBytes(cantGames, size);
 
-    std::vector<std::string> games;
+    std::map<std::string,std::string> games;
     //[id,returnCode, cantidadDeGames,{online,max,sieName,name},...]
 
     for(uint8_t cant = cantGames[0], i = 0; i < cant; i++) {
@@ -78,7 +77,7 @@ ClientUpdate *ClientProtocol::parseListUpdate(const std::function<void(std::vect
 
         std::string gameName = std::string(name.begin(), name.end());
 
-         games.push_back(gameName+" "+std::to_string(playersOnLine)+"/"+std::to_string(capacity));
+        games[gameName] = std::to_string(playersOnLine) + "/" + std::to_string(capacity);
     }
 
     return new ClientListACK(id_and_returncode[0],id_and_returncode[1], games);
