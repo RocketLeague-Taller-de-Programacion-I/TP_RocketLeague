@@ -27,6 +27,9 @@ void Game::joinPlayer(uint8_t& id, BlockingQueue<ServerUpdate *> *sender) {
     mapSender.insert(std::pair<uint8_t ,BlockingQueue<ServerUpdate*>*>(id, sender));
     if (playerOnLine == capacity){
         running = true;
+        uint8_t returnCode = OK;
+        ServerUpdate *update = new ServerStartedGameACK(id, returnCode);
+        broadcastUpdate(update);
         start();
 
     }
@@ -54,8 +57,6 @@ ProtectedQueue<ServerAction *> * Game::getQueue() {
     return queue;
 }
 
-void Game::stop() {}
-
 void Game::broadcastUpdate(ServerUpdate *update) {
     for (auto & sender : mapSender) {
         sender.second->push(update);
@@ -69,6 +70,8 @@ void Game::brodcastUpdateGameEvents(std::vector<ServerUpdate *> updates) {
         }
     }
 }
+
+void Game::stop() {}
 
 Game::~Game() {
     for (auto & sender : mapSender) {

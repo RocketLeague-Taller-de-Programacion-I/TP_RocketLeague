@@ -11,6 +11,7 @@ class ClientCreateACK : public ClientUpdate{
 public:
     ClientCreateACK(uint8_t &id, uint8_t &returnCode) : ClientUpdate(id, returnCode){}
     ~ClientCreateACK() = default;
+    uint8_t getType() const override { return CREATE_ACK; };
 };
 
 

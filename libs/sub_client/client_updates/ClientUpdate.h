@@ -12,7 +12,8 @@ enum updateType {
     CREATE_ACK = 1,
     JOIN_ACK = 2,
     LIST_INFO = 3,
-    WORLD = 4
+    STARTED_GAME_ACK = 4,
+    WORLD = 5
 };
 
 enum returnCode {
@@ -35,6 +36,7 @@ public:
     virtual uint8_t getId() const { return id;};
     virtual std::vector<uint8_t> getData() const { return returnData;};
     virtual uint8_t getReturnCode() const { return returnCode;};
+    virtual uint8_t getType() const = 0;
 };
 
 

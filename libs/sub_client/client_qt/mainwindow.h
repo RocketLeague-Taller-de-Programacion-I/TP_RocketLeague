@@ -18,6 +18,7 @@
 #include "sub_client/client_updates/ClientCreateACK.h"
 #include "sub_client/client_updates/ClientJoinACK.h"
 #include "sub_client/client_updates/ClientListACK.h"
+#include "sub_client/client_updates/ClientStartedGameACK.h"
 
 #include "Button.h"
 
@@ -43,6 +44,7 @@ public slots:
     void drawJoinGameMenu();
     void joinParticularGame(QString roomName);
     void createRoom();
+    void clearScene() { this->scene.clear(); };
 
 private:
     Ui::MainWindow *ui;

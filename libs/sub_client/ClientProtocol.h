@@ -11,6 +11,7 @@
 #include "sub_client/client_updates/ClientCreateACK.h"
 #include "sub_client/client_updates/ClientJoinACK.h"
 #include "sub_client/client_updates/ClientListACK.h"
+#include "sub_client/client_updates/ClientStartedGameACK.h"
 
 #include "sub_client/client_actions/ClientAction.h"
 
@@ -30,6 +31,8 @@ public:
                                          const std::function<void(std::vector<uint8_t> &, uint8_t &)> &receiveBytes);
 
     static void receiveBytes(std::vector<uint8_t> &data, uint8_t &size);
+
+    static ClientUpdate *parseStartedGameACK(const std::function<void(std::vector<uint8_t> &, uint8_t &)> &function);
 };
 
 

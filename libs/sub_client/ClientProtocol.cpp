@@ -13,6 +13,8 @@ ClientUpdate *ClientProtocol::deserializeData(const uint8_t &type, const std::fu
             return parseJoinACK(receiveBytes);
         case LIST_INFO:
             return parseListUpdate(receiveBytes);
+    case STARTED_GAME_ACK:
+        return parseStartedGameACK(receiveBytes);
 //        case WORLD:
 //            return parseWorldUpdate(receiveBytes);
     }
@@ -83,6 +85,8 @@ ClientUpdate *ClientProtocol::parseListUpdate(const std::function<void(std::vect
     return new ClientListACK(id_and_returncode[0],id_and_returncode[1], games);
     //ListInfo -> ListInfo(id,lista)
 }
+
+
 // TODO: implement this
 ClientUpdate *ClientProtocol::parseWorldUpdate(const std::vector<uint8_t> &vector) {
     return nullptr;
@@ -91,4 +95,12 @@ ClientUpdate *ClientProtocol::parseWorldUpdate(const std::vector<uint8_t> &vecto
 void ClientProtocol::receiveBytes(std::vector<uint8_t> &data, uint8_t &size) {
     data.emplace_back(1);//id
     data.emplace_back(0);//returncode
+}
+
+ClientUpdate *ClientProtocol::parseStartedGameACK(const std::function<void(std::vector<uint8_t> &, uint8_t &)> &function) {
+    std::vector<uint8_t> id_and_returncode(2);
+    uint8_t size = id_and_returncode.size();
+    receiveBytes(id_and_returncode, size);
+
+    return new ClientStartedGameACK(id_and_returncode[0], id_and_returncode[1]);
 }

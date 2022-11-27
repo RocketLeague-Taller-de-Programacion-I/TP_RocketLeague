@@ -11,6 +11,7 @@ class ClientJoinACK : public ClientUpdate{
 public:
     ClientJoinACK(uint8_t &id, uint8_t &returnCode) : ClientUpdate(id,returnCode) {};
     ~ClientJoinACK() = default;
+    uint8_t getType() const override { return JOIN_ACK; };
 };
 
 

@@ -1,5 +1,6 @@
 
 #include "mainwindow.h"
+#include "../WaitingForGameToStartThread.h"
 #include "ui_mainwindow.h"
 #include <iostream>
 #include <regex>
@@ -65,7 +66,7 @@ void MainWindow::drawJoinGameMenu() {
     //list all the games
     ClientUpdate* update;
     while (!updatesQueue.tryPop(update)) {
-        //  wait for updates
+        //  wait for list updates
     }
     //draw a button for each game
     if(update->getReturnCode() != OK){
@@ -101,9 +102,8 @@ void MainWindow::createRoom() {
 //    Action* actionCreate = new ActionCreate(id, players, roomName);
     ClientAction* actionCreate = new ActionCreateRoom(players, roomName);
     this->actionsQueue.push(actionCreate);
-    popFirstUpdate();
-//    exit(1); // TODO: usar exit para salir del juego
-    close();
+    popFirstUpdate(); //pop CreateACK
+    drawLoadingScreen();
 }
 
 void MainWindow::joinParticularGame(QString roomName) {
@@ -115,8 +115,9 @@ void MainWindow::joinParticularGame(QString roomName) {
     std::cout << "Joining to " << room << std::endl;
     ClientAction *actionJoin = new ActionJoinRoom(room);
     this->actionsQueue.push(actionJoin);
-    //exit qt
-    close();
+
+    popFirstUpdate(); //pop JoinACK
+    drawLoadingScreen();
 }
 
 void MainWindow::back() {
@@ -248,8 +249,9 @@ void MainWindow::drawLoadingScreen() {
     int tyPos = height() / 2;
     titleText->setPos(txPos,tyPos);
     scene.addItem(titleText);
-    popFirstUpdate();
-    close();
+
+    WaitingForGameToStartThread* waitingThread = new WaitingForGameToStartThread(this, this->updatesQueue);
+    waitingThread->start();
 }
 
 void MainWindow::popFirstUpdate() {
@@ -261,14 +263,17 @@ void MainWindow::popFirstUpdate() {
             popping = false;
         }
     }
+    if(update->getType() == STARTED_GAME_ACK) {
+        //start the game directly
+        //TODO: retrieve ID from update
+        scene.clear();
+        close();
+    }
     std::cout << "Update received" << std::endl;
     std::cout << "Game created with id: " << (int)(update->getId()) << std::endl;
     std::cout << "Game created with returnmesage: " << (int)update->getReturnCode() << std::endl;
 
     if(update->getReturnCode()) {
-        // error partida exisistia
-        // error partida full
-        // volver a home game
         drawGUI();
     }
     delete update;

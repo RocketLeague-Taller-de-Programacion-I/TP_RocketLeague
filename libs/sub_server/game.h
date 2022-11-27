@@ -13,6 +13,7 @@
 #include "sub_server/server_box2d/Match.h"
 
 #include "server_updates/ServerUpdate.h"
+#include "sub_server/server_updates/ServerStartedGameACK.h"
 #include "server_actions/ServerAction.h"
 
 typedef uint8_t idPlayer_t;
