@@ -8,7 +8,7 @@
 
 #include "sub_common/socket.h"
 #include "sub_common/thread.h"
-#include "protocolo.h"
+#include "ServerProtocolo.h"
 #include "sub_common/BlockingQueue.h"
 
 #include "server_updates/ServerUpdate.h"

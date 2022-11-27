@@ -13,8 +13,14 @@ Game::Game(int capacity,
         gameName(std::move(name)),
         queue(pQueue) {}
 
-std::string Game::information() {
-    return gameName+" "+std::to_string(playerOnLine)+"/"+std::to_string(capacity);
+std::vector<uint8_t> Game::information() {
+    //data: online,max,sizeName,name
+    std::vector<uint8_t> data;
+    data.push_back(playerOnLine);
+    data.push_back(capacity);
+    data.push_back(gameName.size());
+    data.insert(data.end(), gameName.begin(), gameName.end());
+    return data;
 }
 void Game::joinPlayer(uint8_t& id, BlockingQueue<ServerUpdate *> *sender) {
     playerOnLine++;

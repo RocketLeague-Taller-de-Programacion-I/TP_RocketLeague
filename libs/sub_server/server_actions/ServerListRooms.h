@@ -10,7 +10,7 @@
 
 class ServerListRooms : public ServerAction {
 public:
-    ServerListRooms(uint8_t &id) : ServerAction(id) {};
+    explicit ServerListRooms(const uint8_t &id) : ServerAction(id) {};
     ~ServerListRooms() override = default;
 
     virtual ServerUpdate * execute(GameManager &manager, const std::function<BlockingQueue<ServerUpdate *> *(

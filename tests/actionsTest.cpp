@@ -2,9 +2,8 @@
 // Created by roby on 13/11/22.
 //
 #include <catch2/catch_test_macros.hpp>
-#include "sub_server/Action.h"
 
-
+/*
 TEST_CASE("Action type is set correctly", "[Action]") {
     std::vector<uint8_t> data;
     Action action(CREATE_ROOM, data);
@@ -55,3 +54,4 @@ TEST_CASE("Action can be created with a string as data", "[Action]") {
     REQUIRE((char) action.getData().back() == roomsName.back());
     REQUIRE((char) action.getData().front() == 'r');
 }
+ */

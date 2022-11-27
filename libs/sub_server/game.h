@@ -31,7 +31,7 @@ private:
     ProtectedQueue<ServerAction *> *queue;
     //BlockingQueue<ServerAction*> *queue;
 public:
-    std::string information();
+    std::vector<uint8_t> information();
 
     void run() override;
     void stop() override;
