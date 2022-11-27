@@ -32,10 +32,10 @@ public:
     void jump();
     void turbo();
     void check_y_pos();
-    int X();
-    int Y();
+    float X();
+    float Y();
     float angle();
-    int angleDeg();
+    float angleDeg();
     uint8_t getId();
 };
 

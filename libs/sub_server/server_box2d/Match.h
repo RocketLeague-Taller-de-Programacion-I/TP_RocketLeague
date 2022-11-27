@@ -46,8 +46,6 @@ public:
     void step();
     int visit();
     int local();
-    std::vector<uint8_t> matchUpdate();
-    std::vector<uint8_t> ballInfo();
 };
 
 

@@ -57,7 +57,7 @@ void Car::goLeft() {
         return;
     }
     if (turboOn) {
-        m_car->ApplyForce(b2Vec2(200,0), m_car->GetWorldCenter(), true);
+        m_car->ApplyForce(b2Vec2(-200,0), m_car->GetWorldCenter(), true);
         turboOn = false;
         return;
     }
@@ -88,10 +88,10 @@ void Car::check_y_pos() {
     }
     m_car->ApplyForce(b2Vec2(0, 200), m_car->GetWorldCenter(), true);
 }
-int Car::Y() {
+float Car::Y() {
     return this->m_car->GetPosition().y;
 }
-int Car::X() {
+float Car::X() {
     return this->m_car->GetPosition().x;
 }
 
@@ -99,8 +99,8 @@ float Car::angle() {
     return this->m_car->GetAngle();
 }
 
-int Car::angleDeg() {
-    return int(angle()*RADTODEG);
+float Car::angleDeg() {
+    return (angle()*RADTODEG);
 }
 
 uint8_t Car::getId() {
