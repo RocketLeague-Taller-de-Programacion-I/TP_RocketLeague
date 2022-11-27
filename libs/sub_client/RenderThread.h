@@ -21,13 +21,13 @@
 
 #include "../sub_common/thread.h"
 #include "sub_common/liberror.h"
-#include "mainwindow.h"
+#include "sub_client/client_qt/mainwindow.h"
 
 class RenderThread : public Thread {
 private:
 protected:
-    ProtectedQueue<Action*> &updatesQueue;
-    BlockingQueue<Action*> &actionsQueue;
+    ProtectedQueue<ClientUpdate*> &updatesQueue;
+    BlockingQueue<ClientAction*> &actionsQueue;
     std::map<std::string,SDL2pp::Texture*> textures;
     void run() override;
 public:
@@ -35,7 +35,7 @@ public:
     explicit RenderThread();
     ~RenderThread() override;
 
-    RenderThread(ProtectedQueue<Action *> &updates, BlockingQueue<Action *> &actionsQueue);
+    RenderThread(ProtectedQueue<ClientUpdate*> &updates, BlockingQueue<ClientAction *> &actionsQueue);
 };
 
 #endif  //  ROCKETLEAGUE_RENDERTHREAD_H

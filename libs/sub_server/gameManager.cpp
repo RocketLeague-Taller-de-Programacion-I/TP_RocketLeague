@@ -4,78 +4,55 @@
 
 #include <iostream>
 #include "gameManager.h"
-#include "sub_common/ActionCreate.h"
-#include "sub_common/ActionList.h"
-#include "sub_common/ActionJoin.h"
-#include "sub_common/ActionUpdate.h"
+
+bool GameManager::createGame(uint8_t idCreator, uint8_t capacityGame, const std::string& nameGame,
+                             const std::function<BlockingQueue<ServerUpdate *> *(
+                                     ProtectedQueue<ServerAction *> *)> &setQueue) {
+
+    std::unique_lock<std::mutex> lock(this->mutex);
+
+    if (games.find(nameGame) == games.end()) {
+        auto *queueGame = new ProtectedQueue<ServerAction *>;
+        games[nameGame] = new Game(capacityGame,nameGame,queueGame);
+    } else {
+//        throw std::runtime_error("Game already exists");
+        return false;
+    }
+    auto *queueSender = setQueue(games[nameGame]->getQueue());
+    games[nameGame]->joinPlayer(idCreator,queueSender);
+
+    return true;
+}
+
+bool GameManager::joinGame(uint8_t idCreator, const std::string& nameGame, std::function<BlockingQueue<ServerUpdate *> *(
+        ProtectedQueue<ServerAction *> *)> setQueue) {
+
+    std::unique_lock<std::mutex> lock(this->mutex);
+    if (this->games[nameGame]->isFull()) {
+        // TODO: return update with ERROR message
+        return false;
+    } else {
+        auto *queueSender = setQueue(games[nameGame]->getQueue());
+        games[nameGame]->joinPlayer(idCreator,queueSender);
+    }
+    return true;
+}
+
+uint8_t GameManager::listGames(uint8_t &id, std::vector<uint8_t> &listData) {
+    std::unique_lock<std::mutex> lock(this->mutex);
+    if (this->games.empty()) { return 0; }
+
+    for (auto & partida : this->games) {
+        std::vector<uint8_t> data = partida.second->information();
+        listData.insert(listData.end(), data.begin(), data.end());
+    }
+    return games.size();
+}
 
 void GameManager::cleanGames() {
     for (auto & game: games) {
         delete &game.second;
     }
-}
-
-std::string GameManager::listGames(uint8_t &id, std::string &name) {
-    std::unique_lock<std::mutex> lock(this->mutex);
-    std::string mensaje("");
-
-    for (auto & partida : this->games) {
-        mensaje.append(partida.second->information());
-        mensaje.append(",");
-    }
-    return mensaje;
-}
-
-void GameManager::createGame(uint8_t idCreator, uint8_t capacityGame, const std::string& nameGame,
-                             const std::function<void(BlockingQueue<Action *> *, BlockingQueue<Action *> *)>& startClientThreads) {
-    std::unique_lock<std::mutex> lock(this->mutex);
-
-    auto *queueGame = new BlockingQueue<Action*>;
-
-    if (games.find(nameGame) == games.end()) {
-        games[nameGame] = new Game(capacityGame,nameGame,queueGame);
-    } else {
-        throw std::runtime_error("Game already exists");
-    }
-
-    auto *queueSender = new BlockingQueue<Action*>;
-    games[nameGame]->joinPlayer(idCreator,queueSender);
-    startClientThreads(queueGame, queueSender);
-    // only start sending updates after game is full
-}
-
-void GameManager::joinGame(uint8_t idCreator, const std::string& nameGame, std::function<void(BlockingQueue<Action *> *,BlockingQueue<Action *> *)> startClientThreads) {
-
-    std::unique_lock<std::mutex> lock(this->mutex);
-    if (this->games.find(nameGame) == this->games.end()) {
-        throw std::runtime_error("Room does not exist");
-    } else if (this->games[nameGame]->isFull()) {
-        throw std::runtime_error("Room is full");
-    } else {
-        auto *queueSender = new BlockingQueue<Action*>;
-        games[nameGame]->joinPlayer(idCreator,queueSender);
-        startClientThreads(games[nameGame]->getQueue(), queueSender);
-    }
-}
-
-// create new function for gameManager that uses doble dispatch to execute an action
-std::string GameManager::executeAction(uint8_t actionType, uint8_t &idCreator, uint8_t &capacity, std::string &name,
-                                const std::function<void(BlockingQueue<Action *> *,
-                                                         BlockingQueue<Action *> *)> &startClientThreads) {
-
-    std::string mensaje("");
-    switch (actionType) {
-        case CREATE_ROOM:
-            createGame(idCreator,capacity, name,startClientThreads);
-            break;
-        case JOIN_ROOM:
-            joinGame(idCreator,name,startClientThreads);
-            break;
-        case LIST_ROOMS:
-            mensaje = listGames(idCreator,name);
-            break;
-    }
-    return mensaje;
 }
 
 

@@ -4,30 +4,24 @@
 #pragma once
 #ifndef ROCKETLEAGUE_GAMEMANAGER_H
 #define ROCKETLEAGUE_GAMEMANAGER_H
-class Action;
+
 #include <map>
 #include <mutex>
 #include <vector>
 #include "game.h"
 #include <functional>
 
+
 class GameManager {
     std::mutex mutex;
     std::map<std::string, Game*> games;
 public:
-   //std::string joinGame(uint8_t id, ClientManager *pManager, const std::string& name);
-   std::string listGames(uint8_t &id,std::string &name);
-   void cleanGames();
+   uint8_t listGames(uint8_t &id, std::vector<uint8_t> &listData);
+    bool createGame(uint8_t idCreator, uint8_t capacityGame, const std::string& nameGame, const std::function<BlockingQueue<ServerUpdate *> *(ProtectedQueue<ServerAction *> *)> &setQueue);
+    bool joinGame(uint8_t idCreator, const std::string& nameGame, std::function<BlockingQueue<ServerUpdate *> *(
+            ProtectedQueue<ServerAction *> *)> setQueue);
 
-    void createGame(uint8_t idCreator, uint8_t capacityGame, const std::string& nameGame,
-                    const std::function<void(BlockingQueue<Action *> *, BlockingQueue<Action *> *)>& startClientThreads);
-
-    void joinGame(uint8_t idCreator, const std::string& nameGame, std::function<void(BlockingQueue<Action*> *,
-                                                                                     BlockingQueue<Action*> *)> startClientThreads);
-
-    std::string executeAction(uint8_t actionType, uint8_t &idCreator, uint8_t &capacity, std::string &name,
-                              const std::function<void(BlockingQueue<Action *> *,
-                                                BlockingQueue<Action *> *)> &startClientThreads);
+    void cleanGames();
 };
 
 #endif // ROCKETLEAGUE_GAMEMANAGER_H

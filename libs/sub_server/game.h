@@ -4,13 +4,16 @@
 
 #ifndef ROCKETLEAGUE_GAME_H
 #define ROCKETLEAGUE_GAME_H
-class Action;
+
 #include <cstdint>
 #include <string>
 #include <map>
 #include "sub_common/thread.h"
 #include "sub_common/BlockingQueue.h"
-#include "Match.h"
+#include "sub_server/server_box2d/Match.h"
+
+#include "server_updates/ServerUpdate.h"
+#include "server_actions/ServerAction.h"
 
 typedef uint8_t idPlayer_t;
 
@@ -22,11 +25,13 @@ private:
     std::string gameName;
     bool closed;
 
-    std::map<uint8_t ,BlockingQueue<Action*>*> mapSender;
+    std::map<uint8_t ,BlockingQueue<ServerUpdate*>*> mapSender;
+    //map {id, BlockingQueue<ServerUpdate*>}
 
-    BlockingQueue<Action*> *queue;
+    ProtectedQueue<ServerAction *> *queue;
+    //BlockingQueue<ServerAction*> *queue;
 public:
-    std::string information();
+    std::vector<uint8_t> information();
 
     void run() override;
     void stop() override;
@@ -34,20 +39,19 @@ public:
     * No copiable
     */
     Game(const Game&) = delete;
-    Game(int capacity, std::string  name, BlockingQueue<Action *> *pQueue);
+    Game(int capacity, std::string  name, ProtectedQueue<ServerAction *> *pQueue);
     ~Game() override;
 
     Game& operator=(const Game&) = delete;
 
-    void joinPlayer(uint8_t id, BlockingQueue<Action*> *sender);
+    void joinPlayer(uint8_t& id, BlockingQueue<ServerUpdate *> *sender);
 
     bool isFull() const;
 
-    BlockingQueue<Action *> * getQueue();
-    void broadcastUpdate(Action* update);
-    void broadcastUpdate(Action* update, uint8_t id);
+    ProtectedQueue<ServerAction *> * getQueue();
 
-    void brodcastUpdateGameEvents(std::vector<Action *> updates);
+    void broadcastUpdate(ServerUpdate *update);
+    void brodcastUpdateGameEvents(std::vector<ServerUpdate *> updates);
 };
 
 
