@@ -11,6 +11,7 @@
 
 #define LOCALGOAL (-37.985)
 #define VISITGOAL  (37.985)
+#define GOALSIZE 5
 
 Match::Match(std::string gameName, int required) : name(std::move(gameName)), world(b2World(b2Vec2(0,-10))), playersConnected(0), playersRequired(required), goalsLocal(0), goalsVisit(0) {
     world.SetContactListener(&this->listener);
@@ -39,7 +40,6 @@ void Match::addPlayer(uint8_t &id) {
 
 Match::~Match() {
     for ( std::pair<const uint8_t,Car*> &player : players){
-        //Plaats *p = place.second;
         delete player.second;
         player.second = nullptr;
     }
@@ -47,29 +47,32 @@ Match::~Match() {
 }
 
 void Match::step() {
+    for ( std::pair<const uint8_t,Car*> &player : players){
+        player.second->update();
+    }
     this->world.Step(0.15, 42, 3);
     usleep(0.015*1000000);
     //  enviar a todos los clientes la respuesta
 }
 
 void Match::moveRight(uint8_t &id, std::function<void(ServerUpdate* )> function) {
-    this->players.at(id)->goRight();
+    this->players.at(id)->startMovingRight();
     // update
 }
 void Match::info() {
 }
 void Match::moveLeft(uint8_t &id, std::function<void(ServerUpdate* )> function) {
-    this->players.at(id)->goLeft();
+    this->players.at(id)->startMovingLeft();
 }
 void Match::jump(uint8_t &id, std::function<void(ServerUpdate* )> function) {
     this->players.at(id)->jump();
 }
 void Match::checkGoals() {
-    if (this->ball->X() <= LOCALGOAL) {  //  LOCALGOAL es el arco del local
+    if (this->ball->X() <= LOCALGOAL && this->ball->Y() <= GOALSIZE) {  //  LOCALGOAL es el arco del local
         this->goalsVisit++;
         this->ball->restartGame();
     }
-    else if (this->ball->X() >= VISITGOAL) {  //  VISITGOAL es el arco del visitante
+    else if (this->ball->X() >= VISITGOAL && this->ball->Y() <= GOALSIZE) {  //  VISITGOAL es el arco del visitante
         this->goalsLocal++;
         this->ball->restartGame();
     }
