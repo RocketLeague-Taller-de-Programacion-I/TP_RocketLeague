@@ -8,10 +8,8 @@
 #include "ClientUpdate.h"
 
 class ClientJoinACK : public ClientUpdate{
-private:
-    std::string returnCode;
 public:
-    ClientJoinACK(uint8_t &id, std::string &returnCode);
+    ClientJoinACK(uint8_t &id, uint8_t &returnCode) : ClientUpdate(id,returnCode) {};
     ~ClientJoinACK() = default;
 };
 

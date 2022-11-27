@@ -3,5 +3,3 @@
 //
 
 #include "ClientJoinACK.h"
-
-ClientJoinACK::ClientJoinACK(uint8_t &id, std::string &returnCode) : ClientUpdate(id, returnCode) {}

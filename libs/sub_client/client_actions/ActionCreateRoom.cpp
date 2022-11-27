@@ -26,6 +26,7 @@ std::vector<uint8_t> ActionCreateRoom::beSerialized() {
     std::vector<uint8_t> createData;
     createData.push_back(type);
     createData.push_back(capacity);
+    createData.push_back(name.length());
     createData.insert(createData.end(), name.begin(), name.end());
     return createData;
 //    std::vector<uint8_t> createData(nameCapacity.begin(), nameCapacity.end());

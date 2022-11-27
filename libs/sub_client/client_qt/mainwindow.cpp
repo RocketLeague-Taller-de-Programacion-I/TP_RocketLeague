@@ -100,7 +100,7 @@ void MainWindow::createRoom() {
 //    Action* actionCreate = new ActionCreate(id, players, roomName);
     ClientAction* actionCreate = new ActionCreateRoom(players, roomName);
     this->actionsQueue.push(actionCreate);
-
+    popFirstUpdate();
 //    exit(1); // TODO: usar exit para salir del juego
     close();
 }
@@ -262,7 +262,7 @@ void MainWindow::drawLoadingScreen() {
     int tyPos = height() / 2;
     titleText->setPos(txPos,tyPos);
     scene.addItem(titleText);
-
+    popFirstUpdate();
     close();
 }
 
@@ -277,9 +277,9 @@ void MainWindow::popFirstUpdate() {
     }
     std::cout << "Update received" << std::endl;
     std::cout << "Game created with id: " << (int)(update->getId()) << std::endl;
-    std::cout << "Game created with returnmesage: " << update->getData() << std::endl;
+    std::cout << "Game created with returnmesage: " << (int)update->getReturnCode() << std::endl;
 
-    if(update->getData() == "ERROR") {
+    if(update->getReturnCode()) {
         // error partida exisistia
         // error partida full
         // volver a home game

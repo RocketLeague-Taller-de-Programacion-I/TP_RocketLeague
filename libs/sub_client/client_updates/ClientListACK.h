@@ -8,8 +8,11 @@
 #include "ClientUpdate.h"
 
 class ClientListACK : public ClientUpdate {
+private:
+    std::vector<std::string> listData;
 public:
-    ClientListACK(uint8_t &id, std::string &list);
+    ClientListACK(uint8_t &id, uint8_t &returnCode, std::vector<std::string> &list);
+    ClientListACK(uint8_t &id, uint8_t &returnCode);
     ~ClientListACK() = default;
 
     std::vector<std::string> getList();
