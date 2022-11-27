@@ -274,7 +274,7 @@ void MainWindow::popFirstUpdate() {
     delete update;
 }
 
-std::string MainWindow::retrieveGameName(std::string basicString) {
+std::string MainWindow::retrieveGameName(const std::string& basicString) {
     // create regex to match any substring until first number
     std::regex re(".+?(?=[0-9])");
     std::smatch match;

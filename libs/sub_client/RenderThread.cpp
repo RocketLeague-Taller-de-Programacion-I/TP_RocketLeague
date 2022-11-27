@@ -44,7 +44,7 @@ void RenderThread::run() {
         Renderer renderer(sdlWindow, -1, SDL_RENDERER_SOFTWARE);
         Texture car(renderer,SDL2pp::Surface("../images/car.jpeg").SetColorKey(true, 0));
         Texture ball(renderer,SDL2pp::Surface("../images/ball.png").SetColorKey(true, 0));
-        Texture field(renderer,SDL2pp::Surface("../images/field.jpeg").SetColorKey(true, 0));
+        Texture field(renderer,SDL2pp::Surface("../images/field.png").SetColorKey(true, 0));
 //        Texture background(renderer,
 //                                  SDL2pp::Surface("../images/background.jpeg").SetColorKey(true, 0));
         Texture scoreBoard(renderer,SDL2pp::Surface("../images/clock.png"));
