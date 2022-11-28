@@ -27,6 +27,17 @@ void RenderThread::run() {
         // Initialize SDL library
         std::cout << "QT finalizó correctamente con: " << qt_return << std::endl;
 
+        std::shared_ptr<ClientUpdate> update; //startedGameACK
+        bool popping = true;
+        while (popping) {
+            //  wait for updates
+            if(updatesQueue.tryPop(update) and update) {
+                if(!update->getReturnCode()) {
+                    popping = false;
+                }
+            }
+        }
+
         SDL sdl(SDL_INIT_VIDEO);
         SDL_DisplayMode DM;
         SDL_GetCurrentDisplayMode(0, &DM);
@@ -49,7 +60,7 @@ void RenderThread::run() {
         textures.emplace("scoreBoard", &scoreBoard);
         std::map<uint8_t, GameSprite> sprites;
 
-      /*  SDL_Event event;
+        SDL_Event event;
         bool quit = false;
         while(!quit) {
             SDL_WaitEvent(&event);
@@ -62,10 +73,10 @@ void RenderThread::run() {
             }
             SDL_RenderCopy(renderer.Get(), field.Get(), NULL, NULL);
             SDL_RenderPresent(renderer.Get());
-        }*/
-        Worldview worldview(textures, sprites);
-        GameLoop gameLoop(renderer, Width, Height, updatesQueue, actionsQueue, worldview);
-        gameLoop.run();
+        }
+//        Worldview worldview(textures, sprites);
+//        GameLoop gameLoop(renderer, Width, Height, updatesQueue, actionsQueue, worldview);
+//        gameLoop.run();
 
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;

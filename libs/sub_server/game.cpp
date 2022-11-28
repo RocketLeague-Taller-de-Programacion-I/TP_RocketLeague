@@ -28,9 +28,9 @@ void Game::joinPlayer(uint8_t& id, BlockingQueue<std::shared_ptr<ServerUpdate>> 
     uint8_t direction = 5;
     bool state = false;
     match.addPlayer(id);
+    std::shared_ptr<ServerAction> action = std::make_shared<ServerActionMove>(id, direction, state);
+    queue->push(action);
     if (playerOnLine == capacity){
-        std::shared_ptr<ServerAction> action = std::make_shared<ServerActionMove>(id, direction, state);
-        queue->push(action);
         running = true;
         start();
     }

@@ -121,11 +121,11 @@ std::shared_ptr<ClientUpdate> ClientProtocol::parseWorldUpdate(const std::functi
     //  n_clients
     uint16_t n_clients;
     receiveBytes(&n_clients, sizeof(n_clients));
-    n_clients = ntohs(local);
+    n_clients = ntohs(n_clients);
     std::vector<Car> clientCars;
     //  CLients
     //  TODO: Vector de Cars
-    for (unsigned int i = 0; i<=n_clients; i++) {
+    for (unsigned int i = 0; i < n_clients; i++) {
         uint16_t id;
         receiveBytes(&id, sizeof(id));
         id = ntohs(id);
@@ -139,7 +139,7 @@ std::shared_ptr<ClientUpdate> ClientProtocol::parseWorldUpdate(const std::functi
         receiveBytes(&angleSign, sizeof(angleSign));
         angleSign = ntohs(angleSign);
         uint16_t angle;
-        receiveBytes(&angle, sizeof(angleSign));
+        receiveBytes(&angle, sizeof(angle));
         angle = ntohs(angle);
         Car car(id, x, y, angleSign, angle);
         clientCars.emplace_back(car);

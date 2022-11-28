@@ -186,7 +186,7 @@ void MainWindow::drawPlayButton() {// create the play button
     int bxPos = 1250 - playButton->boundingRect().width()/2;
     int byPos = 600;
     playButton->setPos(bxPos,byPos);
-    connect(playButton,SIGNAL(clicked()),this,SLOT(start()));
+    connect(playButton,SIGNAL(clicked(QString)),this,SLOT(start()));
     scene.addItem(playButton);
 }
 
@@ -196,7 +196,7 @@ void MainWindow::drawCreateButton() {
     int bxPos = width() / 2 - createGameButton->boundingRect().width() / 2;
     int byPos = 300;
     createGameButton->setPos(bxPos,byPos);
-    connect(createGameButton,SIGNAL(clicked()),this,SLOT(drawCreateGameMenu()));
+    connect(createGameButton,SIGNAL(clicked(QString)),this,SLOT(drawCreateGameMenu()));
     scene.addItem(createGameButton);
 }
 
@@ -206,7 +206,7 @@ void MainWindow::drawJoinButton() {
     int bxPos = width() / 2 - joinGameButton->boundingRect().width() / 2;
     int byPos = 400;
     joinGameButton->setPos(bxPos,byPos);
-    connect(joinGameButton,SIGNAL(clicked()),this,SLOT(drawJoinGameMenu()));
+    connect(joinGameButton,SIGNAL(clicked(QString)),this,SLOT(drawJoinGameMenu()));
     scene.addItem(joinGameButton);
 }
 
@@ -216,7 +216,7 @@ void MainWindow::drawBackButton() {
     int bxPos = width() / 5 - backButton->boundingRect().width() / 2;
     int byPos = 600;
     backButton->setPos(bxPos,byPos);
-    connect(backButton,SIGNAL(clicked()),this,SLOT(back()));
+    connect(backButton,SIGNAL(clicked(QString)),this,SLOT(back()));
     scene.addItem(backButton);
 }
 
@@ -226,7 +226,7 @@ void MainWindow::drawSaveAndStartButton() {
     int bxPos = width() / 2 - saveAndStartButton->boundingRect().width() / 2;
     int byPos = 600;
     saveAndStartButton->setPos(bxPos,byPos);
-    connect(saveAndStartButton,SIGNAL(clicked()),this,SLOT(createRoom()));
+    connect(saveAndStartButton,SIGNAL(clicked(QString)),this,SLOT(createRoom()));
     scene.addItem(saveAndStartButton);
 }
 
@@ -252,9 +252,9 @@ void MainWindow::drawLoadingScreen() {
     int tyPos = height() / 2;
     titleText->setPos(txPos,tyPos);
     scene.addItem(titleText);
-
-    auto *waitingThread = new WaitingForGameToStartThread(this, this->updatesQueue);
-    waitingThread->start();
+    close();
+    // auto *waitingThread = new WaitingForGameToStartThread(this, this->updatesQueue);
+    // waitingThread->start();
 }
 
 void MainWindow::popFirstUpdate() {

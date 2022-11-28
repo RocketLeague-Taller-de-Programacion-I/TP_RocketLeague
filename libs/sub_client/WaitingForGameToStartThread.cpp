@@ -20,6 +20,5 @@ void WaitingForGameToStartThread::run() {
 }
 
 void WaitingForGameToStartThread::stop() {
-    mainWindow->close();
     join();
 }
