@@ -3,9 +3,9 @@
 //
 
 #include <map>
-#include <utility>
 #include <unistd.h>
 #include "GameLoop.h"
+#include "sub_client/client_actions/ClientActionMove.h"
 
 GameLoop::GameLoop(SDL2pp::Renderer &renderer, int xMax, int yMax, ProtectedQueue<ClientUpdate*> &updates,
                    BlockingQueue<ClientAction*> &actions, Worldview &wv)
@@ -39,10 +39,20 @@ bool GameLoop::handle_events() {
         switch(event.type) {
             case SDL_KEYDOWN: {
                 // ¿Qué pasa si mantengo presionada la tecla?
-                SDL_KeyboardEvent& keyEvent = (SDL_KeyboardEvent&) event;
-                switch (keyEvent.keysym.sym) {
+                auto &keyEvent = (SDL_KeyboardEvent&) event;
+                auto move = directionMap.at(keyEvent.keysym.sym);
+                if(move == NOP){
+                    running = false;
+                }
+                else {
+                    //auto * actionMove = new  ClientActionMove(move, true);
+                   // actionsQueue.push(reinterpret_cast<ClientAction *&>(actionMove));
+                }
+                /* switch (keyEvent.keysym.sym) {
                     case SDLK_LEFT:
-//                        player.moveLeft(this->xMax);
+                        auto * actionMove = new ClientActionMove(LEFT_D, true);
+                        actionsQueue.push(reinterpret_cast<ClientAction *&>(actionMove));
+                       // actionsQueue.push(left);
                         break;
                     case SDLK_RIGHT:
 //                        player.moveRight(this->xMax);
@@ -56,7 +66,7 @@ bool GameLoop::handle_events() {
                     case SDLK_ESCAPE:
                         running = false;
                         break;
-                }
+                }*/
 //                std::vector<uint8_t> movement(1);
 //                movement[0] = protocolo.getMapCommand(keyEvent.keysym.sym);
 //                Action action(MOVE,movement);

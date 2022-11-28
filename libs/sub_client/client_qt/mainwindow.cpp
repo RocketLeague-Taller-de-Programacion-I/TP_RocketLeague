@@ -70,7 +70,7 @@ void MainWindow::drawJoinGameMenu() {
     }
     //draw a button for each game
     if(update->getReturnCode() != OK){
-        QLabel* label = new QLabel("No games available");
+        label = new QLabel("No games available");
         label->setGeometry(width() / 2 - 110 , 200 , 301, 71);
         label->setStyleSheet("font: 20pt; color: white;");
         this->scene.addWidget(label);
@@ -242,7 +242,7 @@ void MainWindow::drawLoadingScreen() {
     ui->view->setStyleSheet("border-image: url(../images/loadingScreen.jpeg);");
 
     // create the title text
-    QGraphicsTextItem* titleText = new QGraphicsTextItem(QString("Waiting for more players to join"));
+    auto *titleText = new QGraphicsTextItem(QString("Waiting for more players to join"));
     QFont titleFont("comic sans",40);
     titleText->setFont(titleFont);
     int txPos = width() / 2 - titleText->boundingRect().width() / 4;
@@ -250,7 +250,7 @@ void MainWindow::drawLoadingScreen() {
     titleText->setPos(txPos,tyPos);
     scene.addItem(titleText);
 
-    WaitingForGameToStartThread* waitingThread = new WaitingForGameToStartThread(this, this->updatesQueue);
+    auto *waitingThread = new WaitingForGameToStartThread(this, this->updatesQueue);
     waitingThread->start();
 }
 

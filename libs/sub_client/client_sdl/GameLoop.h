@@ -13,6 +13,7 @@
 #include "sub_common/BlockingQueue.h"
 #include "Worldview.h"
 
+#define NOP 10
 class GameLoop {
     SDL2pp::Renderer &renderer;
     ProtectedQueue<ClientUpdate*>& updatesQueue;
@@ -30,5 +31,12 @@ public:
     void run();
 private:
     Worldview &wv;
+    std::unordered_map<uint32_t ,uint8_t> directionMap = {
+            {SDLK_LEFT,LEFT_D},
+            {SDLK_RIGHT,RIGHT_D},
+            {SDLK_UP,JUMP_D},
+            {SDLK_DOWN,DOWN_D},
+            {SDLK_ESCAPE,NOP}
+    };
 };
 #endif //ROCKETLEAGUE_GAMELOOP_H

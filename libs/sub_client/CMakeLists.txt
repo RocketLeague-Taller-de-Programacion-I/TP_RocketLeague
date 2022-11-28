@@ -40,6 +40,8 @@ add_library(lib_client
         ClientProtocol.cpp
         ClientProtocol.h
         client_actions/ClientAction.h
+        client_actions/ClientActionMove.cpp
+        client_actions/ClientActionMove.h
         client_actions/ActionCreateRoom.cpp
         client_actions/ActionCreateRoom.h
         client_actions/ActionJoinRoom.cpp
