@@ -11,7 +11,6 @@ ClientReceiver::ClientReceiver(Socket &skt_client, ProtectedQueue<ServerAction *
 }
 
 void ClientReceiver::run() {
-    Protocolo p;
     try {
         while (!closed) {
             uint8_t byte_to_read;
@@ -22,7 +21,7 @@ void ClientReceiver::run() {
                     std::bind(&ClientReceiver::receiveBytes, this, std::placeholders::_1 ,std::placeholders::_2);
 
             // form the Action from the data
-            auto action = p.deserializeData(idClient, byte_to_read, bytes_receiver_callable);
+            auto action = Protocolo::deserializeData(idClient, byte_to_read, bytes_receiver_callable);
             // push the action to the queue
             updatesQueue->push(action);
         }

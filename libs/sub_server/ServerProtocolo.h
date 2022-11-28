@@ -12,7 +12,10 @@
 #include <unordered_map>
 #include <memory>
 
-#include "server_updates/ServerUpdate.h"
+#include "server_updates/ServerCreateACK.h"
+#include "server_updates/ServerJoinACK.h"
+#include "server_updates/ServerListACK.h"
+#include "server_updates/ServerUpdateWorld.h"
 
 #include "sub_server/server_actions/ServerCreateRoom.h"
 #include "sub_server/server_actions/ServerJoinRoom.h"
@@ -42,21 +45,25 @@ private:
             {SDLK_DOWN, DOWN},
             {SDLK_SPACE, TURBO}
     };
+    const std::function<void(void*, unsigned int)> &sendBytes;
 public:
     command_t getMapCommand(uint32_t action);
+    Protocolo(const std::function<void(void *, unsigned int)> &sendBytesCallable) : sendBytes(sendBytesCallable) {};
 
-//    std::vector<uint8_t> serializeAction(ServerAction *action);
-
-    ServerAction *deserializeData(const uint8_t &id, const uint8_t &type,
+    static ServerAction *deserializeData(const uint8_t &id, const uint8_t &type,
                                   const std::function<void(std::vector<uint8_t> &, uint8_t &)> &receiveBytes);
-
-    static std::vector<uint8_t> serializeCreateAction(const std::vector<uint8_t>& data);
-    static std::vector<uint8_t> serializeUpdateAction(const std::vector<uint8_t>& data);
+    void serializeUpdate(ServerUpdate *update);
+    void serializeCreateACK(ServerCreateACK *update);
+    void serializeJoinACK(ServerJoinACK *update);
+    void serializeServerListACK(ServerListACK *update);
+    void serializeWorldUpdate(ServerUpdate *update);
 
     static ServerAction *parseCreateAction(const uint8_t &id, const std::function<void(std::vector<uint8_t> &,
                                                                                        uint8_t &)> &receiveBytes);
+
     static ServerAction *parseJoinAction(const uint8_t &id, const std::function<void(std::vector<uint8_t> &,
                                                                                      uint8_t &)> &receiveBytes);
+
     static ServerAction *parseListAction(const uint8_t &id);
 };
 

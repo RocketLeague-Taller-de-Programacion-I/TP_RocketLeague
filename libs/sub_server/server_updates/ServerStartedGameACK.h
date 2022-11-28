@@ -9,11 +9,11 @@
 
 class ServerStartedGameACK : public ServerUpdate{
 public:
-    ServerStartedGameACK(const uint16_t &id, uint16_t &returnCode) : ServerUpdate(id, returnCode){}
+    ServerStartedGameACK(const uint8_t &id, uint8_t &returnCode) : ServerUpdate(id, returnCode){}
     ~ServerStartedGameACK() override = default;
 
-    uint16_t getType() const override;
-    std::vector<uint16_t> beSerialized() override;
+    uint8_t getType() const override;
+    void beSerialized(Protocolo *protocolo) override;
 };
 
 

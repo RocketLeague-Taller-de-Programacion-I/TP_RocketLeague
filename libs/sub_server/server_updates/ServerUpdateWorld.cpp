@@ -3,14 +3,12 @@
 //
 
 #include "ServerUpdateWorld.h"
+#include "sub_server/ServerProtocolo.h"
 
-uint16_t ServerUpdateWorld::getType() const {
+uint8_t ServerUpdateWorld::getType() const {
     return WORLD;
 }
 
-std::vector<uint16_t> ServerUpdateWorld::beSerialized() { //TODO: check how to serialize
-    std::vector<uint16_t> worldData;
-    worldData.push_back(getType());
-    worldData.insert(worldData.end(), returnData.begin(), returnData.end());
-    return worldData;
+void ServerUpdateWorld::beSerialized(Protocolo *protocolo) { //TODO: check how to serialize
+    protocolo->serializeWorldUpdate(this);
 }

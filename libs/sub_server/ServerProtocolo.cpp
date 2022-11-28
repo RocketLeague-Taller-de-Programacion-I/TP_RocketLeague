@@ -2,6 +2,7 @@
 // Created by lucaswaisten on 04/11/22.
 //
 
+#include <iostream>
 #include "ServerProtocolo.h"
 
 command_t Protocolo::getMapCommand(uint32_t action) {
@@ -61,19 +62,55 @@ ServerAction * Protocolo::parseListAction(const uint8_t &id) {
     return pAction;
 }
 
-std::vector<uint8_t> Protocolo::serializeCreateAction(const std::vector<uint8_t> &data) {
-    std::vector<uint8_t> result;
-    result.emplace_back(CREATE_ROOM); //type
-    result.emplace_back(1); //id to be received
-    result.insert(result.end(), data.begin(), data.end());
-    return result;
+void Protocolo::serializeUpdate(ServerUpdate *update) {
+    update->beSerialized(this);
 }
 
-std::vector<uint8_t> Protocolo::serializeUpdateAction(const std::vector<uint8_t> &data) {
+void Protocolo::serializeCreateACK(ServerCreateACK *update) {
+    uint8_t id = update->getId();
+    sendBytes(&id, sizeof(id));
+
+    uint8_t returnCode = update->getReturnCode();
+    sendBytes(&returnCode, sizeof(returnCode));
+}
+
+void Protocolo::serializeJoinACK(ServerJoinACK *update) {
+    uint8_t id = update->getId();
+    sendBytes(&id, sizeof(id));
+
+    uint8_t returnCode = update->getReturnCode();
+    sendBytes(&returnCode, sizeof(returnCode));
+}
+
+void Protocolo::serializeServerListACK(ServerListACK *update) {
+    uint8_t id = update->getId();
+    sendBytes(&id, sizeof(id));
+
+    uint8_t returnCode = update->getReturnCode();
+    sendBytes(&returnCode, sizeof(returnCode));
+//    //[id,returnCode, cantidadDeGames,{online,max,sieName,name},...]
+
+    uint8_t numberOfGames = update->getNumberOfGames();
+    sendBytes(&numberOfGames, sizeof(numberOfGames));
+
+    // vector of uint8_t from first 3 items of returnData
+    std::vector<uint8_t> returnData = update->getReturnData();
+    std::vector<uint8_t> returnDataFirst3(returnData.begin(), returnData.begin() + 3);
+    sendBytes(returnDataFirst3.data(), returnDataFirst3.size());
+
+    // send the rest of returnData
+    std::vector<uint8_t> returnDataRest(returnData.begin() + 3, returnData.end());
+    sendBytes(returnDataRest.data(), returnDataRest.size());
+
+    uint16_t test = htons(3122);
+    sendBytes(&test, sizeof(test));
+}
+
+void Protocolo::serializeWorldUpdate(ServerUpdate *update) {
 
     std::vector<uint8_t> result;
     //TODO: cambiar el UPDATE
     result.emplace_back(1);
-    result.insert(result.end(),data.begin(),data.end());
+    result.insert(result.end(), update.begin(), update.end());
     return result;
 }

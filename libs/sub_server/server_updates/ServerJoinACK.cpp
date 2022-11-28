@@ -5,14 +5,10 @@
 #include "ServerJoinACK.h"
 #include "sub_server/ServerProtocolo.h"
 
-std::vector<uint16_t> ServerJoinACK::beSerialized() {
-    std::vector<uint16_t> joinACKData;
-    joinACKData.push_back(htons(getType()));
-    joinACKData.push_back(htons(id));
-    joinACKData.push_back(htons(returnCode));
-    return joinACKData;
+void ServerJoinACK::beSerialized(Protocolo *protocolo) {
+    protocolo->serializeJoinACK(this);
 }
 
-uint16_t ServerJoinACK::getType() const {
+uint8_t ServerJoinACK::getType() const {
     return JOIN_ACK;
 }

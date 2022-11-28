@@ -11,17 +11,18 @@ class ServerListACK : public ServerUpdate{
 private:
     uint8_t numberOfGames;
 public:
-    ServerListACK(const uint8_t &id, uint16_t &returnCode, const uint16_t &n) :
+    ServerListACK(const uint8_t &id, uint8_t &returnCode, const uint8_t &n) :
                                     ServerUpdate(id, returnCode),
                                     numberOfGames(n){};
-    ServerListACK(uint8_t &id, uint16_t &returnCode, const uint16_t &n, std::vector<uint16_t> &returnData) :
-                                    ServerUpdate(reinterpret_cast<uint16_t &>(id), returnCode, returnData),
+    ServerListACK(uint8_t &id, uint8_t &returnCode, const uint8_t &n, std::vector<uint8_t> &returnData) :
+                                    ServerUpdate(id, returnCode, returnData),
                                     numberOfGames(n){};
 
     ~ServerListACK() override = default;
 
-    std::uint16_t getType() const override;
-    std::vector<uint16_t> beSerialized() override;
+    uint8_t getType() const override;
+    void beSerialized(Protocolo *protocolo) override;
+    uint8_t getNumberOfGames() const { return numberOfGames;};
 };
 
 

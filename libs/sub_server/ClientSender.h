@@ -28,6 +28,8 @@ public:
     ~ClientSender() override;
     void stop() override;
     BlockingQueue<ServerUpdate *> * getQueue() const;
+
+    void sendBytes(void *bytes_to_send, unsigned int size);
 };
 
 
