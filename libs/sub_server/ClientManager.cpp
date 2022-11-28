@@ -19,11 +19,11 @@ ClientManager::ClientManager(Socket &aClient,
 void ClientManager::run() {
     auto initialActionsQueue = new ProtectedQueue<ServerAction*>;
     //ProtectedQueue<ServerAction*>
-    auto initialUpdatesQueue = new BlockingQueue<ServerUpdate*>;
+    auto initialUpdatesQueue = new BlockingQueue<std::shared_ptr<ServerUpdate>>;
     //BlockingQueue<ServerUpdate*>
     startClientThreads(initialActionsQueue, initialUpdatesQueue);
     ServerAction* command;
-    std::function<BlockingQueue<ServerUpdate*>*(ProtectedQueue<ServerAction *> *)> queue_setter_callable =
+    std::function<BlockingQueue<std::shared_ptr<ServerUpdate>>*(ProtectedQueue<ServerAction *> *)> queue_setter_callable =
             std::bind(&ClientManager::setQueues, this, std::placeholders::_1);
     bool playing = false; //  Mientras no se una o no cree una partida == no este jugando
     while (!playing) {
@@ -65,7 +65,7 @@ void ClientManager::attendClient(unsigned long aId) {
     this->start();
 }
 
-void ClientManager::startClientThreads(ProtectedQueue<ServerAction *> *qReceiver, BlockingQueue<ServerUpdate *> *senderQueue) {
+void ClientManager::startClientThreads(ProtectedQueue<ServerAction *> *qReceiver, BlockingQueue<std::shared_ptr<ServerUpdate>> *senderQueue) {
     //qReceiver -> ServerAction
     //senderQueue -> ServerUpdate
     clientReceiverThread = new ClientReceiver(client, qReceiver, id);
@@ -74,7 +74,7 @@ void ClientManager::startClientThreads(ProtectedQueue<ServerAction *> *qReceiver
     clientReceiverThread->start();
     clientSenderThread->start();
 }
-BlockingQueue<ServerUpdate *> * ClientManager::setQueues(ProtectedQueue<ServerAction *> *gameQueue) {
+BlockingQueue<std::shared_ptr<ServerUpdate>> * ClientManager::setQueues(ProtectedQueue<ServerAction *> *gameQueue) {
     clientReceiverThread->setQueue(gameQueue);
     return (clientSenderThread->getQueue());
 }

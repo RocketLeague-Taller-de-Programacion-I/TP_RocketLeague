@@ -20,7 +20,7 @@ public:
 
     void execute(Match& match) override;
 
-    virtual ServerUpdate * execute(GameManager &manager, const std::function<BlockingQueue<ServerUpdate *> *(
+    virtual std::shared_ptr<ServerUpdate> execute(GameManager &manager, const std::function<BlockingQueue<std::shared_ptr<ServerUpdate>> *(
             ProtectedQueue<ServerAction *> *)> &setQueue) override;
 };
 

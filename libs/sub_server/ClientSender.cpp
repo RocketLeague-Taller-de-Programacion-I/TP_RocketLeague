@@ -4,7 +4,7 @@
 
 #include "ClientSender.h"
 
-ClientSender::ClientSender(Socket &skt_client, BlockingQueue<ServerUpdate *> *queue, uint8_t idClient)
+ClientSender::ClientSender(Socket &skt_client, BlockingQueue<std::shared_ptr<ServerUpdate>> *queue, uint8_t idClient)
         : skt_client(skt_client), idClient(idClient), actionsQueue(queue) {
     this->closed = false;
 }
@@ -20,11 +20,6 @@ void ClientSender::run() {
 
             p.serializeUpdate(action);
             // delete the action
-            /*
-             * TODO: cuando hacemos el brodcast en Game usando ServerUpdateWorld
-             * uno de los dos cliente deletea la acion, por lo tanto no puede acceder a la memoria eliminada
-             */
-            delete action;
         }
         running = false;
     } catch (const std::exception &e) {
@@ -46,6 +41,6 @@ ClientSender::~ClientSender() {
     delete actionsQueue;
 }
 
-BlockingQueue<ServerUpdate *> * ClientSender::getQueue() const {
+BlockingQueue<std::shared_ptr<ServerUpdate>> * ClientSender::getQueue() const {
     return this->actionsQueue;
 }

@@ -27,7 +27,7 @@ private:
     std::string gameName;
     bool closed;
 
-    std::map<uint8_t ,BlockingQueue<ServerUpdate*>*> mapSender;
+    std::map<uint8_t ,BlockingQueue<std::shared_ptr<ServerUpdate>>*> mapSender;
     //map {id, BlockingQueue<ServerUpdate*>}
 
     ProtectedQueue<ServerAction *> *queue;
@@ -46,13 +46,13 @@ public:
 
     Game& operator=(const Game&) = delete;
 
-    void joinPlayer(uint8_t& id, BlockingQueue<ServerUpdate *> *sender);
+    void joinPlayer(uint8_t& id, BlockingQueue<std::shared_ptr<ServerUpdate>> *sender);
 
     bool isFull() const;
 
     ProtectedQueue<ServerAction *> * getQueue();
 
-    void broadcastUpdate(ServerUpdate *update);
+    void broadcastUpdate(const std::shared_ptr<ServerUpdate>& update);
     void brodcastUpdateGameEvents(std::vector<ServerUpdate *> updates);
 };
 

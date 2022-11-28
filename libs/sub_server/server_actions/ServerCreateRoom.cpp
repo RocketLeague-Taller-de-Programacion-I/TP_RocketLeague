@@ -7,12 +7,13 @@
 
 ServerCreateRoom::ServerCreateRoom(const uint8_t &id, uint8_t &capacity, std::string &data) : ServerAction(id, data) , capacity(capacity) {}
 
-ServerUpdate * ServerCreateRoom::execute(GameManager &manager, const std::function<BlockingQueue<ServerUpdate *> *(
+std::shared_ptr<ServerUpdate> ServerCreateRoom::execute(GameManager &manager, const std::function<BlockingQueue<std::shared_ptr<ServerUpdate>> *(
         ProtectedQueue<ServerAction *> *)> &setQueue) {
 
     uint8_t returnCode = manager.createGame(id, capacity, roomName, setQueue) ? OK : ERROR_FULL;
 //    return new ServerCreateACK(id, returnMessage);
-    return new ServerCreateACK(id, returnCode);
+    std::shared_ptr<ServerUpdate> update = std::make_shared<ServerCreateACK>(id, returnCode);
+    return update;
 }
 
 void ServerCreateRoom::execute(Match &match) {

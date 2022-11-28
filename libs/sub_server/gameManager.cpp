@@ -5,10 +5,9 @@
 #include <iostream>
 #include "gameManager.h"
 
-bool GameManager::createGame(uint8_t idCreator, uint8_t capacityGame, const std::string& nameGame,
-                             const std::function<BlockingQueue<ServerUpdate *> *(
-                                     ProtectedQueue<ServerAction *> *)> &setQueue) {
-
+bool GameManager::createGame(uint8_t idCreator, uint8_t capacityGame, const std::string &nameGame,
+                             std::function<BlockingQueue<std::shared_ptr<ServerUpdate>> *(
+                                     ProtectedQueue<ServerAction *> *)> setQueue) {
     std::unique_lock<std::mutex> lock(this->mutex);
 
     if (games.find(nameGame) == games.end()) {
@@ -23,8 +22,7 @@ bool GameManager::createGame(uint8_t idCreator, uint8_t capacityGame, const std:
 
     return true;
 }
-
-bool GameManager::joinGame(uint8_t idCreator, const std::string& nameGame, std::function<BlockingQueue<ServerUpdate *> *(
+bool GameManager::joinGame(uint8_t idCreator, const std::string& nameGame, std::function<BlockingQueue<std::shared_ptr<ServerUpdate>> *(
         ProtectedQueue<ServerAction *> *)> setQueue) {
 
     std::unique_lock<std::mutex> lock(this->mutex);
@@ -54,6 +52,7 @@ void GameManager::cleanGames() {
         delete game.second;
     }
 }
+
 
 
 

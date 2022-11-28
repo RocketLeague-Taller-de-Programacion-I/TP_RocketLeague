@@ -62,7 +62,7 @@ ServerAction * Protocolo::parseListAction(const uint8_t &id) {
     return pAction;
 }
 
-void Protocolo::serializeUpdate(ServerUpdate *update) {
+void Protocolo::serializeUpdate(std::shared_ptr<ServerUpdate> update) {
     update->beSerialized(this);
 }
 

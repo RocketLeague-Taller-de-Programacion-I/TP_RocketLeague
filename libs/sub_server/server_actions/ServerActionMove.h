@@ -17,7 +17,7 @@ public:
 
     ~ServerActionMove() override = default;
 
-    ServerUpdate * execute(GameManager &manager, const std::function<BlockingQueue<ServerUpdate *> *(
+    std::shared_ptr<ServerUpdate> execute(GameManager &manager, const std::function<BlockingQueue<std::shared_ptr<ServerUpdate>> *(
             ProtectedQueue<ServerAction *> *)> &setQueue) override { return nullptr; };
 
     void execute(Match &match) override;

@@ -35,9 +35,9 @@ public:
 
     void attendClient(unsigned long aId);
 
-    void startClientThreads(ProtectedQueue<ServerAction *> *qReceiver, BlockingQueue<ServerUpdate *> *senderQueue);
+    void startClientThreads(ProtectedQueue<ServerAction *> *qReceiver, BlockingQueue<std::shared_ptr<ServerUpdate>> *senderQueue);
 
-    BlockingQueue<ServerUpdate *> * setQueues(ProtectedQueue<ServerAction *> *gameQueue);
+    BlockingQueue<std::shared_ptr<ServerUpdate>> * setQueues(ProtectedQueue<ServerAction *> *gameQueue);
 };
 
 

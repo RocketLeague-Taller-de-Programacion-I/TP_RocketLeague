@@ -52,7 +52,7 @@ public:
 
     static ServerAction *deserializeData(const uint8_t &id, const uint8_t &type,
                                   const std::function<void(std::vector<uint8_t> &, uint8_t &)> &receiveBytes);
-    void serializeUpdate(ServerUpdate *update);
+    void serializeUpdate(std::shared_ptr<ServerUpdate> update);
     void serializeCreateACK(ServerCreateACK *update);
     void serializeJoinACK(ServerJoinACK *update);
     void serializeServerListACK(ServerListACK *update);

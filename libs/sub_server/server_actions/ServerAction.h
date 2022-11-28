@@ -49,7 +49,7 @@ public:
     virtual uint8_t getId() const { return id;};
     virtual std::string getRoomName() const { return roomName;};
 
-    virtual ServerUpdate* execute(GameManager &manager, const std::function<BlockingQueue<ServerUpdate *> *(
+    virtual std::shared_ptr<ServerUpdate> execute(GameManager &manager, const std::function<BlockingQueue<std::shared_ptr<ServerUpdate>> *(
             ProtectedQueue<ServerAction *> *)> &setQueue) = 0;
 
     virtual void execute(Match& match) = 0;

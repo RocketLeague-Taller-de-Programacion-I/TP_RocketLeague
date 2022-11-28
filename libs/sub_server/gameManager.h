@@ -17,8 +17,10 @@ class GameManager {
     std::map<std::string, Game*> games;
 public:
    uint8_t listGames(uint8_t &id, std::vector<uint8_t> &listData);
-    bool createGame(uint8_t idCreator, uint8_t capacityGame, const std::string& nameGame, const std::function<BlockingQueue<ServerUpdate *> *(ProtectedQueue<ServerAction *> *)> &setQueue);
-    bool joinGame(uint8_t idCreator, const std::string& nameGame, std::function<BlockingQueue<ServerUpdate *> *(
+    bool createGame(uint8_t idCreator, uint8_t capacityGame,
+                    const std::string& nameGame,std::function<BlockingQueue<std::shared_ptr<ServerUpdate>> *(
+            ProtectedQueue<ServerAction *> *)> setQueue);
+    bool joinGame(uint8_t idCreator, const std::string& nameGame, std::function<BlockingQueue<std::shared_ptr<ServerUpdate>> *(
             ProtectedQueue<ServerAction *> *)> setQueue);
 
     void cleanGames();
