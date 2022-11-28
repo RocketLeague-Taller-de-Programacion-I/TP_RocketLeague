@@ -14,3 +14,7 @@ ServerUpdate * ServerCreateRoom::execute(GameManager &manager, const std::functi
 //    return new ServerCreateACK(id, returnMessage);
     return new ServerCreateACK(id, returnCode);
 }
+
+void ServerCreateRoom::execute(Match &match) {
+
+}

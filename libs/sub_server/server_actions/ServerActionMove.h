@@ -13,15 +13,13 @@ private:
     uint8_t direction;
     bool state;
 public:
-    ServerActionMove(const uint8_t &id, uint8_t &direction, bool state) :
-            ServerAction(id),
-            direction(direction),
-            state(state) {};
+    ServerActionMove(const uint8_t &id, uint8_t &direction, bool &state);
 
     ~ServerActionMove() override = default;
 
     ServerUpdate * execute(GameManager &manager, const std::function<BlockingQueue<ServerUpdate *> *(
             ProtectedQueue<ServerAction *> *)> &setQueue) override { return nullptr; };
+
     void execute(Match &match) override;
 };
 

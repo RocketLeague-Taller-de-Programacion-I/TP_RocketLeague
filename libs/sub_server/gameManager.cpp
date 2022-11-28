@@ -51,7 +51,7 @@ uint8_t GameManager::listGames(uint8_t &id, std::vector<uint8_t> &listData) {
 
 void GameManager::cleanGames() {
     for (auto & game: games) {
-        delete &game.second;
+        delete game.second;
     }
 }
 

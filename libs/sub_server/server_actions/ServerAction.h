@@ -24,11 +24,11 @@ enum actionType {
 };
 
 enum direction {
-    RIGHT,
-    LEFT,
-    JUMP,
-    DOWN,
-    TURBO
+    RIGHT_D,
+    LEFT_D,
+    JUMP_D,
+    DOWN_D,
+    TURBO_D
 } ;
 
 enum state : bool {

@@ -13,7 +13,7 @@ class ServerJoinRoom : public ServerAction {
 public:
     ServerJoinRoom(const uint8_t &id, std::string &data);
     ~ServerJoinRoom() override = default;
-
+    void execute(Match& match) override;
     virtual ServerUpdate * execute(GameManager &manager, const std::function<BlockingQueue<ServerUpdate *> *(
             ProtectedQueue<ServerAction *> *)> &setQueue) override;
 };

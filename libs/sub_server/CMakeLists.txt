@@ -14,6 +14,8 @@ add_library(lib_server
         ServerProtocolo.cpp
         ServerProtocolo.h
         server_actions/ServerAction.h
+        server_actions/ServerActionMove.cpp
+        server_actions/ServerActionMove.h
         server_actions/ServerCreateRoom.cpp
         server_actions/ServerCreateRoom.h
         server_actions/ServerJoinRoom.cpp

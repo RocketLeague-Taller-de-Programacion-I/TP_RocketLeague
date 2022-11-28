@@ -13,3 +13,7 @@ ServerUpdate * ServerJoinRoom::execute(GameManager &manager, const std::function
     uint8_t returnCode = manager.joinGame(id, roomName, setQueue) ? OK : ERROR_FULL;
     return new ServerJoinACK(id, returnCode);
 }
+
+void ServerJoinRoom::execute(Match &match) {
+
+}

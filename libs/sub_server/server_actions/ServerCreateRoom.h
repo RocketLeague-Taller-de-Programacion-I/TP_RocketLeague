@@ -18,6 +18,8 @@ public:
 
     uint8_t getCapacity() { return capacity; }
 
+    void execute(Match& match) override;
+
     virtual ServerUpdate * execute(GameManager &manager, const std::function<BlockingQueue<ServerUpdate *> *(
             ProtectedQueue<ServerAction *> *)> &setQueue) override;
 };
