@@ -30,6 +30,6 @@ add_library(lib_server
         server_updates/ServerUpdateWorld.cpp
         server_updates/ServerUpdateWorld.h
         server_updates/ServerStartedGameACK.cpp
-        server_updates/ServerStartedGameACK.h)
+        server_updates/ServerStartedGameACK.h server_actions/ServerActionMove.cpp server_actions/ServerActionMove.h)
 
 target_link_libraries(lib_server lib_common)

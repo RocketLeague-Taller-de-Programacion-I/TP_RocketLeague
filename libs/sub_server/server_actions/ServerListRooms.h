@@ -13,8 +13,10 @@ public:
     explicit ServerListRooms(const uint8_t &id) : ServerAction(id) {};
     ~ServerListRooms() override = default;
 
-    virtual ServerUpdate * execute(GameManager &manager, const std::function<BlockingQueue<ServerUpdate *> *(
+    ServerUpdate * execute(GameManager &manager, const std::function<BlockingQueue<ServerUpdate *> *(
             ProtectedQueue<ServerAction *> *)> &setQueue) override;
+
+    void execute(Match &match) override {};
 };
 
 

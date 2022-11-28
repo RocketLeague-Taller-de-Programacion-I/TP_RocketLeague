@@ -38,14 +38,16 @@ public:
     Match(std::string name, int required);
     ~Match();
     void addPlayer(uint8_t &id);
-    void moveRight(uint8_t  &id, std::function<void(ServerUpdate* )> function);
-    void info();
-    void moveLeft(uint8_t &id, std::function<void(ServerUpdate* )> function);
-    void jump(uint8_t &id, std::function<void(ServerUpdate* )> function);
+    void moveRight(uint8_t  &id, bool state);
+    std::vector<int> info();
+    void moveLeft(uint8_t &id, bool state);
+    void jump(uint8_t &id, bool state);
     void checkGoals();
     void step();
     int visit();
     int local();
+
+    void turbo(uint8_t &id, bool state);
 };
 
 

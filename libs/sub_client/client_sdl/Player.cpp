@@ -32,34 +32,3 @@ void Player::render(SDL2pp::Renderer &renderer) {
     an.render(renderer, SDL2pp::Rect(x, y, 450, 200), flip);
 }
 
-void Player::moveRight(int xMax) {
-    if (this->x < xMax) {
-        movingX = true;
-    }
-    facingLeft = false;
-}
-
-void Player::moveLeft(int xMax) {
-    if (this-> x > 0) {
-        movingX = true;
-    }
-    facingLeft = true;
-}
-void Player::moveDown(int yMax) {
-    if (this->y < yMax) {
-        movingY = true;
-    }
-    facingUp = false;
-}
-void Player::moveUp(int yMax) {
-    if (this->y > 0) {
-        movingY = true;
-    }
-    facingUp = true;
-}
-void Player::stopMovingX() {
-    movingX = false;
-}
-void Player::stopMovingY() {
-    movingY= false;
-}

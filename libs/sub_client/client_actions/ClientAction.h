@@ -15,14 +15,14 @@
 enum action_type {
     CREATE = 1,
     JOIN,
-    LIST
+    LIST,
+    MOVE
 };
 
 
 class ClientAction {
 protected:
     uint8_t type;
-    std::vector<uint8_t> data;
 public:
     ClientAction() = default;
 

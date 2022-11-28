@@ -6,21 +6,18 @@
 
 ActionJoinRoom::ActionJoinRoom(std::string &roomName) : roomName(roomName){
     type = JOIN;
-    serializeData();
 }
-void ActionJoinRoom::serializeData(){
-    std::vector<uint8_t> joinData;
-    joinData.push_back(type);
-    joinData.push_back(roomName.length());
-    joinData.insert(joinData.end(), roomName.begin(), roomName.end()); //append?
-    data = joinData;
-}
+
 uint8_t ActionJoinRoom::getType() const {
     return type;
 }
 
 std::vector<uint8_t> ActionJoinRoom::beSerialized() {
-    return data;
+    std::vector<uint8_t> joinData;
+    joinData.push_back(type);
+    joinData.push_back(roomName.length());
+    joinData.insert(joinData.end(), roomName.begin(), roomName.end()); //append?
+    return joinData;
 }
 
 std::string ActionJoinRoom::getRoomName() {

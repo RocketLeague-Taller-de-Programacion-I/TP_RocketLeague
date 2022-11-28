@@ -9,16 +9,10 @@
 #include "Animation.h"
 class Player {
 public:
-    Player(SDL2pp::Texture &texture);
+    explicit Player(SDL2pp::Texture &texture);
     ~Player();
     void update(float dt);
     void render(SDL2pp::Renderer &renderer);
-    void moveRight(int xMax);
-    void moveLeft(int yMax);
-    void stopMovingX();
-    void stopMovingY();
-    void moveDown(int yMax);
-    void moveUp(int yMax);
 
 private:
     Animation an;
@@ -26,8 +20,9 @@ private:
     bool facingUp;
     bool movingX;
     bool movingY;
-    int x;
-    int y;
+    uint16_t x;
+    uint16_t y;
+    uint16_t angle;
 };
 
 #endif //ROCKETLEAGUE_PLAYER_H

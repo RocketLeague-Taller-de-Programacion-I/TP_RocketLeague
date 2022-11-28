@@ -31,10 +31,12 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
+    uint8_t id;
     MainWindow(QWidget *parent = nullptr);
     MainWindow(QWidget *parent, ProtectedQueue<ClientUpdate*> &updates, BlockingQueue<ClientAction *> &actions);
     ~MainWindow();
 
+    void clearScene() { this->scene.clear(); };
     void displayMainMenu();
 
 public slots:
@@ -44,7 +46,6 @@ public slots:
     void drawJoinGameMenu();
     void joinParticularGame(QString roomName);
     void createRoom();
-    void clearScene() { this->scene.clear(); };
 
 private:
     Ui::MainWindow *ui;

@@ -4,10 +4,6 @@
 
 #include "ServerProtocolo.h"
 
-command_t Protocolo::getMapCommand(uint32_t action) {
-    return this->mapCommand.at(action);
-}
-
 ServerAction * Protocolo::deserializeData(const uint8_t &id, const uint8_t &type,
                                           const std::function<void(std::vector<uint8_t> &, uint8_t &)> &receiveBytes) {
     switch (type) {
@@ -17,8 +13,8 @@ ServerAction * Protocolo::deserializeData(const uint8_t &id, const uint8_t &type
             return parseJoinAction(id, receiveBytes);
         case LIST_ROOMS:
             return parseListAction(id);
-//        case MOVE:
-//            return parseUpdateAction(data);
+        case MOVE:
+            return parseMoveAction(id, receiveBytes);
     }
     return {};
 }
@@ -56,24 +52,23 @@ ServerAction * Protocolo::parseJoinAction(const uint8_t &id, const std::function
     return pAction;
 }
 
-ServerAction * Protocolo::parseListAction(const uint8_t &id) {
+ServerAction* Protocolo::parseListAction(const uint8_t &id) {
     ServerAction* pAction = new ServerListRooms(id);
     return pAction;
 }
 
-std::vector<uint8_t> Protocolo::serializeCreateAction(const std::vector<uint8_t> &data) {
-    std::vector<uint8_t> result;
-    result.emplace_back(CREATE_ROOM); //type
-    result.emplace_back(1); //id to be received
-    result.insert(result.end(), data.begin(), data.end());
-    return result;
+ServerAction *Protocolo::parseMoveAction(const uint8_t &id, const std::function<void(std::vector<uint8_t> &, uint8_t &)> &receiveBytes) {
+    std::vector<uint8_t> direction_and_state(2);
+    uint8_t size = direction_and_state.size();
+    receiveBytes(direction_and_state, size);
+
+    ServerAction* pAction = new ServerActionMove(id, direction_and_state[0], direction_and_state[1]);
+    return pAction;
 }
 
-std::vector<uint8_t> Protocolo::serializeUpdateAction(const std::vector<uint8_t> &data) {
-
-    std::vector<uint8_t> result;
-    //TODO: cambiar el UPDATE
-    result.emplace_back(1);
-    result.insert(result.end(),data.begin(),data.end());
-    return result;
+std::vector<uint8_t> Protocolo::serializeUpdateWorld(std::vector<int> &data) {
+    uint16_t bx = data[0];
+    sendBytes();
+    uint16_t by = data[1];
 }
+

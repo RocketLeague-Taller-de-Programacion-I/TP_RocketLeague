@@ -7,6 +7,7 @@
 
 MainWindow::MainWindow(QWidget *parent, ProtectedQueue<ClientUpdate*> &updates, BlockingQueue<ClientAction *> &actions)
     : QMainWindow(parent)
+    , id(0)
     , ui(new Ui::MainWindow)
     , updatesQueue(updates)
     , actionsQueue(actions)
@@ -102,6 +103,7 @@ void MainWindow::createRoom() {
 //    Action* actionCreate = new ActionCreate(id, players, roomName);
     ClientAction* actionCreate = new ActionCreateRoom(players, roomName);
     this->actionsQueue.push(actionCreate);
+    std::cout << "CREATE Action sent, to receive ACK" << std::endl;
     popFirstUpdate(); //pop CreateACK
     drawLoadingScreen();
 }
@@ -260,12 +262,13 @@ void MainWindow::popFirstUpdate() {
     while (popping) {
         //  wait for updates
         if(updatesQueue.tryPop(update) and update) {
+            std::cout << "Popped update" << (int)update->getType() << std::endl;
             popping = false;
         }
     }
     if(update->getType() == STARTED_GAME_ACK) {
         //start the game directly
-        //TODO: retrieve ID from update
+        id = update->getId();
         scene.clear();
         close();
     }
@@ -276,6 +279,7 @@ void MainWindow::popFirstUpdate() {
     if(update->getReturnCode()) {
         drawGUI();
     }
+    id = update->getId();
     delete update;
 }
 

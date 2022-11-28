@@ -7,9 +7,10 @@
 #include <unistd.h>
 #include "GameLoop.h"
 
-GameLoop::GameLoop(SDL2pp::Renderer &renderer, int xMax, int yMax, ProtectedQueue<ClientUpdate*> &updates,
-                   BlockingQueue<ClientAction*> &actions, Worldview &wv)
-        : renderer(renderer),
+GameLoop::GameLoop(uint8_t &id, SDL2pp::Renderer &renderer, int xMax, int yMax, ProtectedQueue<ClientUpdate *> &updates,
+                   BlockingQueue<ClientAction *> &actions, Worldview &wv)
+        : id(id),
+          renderer(renderer),
           updatesQueue(updates),
           actionsQueue(actions),
           running(true),
@@ -23,6 +24,7 @@ void GameLoop::run() {
     while (running) {
         handle_events();
         //pop from updates queue
+        popUpdates();
         update(FRAME_RATE);
         render();
         // la cantidad de segundos que debo dormir se debe ajustar en función
@@ -33,56 +35,28 @@ void GameLoop::run() {
 
 bool GameLoop::handle_events() {
     SDL_Event event;
-    // Para el alumno: Buscar diferencia entre waitEvent y pollEvent
-    // Aca estara la cola de eventos!!
     while(SDL_PollEvent(&event)){
         switch(event.type) {
             case SDL_KEYDOWN: {
                 // ¿Qué pasa si mantengo presionada la tecla?
                 SDL_KeyboardEvent& keyEvent = (SDL_KeyboardEvent&) event;
-                switch (keyEvent.keysym.sym) {
-                    case SDLK_LEFT:
-//                        player.moveLeft(this->xMax);
-                        break;
-                    case SDLK_RIGHT:
-//                        player.moveRight(this->xMax);
-                        break;
-                    case SDLK_UP:
-//                        player.moveUp(this->yMax);
-                        break;
-                    case SDLK_DOWN:
-//                        player.moveDown(this->yMax);
-                        break;
-                    case SDLK_ESCAPE:
+                if(keyEvent.keysym.sym == SDLK_ESCAPE) {
                         running = false;
                         break;
                 }
-//                std::vector<uint8_t> movement(1);
-//                movement[0] = protocolo.getMapCommand(keyEvent.keysym.sym);
-//                Action action(MOVE,movement);
-//                actionsQueue.push(action);
+                uint8_t movement = mapSDLKey.at(keyEvent.keysym.sym);
+                ClientAction* action = new ClientActionMove(movement, ON);
+                actionsQueue.push(action);
             } // Fin KEY_DOWN
                 break;
             case SDL_KEYUP: {
                 SDL_KeyboardEvent& keyEvent = (SDL_KeyboardEvent&) event;
-                switch (keyEvent.keysym.sym) {
-                    case SDLK_LEFT:
-//                        player.stopMovingX();
-                        break;
-                    case SDLK_RIGHT:
-//                        player.stopMovingX();
-                        break;
-                    case SDLK_UP:
-//                        player.stopMovingY();
-                        break;
-                    case SDLK_DOWN:
-//                        player.stopMovingY();
-                        break;
-                }
-                // poppear de la cola de updatesQueue
-                std::cout << "update to be popped of type: MOVE and data: " << std::endl;
+
+                uint8_t movement = mapSDLKey.at(keyEvent.keysym.sym);
+                ClientAction* action = new ClientActionMove(movement, OFF);
+                actionsQueue.push(action);
             }// Fin KEY_UP
-            case SDLK_ESCAPE:
+            case SDL_QUIT:
                 running = false;
                 break;
         } // fin switch(event)
@@ -94,10 +68,26 @@ void GameLoop::render() {
     renderer.SetDrawColor(0x00, 0x00, 0x00);
     renderer.Clear();
     wv.render(renderer);
-    //    player.render(renderer);
+//        player.render(renderer);
     renderer.Present();
 }
 
 void GameLoop::update(float dt) {
     wv.update(dt);
+}
+
+void GameLoop::popUpdates() {
+    ClientUpdate* update;
+    while (!updatesQueue.tryPop(update)) {
+        Ball ball = dynamic_cast<ClientUpdateWorld*>(update)->getBall();
+        std::cout << "Ball: " << (int)ball.getX() << " " << (int)ball.getY() << std::endl;
+        Score score = dynamic_cast<ClientUpdateWorld*>(update)->getScore();
+        std::cout << "Score: " << (int)score.getLocal() << " " << (int)score.getVisitor() << std::endl;
+
+        std::vector<Car> players = dynamic_cast<ClientUpdateWorld*>(update)->getCars();
+        for (auto &player : players) {
+            std::cout << "Player: " << (int)player.getX() << " " << (int)player.getY() << std::endl;
+        }
+        delete update;
+    }
 }

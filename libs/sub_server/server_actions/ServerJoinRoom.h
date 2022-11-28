@@ -14,8 +14,9 @@ public:
     ServerJoinRoom(const uint8_t &id, std::string &data);
     ~ServerJoinRoom() override = default;
 
-    virtual ServerUpdate * execute(GameManager &manager, const std::function<BlockingQueue<ServerUpdate *> *(
+    ServerUpdate * execute(GameManager &manager, const std::function<BlockingQueue<ServerUpdate *> *(
             ProtectedQueue<ServerAction *> *)> &setQueue) override;
+    void execute(Match &match) override {};
 };
 
 

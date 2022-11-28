@@ -10,7 +10,6 @@ ClientSender::ClientSender(Socket &skt_client, BlockingQueue<ServerUpdate *> *qu
 }
 
 void ClientSender::run() {
-    Protocolo p;
     try {
         while (not closed) {
             auto action = actionsQueue->pop();
@@ -21,13 +20,23 @@ void ClientSender::run() {
                 skt_client.sendall(&c, sizeof(c), &closed);
             }
             // delete the action
-            delete action;
+//            delete action; //TODO: Donde deletear?
         }
         running = false;
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
     } catch (...) {
         std::cerr << "Error desconocido en la función sender" << std::endl;
+    }
+}
+
+void ClientSender::sendBytes(uint8_t& size) {
+    if(!closed) {
+        std::string answer_string = create_answer_string(movements);
+
+        uint16_t size_string = htons(answer_string.size());
+        this->skt.sendall(answer_string.c_str(), ntohs(size_string), &was_closed);
+
     }
 }
 

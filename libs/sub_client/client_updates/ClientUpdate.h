@@ -8,6 +8,10 @@
 #include <vector>
 #include <string>
 
+#include "../client_sdl/Car.h"
+#include "../client_sdl/Ball.h"
+#include "../client_sdl/Score.h"
+
 enum updateType {
     CREATE_ACK = 1,
     JOIN_ACK = 2,

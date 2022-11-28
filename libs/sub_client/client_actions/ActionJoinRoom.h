@@ -10,7 +10,6 @@
 class ActionJoinRoom : public ClientAction{
 private:
     std::string roomName;
-    void serializeData();
 public:
     explicit ActionJoinRoom(std::string &roomName);
 

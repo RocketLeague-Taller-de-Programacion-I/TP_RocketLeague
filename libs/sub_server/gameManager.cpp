@@ -34,6 +34,9 @@ bool GameManager::joinGame(uint8_t idCreator, const std::string& nameGame, std::
     } else {
         auto *queueSender = setQueue(games[nameGame]->getQueue());
         games[nameGame]->joinPlayer(idCreator,queueSender);
+        if (games[nameGame]->isRunning()) {
+            games[nameGame]->start();
+        }
     }
     return true;
 }

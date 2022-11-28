@@ -18,6 +18,8 @@ public:
     void update(float dt);
     void render(SDL2pp::Renderer &renderer, const SDL2pp::Rect dest, SDL_RendererFlip &flipType);
 
+    //set texture
+    void setTexture(SDL2pp::Texture &texture);
 
 private:
     void advanceFrame();

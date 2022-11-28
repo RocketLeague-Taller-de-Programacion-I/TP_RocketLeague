@@ -12,9 +12,10 @@
 #include "sub_common/BlockingQueue.h"
 #include "sub_server/server_box2d/Match.h"
 
-#include "server_updates/ServerUpdate.h"
+#include "sub_server/server_updates/ServerUpdateWorld.h"
 #include "sub_server/server_updates/ServerStartedGameACK.h"
-#include "server_actions/ServerAction.h"
+
+#include "server_actions/ServerActionMove.h"
 
 typedef uint8_t idPlayer_t;
 

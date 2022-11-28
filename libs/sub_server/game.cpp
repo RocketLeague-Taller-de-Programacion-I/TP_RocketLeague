@@ -27,26 +27,26 @@ void Game::joinPlayer(uint8_t& id, BlockingQueue<ServerUpdate *> *sender) {
     mapSender.insert(std::pair<uint8_t ,BlockingQueue<ServerUpdate*>*>(id, sender));
     if (playerOnLine == capacity){
         running = true;
-        uint8_t returnCode = OK;
-        ServerUpdate *update = new ServerStartedGameACK(id, returnCode);
-        broadcastUpdate(update);
-        start();
-
+        uint8_t idD =0 , direction = 5;
+        bool state = false;
+        ServerAction *action = new ServerActionMove(idD, direction, state);
+        queue->push(action);
     }
 }
 
 void Game::run() {
-/*
-    std::vector<uint8_t> matchInfo = this->match.matchInfo();
-    ServerUpdateWorld * update = new ServerUpdateWorld(id, matchInfo);
-       broadcastUpdateGameEvents(update);
-     *
-
-
-    while (running) {
-
+    // ActionMove cline [1, RIGHT, on]
+    // ActionMove cline  [2, LEFT, off]
+    std::cout << "Game " << gameName << " started" << std::endl;
+    ServerAction *action;
+    while (!queue->tryPop(action)) {
     }
-         */
+    action->execute(match);
+    match.step();
+    std::vector<int> info = match.info();
+    uint8_t id = 0, returnCode = OK;
+    ServerUpdate* update = new ServerUpdateWorld(id, returnCode, info);
+    broadcastUpdate(update);
 }
 
 bool Game::isFull() const {
@@ -61,6 +61,7 @@ void Game::broadcastUpdate(ServerUpdate *update) {
     for (auto & sender : mapSender) {
         sender.second->push(update);
     }
+//    delete update;
 }
 
 void Game::brodcastUpdateGameEvents(std::vector<ServerUpdate *> updates) {
