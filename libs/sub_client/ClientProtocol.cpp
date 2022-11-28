@@ -16,8 +16,8 @@ ClientUpdate *ClientProtocol::deserializeData(const uint8_t &type, const std::fu
             return parseListUpdate(receiveBytes);
     // case STARTED_GAME_ACK:
        // return parseStartedGameACK(receiveBytes);
-//        case WORLD:
-//            return parseWorldUpdate(receiveBytes);
+        case WORLD:
+            return parseWorldUpdate(receiveBytes);
     }
     return nullptr;
 }
@@ -99,8 +99,7 @@ ClientUpdate *ClientProtocol::parseListUpdate(
 }
 
 // TODO: implement this
-ClientUpdate *ClientProtocol::parseWorldUpdate(const std::vector<uint8_t> &vector,
-                                               const std::function<void(void *, int)> &receiveBytes) {
+ClientUpdate *ClientProtocol::parseWorldUpdate(const std::function<void(void *, int)> &receiveBytes) {
     uint16_t ballX;
     receiveBytes(&ballX, sizeof(ballX));
     ballX = ntohs(ballX);

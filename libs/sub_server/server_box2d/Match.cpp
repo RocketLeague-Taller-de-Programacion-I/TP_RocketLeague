@@ -78,7 +78,7 @@ std::vector<int> Match::info() {
 //    numero de clientes 2 bytes
     data.push_back(htons(this->playersConnected));
 //    cliente 7bytes
-    for ( std::pair<const uint8_t,Car*> &player : players){
+    for ( auto &player : players){
         uint16_t  id = (uint16_t) player.first;
         data.push_back(htons(id));
         x = (uint16_t) (player.second->X() * 1000);

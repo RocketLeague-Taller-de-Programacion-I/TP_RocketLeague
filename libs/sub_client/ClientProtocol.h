@@ -20,8 +20,7 @@ private:
     static ClientUpdate *parseCreateACK(const std::function<void(void *, int)> &receiveBytes);
     static ClientUpdate* parseJoinACK(const std::function<void(void *, int)> &receiveBytes);
     static ClientUpdate* parseListUpdate(const std::function<void(void *, int)> &receiveBytes);
-    static ClientUpdate *parseWorldUpdate(const std::vector<uint8_t> &vector,
-                                          const std::function<void(void *, int)> &receiveBytes);
+    static ClientUpdate *parseWorldUpdate(const std::function<void(void *, int)> &receiveBytes);
 
 public:
 //    static ClientUpdate* deserializeData(const std::vector<uint8_t>& data);

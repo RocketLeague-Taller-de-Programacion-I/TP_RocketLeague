@@ -20,6 +20,10 @@ void ClientSender::run() {
 
             p.serializeUpdate(action);
             // delete the action
+            /*
+             * TODO: cuando hacemos el brodcast en Game usando ServerUpdateWorld
+             * uno de los dos cliente deletea la acion, por lo tanto no puede acceder a la memoria eliminada
+             */
             delete action;
         }
         running = false;
