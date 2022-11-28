@@ -56,6 +56,7 @@ add_library(lib_client
         WaitingForGameToStartThread.cpp
         WaitingForGameToStartThread.h
         client_updates/ClientStartedGameACK.cpp
-        client_updates/ClientStartedGameACK.h)
+        client_updates/ClientStartedGameACK.h
+        client_updates/ClientUpdateWorld.cpp client_updates/ClientUpdateWorld.h client_sdl/Car.cpp client_sdl/Car.h client_sdl/Score.cpp client_sdl/Score.h)
 
 target_link_libraries(lib_client SDL2pp::SDL2pp Qt5::Widgets)

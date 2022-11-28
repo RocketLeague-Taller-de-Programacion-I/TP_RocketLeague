@@ -12,7 +12,7 @@
 #include "sub_client/client_updates/ClientJoinACK.h"
 #include "sub_client/client_updates/ClientListACK.h"
 #include "sub_client/client_updates/ClientStartedGameACK.h"
-
+#include "sub_client/client_updates/ClientUpdateWorld.h"
 #include "sub_client/client_actions/ClientAction.h"
 
 class ClientProtocol {
@@ -20,7 +20,8 @@ private:
     static ClientUpdate *parseCreateACK(const std::function<void(void *, int)> &receiveBytes);
     static ClientUpdate* parseJoinACK(const std::function<void(void *, int)> &receiveBytes);
     static ClientUpdate* parseListUpdate(const std::function<void(void *, int)> &receiveBytes);
-    static ClientUpdate* parseWorldUpdate(const std::vector<uint8_t> &vector);
+    static ClientUpdate *parseWorldUpdate(const std::vector<uint8_t> &vector,
+                                          const std::function<void(void *, int)> &receiveBytes);
 
 public:
 //    static ClientUpdate* deserializeData(const std::vector<uint8_t>& data);

@@ -69,9 +69,9 @@ std::vector<int> Match::info() {
     std::vector<int> data;
     //    bola -> 4bytes
     uint16_t x = (uint16_t) (this->ball->X() * 1000);
-    data.push_back(htons(x)); // 2do byte
+    data.push_back(htons(x));
     uint16_t y = (uint16_t) (this->ball->Y() * 1000);
-    data.push_back(htons(y)); //  1er byte
+    data.push_back(htons(y));
 //    score -> 4bytes
     data.push_back(htons(this->goalsLocal));
     data.push_back(htons(this->goalsVisit));
@@ -79,12 +79,13 @@ std::vector<int> Match::info() {
     data.push_back(htons(this->playersConnected));
 //    cliente 7bytes
     for ( std::pair<const uint8_t,Car*> &player : players){
-        data.push_back(htons(player.first));
+        uint16_t  id = (uint16_t) player.first;
+        data.push_back(htons(id));
         x = (uint16_t) (player.second->X() * 1000);
-        data.push_back(htons(x)); //  1er byte
+        data.push_back(htons(x));
 
         y = (uint16_t) (player.second->Y() * 1000);
-        data.push_back(htons(y)); //  1er byte
+        data.push_back(htons(y));
 
         uint16_t angle = (uint16_t) abs(player.second->angleDeg() * 1000);
         // get sign bit from angle

@@ -99,8 +99,50 @@ ClientUpdate *ClientProtocol::parseListUpdate(
 }
 
 // TODO: implement this
-ClientUpdate *ClientProtocol::parseWorldUpdate(const std::vector<uint8_t> &vector) {
-    return nullptr;
+ClientUpdate *ClientProtocol::parseWorldUpdate(const std::vector<uint8_t> &vector,
+                                               const std::function<void(void *, int)> &receiveBytes) {
+    uint16_t ballX;
+    receiveBytes(&ballX, sizeof(ballX));
+    ballX = ntohs(ballX);
+    uint16_t ballY;
+    receiveBytes(&ballY, sizeof(ballY));
+    ballY = ntohs(ballY);
+    Ball ball(ballX, ballY);
+    //  Score
+    uint16_t local;
+    receiveBytes(&local, sizeof(local));
+    local = ntohs(local);
+    uint16_t visit;
+    receiveBytes(&visit, sizeof(visit));
+    visit = ntohs(visit);
+    Score score(local, visit);
+    //  n_clients
+    uint16_t n_clients;
+    receiveBytes(&n_clients, sizeof(n_clients));
+    n_clients = ntohs(local);
+    std::vector<Car> clientCars;
+    //  CLients
+    //  TODO: Vector de Cars
+    for (unsigned int i = 0; i<=n_clients; i++) {
+        uint16_t id;
+        receiveBytes(&id, sizeof(id));
+        id = ntohs(id);
+        uint16_t x;
+        receiveBytes(&x, sizeof(x));
+        x = ntohs(x);
+        uint16_t y;
+        receiveBytes(&y, sizeof(y));
+        y = ntohs(y);
+        uint16_t angleSign;
+        receiveBytes(&angleSign, sizeof(angleSign));
+        angleSign = ntohs(angleSign);
+        uint16_t angle;
+        receiveBytes(&angle, sizeof(angleSign));
+        angle = ntohs(angle);
+        Car car(id, x, y, angleSign, angle);
+        clientCars.emplace_back(car);
+    }
+    return new ClientUpdateWorld(ball, score, clientCars);
 }
 
 ClientUpdate *ClientProtocol::parseStartedGameACK(const std::function<void(std::vector<uint8_t> &, uint8_t &)> &function) {
