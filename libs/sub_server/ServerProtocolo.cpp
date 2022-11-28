@@ -107,10 +107,4 @@ void Protocolo::serializeServerListACK(ServerListACK *update) {
 }
 
 void Protocolo::serializeWorldUpdate(ServerUpdate *update) {
-
-    std::vector<uint8_t> result;
-    //TODO: cambiar el UPDATE
-    result.emplace_back(1);
-    result.insert(result.end(), update.begin(), update.end());
-    return result;
 }

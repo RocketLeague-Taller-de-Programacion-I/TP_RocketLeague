@@ -59,7 +59,34 @@ void Match::moveRight(uint8_t &id, std::function<void(ServerUpdate* )> function)
     this->players.at(id)->startMovingRight();
     // update
 }
-void Match::info() {
+std::vector<uint16_t> Match::info() {
+    std::vector<uint16_t> data;
+    //    bola -> 4bytes
+    uint16_t x = (uint16_t) (this->ball->X() * 1000);
+    data.push_back(htons(x)); // 2do byte
+    uint16_t y = (uint16_t) (this->ball->Y() * 1000);
+    data.push_back(htons(y)); //  1er byte
+//    score -> 4bytes
+    data.push_back(htons(this->goalsLocal));
+    data.push_back(htons(this->goalsVisit));
+//    numero de clientes 2 bytes
+    data.push_back(htons(this->playersConnected));
+//    cliente 7bytes
+    for ( std::pair<const uint8_t,Car*> &player : players){
+        data.push_back(htons(player.first));
+        x = (uint16_t) (player.second->X() * 1000);
+        data.push_back(htons(x)); //  1er byte
+
+        y = (uint16_t) (player.second->Y() * 1000);
+        data.push_back(htons(y)); //  1er byte
+
+        uint16_t angle = (uint16_t) abs(player.second->angleDeg() * 1000);
+        // get sign bit from angle
+        uint8_t sign = (player.second->angleDeg() < 0) ? 1 : 0;
+        data.push_back(htons(sign));
+        data.push_back(htons(angle)); //  1er byte
+    }
+    return data;
 }
 void Match::moveLeft(uint8_t &id, std::function<void(ServerUpdate* )> function) {
     this->players.at(id)->startMovingLeft();

@@ -39,7 +39,7 @@ public:
     ~Match();
     void addPlayer(uint8_t &id);
     void moveRight(uint8_t  &id, std::function<void(ServerUpdate* )> function);
-    void info();
+    std::vector<uint16_t> info();
     void moveLeft(uint8_t &id, std::function<void(ServerUpdate* )> function);
     void jump(uint8_t &id, std::function<void(ServerUpdate* )> function);
     void checkGoals();
