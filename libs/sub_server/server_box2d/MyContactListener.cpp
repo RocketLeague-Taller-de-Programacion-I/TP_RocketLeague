@@ -10,7 +10,7 @@ MyContactListener::MyContactListener() {
 }
 MyContactListener::~MyContactListener()  = default;
 void MyContactListener::BeginContact(b2Contact* contact) {
-    std::cout<<"Begin contact"<<std::endl;
+
 }
 
 void MyContactListener::EndContact(b2Contact* contact) {

@@ -2,54 +2,63 @@
 // Created by roby on 22/11/22.
 //
 
+#include <netinet/in.h>
 #include "ClientProtocol.h"
 
-ClientUpdate *ClientProtocol::deserializeData(const uint8_t &type, const std::function<void(std::vector<uint8_t>&, uint8_t&)> &receiveBytes) {
+ClientUpdate *ClientProtocol::deserializeData(const uint16_t &type, const std::function<void(void *,
+                                                                                             int &)> &receiveBytes) {
     //type is sent as first byte (by server)
     switch (type) {
         case CREATE_ACK:
             return parseCreateACK(receiveBytes);
-        case JOIN_ACK:
-            return parseJoinACK(receiveBytes);
-        case LIST_INFO:
-            return parseListUpdate(receiveBytes);
-    case STARTED_GAME_ACK:
-        return parseStartedGameACK(receiveBytes);
+        // case JOIN_ACK:
+            //return parseJoinACK(receiveBytes);
+      //  case LIST_INFO:
+         //   return parseListUpdate(receiveBytes);
+    // case STARTED_GAME_ACK:
+       // return parseStartedGameACK(receiveBytes);
 //        case WORLD:
 //            return parseWorldUpdate(receiveBytes);
     }
     return nullptr;
 }
 
-ClientUpdate *ClientProtocol::parseCreateACK(const std::function<void(std::vector<uint8_t> &, uint8_t &)> &receiveBytes) {
+ClientUpdate *ClientProtocol::parseCreateACK(
+        const std::function<void(void *, int &)> &receiveBytes) {
 
-    std::vector<uint8_t> id_and_returncode(2);
-    uint8_t size = id_and_returncode.size();
-    receiveBytes(id_and_returncode, size);
-
-    return new ClientCreateACK(id_and_returncode[0], id_and_returncode[1]);
+    uint16_t id;
+    uint16_t returnCode;
+    auto size = int (sizeof(id));
+    receiveBytes(&id, size);
+    receiveBytes(&returnCode, size);
+    id = ntohs(id);
+    returnCode = ntohs(returnCode);
+    return new ClientCreateACK(reinterpret_cast<uint8_t &>(id),
+                               reinterpret_cast<uint8_t &>(returnCode));
     //CreateACK -> CreateACK(id,returnCode) returnCode = 1 OK, 2 ERROR_Existe
 }
 
-ClientUpdate *ClientProtocol::deserializeCreateACK(const std::vector<uint8_t> &data) {
-    uint8_t id = data[1];
-    uint8_t returnCode = data[2];
-    return new ClientCreateACK(id, returnCode);
+ClientUpdate *ClientProtocol::deserializeCreateACK(const std::vector<uint16_t> &data) {
+    uint16_t id = data[1];
+    uint16_t returnCode = data[2];
+    return new ClientCreateACK(reinterpret_cast<uint8_t &>(id), reinterpret_cast<uint8_t &>(returnCode));
     //CreateACK -> CreateACK(id,returnCode) returnCode = 1 OK, 2 ERROR_Existe
 }
 
-ClientUpdate *ClientProtocol::parseJoinACK(const std::function<void(std::vector<uint8_t> &, uint8_t &)> &receiveBytes) {
-    std::vector<uint8_t> id_and_returncode(2);
-    uint8_t size = id_and_returncode.size();
+ClientUpdate *ClientProtocol::parseJoinACK(const std::function<void(std::vector<uint16_t> &, uint16_t &)> &receiveBytes) {
+    std::vector<uint16_t> id_and_returncode(2);
+    uint16_t size = id_and_returncode.size();
     receiveBytes(id_and_returncode, size);
 
-    return new ClientJoinACK(id_and_returncode[0], id_and_returncode[1]);
+    return new ClientJoinACK(reinterpret_cast<uint8_t &>(id_and_returncode[0]),
+                             reinterpret_cast<uint8_t &>(id_and_returncode[1]));
     //JoinAck -> JoinAck(id,returnCode) returnCode = 1 OK, 2 ERROR_LLENO
 }
-
-ClientUpdate *ClientProtocol::parseListUpdate(const std::function<void(std::vector<uint8_t> &, uint8_t &)> &receiveBytes) {
-    std::vector<uint8_t> id_and_returncode(2);
-    uint8_t size = id_and_returncode.size();
+/*
+ClientUpdate *ClientProtocol::parseListUpdate(
+        const std::function<void(std::vector<uint16_t> &, uint16_t &)> &receiveBytes) {
+    std::vector<uint16_t> id_and_returncode(2);
+    uint16_t size = id_and_returncode.size();
     receiveBytes(id_and_returncode, size);
 
     if (id_and_returncode[1] == ERROR_FULL) {
@@ -86,7 +95,7 @@ ClientUpdate *ClientProtocol::parseListUpdate(const std::function<void(std::vect
     //ListInfo -> ListInfo(id,lista)
 }
 
-
+*/
 // TODO: implement this
 ClientUpdate *ClientProtocol::parseWorldUpdate(const std::vector<uint8_t> &vector) {
     return nullptr;

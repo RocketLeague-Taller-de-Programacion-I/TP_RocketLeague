@@ -27,7 +27,7 @@ void Game::joinPlayer(uint8_t& id, BlockingQueue<ServerUpdate *> *sender) {
     mapSender.insert(std::pair<uint8_t ,BlockingQueue<ServerUpdate*>*>(id, sender));
     if (playerOnLine == capacity){
         running = true;
-        uint8_t returnCode = OK;
+        uint16_t returnCode = OK;
         ServerUpdate *update = new ServerStartedGameACK(id, returnCode);
         broadcastUpdate(update);
         start();

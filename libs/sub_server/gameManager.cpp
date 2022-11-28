@@ -38,7 +38,7 @@ bool GameManager::joinGame(uint8_t idCreator, const std::string& nameGame, std::
     return true;
 }
 
-uint8_t GameManager::listGames(uint8_t &id, std::vector<uint8_t> &listData) {
+uint16_t GameManager::listGames(uint8_t &id, std::vector<uint16_t> &listData) {
     std::unique_lock<std::mutex> lock(this->mutex);
     if (this->games.empty()) { return 0; }
 

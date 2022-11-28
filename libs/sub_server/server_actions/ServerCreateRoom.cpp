@@ -10,7 +10,7 @@ ServerCreateRoom::ServerCreateRoom(const uint8_t &id, uint8_t &capacity, std::st
 ServerUpdate * ServerCreateRoom::execute(GameManager &manager, const std::function<BlockingQueue<ServerUpdate *> *(
         ProtectedQueue<ServerAction *> *)> &setQueue) {
 
-    uint8_t returnCode = manager.createGame(id, capacity, roomName, setQueue) ? OK : ERROR_FULL;
+    uint16_t returnCode = manager.createGame(id, capacity, roomName, setQueue) ? OK : ERROR_FULL;
 //    return new ServerCreateACK(id, returnMessage);
     return new ServerCreateACK(id, returnCode);
 }

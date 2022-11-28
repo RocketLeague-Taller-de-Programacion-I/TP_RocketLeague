@@ -10,6 +10,6 @@ ServerJoinRoom::ServerJoinRoom(const uint8_t &id, std::string &data) : ServerAct
 ServerUpdate * ServerJoinRoom::execute(GameManager &manager, const std::function<BlockingQueue<ServerUpdate *> *(
         ProtectedQueue<ServerAction *> *)> &setQueue) {
 
-    uint8_t returnCode = manager.joinGame(id, roomName, setQueue) ? OK : ERROR_FULL;
+    uint16_t returnCode = manager.joinGame(id, roomName, setQueue) ? OK : ERROR_FULL;
     return new ServerJoinACK(id, returnCode);
 }

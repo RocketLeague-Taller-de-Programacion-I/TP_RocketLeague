@@ -15,9 +15,9 @@ void ClientSender::run() {
         while (not closed) {
             auto action = actionsQueue->pop();
 //            std::vector<uint8_t> v = p.serializeAction(action);
-            std::vector<uint8_t> v = action->beSerialized();
+            std::vector<uint16_t> v = action->beSerialized();
             //  se iteran los comandos parseados y se envian al servidor
-            for (uint8_t c : v) {
+            for (uint16_t c : v) {
                 skt_client.sendall(&c, sizeof(c), &closed);
             }
             // delete the action

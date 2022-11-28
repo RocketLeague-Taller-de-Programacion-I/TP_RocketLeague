@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <string>
 #include <vector>
+#include <netinet/in.h>
 
 enum upodate_type { // TODO: cambiarles el nombre?
     CREATE_ACK = 1,
@@ -26,15 +27,15 @@ class ServerUpdate {
 protected:
     uint8_t id;
     uint8_t returnCode;
-    std::vector<uint8_t> returnData;
+    std::vector<uint16_t> returnData;
 public:
-    ServerUpdate(const uint8_t &id, uint8_t& returnCode) : id(id), returnCode(returnCode) {};
-    ServerUpdate(uint8_t &id, uint8_t &returnCode, std::vector<uint8_t> &returnData) : id(id), returnCode(returnCode), returnData(returnData) {};
+    ServerUpdate(const uint16_t &id, uint16_t &returnCode) : id(id), returnCode(returnCode) {};
+    ServerUpdate(uint16_t &id, uint16_t &returnCode, std::vector<uint16_t> &returnData) : id(id), returnCode(returnCode), returnData(returnData) {};
     virtual ~ServerUpdate() = default;
 
-    virtual std::uint8_t getType() const = 0; //TODO> to change name or remove
-    virtual uint8_t getReturnCode() const { return returnCode; };
-    virtual std::vector<uint8_t> beSerialized() = 0;
+    virtual uint16_t getType() const = 0; //TODO> to change name or remove
+    virtual uint16_t getReturnCode() const { return returnCode; };
+    virtual std::vector<uint16_t> beSerialized() = 0;
 };
 
 

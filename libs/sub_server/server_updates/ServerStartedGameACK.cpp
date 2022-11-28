@@ -4,14 +4,14 @@
 
 #include "ServerStartedGameACK.h"
 
-std::vector<uint8_t> ServerStartedGameACK::beSerialized() {
-    std::vector<uint8_t> startedGameACKData;
-    startedGameACKData.push_back(getType());
-    startedGameACKData.push_back(id);
-    startedGameACKData.push_back(returnCode);
+std::vector<uint16_t> ServerStartedGameACK::beSerialized() {
+    std::vector<uint16_t> startedGameACKData;
+    startedGameACKData.push_back(htons(getType()));
+    startedGameACKData.push_back(htons(id));
+    startedGameACKData.push_back(htons(returnCode));
     return startedGameACKData;
 }
 
-uint8_t ServerStartedGameACK::getType() const {
+uint16_t ServerStartedGameACK::getType() const {
     return STARTED_GAME_ACK;
 }

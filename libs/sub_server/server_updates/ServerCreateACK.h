@@ -9,11 +9,11 @@
 
 class ServerCreateACK : public ServerUpdate{
 public:
-    ServerCreateACK(const uint8_t &id, uint8_t& returnCode) : ServerUpdate(id, returnCode){};
+    ServerCreateACK(const uint16_t &id, uint16_t &returnCode) : ServerUpdate(id, returnCode){};
     ~ServerCreateACK() override = default;
 
-    uint8_t getType() const override;
-    std::vector<uint8_t> beSerialized() override;
+    uint16_t getType() const override;
+    std::vector<uint16_t> beSerialized() override;
 
 };
 

@@ -25,7 +25,7 @@ public:
     ProtectedQueue<ClientUpdate*> &updatesQueue;
     explicit UpdatesReceiverThread(Socket &skt_client, ProtectedQueue<ClientUpdate*> &updatesQueue);
 
-    void receiveBytes(std::vector<uint8_t> &bytes_to_read, uint8_t &size);
+    void receiveBytes(void *bytes_to_read, int &size);
 
     void stop() override;
 };
