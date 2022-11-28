@@ -32,7 +32,7 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(QWidget *parent = nullptr);
-    MainWindow(QWidget *parent, ProtectedQueue<ClientUpdate*> &updates, BlockingQueue<ClientAction *> &actions);
+    MainWindow(QWidget *parent, ProtectedQueue<std::shared_ptr<ClientUpdate>> &updates, BlockingQueue<std::shared_ptr<ClientAction>> &actions);
     ~MainWindow();
 
     void displayMainMenu();
@@ -49,8 +49,8 @@ public slots:
 private:
     Ui::MainWindow *ui;
     QGraphicsScene scene;
-    ProtectedQueue<ClientUpdate*> &updatesQueue;
-    BlockingQueue<ClientAction*> &actionsQueue;
+    ProtectedQueue<std::shared_ptr<ClientUpdate>> &updatesQueue;
+    BlockingQueue<std::shared_ptr<ClientAction>> &actionsQueue;
 
     void drawGUI();
 

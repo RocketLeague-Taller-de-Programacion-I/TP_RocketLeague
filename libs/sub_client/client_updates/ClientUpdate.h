@@ -5,8 +5,12 @@
 #ifndef ROCKETLEAGUE_CLIENTUPDATE_H
 #define ROCKETLEAGUE_CLIENTUPDATE_H
 
+#include <map>
 #include <vector>
 #include <string>
+#include "sub_client/client_sdl/Ball.h"
+#include "sub_client/client_sdl/Score.h"
+#include "sub_client/client_sdl/Car.h"
 
 enum updateType {
     CREATE_ACK = 1,
@@ -37,6 +41,10 @@ public:
     virtual std::vector<uint8_t> getData() const { return returnData;};
     virtual uint8_t getReturnCode() const { return returnCode;};
     virtual uint8_t getType() const = 0;
+    virtual Ball getBall() ;
+    virtual Score getScore() ;
+    virtual std::vector<Car> getCars() ;
+    virtual std::map<std::string, std::string> getList();
 };
 
 

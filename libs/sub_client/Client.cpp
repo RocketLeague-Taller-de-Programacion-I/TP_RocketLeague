@@ -21,14 +21,10 @@ void Client::startThreads() {
 
 void Client::run() {
     try {
-        // create actions queue
-//        BlockingQueue<Action*> actionsQueue;
-        BlockingQueue<ClientAction*> actionsQueue;
-        // create updates queue
-//        ProtectedQueue<Action*> updatesQueue;
-        ProtectedQueue<ClientUpdate*> updatesQueue;
-        //launch ClientSender thread
-//        auto sender = new ClientSender(skt_client, actionsQueue);
+
+        BlockingQueue<std::shared_ptr<ClientAction>> actionsQueue;
+        ProtectedQueue<std::shared_ptr<ClientUpdate>> updatesQueue;
+
         auto sender = new ThreadActionsSender(skt_client, actionsQueue);
         this->threads.push_back(sender);
         //launch ClientReceiver thread

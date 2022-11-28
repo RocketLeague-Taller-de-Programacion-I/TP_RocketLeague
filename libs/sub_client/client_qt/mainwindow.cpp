@@ -5,7 +5,7 @@
 #include <iostream>
 #include <regex>
 
-MainWindow::MainWindow(QWidget *parent, ProtectedQueue<ClientUpdate*> &updates, BlockingQueue<ClientAction *> &actions)
+MainWindow::MainWindow(QWidget *parent, ProtectedQueue<std::shared_ptr<ClientUpdate>> &updates, BlockingQueue<std::shared_ptr<ClientAction>> &actions)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , updatesQueue(updates)
@@ -61,10 +61,11 @@ void MainWindow::drawJoinGameMenu() {
     this->scene.clear();
 
     drawTitle("Join Game");
-    ClientAction* action = new ActionListRooms();
+    std::shared_ptr<ClientAction> action = std::make_shared<ActionListRooms>();
     this->actionsQueue.push(action);
+
     //list all the games
-    ClientUpdate* update;
+    std::shared_ptr<ClientUpdate> update;
     while (!updatesQueue.tryPop(update)) {
         //  wait for list updates
     }
@@ -76,7 +77,7 @@ void MainWindow::drawJoinGameMenu() {
         this->scene.addWidget(label);
 
     } else {
-        std::map<std::string,std::string> games = dynamic_cast<ClientListACK*>(update)->getList();
+        std::map<std::string,std::string> games = update->getList();
         int i = 200;
                 foreach(auto game, games) {
                 QString name = QString::fromStdString(game.first);
@@ -100,7 +101,8 @@ void MainWindow::createRoom() {
     std::string roomName = this->lineEdit->text().toStdString();
     uint8_t players = this->cantPlayers->value();
 //    Action* actionCreate = new ActionCreate(id, players, roomName);
-    ClientAction* actionCreate = new ActionCreateRoom(players, roomName);
+    std::shared_ptr<ClientAction> actionCreate = std::make_shared<ActionCreateRoom>(players, roomName);
+    //ClientAction* actionCreate = new ActionCreateRoom(players, roomName);
     this->actionsQueue.push(actionCreate);
     popFirstUpdate(); //pop CreateACK
     drawLoadingScreen();
@@ -113,7 +115,8 @@ void MainWindow::joinParticularGame(QString roomName) {
     // crear evento de join ()
     std::string room = retrieveGameName(roomName.toStdString());
     std::cout << "Joining to " << room << std::endl;
-    ClientAction *actionJoin = new ActionJoinRoom(room);
+    std::shared_ptr<ClientAction> actionJoin = std::make_shared<ActionJoinRoom>(room);
+    // ClientAction *actionJoin = new ActionJoinRoom(room);
     this->actionsQueue.push(actionJoin);
 
     // popFirstUpdate(); //pop JoinACK
@@ -255,7 +258,7 @@ void MainWindow::drawLoadingScreen() {
 }
 
 void MainWindow::popFirstUpdate() {
-    ClientUpdate* update;
+    std::shared_ptr<ClientUpdate> update;
     bool popping = true;
     while (popping) {
         //  wait for updates
@@ -276,7 +279,6 @@ void MainWindow::popFirstUpdate() {
     if(update->getReturnCode()) {
         drawGUI();
     }
-    delete update;
 }
 
 std::string MainWindow::retrieveGameName(const std::string& basicString) {
@@ -285,12 +287,9 @@ std::string MainWindow::retrieveGameName(const std::string& basicString) {
     std::smatch match;
 
     std::regex_search(basicString, match, re);
-
-//    std::string name = match.str().empty() ? "no name" : match.str();
-    //std::string name = data.substr(0, data.find(match.str()));
-    // result.insert(result.end(), name.begin(), name.end());
     std::string name = match.str().empty() ? "no name" : match.str();
     std::string stripped = name.substr(0, name.find_last_of(' '));
+
     return stripped;
 }
 

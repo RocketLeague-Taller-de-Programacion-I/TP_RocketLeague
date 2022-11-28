@@ -3,9 +3,10 @@
 //
 
 #include <netinet/in.h>
+#include <memory>
 #include "ClientProtocol.h"
 
-ClientUpdate *ClientProtocol::deserializeData(const uint8_t &type, const std::function<void(void *, int)> &receiveBytes) {
+std::shared_ptr<ClientUpdate> ClientProtocol::deserializeData(const uint8_t &type, const std::function<void(void *, int)> &receiveBytes) {
     //type is sent as first byte (by server)
     switch (type) {
         case CREATE_ACK:
@@ -22,7 +23,7 @@ ClientUpdate *ClientProtocol::deserializeData(const uint8_t &type, const std::fu
     return nullptr;
 }
 
-ClientUpdate *ClientProtocol::parseCreateACK(
+std::shared_ptr<ClientUpdate> ClientProtocol::parseCreateACK(
         const std::function<void(void *, int)> &receiveBytes) {
 
     uint8_t id;
@@ -31,30 +32,31 @@ ClientUpdate *ClientProtocol::parseCreateACK(
     uint8_t returnCode;
     receiveBytes(&returnCode, sizeof(returnCode));
 
-    return new ClientCreateACK(id, returnCode);
-    //CreateACK -> CreateACK(id,returnCode) returnCode = 1 OK, 2 ERROR_Existe
+    std::shared_ptr<ClientUpdate> update = std::make_shared<ClientCreateACK>(id, returnCode);
+    return update;
 }
 
-ClientUpdate *ClientProtocol::deserializeCreateACK(const std::vector<uint16_t> &data) {
+/*std::shared_ptr<ClientUpdate> ClientProtocol::deserializeCreateACK(const std::vector<uint16_t> &data) {
     uint16_t id = data[1];
     uint16_t returnCode = data[2];
+    std::shared_ptr<ClientUpdate> update = std::make_shared<ClientCreateACK>(id, returnCode);
+    return update;
     return new ClientCreateACK(reinterpret_cast<uint8_t &>(id), reinterpret_cast<uint8_t &>(returnCode));
     //CreateACK -> CreateACK(id,returnCode) returnCode = 1 OK, 2 ERROR_Existe
-}
+}*/
 
-ClientUpdate *ClientProtocol::parseJoinACK(const std::function<void(void *, int)> &receiveBytes) {
+std::shared_ptr<ClientUpdate> ClientProtocol::parseJoinACK(const std::function<void(void *, int)> &receiveBytes) {
     uint8_t id;
     receiveBytes(&id, sizeof(id));
 
     uint8_t returnCode;
     receiveBytes(&returnCode, sizeof(returnCode));
 
-
-    return new ClientJoinACK(id, returnCode);
-    //JoinAck -> JoinAck(id,returnCode) returnCode = 1 OK, 2 ERROR_LLENO
+    std::shared_ptr<ClientUpdate> update = std::make_shared<ClientJoinACK>(id, returnCode);
+    return update;
 }
 
-ClientUpdate *ClientProtocol::parseListUpdate(
+std::shared_ptr<ClientUpdate> ClientProtocol::parseListUpdate(
         const std::function<void(void *, int)> &receiveBytes) {
     uint8_t id;
     receiveBytes(&id, sizeof(id));
@@ -65,7 +67,8 @@ ClientUpdate *ClientProtocol::parseListUpdate(
 
     if (returnCode == ERROR_FULL) {
         std::map<std::string,std::string> games;
-        return new ClientListACK(id, returnCode, games);
+        std::shared_ptr<ClientUpdate> update = std::make_shared<ClientListACK>(id, returnCode, games);
+        return update;
     }
 
     uint8_t cantGames;
@@ -94,12 +97,12 @@ ClientUpdate *ClientProtocol::parseListUpdate(
     receiveBytes(&test, sizeof(test));
     test = ntohs(test);
 
-    return new ClientListACK(id, returnCode, games);
-    //ListInfo -> ListInfo(id,lista)
+    std::shared_ptr<ClientUpdate> update = std::make_shared<ClientListACK>(id, returnCode, games);
+    return update;
 }
 
 // TODO: implement this
-ClientUpdate *ClientProtocol::parseWorldUpdate(const std::function<void(void *, int)> &receiveBytes) {
+std::shared_ptr<ClientUpdate> ClientProtocol::parseWorldUpdate(const std::function<void(void *, int)> &receiveBytes) {
     uint16_t ballX;
     receiveBytes(&ballX, sizeof(ballX));
     ballX = ntohs(ballX);
@@ -141,13 +144,17 @@ ClientUpdate *ClientProtocol::parseWorldUpdate(const std::function<void(void *, 
         Car car(id, x, y, angleSign, angle);
         clientCars.emplace_back(car);
     }
-    return new ClientUpdateWorld(ball, score, clientCars);
+
+    std::shared_ptr<ClientUpdate> update = std::make_shared<ClientUpdateWorld>(ball, score, clientCars);
+    return update;
 }
 
-ClientUpdate *ClientProtocol::parseStartedGameACK(const std::function<void(std::vector<uint8_t> &, uint8_t &)> &function) {
+std::shared_ptr<ClientUpdate>
+ClientProtocol::parseStartedGameACK(const std::function<void(std::vector<uint8_t> &, uint8_t &)> &function) {
     std::vector<uint8_t> id_and_returncode(2);
     uint8_t size = id_and_returncode.size();
     function(id_and_returncode, size);
 
-    return new ClientStartedGameACK(id_and_returncode[0], id_and_returncode[1]);
+    std::shared_ptr<ClientUpdate> update = std::make_shared<ClientStartedGameACK>(id_and_returncode[0], id_and_returncode[1]);
+    return update;
 }

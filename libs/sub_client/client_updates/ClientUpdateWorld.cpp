@@ -3,3 +3,15 @@
 //
 
 #include "ClientUpdateWorld.h"
+
+Ball ClientUpdateWorld::getBall() {
+    return ball;
+}
+
+std::vector<Car> ClientUpdateWorld::getCars() {
+    return cars;
+}
+
+Score ClientUpdateWorld::getScore() {
+    return score;
+}

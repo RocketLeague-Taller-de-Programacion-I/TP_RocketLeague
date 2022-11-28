@@ -26,8 +26,8 @@
 class RenderThread : public Thread {
 private:
 protected:
-    ProtectedQueue<ClientUpdate*> &updatesQueue;
-    BlockingQueue<ClientAction*> &actionsQueue;
+    ProtectedQueue<std::shared_ptr<ClientUpdate>> &updatesQueue;
+    BlockingQueue<std::shared_ptr<ClientAction>> &actionsQueue;
     std::map<std::string,SDL2pp::Texture*> textures;
     void run() override;
 public:
@@ -35,7 +35,7 @@ public:
     explicit RenderThread();
     ~RenderThread() override;
 
-    RenderThread(ProtectedQueue<ClientUpdate*> &updates, BlockingQueue<ClientAction *> &actionsQueue);
+    RenderThread(ProtectedQueue<std::shared_ptr<ClientUpdate>> &updates, BlockingQueue<std::shared_ptr<ClientAction>> &actionsQueue);
 };
 
 #endif  //  ROCKETLEAGUE_RENDERTHREAD_H

@@ -18,9 +18,9 @@ private:
 protected:
     void run() override;
 public:
-    BlockingQueue<ClientAction*> &actionsQueue;
+    BlockingQueue<std::shared_ptr<ClientAction>> &actionsQueue;
 
-    explicit ThreadActionsSender(Socket &skt_client, BlockingQueue <ClientAction*> &actionsQueue);
+    explicit ThreadActionsSender(Socket &skt_client, BlockingQueue<std::shared_ptr<ClientAction>> &actionsQueue);
     ~ThreadActionsSender() override;
     void stop() override;
 };

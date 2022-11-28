@@ -4,3 +4,18 @@
 
 #include "ClientUpdate.h"
 
+Ball ClientUpdate::getBall() {
+    return Ball(0, 0);
+}
+
+Score ClientUpdate::getScore() {
+    return Score();
+}
+
+std::vector<Car> ClientUpdate::getCars() {
+    return std::vector<Car>();
+}
+
+std::map<std::string, std::string> ClientUpdate::getList() {
+    return std::map<std::string, std::string>();
+}

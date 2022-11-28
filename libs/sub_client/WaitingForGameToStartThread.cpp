@@ -5,7 +5,7 @@
 #include "WaitingForGameToStartThread.h"
 
 void WaitingForGameToStartThread::run() {
-    ClientUpdate* update; //startedGameACK
+    std::shared_ptr<ClientUpdate> update; //startedGameACK
     bool popping = true;
     while (popping) {
         //  wait for updates
@@ -16,7 +16,6 @@ void WaitingForGameToStartThread::run() {
         }
     }
     std::cout << "Starting Game" << std::endl;
-    delete update;
     stop();
 }
 

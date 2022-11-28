@@ -12,12 +12,12 @@
 class WaitingForGameToStartThread : public Thread {
 private:
     MainWindow* mainWindow;
-    ProtectedQueue<ClientUpdate*> &updatesQueue;
+    ProtectedQueue<std::shared_ptr<ClientUpdate>> &updatesQueue;
 protected:
     void run() override;
 public:
     void stop() override;
-    WaitingForGameToStartThread(MainWindow *window, ProtectedQueue<ClientUpdate *> &queue) : mainWindow(window), updatesQueue(queue) {};
+    WaitingForGameToStartThread(MainWindow *window, ProtectedQueue<std::shared_ptr<ClientUpdate>> &queue) : mainWindow(window), updatesQueue(queue) {};
     explicit WaitingForGameToStartThread();
 
     ~WaitingForGameToStartThread() override { join(); };

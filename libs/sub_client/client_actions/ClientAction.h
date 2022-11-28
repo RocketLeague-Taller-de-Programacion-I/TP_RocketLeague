@@ -26,6 +26,10 @@ enum direction {
     DOWN_D,
     TURBO_D
 } ;
+enum state : bool {
+    ON = true,
+    OFF = false
+};
 
 class ClientAction {
 protected:

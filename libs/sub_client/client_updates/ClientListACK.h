@@ -16,7 +16,7 @@ public:
     ~ClientListACK() = default;
 
     uint8_t getType() const override { return LIST_INFO; };
-    std::map<std::string, std::string> getList();
+    std::map<std::string, std::string> getList() override;
 };
 
 

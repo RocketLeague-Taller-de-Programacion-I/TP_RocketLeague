@@ -22,8 +22,8 @@ private:
 protected:
     void run() override;
 public:
-    ProtectedQueue<ClientUpdate*> &updatesQueue;
-    explicit UpdatesReceiverThread(Socket &skt_client, ProtectedQueue<ClientUpdate*> &updatesQueue);
+    ProtectedQueue<std::shared_ptr<ClientUpdate>> &updatesQueue;
+    explicit UpdatesReceiverThread(Socket &skt_client, ProtectedQueue<std::shared_ptr<ClientUpdate>> &updatesQueue);
 
     void receiveBytes(void *bytes_to_read, int size);
 
