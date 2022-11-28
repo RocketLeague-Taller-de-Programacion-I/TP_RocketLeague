@@ -3,6 +3,7 @@
 //
 
 #include "Match.h"
+#include "sub_server/server_actions/ServerAction.h"
 
 #include <utility>
 #include <list>
@@ -55,12 +56,17 @@ void Match::step() {
     //  enviar a todos los clientes la respuesta
 }
 
-void Match::moveRight(uint8_t &id, std::function<void(ServerUpdate* )> function) {
-    this->players.at(id)->startMovingRight();
-    // update
+void Match::moveRight(uint8_t &id, bool state) {
+    if(state == ON) {
+        this->players.at(id)->startMovingRight();
+    } else {
+        this->players.at(id)->stopMovingRight();
+    }
+    // info(
 }
-std::vector<uint16_t> Match::info() {
-    std::vector<uint16_t> data;
+// TODO: mover implementacion de bytes a protocolo o beSerizlized
+std::vector<int> Match::info() {
+    std::vector<int> data;
     //    bola -> 4bytes
     uint16_t x = (uint16_t) (this->ball->X() * 1000);
     data.push_back(htons(x)); // 2do byte
@@ -88,11 +94,23 @@ std::vector<uint16_t> Match::info() {
     }
     return data;
 }
-void Match::moveLeft(uint8_t &id, std::function<void(ServerUpdate* )> function) {
-    this->players.at(id)->startMovingLeft();
+void Match::moveLeft(uint8_t &id, bool state) {
+    if(state == ON) {
+        this->players.at(id)->startMovingLeft();
+    } else {
+        this->players.at(id)->stopMovingLeft();
+    }
 }
-void Match::jump(uint8_t &id, std::function<void(ServerUpdate* )> function) {
-    this->players.at(id)->jump();
+void Match::jump(uint8_t &id, bool state) {
+    if(state == ON) {
+        this->players.at(id)->jump();
+    }
+}
+
+void Match::turbo(uint8_t &id, bool state) {
+    if(state == ON) {
+        this->players.at(id)->turbo();
+    }
 }
 void Match::checkGoals() {
     if (this->ball->X() <= LOCALGOAL && this->ball->Y() <= GOALSIZE) {  //  LOCALGOAL es el arco del local

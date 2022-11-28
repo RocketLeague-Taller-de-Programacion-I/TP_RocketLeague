@@ -44,8 +44,9 @@ void Game::run() {
     action->execute(match);
     match.step();
     std::vector<int> info = match.info();
+    std::vector<uint8_t> dummy;
     uint8_t id = 0, returnCode = OK;
-    ServerUpdate* update = new ServerUpdateWorld(id, returnCode, info);
+    ServerUpdate* update = new ServerUpdateWorld(id, returnCode, dummy , info);
     broadcastUpdate(update);
 }
 

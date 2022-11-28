@@ -56,7 +56,7 @@ public:
     void serializeCreateACK(ServerCreateACK *update);
     void serializeJoinACK(ServerJoinACK *update);
     void serializeServerListACK(ServerListACK *update);
-    void serializeWorldUpdate(ServerUpdate *update);
+    void serializeWorldUpdate(ServerUpdateWorld *update);
 
     static ServerAction *parseCreateAction(const uint8_t &id, const std::function<void(std::vector<uint8_t> &,
                                                                                        uint8_t &)> &receiveBytes);

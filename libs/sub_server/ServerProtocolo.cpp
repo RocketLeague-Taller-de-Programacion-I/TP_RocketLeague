@@ -106,5 +106,9 @@ void Protocolo::serializeServerListACK(ServerListACK *update) {
     sendBytes(&test, sizeof(test));
 }
 
-void Protocolo::serializeWorldUpdate(ServerUpdate *update) {
+void Protocolo::serializeWorldUpdate(ServerUpdateWorld *update) {
+    //implement
+    std::vector<int> mtchINfo = update->getInfo();
+    // fijate en match info que esta como se fue pusheando a este vector la data
+
 }
