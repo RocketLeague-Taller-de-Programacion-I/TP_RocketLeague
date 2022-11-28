@@ -116,7 +116,7 @@ void MainWindow::joinParticularGame(QString roomName) {
     ClientAction *actionJoin = new ActionJoinRoom(room);
     this->actionsQueue.push(actionJoin);
 
-    popFirstUpdate(); //pop JoinACK
+    // popFirstUpdate(); //pop JoinACK
     drawLoadingScreen();
 }
 

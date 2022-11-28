@@ -31,6 +31,7 @@ void Game::joinPlayer(uint8_t& id, BlockingQueue<ServerUpdate *> *sender) {
         bool state = false;
         ServerAction *action = new ServerActionMove(idD, direction, state);
         queue->push(action);
+        //  start();
     }
 }
 

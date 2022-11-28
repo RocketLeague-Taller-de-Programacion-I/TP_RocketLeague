@@ -65,6 +65,8 @@ public:
                                                                                      uint8_t &)> &receiveBytes);
 
     static ServerAction *parseListAction(const uint8_t &id);
+
+    static ServerAction *parseUpdateAction();
 };
 
 

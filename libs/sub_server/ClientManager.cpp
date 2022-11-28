@@ -34,7 +34,8 @@ void ClientManager::run() {
         }
         auto update = command->execute(this->gameManager, queue_setter_callable);
         //create,join y list
-        if (update->getType()!= LIST_INFO and update->getReturnCode() == OK) {
+        if (update->getType()!= LIST_INFO and update->getReturnCode() == OK ) {
+            if (update->getType() == JOIN_ACK) { break; }
             playing = true;
             std::cout<<"playing"<<std::endl;
         }

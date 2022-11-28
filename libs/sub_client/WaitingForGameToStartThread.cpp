@@ -21,7 +21,6 @@ void WaitingForGameToStartThread::run() {
 }
 
 void WaitingForGameToStartThread::stop() {
-    mainWindow->clearScene();
     mainWindow->close();
     join();
 }

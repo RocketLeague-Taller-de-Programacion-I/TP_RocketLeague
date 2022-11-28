@@ -18,8 +18,8 @@ ServerAction * Protocolo::deserializeData(const uint8_t &id, const uint8_t &type
             return parseJoinAction(id, receiveBytes);
         case LIST_ROOMS:
             return parseListAction(id);
-//        case MOVE:
-//            return parseUpdateAction(data);
+        case MOVE:
+            return parseUpdateAction();
     }
     return {};
 }
@@ -133,4 +133,8 @@ void Protocolo::serializeWorldUpdate(ServerUpdateWorld *update) {
         sendBytes(&carInfo, sizeof(carInfo));
     }
 
+}
+// TODO: IMPLEMENT
+ServerAction *Protocolo::parseUpdateAction() {
+    return nullptr;
 }
