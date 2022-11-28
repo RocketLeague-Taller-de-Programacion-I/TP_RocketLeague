@@ -7,23 +7,23 @@
 
 bool GameManager::createGame(uint8_t idCreator, uint8_t capacityGame, const std::string &nameGame,
                              std::function<BlockingQueue<std::shared_ptr<ServerUpdate>> *(
-                                     ProtectedQueue<ServerAction *> *)> setQueue) {
+                                     ProtectedQueue<std::shared_ptr<ServerAction>> *)> setQueue) {
     std::unique_lock<std::mutex> lock(this->mutex);
 
     if (games.find(nameGame) == games.end()) {
-        auto *queueGame = new ProtectedQueue<ServerAction *>;
+        auto *queueGame = new ProtectedQueue<std::shared_ptr<ServerAction>>;
         games[nameGame] = new Game(capacityGame,nameGame,queueGame);
     } else {
 //        throw std::runtime_error("Game already exists");
         return false;
     }
-    auto *queueSender = setQueue(games[nameGame]->getQueue());
+    auto queueSender = setQueue(games[nameGame]->getQueue());
     games[nameGame]->joinPlayer(idCreator,queueSender);
 
     return true;
 }
 bool GameManager::joinGame(uint8_t idCreator, const std::string& nameGame, std::function<BlockingQueue<std::shared_ptr<ServerUpdate>> *(
-        ProtectedQueue<ServerAction *> *)> setQueue) {
+        ProtectedQueue<std::shared_ptr<ServerAction>> *)> setQueue) {
 
     std::unique_lock<std::mutex> lock(this->mutex);
     if (this->games[nameGame]->isFull()) {

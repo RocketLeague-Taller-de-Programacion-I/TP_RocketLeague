@@ -6,7 +6,7 @@
 
 Game::Game(int capacity,
            std::string  name,
-           ProtectedQueue<ServerAction *> *pQueue) :
+           ProtectedQueue<std::shared_ptr<ServerAction>> *pQueue) :
         match(name, capacity),
         capacity(capacity),
         playerOnLine(0),
@@ -28,10 +28,9 @@ void Game::joinPlayer(uint8_t& id, BlockingQueue<std::shared_ptr<ServerUpdate>> 
     uint8_t direction = 5;
     bool state = false;
     match.addPlayer(id);
-    ServerAction *action = new ServerActionMove(id, direction, state);
-    queue->push(action);
-
     if (playerOnLine == capacity){
+        std::shared_ptr<ServerAction> action = std::make_shared<ServerActionMove>(id, direction, state);
+        queue->push(action);
         running = true;
         start();
     }
@@ -41,7 +40,7 @@ void Game::run() {
     // ActionMove cline [1, RIGHT, on]
     // ActionMove cline  [2, LEFT, off]
     std::cout << "Game " << gameName << " started" << std::endl;
-    ServerAction *action;
+    std::shared_ptr<ServerAction> action;
     while (!queue->tryPop(action)) {
     }
     action->execute(match);
@@ -58,7 +57,7 @@ bool Game::isFull() const {
     return playerOnLine == capacity;
 }
 
-ProtectedQueue<ServerAction *> * Game::getQueue() {
+ProtectedQueue<std::shared_ptr<ServerAction>> * Game::getQueue() {
     return queue;
 }
 

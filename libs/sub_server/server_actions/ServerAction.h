@@ -50,7 +50,7 @@ public:
     virtual std::string getRoomName() const { return roomName;};
 
     virtual std::shared_ptr<ServerUpdate> execute(GameManager &manager, const std::function<BlockingQueue<std::shared_ptr<ServerUpdate>> *(
-            ProtectedQueue<ServerAction *> *)> &setQueue) = 0;
+            ProtectedQueue<std::shared_ptr<ServerAction>> *)> &setQueue) = 0;
 
     virtual void execute(Match& match) = 0;
 };

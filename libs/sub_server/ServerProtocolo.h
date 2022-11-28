@@ -50,23 +50,23 @@ public:
     command_t getMapCommand(uint32_t action);
     Protocolo(const std::function<void(void *, unsigned int)> &sendBytesCallable) : sendBytes(sendBytesCallable) {};
 
-    static ServerAction *deserializeData(const uint8_t &id, const uint8_t &type,
-                                  const std::function<void(std::vector<uint8_t> &, uint8_t &)> &receiveBytes);
+    static std::shared_ptr<ServerAction> deserializeData(const uint8_t &id, const uint8_t &type,
+                                                         const std::function<void(std::vector<uint8_t> &, uint8_t &)> &receiveBytes);
     void serializeUpdate(std::shared_ptr<ServerUpdate> update);
     void serializeCreateACK(ServerCreateACK *update);
     void serializeJoinACK(ServerJoinACK *update);
     void serializeServerListACK(ServerListACK *update);
     void serializeWorldUpdate(ServerUpdateWorld *update);
 
-    static ServerAction *parseCreateAction(const uint8_t &id, const std::function<void(std::vector<uint8_t> &,
-                                                                                       uint8_t &)> &receiveBytes);
+    static std::shared_ptr<ServerAction> parseCreateAction(const uint8_t &id, const std::function<void(std::vector<uint8_t> &,
+                                                                                                       uint8_t &)> &receiveBytes);
 
-    static ServerAction *parseJoinAction(const uint8_t &id, const std::function<void(std::vector<uint8_t> &,
-                                                                                     uint8_t &)> &receiveBytes);
+    static std::shared_ptr<ServerAction> parseJoinAction(const uint8_t &id, const std::function<void(std::vector<uint8_t> &,
+                                                                                                     uint8_t &)> &receiveBytes);
 
-    static ServerAction *parseListAction(const uint8_t &id);
+    static std::shared_ptr<ServerAction> parseListAction(const uint8_t &id);
 
-    static ServerAction *parseUpdateAction();
+    static std::unique_ptr<ServerAction> parseUpdateAction();
 };
 
 

@@ -8,7 +8,7 @@
 ServerJoinRoom::ServerJoinRoom(const uint8_t &id, std::string &data) : ServerAction(id, data) {}
 
 std::shared_ptr<ServerUpdate> ServerJoinRoom::execute(GameManager &manager, const std::function<BlockingQueue<std::shared_ptr<ServerUpdate>> *(
-        ProtectedQueue<ServerAction *> *)> &setQueue) {
+        ProtectedQueue<std::shared_ptr<ServerAction>> *)> &setQueue) {
 
     uint8_t returnCode = manager.joinGame(id, roomName, setQueue) ? OK : ERROR_FULL;
     std::shared_ptr<ServerUpdate> update = std::make_shared<ServerJoinACK>(id, returnCode);

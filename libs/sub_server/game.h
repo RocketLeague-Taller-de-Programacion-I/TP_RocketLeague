@@ -30,7 +30,7 @@ private:
     std::map<uint8_t ,BlockingQueue<std::shared_ptr<ServerUpdate>>*> mapSender;
     //map {id, BlockingQueue<ServerUpdate*>}
 
-    ProtectedQueue<ServerAction *> *queue;
+    ProtectedQueue<std::shared_ptr<ServerAction>> *queue;
     //BlockingQueue<ServerAction*> *queue;
 public:
     std::vector<uint8_t> information();
@@ -41,7 +41,7 @@ public:
     * No copiable
     */
     Game(const Game&) = delete;
-    Game(int capacity, std::string  name, ProtectedQueue<ServerAction *> *pQueue);
+    Game(int capacity, std::string  name, ProtectedQueue<std::shared_ptr<ServerAction>> *pQueue);
     ~Game() override;
 
     Game& operator=(const Game&) = delete;
@@ -50,7 +50,7 @@ public:
 
     bool isFull() const;
 
-    ProtectedQueue<ServerAction *> * getQueue();
+    ProtectedQueue<std::shared_ptr<ServerAction>> * getQueue();
 
     void broadcastUpdate(const std::shared_ptr<ServerUpdate>& update);
     void brodcastUpdateGameEvents(std::vector<ServerUpdate *> updates);

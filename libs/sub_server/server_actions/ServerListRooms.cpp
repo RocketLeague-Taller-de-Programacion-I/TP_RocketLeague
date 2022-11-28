@@ -7,7 +7,7 @@
 
 
 std::shared_ptr<ServerUpdate> ServerListRooms::execute(GameManager &manager, const std::function<BlockingQueue<std::shared_ptr<ServerUpdate>> *(
-        ProtectedQueue<ServerAction *> *)> &setQueue) {
+        ProtectedQueue<std::shared_ptr<ServerAction>> *)> &setQueue) {
 
     std::vector<uint8_t> listData;
     uint8_t numberOfGames = manager.listGames(id, listData);

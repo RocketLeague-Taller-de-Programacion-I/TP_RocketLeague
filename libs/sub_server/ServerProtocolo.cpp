@@ -9,8 +9,8 @@ command_t Protocolo::getMapCommand(uint32_t action) {
     return this->mapCommand.at(action);
 }
 
-ServerAction * Protocolo::deserializeData(const uint8_t &id, const uint8_t &type,
-                                          const std::function<void(std::vector<uint8_t> &, uint8_t &)> &receiveBytes) {
+std::shared_ptr<ServerAction> Protocolo::deserializeData(const uint8_t &id, const uint8_t &type,
+                                                         const std::function<void(std::vector<uint8_t> &, uint8_t &)> &receiveBytes) {
     switch (type) {
         case CREATE_ROOM:
             return parseCreateAction(id, receiveBytes);
@@ -24,7 +24,8 @@ ServerAction * Protocolo::deserializeData(const uint8_t &id, const uint8_t &type
     return {};
 }
 
-ServerAction * Protocolo::parseCreateAction(const uint8_t &id, const std::function<void(std::vector<uint8_t> &,uint8_t &)> &receiveBytes) {
+std::shared_ptr<ServerAction>
+Protocolo::parseCreateAction(const uint8_t &id, const std::function<void(std::vector<uint8_t> &, uint8_t &)> &receiveBytes) {
 
     std::vector<uint8_t> capacity_and_nameSize(2);
     uint8_t size = capacity_and_nameSize.size();
@@ -37,13 +38,12 @@ ServerAction * Protocolo::parseCreateAction(const uint8_t &id, const std::functi
     receiveBytes(name, size);
     std::string nameString(name.begin(), name.end());
 
-//    Action* pAction = new ActionCreate(id, capacity, name);
-    ServerAction* pAction = new ServerCreateRoom(id, capacity, nameString);
+    std::shared_ptr<ServerAction> pAction = std::make_shared<ServerCreateRoom>(id, capacity, nameString);
     return pAction;
 }
 
-ServerAction * Protocolo::parseJoinAction(const uint8_t &id, const std::function<void(std::vector<uint8_t> &,
-                                                                                      uint8_t &)> &receiveBytes) {
+std::shared_ptr<ServerAction> Protocolo::parseJoinAction(const uint8_t &id, const std::function<void(std::vector<uint8_t> &,
+                                                                                                     uint8_t &)> &receiveBytes) {
     std::vector<uint8_t> nameSize(1);
     uint8_t size = nameSize.size();
     receiveBytes(nameSize, size);
@@ -53,12 +53,12 @@ ServerAction * Protocolo::parseJoinAction(const uint8_t &id, const std::function
     receiveBytes(name, size);
     std::string nameString(name.begin(), name.end());
 
-    ServerAction* pAction = new ServerJoinRoom(id, nameString);
+    std::shared_ptr<ServerAction> pAction = std::make_shared<ServerJoinRoom>(id, nameString);
     return pAction;
 }
 
-ServerAction * Protocolo::parseListAction(const uint8_t &id) {
-    ServerAction* pAction = new ServerListRooms(id);
+std::shared_ptr<ServerAction> Protocolo::parseListAction(const uint8_t &id) {
+    std::shared_ptr<ServerAction> pAction = std::make_shared<ServerListRooms>(id);
     return pAction;
 }
 
@@ -135,6 +135,6 @@ void Protocolo::serializeWorldUpdate(ServerUpdateWorld *update) {
 
 }
 // TODO: IMPLEMENT
-ServerAction *Protocolo::parseUpdateAction() {
+std::unique_ptr<ServerAction> Protocolo::parseUpdateAction() {
     return nullptr;
 }
