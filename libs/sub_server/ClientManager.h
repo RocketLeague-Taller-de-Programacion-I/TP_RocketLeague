@@ -24,7 +24,7 @@ private:
     ClientSender *clientSenderThread;
 public:
 
-    ClientManager(Socket &aClient, GameManager &aGameManager);
+    ClientManager(uint8_t &id, Socket &aClient, GameManager &aGameManager);
     ~ClientManager() override;
     void run() override;
     void stop() override;
@@ -32,8 +32,6 @@ public:
     bool joinThread();
 
     bool endManager();
-
-    void attendClient(unsigned long aId);
 
     void startClientThreads(ProtectedQueue<std::shared_ptr<ServerAction>> *qReceiver, BlockingQueue<std::shared_ptr<ServerUpdate>> *senderQueue);
 

@@ -31,14 +31,10 @@ void Server::run() {
              */
             Socket client = accept_skt.accept();
 
-            auto *manager = new ClientManager(client,gameManager);
+            auto *manager = new ClientManager(idPlayer, client, gameManager);
             this->managers.push_back(manager);
-            /*
-             * Attend client:
-             *  - Set the ID manager
-             *  - Start the thread
-             */
-            manager->attendClient(idPlayer);
+            manager->start();
+
             idPlayer++;
 
             this->garbageCollector();

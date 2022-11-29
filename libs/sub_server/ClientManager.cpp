@@ -10,11 +10,11 @@
 #include "ServerProtocolo.h"
 #include "ClientReceiver.h"
 
-ClientManager::ClientManager(Socket &aClient,
-                             GameManager &aGameManager) :
+ClientManager::ClientManager(uint8_t &id, Socket &aClient, GameManager &aGameManager) :
         client(std::move(aClient)),
         gameManager(aGameManager),
-        closed(false){}
+        closed(false),
+        id(id){}
 
 void ClientManager::run() {
     auto initialActionsQueue = new ProtectedQueue<std::shared_ptr<ServerAction>>;
@@ -58,11 +58,6 @@ bool ClientManager::endManager() {
     delete this->clientSenderThread;
     this->join();
     return closed;
-}
-
-void ClientManager::attendClient(unsigned long aId) {
-    this->id = aId;
-    this->start();
 }
 
 void ClientManager::startClientThreads(ProtectedQueue<std::shared_ptr<ServerAction>> *qReceiver, BlockingQueue<std::shared_ptr<ServerUpdate>> *senderQueue) {
