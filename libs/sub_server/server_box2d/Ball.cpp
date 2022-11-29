@@ -13,7 +13,7 @@ Ball::Ball(b2World* world, float radius) {
     m_radius = radius;
     //set up dynamic body, store in class variable
     myBodyDef.type = b2_dynamicBody;
-    myBodyDef.position.Set(0, 10);
+    myBodyDef.position.Set(20, 10);
     m_body = world->CreateBody(&myBodyDef);
     b2CircleShape circleShape;
     circleShape.m_p.Set(0, 0);
@@ -24,14 +24,14 @@ Ball::Ball(b2World* world, float radius) {
     myUserData->mOwningFixture =  m_body->CreateFixture(&fixDef);
     this->ballFixture = myUserData->mOwningFixture;
 }
-int Ball::X() const {
-    return int(this->m_body->GetPosition().x);
+float Ball::X() const {
+    return (this->m_body->GetPosition().x);
 }
-int Ball::Y() const {
-    return int(this->m_body->GetPosition().y);
+float Ball::Y() const {
+    return (this->m_body->GetPosition().y);
 }
 void Ball::restartGame() const {
-    m_body->SetTransform(b2Vec2(0,10),m_body->GetAngle());
+    m_body->SetTransform(b2Vec2(20,10),m_body->GetAngle());
     m_body->ApplyLinearImpulseToCenter(b2Vec2(0,10), true);
 }
 
