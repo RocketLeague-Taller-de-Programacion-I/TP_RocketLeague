@@ -64,7 +64,7 @@ std::shared_ptr<ClientUpdate> ClientProtocol::parseListUpdate(
     receiveBytes(&cantGames, sizeof(cantGames));
 
     std::map<std::string,std::string> games;
-    //[id,returnCode, cantidadDeGames,{online,max,sieName,name},...]
+    //[id,returnCode, cantidadDeGames,{online,max,sizeName,name},...]
 
     for(uint8_t cant = cantGames, i = 0; i < cant; i++) {
         std::vector<uint8_t> players_and_size(3);
@@ -82,9 +82,9 @@ std::shared_ptr<ClientUpdate> ClientProtocol::parseListUpdate(
         games[gameName] = std::to_string(playersOnLine) + "/" + std::to_string(capacity);
     }
 
-    uint16_t test;
+    /*uint16_t test;
     receiveBytes(&test, sizeof(test));
-    test = ntohs(test);
+    test = ntohs(test);*/
 
     std::shared_ptr<ClientUpdate> update = std::make_shared<ClientListACK>(id, returnCode, games);
     return update;
