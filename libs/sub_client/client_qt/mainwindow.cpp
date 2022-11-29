@@ -5,11 +5,13 @@
 #include <iostream>
 #include <regex>
 
-MainWindow::MainWindow(QWidget *parent, ProtectedQueue<std::shared_ptr<ClientUpdate>> &updates, BlockingQueue<std::shared_ptr<ClientAction>> &actions)
+MainWindow::MainWindow(uint8_t &id, QWidget *parent, ProtectedQueue<std::shared_ptr<ClientUpdate>> &updates,
+                       BlockingQueue<std::shared_ptr<ClientAction>> &actions)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , updatesQueue(updates)
     , actionsQueue(actions)
+    , id(id)
 {
     ui->setupUi(this);
     // Seteo un Objeto QGraphicsScene para manejar la escena del juego
@@ -77,6 +79,7 @@ void MainWindow::drawJoinGameMenu() {
         this->scene.addWidget(label);
 
     } else {
+        id = update->getId();
         std::map<std::string,std::string> games = update->getList();
         int i = 200;
                 foreach(auto game, games) {
@@ -100,9 +103,7 @@ void MainWindow::createRoom() {
 
     std::string roomName = this->lineEdit->text().toStdString();
     uint8_t players = this->cantPlayers->value();
-//    Action* actionCreate = new ActionCreate(id, players, roomName);
     std::shared_ptr<ClientAction> actionCreate = std::make_shared<ActionCreateRoom>(players, roomName);
-    //ClientAction* actionCreate = new ActionCreateRoom(players, roomName);
     this->actionsQueue.push(actionCreate);
     popFirstUpdate(); //pop CreateACK
     drawLoadingScreen();
@@ -266,6 +267,8 @@ void MainWindow::popFirstUpdate() {
             popping = false;
         }
     }
+    id = update->getId();
+
     if(update->getType() == STARTED_GAME_ACK) {
         //start the game directly
         //TODO: retrieve ID from update

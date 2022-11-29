@@ -32,7 +32,8 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(QWidget *parent = nullptr);
-    MainWindow(QWidget *parent, ProtectedQueue<std::shared_ptr<ClientUpdate>> &updates, BlockingQueue<std::shared_ptr<ClientAction>> &actions);
+    MainWindow(uint8_t &id, QWidget *parent, ProtectedQueue<std::shared_ptr<ClientUpdate>> &updates,
+               BlockingQueue<std::shared_ptr<ClientAction>> &actions);
     ~MainWindow();
 
     void displayMainMenu();
@@ -52,6 +53,8 @@ private:
     ProtectedQueue<std::shared_ptr<ClientUpdate>> &updatesQueue;
     BlockingQueue<std::shared_ptr<ClientAction>> &actionsQueue;
 
+    uint8_t &id;
+
     void drawGUI();
 
     void drawTitle(std::string title);
@@ -65,10 +68,10 @@ private:
     void drawPlayButton();
 
     void drawSaveAndStartButton();
-
     QLineEdit* lineEdit;
     QSpinBox* cantPlayers;
     QLabel *label;
+
     QString userName = QString("stranger");
 
     void drawLoadingScreen();

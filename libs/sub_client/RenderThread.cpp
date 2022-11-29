@@ -8,6 +8,7 @@ using namespace SDL2pp;
 RenderThread::RenderThread(const char *host, const char *port) : skt_client(host, port){}
 
 void RenderThread::run() {
+    uint8_t id = 0;
     BlockingQueue<std::shared_ptr<ClientAction>> actionsQueue;
     ProtectedQueue<std::shared_ptr<ClientUpdate>> updatesQueue;
 
@@ -21,7 +22,7 @@ void RenderThread::run() {
         int argc = 0;
         QApplication app(argc, nullptr);
         // Instancio la ventana principal
-        MainWindow mainWindow(nullptr, updatesQueue, actionsQueue);
+        MainWindow mainWindow(id, nullptr, updatesQueue, actionsQueue);
         mainWindow.show();
         mainWindow.displayMainMenu();
 
@@ -32,7 +33,7 @@ void RenderThread::run() {
         }
         // Initialize SDL library
         std::cout << "QT finalizó correctamente con: " << qt_return << std::endl;
-
+        std::cout <<"id: " << (int)id << std::endl;
         std::shared_ptr<ClientUpdate> update; //startedGameACK
         bool popping = true;
         while (popping) {

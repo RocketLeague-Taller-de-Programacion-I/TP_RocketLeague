@@ -10,13 +10,14 @@
 
 class Car {
 private:
+    uint16_t& id;
     float x;
     float y;
     uint16_t sign;
     float angle;
 
 public:
-    Car(uint16_t &id, float x, float y, uint16_t sign, float angle) : x(x), y(y), sign(sign), angle(angle) {};
+    Car(uint16_t &id, float x, float y, uint16_t sign, float angle) : id(id), x(x), y(y), sign(sign), angle(angle) {};
     ~Car() = default;
 
     //getters
