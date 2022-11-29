@@ -7,10 +7,7 @@
 
 Server::Server(const char *port)
         : closed(false),
-          accept_skt(port) {
-    b2Vec2 grav(0.0,0.2);
-    b2World m_world(grav);
-}
+          accept_skt(port) {}
 
 /*
  * Mientras closed sea false aceptara clientes.
