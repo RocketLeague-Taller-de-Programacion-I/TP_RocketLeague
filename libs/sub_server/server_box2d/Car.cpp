@@ -29,7 +29,7 @@ Car::Car(b2World* world, uint8_t& id) : id(id), turboOn(false), movingLeft(false
     myUserData->mObjectType = 3;
     chassis.Set(vertices, 4);
     bd.type = b2_dynamicBody;
-    bd.position.Set(0.0f, 1.0f);
+    bd.position.Set(20.0f, 1.0f);
     fixDef.density = 1.f;
     fixDef.restitution = 0.3f;
     fixDef.shape = &chassis;

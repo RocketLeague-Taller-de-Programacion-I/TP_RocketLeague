@@ -75,7 +75,7 @@ std::shared_ptr<ClientUpdate> ClientProtocol::parseListUpdate(
     receiveBytes(&cantGames, sizeof(cantGames));
 
     std::map<std::string,std::string> games;
-    //[id,returnCode, cantidadDeGames,{online,max,sieName,name},...]
+    //[id,returnCode, cantidadDeGames,{online,max,sizeName,name},...]
 
     for(uint8_t cant = cantGames, i = 0; i < cant; i++) {
         std::vector<uint8_t> players_and_size(3);
@@ -101,15 +101,18 @@ std::shared_ptr<ClientUpdate> ClientProtocol::parseListUpdate(
     return update;
 }
 
-// TODO: implement this
 std::shared_ptr<ClientUpdate> ClientProtocol::parseWorldUpdate(const std::function<void(void *, int)> &receiveBytes) {
     uint16_t ballX;
+    float ballXFloat;
     receiveBytes(&ballX, sizeof(ballX));
     ballX = ntohs(ballX);
+    ballXFloat = ballX/1000;
     uint16_t ballY;
+    float ballYFloat;
     receiveBytes(&ballY, sizeof(ballY));
     ballY = ntohs(ballY);
-    Ball ball(ballX, ballY);
+    ballYFloat = ballY/1000;
+    Ball ball(ballXFloat, ballYFloat);
     //  Score
     uint16_t local;
     receiveBytes(&local, sizeof(local));
@@ -124,7 +127,6 @@ std::shared_ptr<ClientUpdate> ClientProtocol::parseWorldUpdate(const std::functi
     n_clients = ntohs(n_clients);
     std::vector<Car> clientCars;
     //  CLients
-    //  TODO: Vector de Cars
     for (unsigned int i = 0; i < n_clients; i++) {
         uint16_t id;
         receiveBytes(&id, sizeof(id));
@@ -132,16 +134,22 @@ std::shared_ptr<ClientUpdate> ClientProtocol::parseWorldUpdate(const std::functi
         uint16_t x;
         receiveBytes(&x, sizeof(x));
         x = ntohs(x);
+        float xFloat = float(x);
+        xFloat = xFloat/1000;
         uint16_t y;
         receiveBytes(&y, sizeof(y));
         y = ntohs(y);
+        float yFloat = float(y);
+        yFloat = y/1000;
         uint16_t angleSign;
         receiveBytes(&angleSign, sizeof(angleSign));
         angleSign = ntohs(angleSign);
         uint16_t angle;
         receiveBytes(&angle, sizeof(angle));
         angle = ntohs(angle);
-        Car car(id, x, y, angleSign, angle);
+        float angleFloat = float(angle);
+        angleFloat = angleFloat/1000;
+        Car car(id, xFloat, yFloat, angleSign, angleFloat);
         clientCars.emplace_back(car);
     }
 
