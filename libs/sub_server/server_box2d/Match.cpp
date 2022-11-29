@@ -10,8 +10,8 @@
 #include <unistd.h>
 #include <memory>
 
-#define LOCALGOAL (-37.985)
-#define VISITGOAL  (37.985)
+#define LOCALGOAL (0.005)
+#define VISITGOAL  (40.000)
 #define GOALSIZE 5
 
 Match::Match(std::string gameName, int required) : name(std::move(gameName)), world(b2World(b2Vec2(0,-10))), playersConnected(0), playersRequired(required), goalsLocal(0), goalsVisit(0) {
@@ -26,7 +26,7 @@ Match::Match(std::string gameName, int required) : name(std::move(gameName)), wo
     staticBody = world.CreateBody(&myBodyDef);
     b2PolygonShape polygonShape;
     fixDef.shape = &polygonShape;
-    polygonShape.SetAsBox( 40, 0.5, b2Vec2(0, 0), 0);//ground
+    polygonShape.SetAsBox( 20, 0.5, b2Vec2(20, 0), 0);  //ground
     myUserData->mOwningFixture = staticBody->CreateFixture(&fixDef);
     fixDef.friction = 0.2;
     //  Creo ball
@@ -64,7 +64,7 @@ void Match::moveRight(uint8_t &id, bool state) {
     }
     // info(
 }
-// TODO: mover implementacion de bytes a protocolo o beSerizlized
+
 std::vector<int> Match::info() {
     std::vector<int> data;
     //    bola -> 4bytes
@@ -81,11 +81,11 @@ std::vector<int> Match::info() {
     for ( auto &player : players){
         uint16_t  id = (uint16_t) player.first;
         data.push_back((id));
-        x = (uint16_t) (player.second->X() * 1000);
-        data.push_back((x));
+        auto carX = (uint16_t) (player.second->X() * 1000);
+        data.push_back((carX));
 
-        y = (uint16_t) (player.second->Y() * 1000);
-        data.push_back((y));
+        auto carY = (uint16_t) (player.second->Y() * 1000);
+        data.push_back((carY));
 
         uint16_t angle = (uint16_t) abs(player.second->angleDeg() * 1000);
         // get sign bit from angle
