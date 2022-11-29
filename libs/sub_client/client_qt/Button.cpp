@@ -22,7 +22,7 @@ Button::Button(QString name, QGraphicsItem *parent): QGraphicsRectItem(parent){
 
 void Button::mousePressEvent(QGraphicsSceneMouseEvent *event){
     emit clicked(text->toPlainText());
-    emit clicked();
+    //  emit clicked();
 }
 
 void Button::hoverEnterEvent(QGraphicsSceneHoverEvent *event){

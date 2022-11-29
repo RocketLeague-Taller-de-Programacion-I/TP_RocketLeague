@@ -21,11 +21,11 @@ private:
 protected:
     void run() override;
 public:
-    ProtectedQueue<ServerAction*> *updatesQueue;
-    ClientReceiver(Socket &skt_client, ProtectedQueue<ServerAction *> *updatesQueue, uint8_t idClient);
+    ProtectedQueue<std::shared_ptr<ServerAction>> *updatesQueue;
+    ClientReceiver(Socket &skt_client, ProtectedQueue<std::shared_ptr<ServerAction>> *updatesQueue, uint8_t idClient);
     ~ClientReceiver() override;
     void stop() override;
-    void setQueue(ProtectedQueue<ServerAction *> *pQueue);
+    void setQueue(ProtectedQueue<std::shared_ptr<ServerAction>> *pQueue);
     void clearQueue();
 
     void receiveBytes(std::vector<uint8_t> &bytes_to_read, uint8_t &size);

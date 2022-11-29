@@ -14,13 +14,26 @@ class GameManager; //TODO: reveer esto
 #include "sub_common/BlockingQueue.h"
 #include "sub_common/ProtectedQueue.h"
 #include "sub_server/server_updates/ServerUpdate.h"
+#include "sub_server/server_box2d/Match.h"
 
 enum actionType {
     CREATE_ROOM = 1,
     JOIN_ROOM,
     LIST_ROOMS,
-    MOVE,
-    UPDATE
+    MOVE
+};
+
+enum direction {
+    RIGHT_D,
+    LEFT_D,
+    JUMP_D,
+    DOWN_D,
+    TURBO_D
+} ;
+
+enum state : bool {
+    ON = true,
+    OFF = false
 };
 
 class ServerAction {
@@ -36,8 +49,10 @@ public:
     virtual uint8_t getId() const { return id;};
     virtual std::string getRoomName() const { return roomName;};
 
-    virtual ServerUpdate * execute(GameManager &manager, const std::function<BlockingQueue<ServerUpdate *> *(
-            ProtectedQueue<ServerAction *> *)> &setQueue) = 0;
+    virtual std::shared_ptr<ServerUpdate> execute(GameManager &manager, const std::function<BlockingQueue<std::shared_ptr<ServerUpdate>> *(
+            ProtectedQueue<std::shared_ptr<ServerAction>> *)> &setQueue) = 0;
+
+    virtual void execute(Match& match) = 0;
 };
 
 

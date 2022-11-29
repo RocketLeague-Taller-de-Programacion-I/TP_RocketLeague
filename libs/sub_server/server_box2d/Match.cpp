@@ -3,6 +3,7 @@
 //
 
 #include "Match.h"
+#include "sub_server/server_actions/ServerAction.h"
 
 #include <utility>
 #include <list>
@@ -11,6 +12,7 @@
 
 #define LOCALGOAL (-37.985)
 #define VISITGOAL  (37.985)
+#define GOALSIZE 5
 
 Match::Match(std::string gameName, int required) : name(std::move(gameName)), world(b2World(b2Vec2(0,-10))), playersConnected(0), playersRequired(required), goalsLocal(0), goalsVisit(0) {
     world.SetContactListener(&this->listener);
@@ -39,7 +41,6 @@ void Match::addPlayer(uint8_t &id) {
 
 Match::~Match() {
     for ( std::pair<const uint8_t,Car*> &player : players){
-        //Plaats *p = place.second;
         delete player.second;
         player.second = nullptr;
     }
@@ -47,29 +48,77 @@ Match::~Match() {
 }
 
 void Match::step() {
+    for ( std::pair<const uint8_t,Car*> &player : players){
+        player.second->update();
+    }
     this->world.Step(0.15, 42, 3);
     usleep(0.015*1000000);
     //  enviar a todos los clientes la respuesta
 }
 
-void Match::moveRight(uint8_t &id, std::function<void(ServerUpdate* )> function) {
-    this->players.at(id)->goRight();
-    // update
+void Match::moveRight(uint8_t &id, bool state) {
+    if(state == ON) {
+        this->players.at(id)->startMovingRight();
+    } else {
+        this->players.at(id)->stopMovingRight();
+    }
+    // info(
 }
-void Match::info() {
+// TODO: mover implementacion de bytes a protocolo o beSerizlized
+std::vector<int> Match::info() {
+    std::vector<int> data;
+    //    bola -> 4bytes
+    uint16_t x = (uint16_t) (this->ball->X() * 1000);
+    data.push_back(htons(x));
+    uint16_t y = (uint16_t) (this->ball->Y() * 1000);
+    data.push_back(htons(y));
+//    score -> 4bytes
+    data.push_back(htons(this->goalsLocal));
+    data.push_back(htons(this->goalsVisit));
+//    numero de clientes 2 bytes
+    data.push_back(htons(this->playersConnected));
+//    cliente 7bytes
+    for ( auto &player : players){
+        uint16_t  id = (uint16_t) player.first;
+        data.push_back(htons(id));
+        x = (uint16_t) (player.second->X() * 1000);
+        data.push_back(htons(x));
+
+        y = (uint16_t) (player.second->Y() * 1000);
+        data.push_back(htons(y));
+
+        uint16_t angle = (uint16_t) abs(player.second->angleDeg() * 1000);
+        // get sign bit from angle
+        uint8_t sign = (player.second->angleDeg() < 0) ? 1 : 0;
+        data.push_back(htons(sign));
+        data.push_back(htons(angle)); //  1er byte
+    }
+    return data;
 }
-void Match::moveLeft(uint8_t &id, std::function<void(ServerUpdate* )> function) {
-    this->players.at(id)->goLeft();
+void Match::moveLeft(uint8_t &id, bool state) {
+    if(state == ON) {
+        this->players.at(id)->startMovingLeft();
+    } else {
+        this->players.at(id)->stopMovingLeft();
+    }
 }
-void Match::jump(uint8_t &id, std::function<void(ServerUpdate* )> function) {
-    this->players.at(id)->jump();
+void Match::jump(uint8_t &id, bool state) {
+    if(state == ON) {
+        this->players.at(id)->jump();
+    }
+}
+
+void Match::turbo(uint8_t &id, bool state) {
+    if(state == ON) {
+        this->players.at(id)->turbo();
+    }
 }
 void Match::checkGoals() {
-    if (this->ball->X() <= LOCALGOAL) {  //  LOCALGOAL es el arco del local
+    if (this->ball->X() <= LOCALGOAL && this->ball->Y() <= GOALSIZE) {  //  LOCALGOAL es el arco del local
         this->goalsVisit++;
         this->ball->restartGame();
     }
-    else if (this->ball->X() >= VISITGOAL) {  //  VISITGOAL es el arco del visitante
+    else if (this->ball->X() >= VISITGOAL && this->ball->Y() <= GOALSIZE) {  //  VISITGOAL es el arco del visitante
         this->goalsLocal++;
         this->ball->restartGame();
     }

@@ -18,8 +18,10 @@ public:
 
     uint8_t getCapacity() { return capacity; }
 
-    virtual ServerUpdate * execute(GameManager &manager, const std::function<BlockingQueue<ServerUpdate *> *(
-            ProtectedQueue<ServerAction *> *)> &setQueue) override;
+    void execute(Match& match) override;
+
+    virtual std::shared_ptr<ServerUpdate> execute(GameManager &manager, const std::function<BlockingQueue<std::shared_ptr<ServerUpdate>> *(
+            ProtectedQueue<std::shared_ptr<ServerAction>> *)> &setQueue) override;
 };
 
 

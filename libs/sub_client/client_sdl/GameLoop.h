@@ -13,10 +13,12 @@
 #include "sub_common/BlockingQueue.h"
 #include "Worldview.h"
 
+#define NOP 10
+
 class GameLoop {
     SDL2pp::Renderer &renderer;
-    ProtectedQueue<ClientUpdate*>& updatesQueue;
-    BlockingQueue<ClientAction*>& actionsQueue;
+    ProtectedQueue<std::shared_ptr<ClientUpdate>>& updatesQueue;
+    BlockingQueue<std::shared_ptr<ClientAction>>& actionsQueue;
     bool running;
     int xMax;
     int yMax;
@@ -24,11 +26,20 @@ class GameLoop {
     void update(float dt);
     void render();
 public:
-    GameLoop(SDL2pp::Renderer &renderer, int xMax, int yMax, ProtectedQueue<ClientUpdate*> &updates,
-             BlockingQueue<ClientAction*> &actions, Worldview &wv);
+    GameLoop(SDL2pp::Renderer &renderer, int xMax, int yMax, ProtectedQueue<std::shared_ptr<ClientUpdate>> &updates,
+             BlockingQueue<std::shared_ptr<ClientAction>> &actions, Worldview &wv);
 
     void run();
 private:
     Worldview &wv;
+    std::unordered_map<uint32_t ,uint8_t> directionMap = {
+            {SDLK_LEFT,LEFT_D},
+            {SDLK_RIGHT,RIGHT_D},
+            {SDLK_UP,JUMP_D},
+            {SDLK_DOWN,DOWN_D},
+            {SDLK_ESCAPE,NOP}
+    };
+
+    void popUpdates();
 };
 #endif //ROCKETLEAGUE_GAMELOOP_H

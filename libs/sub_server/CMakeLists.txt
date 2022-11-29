@@ -14,6 +14,8 @@ add_library(lib_server
         ServerProtocolo.cpp
         ServerProtocolo.h
         server_actions/ServerAction.h
+        server_actions/ServerActionMove.cpp
+        server_actions/ServerActionMove.h
         server_actions/ServerCreateRoom.cpp
         server_actions/ServerCreateRoom.h
         server_actions/ServerJoinRoom.cpp
@@ -28,6 +30,8 @@ add_library(lib_server
         server_updates/ServerListACK.cpp
         server_updates/ServerListACK.h
         server_updates/ServerUpdateWorld.cpp
-        server_updates/ServerUpdateWorld.h)
+        server_updates/ServerUpdateWorld.h
+        server_updates/ServerStartedGameACK.cpp
+        server_updates/ServerStartedGameACK.h)
 
 target_link_libraries(lib_server lib_common)

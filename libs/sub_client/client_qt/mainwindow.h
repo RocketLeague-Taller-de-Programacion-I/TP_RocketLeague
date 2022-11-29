@@ -18,6 +18,7 @@
 #include "sub_client/client_updates/ClientCreateACK.h"
 #include "sub_client/client_updates/ClientJoinACK.h"
 #include "sub_client/client_updates/ClientListACK.h"
+#include "sub_client/client_updates/ClientStartedGameACK.h"
 
 #include "Button.h"
 
@@ -31,7 +32,7 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(QWidget *parent = nullptr);
-    MainWindow(QWidget *parent, ProtectedQueue<ClientUpdate*> &updates, BlockingQueue<ClientAction *> &actions);
+    MainWindow(QWidget *parent, ProtectedQueue<std::shared_ptr<ClientUpdate>> &updates, BlockingQueue<std::shared_ptr<ClientAction>> &actions);
     ~MainWindow();
 
     void displayMainMenu();
@@ -43,12 +44,13 @@ public slots:
     void drawJoinGameMenu();
     void joinParticularGame(QString roomName);
     void createRoom();
+    void clearScene() { this->scene.clear(); };
 
 private:
     Ui::MainWindow *ui;
     QGraphicsScene scene;
-    ProtectedQueue<ClientUpdate*> &updatesQueue;
-    BlockingQueue<ClientAction*> &actionsQueue;
+    ProtectedQueue<std::shared_ptr<ClientUpdate>> &updatesQueue;
+    BlockingQueue<std::shared_ptr<ClientAction>> &actionsQueue;
 
     void drawGUI();
 

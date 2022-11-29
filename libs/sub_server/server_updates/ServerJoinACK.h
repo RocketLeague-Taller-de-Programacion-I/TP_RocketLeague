@@ -9,11 +9,11 @@
 
 class ServerJoinACK : public ServerUpdate{
 public:
-    ServerJoinACK(const uint8_t &id, uint8_t &returnCode) : ServerUpdate(id,returnCode) {};
+    ServerJoinACK(const uint8_t &id, uint8_t &returnCode) : ServerUpdate(id, returnCode) {};
     ~ServerJoinACK() override = default;
 
     uint8_t getType() const override;
-    std::vector<uint8_t> beSerialized() override;
+    void beSerialized(Protocolo *protocolo) override;
 };
 
 

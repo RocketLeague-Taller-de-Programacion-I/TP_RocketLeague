@@ -9,7 +9,7 @@
 
 
 
-Car::Car(b2World* world, uint8_t& id) : id(id), turboOn(false) {
+Car::Car(b2World* world, uint8_t& id) : id(id), turboOn(false), movingLeft(false), movingRight(false) {
     b2Vec2 vertices[8];
     /*
     vertices[0].Set(-1.5f, -0.5f);
@@ -71,9 +71,7 @@ void Car::turbo() {
     this->turboOn = true;
 }
 void Car::jump() {
-    // 1/10th of a second at 60H
     check_y_pos();
-    //std::cout<<"Y: "<<this->m_car->GetPosition().y<<std::endl;
 }
 
 Car::~Car() {
@@ -105,4 +103,26 @@ float Car::angleDeg() {
 
 uint8_t Car::getId() {
     return this->id;
+}
+void Car::startMovingRight() {
+    this->movingRight = true;
+    this->movingLeft = false;
+}
+void Car::startMovingLeft() {
+    this->movingRight = false;
+    this->movingLeft = true;
+}
+void Car::stopMovingRight() {
+    this->movingRight = false;
+}
+void Car::stopMovingLeft() {
+    this->movingLeft = false;
+}
+void Car::update() {
+    if (movingRight) {
+        goRight();
+    }
+    if (movingLeft) {
+        goLeft();
+    }
 }

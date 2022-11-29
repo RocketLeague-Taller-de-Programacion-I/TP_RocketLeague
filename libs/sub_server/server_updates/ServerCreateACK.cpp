@@ -3,14 +3,10 @@
 //
 
 #include "ServerCreateACK.h"
-#include "sub_server/ServerProtocolo.h" //TODO: change protocolo
+#include "sub_server/ServerProtocolo.h"
 
-std::vector<uint8_t> ServerCreateACK::beSerialized() {
-    std::vector<uint8_t> createACKData;
-    createACKData.push_back(getType());
-    createACKData.push_back(id);
-    createACKData.push_back(returnCode);
-    return createACKData;
+void ServerCreateACK::beSerialized(Protocolo *protocolo) {
+    protocolo->serializeCreateACK(this);
 }
 
 uint8_t ServerCreateACK::getType() const {

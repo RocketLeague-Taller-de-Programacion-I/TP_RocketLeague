@@ -15,9 +15,21 @@
 enum action_type {
     CREATE = 1,
     JOIN,
-    LIST
+    LIST,
+    MOVE
 };
 
+enum direction {
+    RIGHT_D,
+    LEFT_D,
+    JUMP_D,
+    DOWN_D,
+    TURBO_D
+} ;
+enum state : bool {
+    ON = true,
+    OFF = false
+};
 
 class ClientAction {
 protected:

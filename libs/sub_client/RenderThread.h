@@ -19,23 +19,31 @@
 #include <SDL2pp/Texture.hh>
 #include <SDL2pp/Surface.hh>
 
-#include "../sub_common/thread.h"
+#include "sub_common/thread.h"
+#include "sub_common/socket.h"
 #include "sub_common/liberror.h"
+
+#include "sub_client/UpdatesReceiverThread.h"
+#include "sub_client/ThreadActionsSender.h"
+
 #include "sub_client/client_qt/mainwindow.h"
 
 class RenderThread : public Thread {
 private:
+    Socket skt_client;
+
 protected:
-    ProtectedQueue<ClientUpdate*> &updatesQueue;
-    BlockingQueue<ClientAction*> &actionsQueue;
+//    ProtectedQueue<std::shared_ptr<ClientUpdate>> updatesQueue;
+//    BlockingQueue<std::shared_ptr<ClientAction>> actionsQueue;
     std::map<std::string,SDL2pp::Texture*> textures;
     void run() override;
 public:
     void stop() override;
     explicit RenderThread();
+
     ~RenderThread() override;
 
-    RenderThread(ProtectedQueue<ClientUpdate*> &updates, BlockingQueue<ClientAction *> &actionsQueue);
+    RenderThread(const char *host, const char *port);
 };
 
 #endif  //  ROCKETLEAGUE_RENDERTHREAD_H

@@ -5,27 +5,25 @@
 #include <iostream>
 #include "gameManager.h"
 
-bool GameManager::createGame(uint8_t idCreator, uint8_t capacityGame, const std::string& nameGame,
-                             const std::function<BlockingQueue<ServerUpdate *> *(
-                                     ProtectedQueue<ServerAction *> *)> &setQueue) {
-
+bool GameManager::createGame(uint8_t idCreator, uint8_t capacityGame, const std::string &nameGame,
+                             std::function<BlockingQueue<std::shared_ptr<ServerUpdate>> *(
+                                     ProtectedQueue<std::shared_ptr<ServerAction>> *)> setQueue) {
     std::unique_lock<std::mutex> lock(this->mutex);
 
     if (games.find(nameGame) == games.end()) {
-        auto *queueGame = new ProtectedQueue<ServerAction *>;
+        auto *queueGame = new ProtectedQueue<std::shared_ptr<ServerAction>>;
         games[nameGame] = new Game(capacityGame,nameGame,queueGame);
     } else {
 //        throw std::runtime_error("Game already exists");
         return false;
     }
-    auto *queueSender = setQueue(games[nameGame]->getQueue());
+    auto queueSender = setQueue(games[nameGame]->getQueue());
     games[nameGame]->joinPlayer(idCreator,queueSender);
 
     return true;
 }
-
-bool GameManager::joinGame(uint8_t idCreator, const std::string& nameGame, std::function<BlockingQueue<ServerUpdate *> *(
-        ProtectedQueue<ServerAction *> *)> setQueue) {
+bool GameManager::joinGame(uint8_t idCreator, const std::string& nameGame, std::function<BlockingQueue<std::shared_ptr<ServerUpdate>> *(
+        ProtectedQueue<std::shared_ptr<ServerAction>> *)> setQueue) {
 
     std::unique_lock<std::mutex> lock(this->mutex);
     if (this->games[nameGame]->isFull()) {
@@ -51,9 +49,10 @@ uint8_t GameManager::listGames(uint8_t &id, std::vector<uint8_t> &listData) {
 
 void GameManager::cleanGames() {
     for (auto & game: games) {
-        delete &game.second;
+        delete game.second;
     }
 }
+
 
 
 

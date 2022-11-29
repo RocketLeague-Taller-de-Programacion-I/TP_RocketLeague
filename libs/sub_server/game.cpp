@@ -6,7 +6,7 @@
 
 Game::Game(int capacity,
            std::string  name,
-           ProtectedQueue<ServerAction *> *pQueue) :
+           ProtectedQueue<std::shared_ptr<ServerAction>> *pQueue) :
         match(name, capacity),
         capacity(capacity),
         playerOnLine(0),
@@ -22,53 +22,59 @@ std::vector<uint8_t> Game::information() {
     data.insert(data.end(), gameName.begin(), gameName.end());
     return data;
 }
-void Game::joinPlayer(uint8_t& id, BlockingQueue<ServerUpdate *> *sender) {
+void Game::joinPlayer(uint8_t& id, BlockingQueue<std::shared_ptr<ServerUpdate>> *sender) {
     playerOnLine++;
-    mapSender.insert(std::pair<uint8_t ,BlockingQueue<ServerUpdate*>*>(id, sender));
+    mapSender.insert(std::pair<uint8_t ,BlockingQueue<std::shared_ptr<ServerUpdate>>*>(id, sender));
+    uint8_t direction = 5;
+    bool state = false;
+    match.addPlayer(id);
+    std::shared_ptr<ServerAction> action = std::make_shared<ServerActionMove>(id, direction, state);
+    queue->push(action);
     if (playerOnLine == capacity){
-        running = true;
         start();
-
     }
 }
 
 void Game::run() {
-/*
-    std::vector<uint8_t> matchInfo = this->match.matchInfo();
-    ServerUpdateWorld * update = new ServerUpdateWorld(id, matchInfo);
-       broadcastUpdateGameEvents(update);
-     *
-
-
-    while (running) {
-
+    // ActionMove cline [1, RIGHT, on]
+    // ActionMove cline  [2, LEFT, off]
+    std::cout << "Game " << gameName << " started" << std::endl;
+    std::shared_ptr<ServerAction> action;
+    while (!queue->tryPop(action)) {
     }
-         */
+    action->execute(match);
+    match.step();
+    std::vector<int> info = match.info();
+    std::vector<uint8_t> dummy;
+    uint8_t id = 0, returnCode = OK;
+    std::shared_ptr<ServerUpdate> update = std::make_shared<ServerUpdateWorld>(id, returnCode, dummy , info);
+    //ServerUpdate* update = new ServerUpdateWorld(id, returnCode, dummy , info);
+    broadcastUpdate(update);
 }
 
 bool Game::isFull() const {
     return playerOnLine == capacity;
 }
 
-ProtectedQueue<ServerAction *> * Game::getQueue() {
+ProtectedQueue<std::shared_ptr<ServerAction>> * Game::getQueue() {
     return queue;
 }
 
-void Game::stop() {}
-
-void Game::broadcastUpdate(ServerUpdate *update) {
+void Game::broadcastUpdate(const std::shared_ptr<ServerUpdate>& update) {
     for (auto & sender : mapSender) {
-        sender.second->push(update);
+        sender.second->push(const_cast<std::shared_ptr<ServerUpdate> &>(update));
     }
 }
 
-void Game::brodcastUpdateGameEvents(std::vector<ServerUpdate *> updates) {
+/*void Game::brodcastUpdateGameEvents(std::vector<ServerUpdate *> updates) {
     for (auto & sender : mapSender) {
         for (auto & update : updates) {
             sender.second->push(update);
         }
     }
-}
+}*/
+
+void Game::stop() {}
 
 Game::~Game() {
     for (auto & sender : mapSender) {

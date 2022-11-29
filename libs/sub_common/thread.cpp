@@ -2,28 +2,16 @@
 
 #include "./thread.h"
 
-void *Thread::runExpecting(void *self) {
-    try {
-        //  cppcheck-suppress cstyleCast
-        ((Thread*) self)->run();
-    } catch (const std::exception &e) {
-        std::cerr << "Exception caught in a thread: '" << e.what() << "'" << std::endl;
-    } catch (...) {
-        std::cerr << "Unknown error caught in thread" << std::endl;
-    }
-    return nullptr;
-}
-
-void Thread::start() {
-    pthread_create(&t, nullptr, &Thread::runExpecting, this);
-}
-
+Thread::Thread() { }
+Thread::~Thread() { }
 void Thread::join() {
-    pthread_join(t, nullptr);
+    thread.join();
 }
-
-bool Thread::isRunning() {
-    return running;
+void Thread::start() {
+    try {
+        thread = std::thread(&Thread::run, this);
+    } catch (const std::exception &e) {
+        std::cerr << "Exception caught in a thread: '"
+                  << e.what() << "'" << std::endl;
+    }
 }
-
-Thread::~Thread() = default;

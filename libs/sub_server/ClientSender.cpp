@@ -4,26 +4,23 @@
 
 #include "ClientSender.h"
 
-ClientSender::ClientSender(Socket &skt_client, BlockingQueue<ServerUpdate *> *queue, uint8_t idClient)
+ClientSender::ClientSender(Socket &skt_client, BlockingQueue<std::shared_ptr<ServerUpdate>> *queue, uint8_t idClient)
         : skt_client(skt_client), idClient(idClient), actionsQueue(queue) {
     this->closed = false;
 }
 
 void ClientSender::run() {
-    Protocolo p;
+    const std::function<void(void*, unsigned int)> callable = std::bind(&ClientSender::sendBytes, this, std::placeholders::_1, std::placeholders::_2);
+    Protocolo p(callable);
     try {
         while (not closed) {
             auto action = actionsQueue->pop();
-//            std::vector<uint8_t> v = p.serializeAction(action);
-            std::vector<uint8_t> v = action->beSerialized();
-            //  se iteran los comandos parseados y se envian al servidor
-            for (uint8_t c : v) {
-                skt_client.sendall(&c, sizeof(c), &closed);
-            }
+            uint8_t type = action->getType();
+            sendBytes(&type, sizeof(action->getType()));
+
+            p.serializeUpdate(action);
             // delete the action
-            delete action;
         }
-        running = false;
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
     } catch (...) {
@@ -31,6 +28,11 @@ void ClientSender::run() {
     }
 }
 
+void ClientSender::sendBytes(void* bytes_to_send, unsigned int size) {
+    if(!closed) {
+        this->skt_client.sendall(bytes_to_send, size, &closed);
+    }
+}
 void ClientSender::stop() {
 }
 
@@ -38,6 +40,6 @@ ClientSender::~ClientSender() {
     delete actionsQueue;
 }
 
-BlockingQueue<ServerUpdate *> * ClientSender::getQueue() const {
+BlockingQueue<std::shared_ptr<ServerUpdate>> * ClientSender::getQueue() const {
     return this->actionsQueue;
 }

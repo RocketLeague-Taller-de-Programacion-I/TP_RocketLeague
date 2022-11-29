@@ -18,6 +18,8 @@ class Car {
     uint8_t id;
     std::string playerName;
     bool turboOn;
+    bool movingLeft;
+    bool movingRight;
     b2Body *m_car;
     b2BodyDef bd;
     b2PolygonShape chassis;
@@ -37,6 +39,16 @@ public:
     float angle();
     float angleDeg();
     uint8_t getId();
+
+    void startMovingRight();
+
+    void startMovingLeft();
+
+    void stopMovingRight();
+
+    void stopMovingLeft();
+
+    void update();
 };
 
 

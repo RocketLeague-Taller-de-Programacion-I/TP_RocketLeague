@@ -8,13 +8,17 @@
 #include "ServerUpdate.h"
 
 class ServerUpdateWorld : public ServerUpdate{
+private:
+        std::vector<int> info;
 public:
-    ServerUpdateWorld(uint8_t &id, uint8_t &returnCode, const uint8_t &n, std::vector<uint8_t> &returnData) :
-                                    ServerUpdate(id,returnCode,returnData){};
+    ServerUpdateWorld(uint8_t &id, uint8_t &returnCode, std::vector<uint8_t> &returnData, std::vector<int> &data) :
+                                    ServerUpdate(id,returnCode,returnData),
+                                    info(data){};
     ~ServerUpdateWorld() override = default;
 
     uint8_t getType() const override;
-    std::vector<uint8_t> beSerialized() override;
+    void beSerialized(Protocolo *protocolo) override;
+    std::vector<int> getInfo() const { return info;};
 };
 
 

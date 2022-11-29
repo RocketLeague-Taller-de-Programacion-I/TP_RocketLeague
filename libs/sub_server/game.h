@@ -12,8 +12,10 @@
 #include "sub_common/BlockingQueue.h"
 #include "sub_server/server_box2d/Match.h"
 
-#include "server_updates/ServerUpdate.h"
+#include "server_updates/ServerUpdateWorld.h"
+#include "server_updates/ServerStartedGameACK.h"
 #include "server_actions/ServerAction.h"
+#include "server_actions/ServerActionMove.h"
 
 typedef uint8_t idPlayer_t;
 
@@ -25,10 +27,10 @@ private:
     std::string gameName;
     bool closed;
 
-    std::map<uint8_t ,BlockingQueue<ServerUpdate*>*> mapSender;
+    std::map<uint8_t ,BlockingQueue<std::shared_ptr<ServerUpdate>>*> mapSender;
     //map {id, BlockingQueue<ServerUpdate*>}
 
-    ProtectedQueue<ServerAction *> *queue;
+    ProtectedQueue<std::shared_ptr<ServerAction>> *queue;
     //BlockingQueue<ServerAction*> *queue;
 public:
     std::vector<uint8_t> information();
@@ -39,18 +41,18 @@ public:
     * No copiable
     */
     Game(const Game&) = delete;
-    Game(int capacity, std::string  name, ProtectedQueue<ServerAction *> *pQueue);
+    Game(int capacity, std::string  name, ProtectedQueue<std::shared_ptr<ServerAction>> *pQueue);
     ~Game() override;
 
     Game& operator=(const Game&) = delete;
 
-    void joinPlayer(uint8_t& id, BlockingQueue<ServerUpdate *> *sender);
+    void joinPlayer(uint8_t& id, BlockingQueue<std::shared_ptr<ServerUpdate>> *sender);
 
     bool isFull() const;
 
-    ProtectedQueue<ServerAction *> * getQueue();
+    ProtectedQueue<std::shared_ptr<ServerAction>> * getQueue();
 
-    void broadcastUpdate(ServerUpdate *update);
+    void broadcastUpdate(const std::shared_ptr<ServerUpdate>& update);
     void brodcastUpdateGameEvents(std::vector<ServerUpdate *> updates);
 };
 

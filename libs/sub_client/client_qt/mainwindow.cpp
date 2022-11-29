@@ -1,10 +1,11 @@
 
 #include "mainwindow.h"
+#include "../WaitingForGameToStartThread.h"
 #include "ui_mainwindow.h"
 #include <iostream>
 #include <regex>
 
-MainWindow::MainWindow(QWidget *parent, ProtectedQueue<ClientUpdate*> &updates, BlockingQueue<ClientAction *> &actions)
+MainWindow::MainWindow(QWidget *parent, ProtectedQueue<std::shared_ptr<ClientUpdate>> &updates, BlockingQueue<std::shared_ptr<ClientAction>> &actions)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , updatesQueue(updates)
@@ -60,22 +61,23 @@ void MainWindow::drawJoinGameMenu() {
     this->scene.clear();
 
     drawTitle("Join Game");
-    ClientAction* action = new ActionListRooms();
+    std::shared_ptr<ClientAction> action = std::make_shared<ActionListRooms>();
     this->actionsQueue.push(action);
+
     //list all the games
-    ClientUpdate* update;
+    std::shared_ptr<ClientUpdate> update;
     while (!updatesQueue.tryPop(update)) {
-        //  wait for updates
+        //  wait for list updates
     }
     //draw a button for each game
     if(update->getReturnCode() != OK){
-        QLabel* label = new QLabel("No games available");
+        label = new QLabel("No games available");
         label->setGeometry(width() / 2 - 110 , 200 , 301, 71);
         label->setStyleSheet("font: 20pt; color: white;");
         this->scene.addWidget(label);
 
     } else {
-        std::map<std::string,std::string> games = dynamic_cast<ClientListACK*>(update)->getList();
+        std::map<std::string,std::string> games = update->getList();
         int i = 200;
                 foreach(auto game, games) {
                 QString name = QString::fromStdString(game.first);
@@ -99,11 +101,11 @@ void MainWindow::createRoom() {
     std::string roomName = this->lineEdit->text().toStdString();
     uint8_t players = this->cantPlayers->value();
 //    Action* actionCreate = new ActionCreate(id, players, roomName);
-    ClientAction* actionCreate = new ActionCreateRoom(players, roomName);
+    std::shared_ptr<ClientAction> actionCreate = std::make_shared<ActionCreateRoom>(players, roomName);
+    //ClientAction* actionCreate = new ActionCreateRoom(players, roomName);
     this->actionsQueue.push(actionCreate);
-    popFirstUpdate();
-//    exit(1); // TODO: usar exit para salir del juego
-    close();
+    popFirstUpdate(); //pop CreateACK
+    drawLoadingScreen();
 }
 
 void MainWindow::joinParticularGame(QString roomName) {
@@ -113,10 +115,12 @@ void MainWindow::joinParticularGame(QString roomName) {
     // crear evento de join ()
     std::string room = retrieveGameName(roomName.toStdString());
     std::cout << "Joining to " << room << std::endl;
-    ClientAction *actionJoin = new ActionJoinRoom(room);
+    std::shared_ptr<ClientAction> actionJoin = std::make_shared<ActionJoinRoom>(room);
+    // ClientAction *actionJoin = new ActionJoinRoom(room);
     this->actionsQueue.push(actionJoin);
-    //exit qt
-    close();
+
+    // popFirstUpdate(); //pop JoinACK
+    drawLoadingScreen();
 }
 
 void MainWindow::back() {
@@ -182,7 +186,7 @@ void MainWindow::drawPlayButton() {// create the play button
     int bxPos = 1250 - playButton->boundingRect().width()/2;
     int byPos = 600;
     playButton->setPos(bxPos,byPos);
-    connect(playButton,SIGNAL(clicked()),this,SLOT(start()));
+    connect(playButton,SIGNAL(clicked(QString)),this,SLOT(start()));
     scene.addItem(playButton);
 }
 
@@ -192,7 +196,7 @@ void MainWindow::drawCreateButton() {
     int bxPos = width() / 2 - createGameButton->boundingRect().width() / 2;
     int byPos = 300;
     createGameButton->setPos(bxPos,byPos);
-    connect(createGameButton,SIGNAL(clicked()),this,SLOT(drawCreateGameMenu()));
+    connect(createGameButton,SIGNAL(clicked(QString)),this,SLOT(drawCreateGameMenu()));
     scene.addItem(createGameButton);
 }
 
@@ -202,7 +206,7 @@ void MainWindow::drawJoinButton() {
     int bxPos = width() / 2 - joinGameButton->boundingRect().width() / 2;
     int byPos = 400;
     joinGameButton->setPos(bxPos,byPos);
-    connect(joinGameButton,SIGNAL(clicked()),this,SLOT(drawJoinGameMenu()));
+    connect(joinGameButton,SIGNAL(clicked(QString)),this,SLOT(drawJoinGameMenu()));
     scene.addItem(joinGameButton);
 }
 
@@ -212,7 +216,7 @@ void MainWindow::drawBackButton() {
     int bxPos = width() / 5 - backButton->boundingRect().width() / 2;
     int byPos = 600;
     backButton->setPos(bxPos,byPos);
-    connect(backButton,SIGNAL(clicked()),this,SLOT(back()));
+    connect(backButton,SIGNAL(clicked(QString)),this,SLOT(back()));
     scene.addItem(backButton);
 }
 
@@ -222,7 +226,7 @@ void MainWindow::drawSaveAndStartButton() {
     int bxPos = width() / 2 - saveAndStartButton->boundingRect().width() / 2;
     int byPos = 600;
     saveAndStartButton->setPos(bxPos,byPos);
-    connect(saveAndStartButton,SIGNAL(clicked()),this,SLOT(createRoom()));
+    connect(saveAndStartButton,SIGNAL(clicked(QString)),this,SLOT(createRoom()));
     scene.addItem(saveAndStartButton);
 }
 
@@ -241,19 +245,20 @@ void MainWindow::drawLoadingScreen() {
     ui->view->setStyleSheet("border-image: url(../images/loadingScreen.jpeg);");
 
     // create the title text
-    QGraphicsTextItem* titleText = new QGraphicsTextItem(QString("Waiting for more players to join"));
+    auto *titleText = new QGraphicsTextItem(QString("Waiting for more players to join"));
     QFont titleFont("comic sans",40);
     titleText->setFont(titleFont);
     int txPos = width() / 2 - titleText->boundingRect().width() / 4;
     int tyPos = height() / 2;
     titleText->setPos(txPos,tyPos);
     scene.addItem(titleText);
-    popFirstUpdate();
     close();
+    // auto *waitingThread = new WaitingForGameToStartThread(this, this->updatesQueue);
+    // waitingThread->start();
 }
 
 void MainWindow::popFirstUpdate() {
-    ClientUpdate* update;
+    std::shared_ptr<ClientUpdate> update;
     bool popping = true;
     while (popping) {
         //  wait for updates
@@ -261,17 +266,19 @@ void MainWindow::popFirstUpdate() {
             popping = false;
         }
     }
+    if(update->getType() == STARTED_GAME_ACK) {
+        //start the game directly
+        //TODO: retrieve ID from update
+        scene.clear();
+        close();
+    }
     std::cout << "Update received" << std::endl;
     std::cout << "Game created with id: " << (int)(update->getId()) << std::endl;
     std::cout << "Game created with returnmesage: " << (int)update->getReturnCode() << std::endl;
 
     if(update->getReturnCode()) {
-        // error partida exisistia
-        // error partida full
-        // volver a home game
         drawGUI();
     }
-    delete update;
 }
 
 std::string MainWindow::retrieveGameName(const std::string& basicString) {
@@ -280,12 +287,9 @@ std::string MainWindow::retrieveGameName(const std::string& basicString) {
     std::smatch match;
 
     std::regex_search(basicString, match, re);
-
-//    std::string name = match.str().empty() ? "no name" : match.str();
-    //std::string name = data.substr(0, data.find(match.str()));
-    // result.insert(result.end(), name.begin(), name.end());
     std::string name = match.str().empty() ? "no name" : match.str();
     std::string stripped = name.substr(0, name.find_last_of(' '));
+
     return stripped;
 }
 

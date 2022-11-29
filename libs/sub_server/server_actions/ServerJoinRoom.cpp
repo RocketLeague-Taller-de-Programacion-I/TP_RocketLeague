@@ -7,9 +7,14 @@
 
 ServerJoinRoom::ServerJoinRoom(const uint8_t &id, std::string &data) : ServerAction(id, data) {}
 
-ServerUpdate * ServerJoinRoom::execute(GameManager &manager, const std::function<BlockingQueue<ServerUpdate *> *(
-        ProtectedQueue<ServerAction *> *)> &setQueue) {
+std::shared_ptr<ServerUpdate> ServerJoinRoom::execute(GameManager &manager, const std::function<BlockingQueue<std::shared_ptr<ServerUpdate>> *(
+        ProtectedQueue<std::shared_ptr<ServerAction>> *)> &setQueue) {
 
     uint8_t returnCode = manager.joinGame(id, roomName, setQueue) ? OK : ERROR_FULL;
-    return new ServerJoinACK(id, returnCode);
+    std::shared_ptr<ServerUpdate> update = std::make_shared<ServerJoinACK>(id, returnCode);
+    return update;
+}
+
+void ServerJoinRoom::execute(Match &match) {
+
 }
