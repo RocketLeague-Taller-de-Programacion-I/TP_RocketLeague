@@ -1,30 +1,27 @@
-//
-// Created by lucaswaisten on 04/11/22.
-//
 
 #ifndef ROCKETLEAGUE_THREAD_H
 #define ROCKETLEAGUE_THREAD_H
 
-
-#include <pthread.h>
 #include <iostream>
-#include <atomic>
+#include <thread>
 
 class Thread {
 private:
-    pthread_t t;
-    static void *runExpecting(void *self);
-protected:
-    virtual void run() = 0;
-    std::atomic<bool> running = false;
+    std::thread thread;
 public:
+    //  Elimino constructor por copia
+    Thread(const Thread&) = delete;
+    //  Elimino operator = (copia)
+    Thread& operator=(Thread&& other) = delete;
+    //  Elimino constructor por movimiento
+    Thread(Thread&& other) = delete;
+    Thread();
     void start();
     void join();
+    virtual void run() = 0;
     virtual void stop() = 0;
-
     virtual ~Thread();
-
-    bool isRunning();
 };
 
-#endif //ROCKETLEAGUE_THREAD_H
+#endif
+//ROCKETLEAGUE_THREAD_H

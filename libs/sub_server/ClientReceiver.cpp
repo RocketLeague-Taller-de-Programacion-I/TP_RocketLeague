@@ -25,7 +25,6 @@ void ClientReceiver::run() {
             // push the action to the queue
             updatesQueue->push(action);
         }
-        running = false;
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
     } catch (...) {
