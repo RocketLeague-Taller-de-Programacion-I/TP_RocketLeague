@@ -15,7 +15,16 @@ int main(int argc, char const *argv[]) {
     try {
         Server server(argv[1]);
         server.start();
-        server.join();
+
+        std::string input;
+
+        while (std::getline(std::cin, input)) {
+            if (input == "q") {
+                server.stop();
+                server.join();
+                break;
+            }
+        }
     } catch (const std::exception& e) {
         std::cerr << e.what() << std::endl;
         return 1;

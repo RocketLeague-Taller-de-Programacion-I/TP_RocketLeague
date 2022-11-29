@@ -13,15 +13,15 @@ ClientReceiver::ClientReceiver(Socket &skt_client, ProtectedQueue<std::shared_pt
 void ClientReceiver::run() {
     try {
         while (!closed) {
-            uint8_t byte_to_read;
+            uint8_t actionType;
 
-            this->skt_client.recvall(&byte_to_read, sizeof(byte_to_read), &closed);
+            this->skt_client.recvall(&actionType, sizeof(actionType), &closed);
 
             std::function<void(std::vector<uint8_t>&, uint8_t&)> bytes_receiver_callable =
                     std::bind(&ClientReceiver::receiveBytes, this, std::placeholders::_1 ,std::placeholders::_2);
 
             // form the Action from the data
-            auto action = Protocolo::deserializeData(idClient, byte_to_read, bytes_receiver_callable);
+            auto action = Protocolo::deserializeData(idClient, actionType, bytes_receiver_callable);
             // push the action to the queue
             updatesQueue->push(action);
         }

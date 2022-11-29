@@ -71,6 +71,7 @@ void Server::garbageCollector() {
  */
 void Server::cleanManagers() {
     for (auto & manager : managers){
+        manager->stop();
         manager->join();
         delete manager;
     }
@@ -80,7 +81,7 @@ void Server::cleanManagers() {
  */
 void Server::stop() {
     closed = true;
-    this->accept_skt.shutdown(SHUT_RDWR);
+    cleanManagers();
+    this->accept_skt.shutdown(2);
     this->accept_skt.close();
-    this->join();
 }
