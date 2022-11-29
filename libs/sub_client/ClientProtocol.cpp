@@ -15,8 +15,6 @@ std::shared_ptr<ClientUpdate> ClientProtocol::deserializeData(const uint8_t &typ
             return parseJoinACK(receiveBytes);
         case LIST_INFO:
             return parseListUpdate(receiveBytes);
-    // case STARTED_GAME_ACK:
-       // return parseStartedGameACK(receiveBytes);
         case WORLD:
             return parseWorldUpdate(receiveBytes);
     }
@@ -35,15 +33,6 @@ std::shared_ptr<ClientUpdate> ClientProtocol::parseCreateACK(
     std::shared_ptr<ClientUpdate> update = std::make_shared<ClientCreateACK>(id, returnCode);
     return update;
 }
-
-/*std::shared_ptr<ClientUpdate> ClientProtocol::deserializeCreateACK(const std::vector<uint16_t> &data) {
-    uint16_t id = data[1];
-    uint16_t returnCode = data[2];
-    std::shared_ptr<ClientUpdate> update = std::make_shared<ClientCreateACK>(id, returnCode);
-    return update;
-    return new ClientCreateACK(reinterpret_cast<uint8_t &>(id), reinterpret_cast<uint8_t &>(returnCode));
-    //CreateACK -> CreateACK(id,returnCode) returnCode = 1 OK, 2 ERROR_Existe
-}*/
 
 std::shared_ptr<ClientUpdate> ClientProtocol::parseJoinACK(const std::function<void(void *, int)> &receiveBytes) {
     uint8_t id;
@@ -146,15 +135,5 @@ std::shared_ptr<ClientUpdate> ClientProtocol::parseWorldUpdate(const std::functi
     }
 
     std::shared_ptr<ClientUpdate> update = std::make_shared<ClientUpdateWorld>(ball, score, clientCars);
-    return update;
-}
-
-std::shared_ptr<ClientUpdate>
-ClientProtocol::parseStartedGameACK(const std::function<void(std::vector<uint8_t> &, uint8_t &)> &function) {
-    std::vector<uint8_t> id_and_returncode(2);
-    uint8_t size = id_and_returncode.size();
-    function(id_and_returncode, size);
-
-    std::shared_ptr<ClientUpdate> update = std::make_shared<ClientStartedGameACK>(id_and_returncode[0], id_and_returncode[1]);
     return update;
 }

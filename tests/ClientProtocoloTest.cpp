@@ -3,13 +3,30 @@
 //
 #include <catch2/catch_test_macros.hpp>
 #include "sub_client/ClientProtocol.h"
-#include "sub_client/client_updates/ClientCreateACK.h"
 
 
-/*
- * Defino de forma global a protocolo que utilizare para los test.
- */
-ClientProtocol clientProtocol;
+class MockClientProtocol {
+public:
+    MockClientProtocol(uint8_t &i, bool &b) : id(i),returncode(b) {}
+    void receiveByteAndReturnCodeOK(void *bytes_to_read, int size) {
+        auto * pbytes_to_read = (uint8_t *) bytes_to_read;
+        returncode ?  *pbytes_to_read = 0 : *pbytes_to_read = id;
+        returncode = true;
+    }
+    void returnCodeError(void *bytes_to_read, int size) {
+        auto * pbytes_to_read = (uint8_t *) bytes_to_read;
+        returncode ?  *pbytes_to_read = 1 : *pbytes_to_read = id;
+        returncode = true;
+    }
+private:
+    uint8_t &id;
+    bool returncode;
+};
+
+uint8_t id = 1;
+bool returnCode = false;
+MockClientProtocol mock(id,returnCode);
+
 /*
  * Test unitario de protocolo
  *      - Buscaremos testiar cuando recibe mensajes desde cliente
@@ -24,24 +41,28 @@ ClientProtocol clientProtocol;
 //      - joinACK -> {type, id, returnCode}
 //      - listACK -> {type, id, returnCode, cantidadDeGames = 2 , [online, max, size, name] , [online, max, size, name]}
 
-
 TEST_CASE("ClientProtocol can deserialize CreateACK update", "[clientProtocol]") {
-//    std::function<void(std::vector<uint8_t>&, uint8_t&)> bytes_receiver_callable =
-//            std::bind(&clientProtocol.receiveBytes, clientProtocol, std::placeholders::_1 ,std::placeholders::_2);
+
     SECTION("CreateACK with return code OK") {
-        ClientUpdate *update = clientProtocol.deserializeData(CREATE_ACK);
+        std::function<void(void *, int)> bytes_receiver_callable =
+                [](void * retuncode, int size) { mock.receiveByteAndReturnCodeOK(retuncode,size); };
+
+        auto update = ClientProtocol::deserializeData(CREATE_ACK,
+                                                      bytes_receiver_callable);
+
         REQUIRE(update->getId() == 1);
         REQUIRE(update->getReturnCode() == OK);
-        data.pop_back();
     }
-
     SECTION("CreateACK with return code ERROR") {
-        data.emplace_back(1); //return code
-        ClientUpdate *update = clientProtocol.deserializeData(data);
+        std::function<void(void *, int)> bytes_receiver_callable =
+                [](void * retuncode, int size) { mock.returnCodeError(retuncode,size); };
+        auto update = ClientProtocol::deserializeData(CREATE_ACK,
+                                                      bytes_receiver_callable);
         REQUIRE(update->getId() == 1);
         REQUIRE(update->getReturnCode() == ERROR_FULL);
     }
 }
+/*
 
 TEST_CASE("ClientProtocol can deserialize JoinACK update", "[clientProtocol]") {
     std::vector<uint8_t> data;
@@ -88,4 +109,4 @@ TEST_CASE("ClientProtocol can deserialize ListACK update", "[clientProtocol]") {
         REQUIRE(update->getReturnCode() == OK);
         REQUIRE(update->getList()[0].length() == name.length());
     }
-}
+}*/
