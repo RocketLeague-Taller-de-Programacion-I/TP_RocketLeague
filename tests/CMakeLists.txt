@@ -1,5 +1,8 @@
 # These tests can use the Catch2-provided main
-add_executable(tests protocoloTest.cpp
+add_executable(tests
+        ClientProtocoloTest.cpp
         serverTest.cpp
         actionsTest.cpp)
-target_link_libraries(tests PRIVATE Catch2::Catch2WithMain lib_common lib_client)
+find_package(Catch2 3 REQUIRED)
+# These tests can use the Catch2-provided main
+target_link_libraries(tests PRIVATE Catch2::Catch2WithMain lib_client)
