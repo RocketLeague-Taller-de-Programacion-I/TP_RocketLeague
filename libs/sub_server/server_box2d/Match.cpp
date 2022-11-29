@@ -69,29 +69,29 @@ std::vector<int> Match::info() {
     std::vector<int> data;
     //    bola -> 4bytes
     uint16_t x = (uint16_t) (this->ball->X() * 1000);
-    data.push_back(htons(x));
+    data.push_back(x);
     uint16_t y = (uint16_t) (this->ball->Y() * 1000);
-    data.push_back(htons(y));
+    data.push_back(y);
 //    score -> 4bytes
-    data.push_back(htons(this->goalsLocal));
-    data.push_back(htons(this->goalsVisit));
+    data.push_back((this->goalsLocal));
+    data.push_back((this->goalsVisit));
 //    numero de clientes 2 bytes
-    data.push_back(htons(this->playersConnected));
+    data.push_back((this->playersConnected));
 //    cliente 7bytes
     for ( auto &player : players){
         uint16_t  id = (uint16_t) player.first;
-        data.push_back(htons(id));
+        data.push_back((id));
         x = (uint16_t) (player.second->X() * 1000);
-        data.push_back(htons(x));
+        data.push_back((x));
 
         y = (uint16_t) (player.second->Y() * 1000);
-        data.push_back(htons(y));
+        data.push_back((y));
 
         uint16_t angle = (uint16_t) abs(player.second->angleDeg() * 1000);
         // get sign bit from angle
         uint8_t sign = (player.second->angleDeg() < 0) ? 1 : 0;
-        data.push_back(htons(sign));
-        data.push_back(htons(angle)); //  1er byte
+        data.push_back((sign));
+        data.push_back((angle)); //  1er byte
     }
     return data;
 }

@@ -110,26 +110,26 @@ void Protocolo::serializeWorldUpdate(ServerUpdateWorld *update) {
     //implement
     std::vector<int> matchInfo = update->getInfo();
     //  Ball
-    uint16_t ballX = (uint16_t) matchInfo[0];
-    uint16_t ballY = (uint16_t) matchInfo[1];
+    uint16_t ballX = (uint16_t) htons(matchInfo[0]);
+    uint16_t ballY = (uint16_t) htons(matchInfo[1]);
     sendBytes(&ballX, sizeof(ballX));
     sendBytes(&ballY, sizeof(ballY));
 
     //  Score
-    uint16_t local = (uint16_t) matchInfo[2];
-    uint16_t visit = (uint16_t) matchInfo[3];
+    uint16_t local = (uint16_t) htons(matchInfo[2]);
+    uint16_t visit = (uint16_t) htons(matchInfo[3]);
     sendBytes(&local, sizeof(local));
     sendBytes(&visit, sizeof(visit));
 
     //  Numero de Clientes
-    uint16_t n_clients = (uint16_t) matchInfo[4];
+    uint16_t n_clients = (uint16_t) htons(matchInfo[4]);
     sendBytes(&n_clients, sizeof(n_clients));
 
     int vSize = matchInfo.size();
 
     //  Clientes
     for (int i = 5; i<vSize; i++) {
-        uint16_t carInfo = (uint16_t) matchInfo[i];
+        uint16_t carInfo = (uint16_t) htons(matchInfo[i]);
         sendBytes(&carInfo, sizeof(carInfo));
     }
 
