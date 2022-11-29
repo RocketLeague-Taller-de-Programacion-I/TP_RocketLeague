@@ -82,10 +82,6 @@ std::shared_ptr<ClientUpdate> ClientProtocol::parseListUpdate(
         games[gameName] = std::to_string(playersOnLine) + "/" + std::to_string(capacity);
     }
 
-    /*uint16_t test;
-    receiveBytes(&test, sizeof(test));
-    test = ntohs(test);*/
-
     std::shared_ptr<ClientUpdate> update = std::make_shared<ClientListACK>(id, returnCode, games);
     return update;
 }

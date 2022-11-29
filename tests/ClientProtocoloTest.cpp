@@ -4,47 +4,7 @@
 #include <catch2/catch_test_macros.hpp>
 #include <queue>
 #include "sub_client/ClientProtocol.h"
-
-
-class MockClientProtocol {
-public:
-    MockClientProtocol(uint8_t id, uint8_t returnCode) {
-        data.push(id);
-        data.push(returnCode);
-    }
-
-    MockClientProtocol(uint8_t id, uint8_t returnCode, uint8_t cantGame, uint8_t online, uint8_t capacity,
-                       uint8_t sizeName, const std::string &name) {
-        data.push(id);
-        data.push(returnCode);
-        data.push(cantGame);
-        data.push(online);
-        data.push(capacity);
-        data.push(sizeName);
-        for(auto & i : name){
-            data.push(i);
-        }
-    }
-
-    void receiveBytes(void *bytes_to_read, int size) {
-        auto * pbytes_to_read = (uint8_t *) bytes_to_read;
-        for (int i =0 ; i<size;i++){
-            *pbytes_to_read = data.front() ;
-            if (size > 1)  *pbytes_to_read++ ;
-            data.pop();
-        }
-
-    }
-private:
-    std::queue<uint8_t> data;
-};
-
-MockClientProtocol mockCreateOK(1,0);
-MockClientProtocol mockCreateERROR(1,1);
-MockClientProtocol mockJoinOK(1,0);
-MockClientProtocol mockJoinERROR(1,1);
-MockClientProtocol mockListOK(1, 0, 1, 1, 2, 4, "test");
-MockClientProtocol mockListERROR(1,1);
+#include "MockClientProtocol.h"
 
 /*
  * Test unitario de protocolo
@@ -52,13 +12,26 @@ MockClientProtocol mockListERROR(1,1);
  *      y los mismos se serializan en comandos de 2 bytes.
  *      - Buscaremos testiar las respuestas del servidor
  *      los casos exitosos y los casos no exitosos.
+ * recibir:
+      - createACK -> {type, id, returnCode}
+      - joinACK -> {type, id, returnCode}
+      - listACK -> {type, id, returnCode, cantidadDeGames = 2 , [online, max, size, name] , [online, max, size, name]}
+      - worldACK -> {ballX, ballY, localScore, visitScore, n_clients, [id,x_pos,y_pox,angleSing,angle, ... for each client]}
  */
 
-//Client Protocolo
-// recibir:
-//      - createACK -> {type, id, returnCode}
-//      - joinACK -> {type, id, returnCode}
-//      - listACK -> {type, id, returnCode, cantidadDeGames = 2 , [online, max, size, name] , [online, max, size, name]}
+/*
+ * Defino los mock a utilizar en CreactACK
+ * mockCreateOK
+ *      atributos:
+ *          - id = 1
+ *          - retunCode = OK;
+ * mockCreateERROR
+ *      atributos:
+ *          - id = 1
+ *          - retunCode = ERROR_FULL;
+ */
+MockClientProtocol mockCreateOK(1,OK);
+MockClientProtocol mockCreateERROR(1,ERROR_FULL);
 
 TEST_CASE("ClientProtocol can deserialize CreateACK update", "[clientProtocol]") {
 
@@ -85,7 +58,19 @@ TEST_CASE("ClientProtocol can deserialize CreateACK update", "[clientProtocol]")
         REQUIRE(update->getType() == CREATE_ACK);
     }
 }
-
+/*
+ * Defino los mock a utilizar en JoinACK
+ * mockJoinOK
+ *      atributos:
+ *          - id = 1
+ *          - retunCode = OK;
+ * mockJoinERROR
+ *      atributos:
+ *          - id = 1
+ *          - retunCode = ERROR_FULL;
+ */
+MockClientProtocol mockJoinOK(1,OK);
+MockClientProtocol mockJoinERROR(1,ERROR_FULL);
 
 TEST_CASE("ClientProtocol can deserialize JoinACK update", "[clientProtocol]") {
 
@@ -112,6 +97,26 @@ TEST_CASE("ClientProtocol can deserialize JoinACK update", "[clientProtocol]") {
         REQUIRE(update->getType() == JOIN_ACK);
     }
 }
+/*
+ * Defino los mock a utilizar en JoinACK
+ * mockListOK
+ *      atributos:
+ *          - id = 1
+ *          - retunCode = OK
+ *          - cantGame = 1
+ *          - online = 1
+ *          - capacity = 2
+ *          - sizeName = 4
+ *          - name = "test"
+ * mockListERROR
+ *      atributos:
+ *          - id = 1
+ *          - retunCode = ERROR_FULL
+ */
+std::vector<uint8_t> dataList = {1, OK, 1, 1, 2, 4,};
+//MockClientProtocol mockListOK(1, OK, 1, 1, 2, 4, "test");
+MockClientProtocol mockListOK(dataList,"test");
+MockClientProtocol mockListERROR(1,ERROR_FULL);
 
 TEST_CASE("ClientProtocol can deserialize ListACK update", "[clientProtocol]") {
 
@@ -138,5 +143,56 @@ TEST_CASE("ClientProtocol can deserialize ListACK update", "[clientProtocol]") {
         REQUIRE(update->getId() == 1);
         REQUIRE(update->getReturnCode() == ERROR_FULL);;
     }
+
+}
+/*
+ * Defino los mock a utilizar en JoinACK
+ * mockListOK
+ *      atributos:
+ *          - ballX = 0
+ *          - ballY = 0
+ *          - score_local = 0
+ *          - score_visit = 0
+ *          - n_clients = 1
+ *          - id = 1
+ *          - x_pos = 100
+ *          - y_pos = 200
+ *          - angleSign = 0
+ *          - angle = 60
+ * mockListERROR
+ *      atributos:
+ *          - id = 1
+ *          - retunCode = ERROR_FULL
+ */
+std::vector<uint8_t> dataWorld = {0, 0, 0, 0, 1, 1,100,200,0,60};
+MockClientProtocol mockWorldOK(dataWorld,"");
+//MockClientProtocol mockListERROR(1,ERROR_FULL);
+
+TEST_CASE("ClientProtocol can deserialize WorldACK update", "[clientProtocol]") {
+
+    SECTION("WorldACK with return data of render objetc") {
+        std::function<void(void *, int)> bytes_receiver_callable =
+                [](void * retuncode, int size) { mockListOK.receiveBytes(retuncode,size); };
+
+        auto update = ClientProtocol::deserializeData(WORLD,
+                                                      bytes_receiver_callable);
+        auto ball = update->getBall();
+        auto cars = update->getCars();
+        REQUIRE(ball.getX() == 0);
+        REQUIRE(ball.getY() == 0);
+        REQUIRE(cars[0].getX() == 100);
+        REQUIRE(cars[0].getX() == 200);
+    }
+
+   /* SECTION("WorldACK with return code ERROR")  {
+        std::function<void(void *, int)> bytes_receiver_callable =
+                [](void * retuncode, int size) { mockListERROR.receiveBytes(retuncode,size); };
+
+        auto update = ClientProtocol::deserializeData(WORLD,
+                                                      bytes_receiver_callable);
+
+        REQUIRE(update->getId() == 1);
+        REQUIRE(update->getReturnCode() == ERROR_FULL);;
+    }*/
 
 }

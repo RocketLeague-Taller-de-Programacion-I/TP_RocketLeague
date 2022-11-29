@@ -2,7 +2,7 @@
 add_executable(tests
         ClientProtocoloTest.cpp
         serverTest.cpp
-        actionsTest.cpp)
+        actionsTest.cpp MockClientProtocol.h)
 find_package(Catch2 3 REQUIRED)
 # These tests can use the Catch2-provided main
 target_link_libraries(tests PRIVATE Catch2::Catch2WithMain lib_client)
