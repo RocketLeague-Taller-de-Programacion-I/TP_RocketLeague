@@ -15,8 +15,6 @@ message("Client - Agregando '${PROJECT_SOURCE_DIR}/sub_client' como directorio d
 #add_executable(client ../../client_main.cpp ${UIS_HEADERS})
 #include_directories(${SDL2PP_INCLUDE_DIRS})
 add_library(lib_client
-        Client.cpp
-        Client.h
         client_sdl/Animation.cpp
         client_sdl/Animation.h
         client_sdl/Player.cpp
@@ -59,6 +57,12 @@ add_library(lib_client
         WaitingForGameToStartThread.h
         client_updates/ClientStartedGameACK.cpp
         client_updates/ClientStartedGameACK.h
-        client_updates/ClientUpdateWorld.cpp client_updates/ClientUpdateWorld.h client_sdl/Car.cpp client_sdl/Car.h client_sdl/Score.cpp client_sdl/Score.h client_sdl/Ball.h)
+        client_updates/ClientUpdateWorld.cpp
+        client_updates/ClientUpdateWorld.h
+        client_sdl/Car.cpp
+        client_sdl/Car.h
+        client_sdl/Score.cpp
+        client_sdl/Score.h
+        client_sdl/Ball.h)
 
 target_link_libraries(lib_client SDL2pp::SDL2pp Qt5::Widgets)
