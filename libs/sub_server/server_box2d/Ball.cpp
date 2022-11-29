@@ -4,6 +4,9 @@
 
 #include "Ball.h"
 #include "box2d/box2d.h"
+#define BALL 0x0002
+#define CAR -3
+#define GROUND 0x0004
 
 Ball::Ball(b2World* world, float radius) {
     myUserData = std::make_unique<MyFixtureUserDataType>();
@@ -21,7 +24,9 @@ Ball::Ball(b2World* world, float radius) {
     fixDef.shape = &circleShape;
     fixDef.density = 1;
     fixDef.restitution = 0.7;
+    fixDef.filter.groupIndex = BALL;
     myUserData->mOwningFixture =  m_body->CreateFixture(&fixDef);
+    myUserData->mOwningFixture->SetFilterData(fixDef.filter);
     this->ballFixture = myUserData->mOwningFixture;
 }
 float Ball::X() const {
