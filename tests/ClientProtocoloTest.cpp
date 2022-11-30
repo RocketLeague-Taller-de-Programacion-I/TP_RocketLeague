@@ -140,7 +140,7 @@ TEST_CASE("ClientProtocol can deserialize ListACK update", "[clientProtocol]") {
                                                       bytes_receiver_callable);
 
         REQUIRE(update->getId() == 1);
-        REQUIRE(update->getReturnCode() == ERROR_FULL);;
+        REQUIRE(update->getReturnCode() == ERROR_FULL);
     }
 }
 /*
@@ -162,22 +162,52 @@ TEST_CASE("ClientProtocol can deserialize ListACK update", "[clientProtocol]") {
  *          - id = 1
  *          - retunCode = ERROR_FULL
  */
-std::vector<uint8_t> dataWorld = {0, 0, 0, 0, 1, 1,100,200,0,60};
-MockClientProtocol mockWorldOK(dataWorld,"");
+std::vector<uint16_t> dataTestOne = {2000, 3000, 2, 0, 1, 1, 0, 0, 0, 0};
+MockClientProtocol mockWorldOneOK(dataTestOne);
+std::vector<uint16_t> dataTestTwo = {0, 0, 0, 0, 1, 1, 2000, 4000, 0, 60};
+MockClientProtocol mockWorldTwoOK(dataTestTwo);
 
 TEST_CASE("ClientProtocol can deserialize WorldACK update", "[clientProtocol]") {
 
-    SECTION("WorldACK with return data of render objetc") {
+    SECTION("Update WorldACK with ball in position (0,0) and score (0,0)") {
         std::function<void(void *, int)> bytes_receiver_callable =
-                [](void * retuncode, int size) { mockWorldOK.receiveBytesWorld(retuncode,size); };
+                [](void * retuncode, int size) { mockWorldOneOK.receiveBytesWorld(retuncode,size); };
 
         auto update = ClientProtocol::deserializeData(WORLD,
                                                       bytes_receiver_callable);
         auto ball = update->getBall();
-        auto cars = update->getCars();
-        REQUIRE(ball.getX() == 0);
-        REQUIRE(ball.getY() == 0);
-        REQUIRE(cars[0].getX() == 100);
-        REQUIRE(cars[0].getX() == 200);
+        auto score = update->getScore();
+        auto x = (int)(ball.getX()*1000);
+        auto y = (int)(ball.getY()*1000);
+
+        REQUIRE(x == 2000);
+        REQUIRE(y == 3000);
+        REQUIRE(score.getLocal() == 2);
+        REQUIRE(score.getVisitor() == 0);
     }
+
+    SECTION("Update WorldACK with car in position (200,400) and angle 60 degrees") {
+        std::function<void(void *, int)> bytes_receiver_callable =
+                [](void * retuncode, int size) { mockWorldTwoOK.receiveBytesWorld(retuncode,size); };
+
+        auto update = ClientProtocol::deserializeData(WORLD,
+                                                      bytes_receiver_callable);
+        auto cars = update->getCars();
+        auto x = (int)(cars[0].getX()*1000);
+        auto y = (int)(cars[0].getY()*1000);
+        REQUIRE(x == 2000);
+        REQUIRE(y == 4000);
+        REQUIRE((int)(cars[0].getAngle()*1000) == 60);
+    }
+}
+
+TEST_CASE("ClientProtocol receive an non-existed command", "[clientProtocol]") {
+
+    std::function<void(void *, int)> bytes_receiver_callable =
+            [](void * retuncode, int size) { mockWorldOneOK.receiveBytesWorld(retuncode,size); };
+
+    auto update = ClientProtocol::deserializeData(-1,
+                                                  bytes_receiver_callable);
+
+    REQUIRE(update == nullptr);
 }

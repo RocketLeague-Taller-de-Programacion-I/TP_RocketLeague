@@ -8,6 +8,7 @@
 #include <cstdint>
 #include <string>
 #include <queue>
+#include <netinet/in.h>
 
 class MockClientProtocol {
 public:
@@ -24,6 +25,11 @@ public:
             data.push(i);
         }
     }
+    MockClientProtocol(const std::vector<uint16_t>& dataRecive) {
+        for ( auto & iter  : dataRecive){
+            dataWorld.push( htons(iter));
+        }
+    }
 
     void receiveBytes(void *bytes_to_read, int size) {
         auto * pbytes_to_read = (uint8_t *) bytes_to_read;
@@ -34,11 +40,12 @@ public:
         }
     }
     void receiveBytesWorld(void *bytes_to_read, int size) {
-        auto * pbytes_to_read = (uint8_t *) bytes_to_read;
-        *pbytes_to_read = data.front() ;
-        data.pop();
+        auto * pbytes_to_read = (uint16_t *) bytes_to_read;
+        *pbytes_to_read = dataWorld.front() ;
+        dataWorld.pop();
     }
 private:
     std::queue<uint8_t> data;
+    std::queue<uint16_t> dataWorld;
 };
 #endif //ROCKETLEAGUE_MOCKCLIENTPROTOCOL_H
