@@ -45,7 +45,7 @@ void RenderThread::run() {
         SDL_SetWindowResizable(sdlWindow.Get(), SDL_FALSE);
         // Creo renderer
         Renderer renderer(sdlWindow, -1, SDL_RENDERER_SOFTWARE);
-        Texture carTexture(renderer, SDL2pp::Surface("../images/car.jpeg").SetColorKey(true, 0));
+        Texture carTexture(renderer, SDL2pp::Surface("../images/car.png").SetColorKey(true, 0));
         Texture ballTexture(renderer, SDL2pp::Surface("../images/ball.png").SetColorKey(true, 0));
         Texture fieldTexture(renderer, SDL2pp::Surface("../images/field.png").SetColorKey(true, 0));
         Texture scoreBoardTexture(renderer, SDL2pp::Surface("../images/clock.png"));
