@@ -45,17 +45,13 @@ public:
         queue.pop();
         return true;
     }
-    std::vector<T> popAll() {
+    std::queue<T> popAll() {
         std::lock_guard<std::mutex> lock(mutex);
-        std::vector<T> elements;
-        while(queue.empty()) {
-            T element = queue.front();
-            queue.pop();
-            elements.push_back(element);
-        }
-        return elements;
+        std::queue<T> old;
+        std::queue<T> elements = this->queue;
+        elements.swap(old);
+        return old;
     }
-
 
     ~ProtectedQueue()  = default;
 
