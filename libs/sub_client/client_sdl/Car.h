@@ -7,7 +7,8 @@
 
 
 #include <cstdint>
-
+#define HEIGHT 600
+#define PXM 37 //  Pixeles por metro
 class Car {
 private:
     uint16_t& id;
@@ -17,7 +18,7 @@ private:
     float angle;
 
 public:
-    Car(uint16_t &id, float x, float y, uint16_t sign, float angle) : id(id), x(x), y(y), sign(sign), angle(angle) {};
+    Car(uint16_t &id, float x, float y, uint16_t sign, float angle) : id(id), x(x * PXM), y(HEIGHT - (y * PXM)), sign(sign), angle(angle) {};
     ~Car() = default;
 
     //getters
