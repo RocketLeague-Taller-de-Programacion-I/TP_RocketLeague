@@ -21,6 +21,7 @@ public:
     ~Car() = default;
 
     //getters
+    uint16_t getId() const { return id; };
     float getX() const { return x; };
     float getY() const { return y; };
     uint16_t getSign() const { return sign; };

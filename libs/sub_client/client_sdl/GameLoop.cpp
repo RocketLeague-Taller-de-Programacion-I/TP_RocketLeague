@@ -2,13 +2,14 @@
 // Created by franco on 03/11/22.
 //
 
-#include <map>
 #include <unistd.h>
 #include "GameLoop.h"
 #include "sub_client/client_actions/ClientActionMove.h"
 #include "Ball.h"
 #include "Score.h"
 #include "sub_client/client_updates/ClientUpdateWorld.h"
+
+#define EVENTS_X_FRAME 10
 
 GameLoop::GameLoop(SDL2pp::Renderer &renderer, int xMax, int yMax, ProtectedQueue<std::shared_ptr<ClientUpdate>> &updates,
                    BlockingQueue<std::shared_ptr<ClientAction>> &actions, Worldview &wv)
@@ -21,8 +22,6 @@ GameLoop::GameLoop(SDL2pp::Renderer &renderer, int xMax, int yMax, ProtectedQueu
           wv(wv){}
 
 void GameLoop::run() {
-    // Gameloop, notar como tenemos desacoplado el procesamiento de los inputs (handleEvents)
-    // del update del modelo.
     while (running) {
         handle_events();
         //pop from updates queue
@@ -38,7 +37,7 @@ void GameLoop::run() {
 bool GameLoop::handle_events() {
     SDL_Event event;
 
-    while(SDL_PollEvent(&event)){
+    for (int i = 0; i < EVENTS_X_FRAME and SDL_PollEvent(&event) ; ++i) {
         switch(event.type) {
             case SDL_KEYDOWN: {
                 // ¿Qué pasa si mantengo presionada la tecla?
@@ -62,8 +61,8 @@ bool GameLoop::handle_events() {
             case SDL_QUIT:
                 running = false;
                 break;
-        } // fin switch(event)
-    } // fin while(SDL_PollEvents)
+        }
+    }
     return true;
 }
 
@@ -78,15 +77,22 @@ void GameLoop::render() {
 void GameLoop::popUpdates() {
     // TODO: implement swap between queues
     std::shared_ptr<ClientUpdate> update;
-    while (!updatesQueue.tryPop(update)) {
-        Ball ball = update->getBall();
-        std::cout << "Ball: " << (int)ball.getX() << " " << (int)ball.getY() << std::endl;
-        Score score = update->getScore();
-        std::cout << "Score: " << (int)score.getLocal() << " " << (int)score.getVisitor() << std::endl;
 
-        std::vector<Car> players = update->getCars();
-        for (auto &player : players) {
-            std::cout << "Player: " << (int)player.getX() << " " << (int)player.getY() << std::endl;
+    std::vector<std::shared_ptr<ClientUpdate>> updates = updatesQueue.popAll();
+
+    bool popping = true;
+    while(popping) {
+        if(updatesQueue.tryPop(update) and update and update->getType() == WORLD) {
+            Ball ball = update->getBall();
+            std::cout << "Ball: " << (int)ball.getX() << " " << (int)ball.getY() << std::endl;
+            Score score = update->getScore();
+            std::cout << "Score: " << (int)score.getLocal() << " " << (int)score.getVisitor() << std::endl;
+
+            std::vector<Car> players = update->getCars();
+            for (auto &player : players) {
+                std::cout << "Player: " << (int)player.getX() << " " << (int)player.getY() << std::endl;
+            }
+            popping = false;
         }
     }
 }
