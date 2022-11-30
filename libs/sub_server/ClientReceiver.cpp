@@ -44,8 +44,7 @@ void ClientReceiver::receiveBytes(std::vector<uint8_t>& bytes_to_read, uint8_t& 
 }
 
 void ClientReceiver::clearQueue() {
-    std::vector<std::shared_ptr<ServerAction>> elements = this->updatesQueue->popAll();
-    elements.clear();
+    std::queue<std::shared_ptr<ServerAction>> elements = this->updatesQueue->popAll();
 }
 
 ClientReceiver::~ClientReceiver() {

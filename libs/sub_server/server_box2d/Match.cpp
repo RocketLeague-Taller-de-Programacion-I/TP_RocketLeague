@@ -13,7 +13,9 @@
 #define LOCALGOAL (0.005)
 #define VISITGOAL  (40.000)
 #define GOALSIZE 5
-
+#define BALL 0x0002
+#define CAR 0x0003
+#define GROUND 0x0004
 Match::Match(std::string gameName, int required) : name(std::move(gameName)), world(b2World(b2Vec2(0,-10))), playersConnected(0), playersRequired(required), goalsLocal(0), goalsVisit(0) {
     world.SetContactListener(&this->listener);
     myUserData = std::make_unique<MyFixtureUserDataType>();
@@ -28,7 +30,8 @@ Match::Match(std::string gameName, int required) : name(std::move(gameName)), wo
     fixDef.shape = &polygonShape;
     polygonShape.SetAsBox( 20, 0.5, b2Vec2(20, 0), 0);  //ground
     myUserData->mOwningFixture = staticBody->CreateFixture(&fixDef);
-    fixDef.friction = 0.2;
+    fixDef.filter.groupIndex = GROUND;
+    myUserData->mOwningFixture->SetFilterData(fixDef.filter);
     //  Creo ball
     this->ball = new Ball(&this->world, 0.7);
 }
