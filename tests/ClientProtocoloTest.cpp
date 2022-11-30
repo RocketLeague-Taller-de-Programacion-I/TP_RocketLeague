@@ -2,7 +2,6 @@
 // Created by lucaswaisten on 04/11/22.
 //
 #include <catch2/catch_test_macros.hpp>
-#include <queue>
 #include "sub_client/ClientProtocol.h"
 #include "MockClientProtocol.h"
 
@@ -143,7 +142,6 @@ TEST_CASE("ClientProtocol can deserialize ListACK update", "[clientProtocol]") {
         REQUIRE(update->getId() == 1);
         REQUIRE(update->getReturnCode() == ERROR_FULL);;
     }
-
 }
 /*
  * Defino los mock a utilizar en JoinACK
@@ -166,13 +164,12 @@ TEST_CASE("ClientProtocol can deserialize ListACK update", "[clientProtocol]") {
  */
 std::vector<uint8_t> dataWorld = {0, 0, 0, 0, 1, 1,100,200,0,60};
 MockClientProtocol mockWorldOK(dataWorld,"");
-//MockClientProtocol mockListERROR(1,ERROR_FULL);
 
 TEST_CASE("ClientProtocol can deserialize WorldACK update", "[clientProtocol]") {
 
     SECTION("WorldACK with return data of render objetc") {
         std::function<void(void *, int)> bytes_receiver_callable =
-                [](void * retuncode, int size) { mockListOK.receiveBytes(retuncode,size); };
+                [](void * retuncode, int size) { mockWorldOK.receiveBytesWorld(retuncode,size); };
 
         auto update = ClientProtocol::deserializeData(WORLD,
                                                       bytes_receiver_callable);
@@ -183,16 +180,4 @@ TEST_CASE("ClientProtocol can deserialize WorldACK update", "[clientProtocol]") 
         REQUIRE(cars[0].getX() == 100);
         REQUIRE(cars[0].getX() == 200);
     }
-
-   /* SECTION("WorldACK with return code ERROR")  {
-        std::function<void(void *, int)> bytes_receiver_callable =
-                [](void * retuncode, int size) { mockListERROR.receiveBytes(retuncode,size); };
-
-        auto update = ClientProtocol::deserializeData(WORLD,
-                                                      bytes_receiver_callable);
-
-        REQUIRE(update->getId() == 1);
-        REQUIRE(update->getReturnCode() == ERROR_FULL);;
-    }*/
-
 }
