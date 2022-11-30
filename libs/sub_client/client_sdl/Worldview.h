@@ -10,12 +10,21 @@
 #include "Animation.h"
 #include "GameSprite.h"
 
+#include "Ball.h"
+#include "Score.h"
+#include "Car.h"
+
+#define BALL_TEXT "ballTexture"
+#define CAR_TEXT "carTexture"
+#define FIELD_TEXT "fieldTexture"
+#define SCORE_TEXT "scoreBoardTexture"
+
 using namespace SDL2pp;
 
 enum ids {
-    SCORE=6,
-    BALL,
-    CAR
+    BALL  = 0,
+    SCORE = 1,
+    FIELD = 2
 };
 
 
@@ -30,6 +39,8 @@ public:
     ~Worldview();
     void render(SDL2pp::Renderer &renderer);
     void update(float dt);
+
+    void updateSprites(Ball &ball, Score &score, std::vector<Car> &players);
 };
 
 

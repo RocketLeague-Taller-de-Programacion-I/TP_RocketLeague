@@ -20,11 +20,14 @@
 
 using namespace SDL2pp;
 
-int main(int argc, char* argv[]) try {
-    RenderThread render_thread(argv[1], argv[2]);
-    render_thread.start();
-    render_thread.join();
-} catch (std::exception & e) {
+int main(int argc, char* argv[]) {
+    try {
+        RenderThread render_thread(argv[1], argv[2]);
+        render_thread.start();
+        render_thread.join();
+    } catch (std::exception & e) {
         std::cerr << "Error: " << e.what() << std::endl;
         return 1;
+    }
+    return 0;
 }

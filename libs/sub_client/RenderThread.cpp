@@ -34,18 +34,6 @@ void RenderThread::run() {
         // Initialize SDL library
         std::cout << "QT finalizó correctamente con: " << qt_return << std::endl;
 
-        std::cout <<"id: " << (int)id << std::endl;
-
-        std::shared_ptr<ClientUpdate> update; //startedGameACK
-        bool popping = true;
-        while (popping) {
-            //  wait for updates
-            if(updatesQueue.tryPop(update) and update) {
-                if(!update->getReturnCode()) {
-                    popping = false;
-                }
-            }
-        }
 
         SDL sdl(SDL_INIT_VIDEO);
         SDL_DisplayMode DM;
@@ -54,6 +42,7 @@ void RenderThread::run() {
         auto Height = 600;
         SDL2pp::Window sdlWindow("RocketLeague", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                                  Width, Height,SDL_WINDOW_RESIZABLE);
+        SDL_SetWindowResizable(sdlWindow.Get(), SDL_FALSE);
         // Creo renderer
         Renderer renderer(sdlWindow, -1, SDL_RENDERER_SOFTWARE);
         Texture carTexture(renderer, SDL2pp::Surface("../images/car.jpeg").SetColorKey(true, 0));
@@ -61,27 +50,17 @@ void RenderThread::run() {
         Texture fieldTexture(renderer, SDL2pp::Surface("../images/field.png").SetColorKey(true, 0));
         Texture scoreBoardTexture(renderer, SDL2pp::Surface("../images/clock.png"));
 
-        textures.emplace("car", &carTexture);
-        textures.emplace("ball", &ballTexture);
-        textures.emplace("field", &fieldTexture);
-        textures.emplace("scoreBoard", &scoreBoardTexture);
+        //render field
+
+        SDL_RenderCopy(renderer.Get(), fieldTexture.Get(), NULL, NULL);
+        SDL_RenderPresent(renderer.Get());
+        textures.emplace("carTexture", &carTexture);
+        textures.emplace("ballTexture", &ballTexture);
+        textures.emplace("fieldTexture", &fieldTexture);
+        textures.emplace("scoreBoardTexture", &scoreBoardTexture);
+
+
         std::map<uint8_t, GameSprite> sprites;
-
-        Ball ball = update->getBall();
-        std::cout << "Ball: " << (int)ball.getX() << " " << (int)ball.getY() << std::endl;
-        Score score = update->getScore();
-        std::cout << "Score: " << (int)score.getLocal() << " " << (int)score.getVisitor() << std::endl;
-
-        std::vector<Car> players = update->getCars();
-        for (auto &player : players) {
-            std::cout << "Player: " << (int)player.getX() << " " << (int)player.getY() << std::endl;
-        }
-
-        sprites.emplace(BALL, GameSprite(textures["ballTexture"], 0,Width/2,Height/3, 0));
-        sprites.emplace(SCORE, GameSprite(textures["scoreBoard"],SCORE, Width/2, 0, 0));
-        for (auto &player : players) {
-            sprites.emplace(player.getId(), GameSprite(textures["carTexture"], player.getId(), player.getX(), player.getY(), player.getAngle()));
-        }
 
         Worldview worldview(textures, sprites);
         GameLoop gameLoop(renderer, Width, Height, updatesQueue, actionsQueue, worldview);
@@ -93,6 +72,7 @@ void RenderThread::run() {
     }
     sender.join();
     receiver.join();
+    join();
 }
 
 //  Closes the accepting socket and forces all the client managers to finish

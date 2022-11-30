@@ -5,6 +5,8 @@
 #include "Server.h"
 #include "box2d/b2_world.h"
 
+#define INITIAL_ID_PLAYER 2
+
 Server::Server(const char *port)
         : closed(false),
           accept_skt(port) {}
@@ -22,7 +24,7 @@ void Server::run() {
      * definir la cola bloqueante por aca, ya sea de atributo o lo que fuere
      */
     GameManager gameManager;
-    idPlayer_t idPlayer = 1;
+    idPlayer_t idPlayer = INITIAL_ID_PLAYER;
     try {
         while (not closed) {
             /*

@@ -75,25 +75,17 @@ void GameLoop::render() {
 }
 
 void GameLoop::popUpdates() {
-    // TODO: implement swap between queues
+    std::queue<std::shared_ptr<ClientUpdate>> updates = updatesQueue.popAll();
+
     std::shared_ptr<ClientUpdate> update;
 
-    std::vector<std::shared_ptr<ClientUpdate>> updates = updatesQueue.popAll();
-
-    bool popping = true;
-    while(popping) {
-        if(updatesQueue.tryPop(update) and update and update->getType() == WORLD) {
-            Ball ball = update->getBall();
-            std::cout << "Ball: " << (int)ball.getX() << " " << (int)ball.getY() << std::endl;
-            Score score = update->getScore();
-            std::cout << "Score: " << (int)score.getLocal() << " " << (int)score.getVisitor() << std::endl;
-
-            std::vector<Car> players = update->getCars();
-            for (auto &player : players) {
-                std::cout << "Player: " << (int)player.getX() << " " << (int)player.getY() << std::endl;
-            }
-            popping = false;
-        }
+    while(!updates.empty()) {
+        update = updates.front();
+        Ball ball = update->getBall();
+        Score score = update->getScore();
+        std::vector<Car> cars = update->getCars();
+        wv.updateSprites(ball, score, cars);
+        updates.pop();
     }
 }
 void GameLoop::update(float dt) {

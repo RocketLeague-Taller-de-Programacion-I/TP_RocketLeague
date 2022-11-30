@@ -14,7 +14,7 @@
 
 Animation::Animation(SDL2pp::Texture &texture) : texture(texture), currentFrame(0),
                                                  numFrames(1),
-                                                 size(this->texture.GetHeight()), elapsed(0.0f) {
+                                                 size(texture.GetHeight()), elapsed(0.0f) {
     assert(this->numFrames > 0);
     assert(this->size > 0);
 }
