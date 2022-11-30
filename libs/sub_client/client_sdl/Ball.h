@@ -9,14 +9,14 @@
 
 class Ball {
 private:
-    uint16_t x;
-    uint16_t y;
+    float x;
+    float y;
 public:
-    Ball(uint16_t x, uint16_t y) : x(x), y(y) {};
+    Ball(float x, float y) : x(x), y(y) {};
     ~Ball() = default;
 
-    uint16_t getX() const { return x; };
-    uint16_t getY() const { return y; };
+    float getX() const { return x; };
+    float getY() const { return y; };
 };
 
 

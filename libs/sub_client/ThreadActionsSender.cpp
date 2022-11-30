@@ -18,7 +18,6 @@ void ThreadActionsSender::run() {
                 skt_client.sendall(&c, sizeof(c), &closed);
             }
         }
-        running = false;
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
     } catch (...) {

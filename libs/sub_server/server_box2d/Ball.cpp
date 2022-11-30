@@ -4,6 +4,9 @@
 
 #include "Ball.h"
 #include "box2d/box2d.h"
+#define BALL 0x0002
+#define CAR -3
+#define GROUND 0x0004
 
 Ball::Ball(b2World* world, float radius) {
     myUserData = std::make_unique<MyFixtureUserDataType>();
@@ -13,7 +16,7 @@ Ball::Ball(b2World* world, float radius) {
     m_radius = radius;
     //set up dynamic body, store in class variable
     myBodyDef.type = b2_dynamicBody;
-    myBodyDef.position.Set(0, 10);
+    myBodyDef.position.Set(20, 10);
     m_body = world->CreateBody(&myBodyDef);
     b2CircleShape circleShape;
     circleShape.m_p.Set(0, 0);
@@ -21,17 +24,19 @@ Ball::Ball(b2World* world, float radius) {
     fixDef.shape = &circleShape;
     fixDef.density = 1;
     fixDef.restitution = 0.7;
+    fixDef.filter.groupIndex = BALL;
     myUserData->mOwningFixture =  m_body->CreateFixture(&fixDef);
+    myUserData->mOwningFixture->SetFilterData(fixDef.filter);
     this->ballFixture = myUserData->mOwningFixture;
 }
-int Ball::X() const {
-    return int(this->m_body->GetPosition().x);
+float Ball::X() const {
+    return (this->m_body->GetPosition().x);
 }
-int Ball::Y() const {
-    return int(this->m_body->GetPosition().y);
+float Ball::Y() const {
+    return (this->m_body->GetPosition().y);
 }
 void Ball::restartGame() const {
-    m_body->SetTransform(b2Vec2(0,10),m_body->GetAngle());
+    m_body->SetTransform(b2Vec2(20,10),m_body->GetAngle());
     m_body->ApplyLinearImpulseToCenter(b2Vec2(0,10), true);
 }
 

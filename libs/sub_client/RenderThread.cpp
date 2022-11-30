@@ -5,11 +5,17 @@
 #include "sub_client/client_sdl/Worldview.h"
 using namespace SDL2pp;
 
-RenderThread::RenderThread(ProtectedQueue<std::shared_ptr<ClientUpdate>> &updates, BlockingQueue<std::shared_ptr<ClientAction>> &actionsQueue)
-        : updatesQueue(updates)
-        , actionsQueue(actionsQueue){}
+RenderThread::RenderThread(const char *host, const char *port) : skt_client(host, port){}
 
 void RenderThread::run() {
+    BlockingQueue<std::shared_ptr<ClientAction>> actionsQueue;
+    ProtectedQueue<std::shared_ptr<ClientUpdate>> updatesQueue;
+
+    ThreadActionsSender sender(skt_client, actionsQueue);
+    UpdatesReceiverThread receiver(skt_client, updatesQueue);
+
+    sender.start();
+    receiver.start();
     try {
         // Clase que contiene el loop principal
         int argc = 0;
@@ -77,12 +83,13 @@ void RenderThread::run() {
 //        Worldview worldview(textures, sprites);
 //        GameLoop gameLoop(renderer, Width, Height, updatesQueue, actionsQueue, worldview);
 //        gameLoop.run();
-
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
     } catch (...) {
         std::cerr << "Error desconocido en la función main" << std::endl;
     }
+    sender.join();
+    receiver.join();
 }
 
 //  Closes the accepting socket and forces all the client managers to finish

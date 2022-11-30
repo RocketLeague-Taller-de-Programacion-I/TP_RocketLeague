@@ -6,7 +6,9 @@
 #include "Car.h"
 #include "box2d/box2d.h"
 #define RADTODEG 57.2958
-
+#define BALL 0x0002
+#define CAR -3
+#define GROUND 0x0004
 
 
 Car::Car(b2World* world, uint8_t& id) : id(id), turboOn(false), movingLeft(false), movingRight(false) {
@@ -29,12 +31,15 @@ Car::Car(b2World* world, uint8_t& id) : id(id), turboOn(false), movingLeft(false
     myUserData->mObjectType = 3;
     chassis.Set(vertices, 4);
     bd.type = b2_dynamicBody;
-    bd.position.Set(0.0f, 1.0f);
+    bd.position.Set(20.0f, 1.0f);
     fixDef.density = 1.f;
     fixDef.restitution = 0.3f;
     fixDef.shape = &chassis;
+    fixDef.filter.groupIndex = CAR;
     m_car = world->CreateBody(&bd);
     myUserData->mOwningFixture =  m_car->CreateFixture(&fixDef);
+    myUserData->mOwningFixture->SetFilterData(fixDef.filter);
+
 
 }
 void Car::goRight() {

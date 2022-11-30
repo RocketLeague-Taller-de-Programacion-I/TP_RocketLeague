@@ -21,7 +21,6 @@ void ClientSender::run() {
             p.serializeUpdate(action);
             // delete the action
         }
-        running = false;
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
     } catch (...) {
