@@ -22,7 +22,7 @@ private:
 protected:
     void run() override;
 public:
-    BlockingQueue<std::shared_ptr<ServerUpdate>> *actionsQueue;
+    BlockingQueue<std::shared_ptr<ServerUpdate>> *updatesQueue;
 
     explicit ClientSender(Socket &skt_client, BlockingQueue<std::shared_ptr<ServerUpdate>> *queue, uint8_t idClient);
     ~ClientSender() override;

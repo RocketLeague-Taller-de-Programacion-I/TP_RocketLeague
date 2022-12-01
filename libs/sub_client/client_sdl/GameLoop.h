@@ -26,12 +26,15 @@ class GameLoop {
     void update(float dt);
     void render();
 public:
-    GameLoop(SDL2pp::Renderer &renderer, int xMax, int yMax, ProtectedQueue<std::shared_ptr<ClientUpdate>> &updates,
+    GameLoop(uint8_t &id, SDL2pp::Renderer &renderer, int xMax, int yMax,
+             ProtectedQueue<std::shared_ptr<ClientUpdate>> &updates,
              BlockingQueue<std::shared_ptr<ClientAction>> &actions, Worldview &wv);
 
     void run();
 private:
+    uint8_t &id;
     Worldview &wv;
+
     std::unordered_map<uint32_t ,uint8_t> directionMap = {
             {SDLK_LEFT,LEFT_D},
             {SDLK_RIGHT,RIGHT_D},

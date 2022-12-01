@@ -9,14 +9,18 @@
 
 class ClientActionMove : public ClientAction {
 private:
+    uint8_t idPlayer;
     uint8_t direction;
     bool state;
 public:
-    ClientActionMove(uint8_t direction, bool state);
+    ClientActionMove(uint8_t &idPlayer, uint8_t direction, bool state);
     ~ClientActionMove() override = default;
 
-    std::vector<uint8_t> beSerialized() override;
     uint8_t getType() const override { return MOVE; };
+    void beSerialized(ClientProtocol *protocolo) override;
+    uint8_t getIdPlayer() const { return idPlayer; };
+    uint8_t getDirection() const { return direction; };
+    bool getState() const { return state; };
 };
 
 

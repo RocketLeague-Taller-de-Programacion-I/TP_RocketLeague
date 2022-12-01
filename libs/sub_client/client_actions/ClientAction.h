@@ -5,7 +5,7 @@
 #ifndef ROCKETLEAGUE_CLIENTACTION_H
 #define ROCKETLEAGUE_CLIENTACTION_H
 
-
+class ClientProtocol;
 #include <utility>
 #include <cstdint>
 #include <string>
@@ -41,7 +41,7 @@ public:
     virtual ~ClientAction() = default;
 
     virtual std::uint8_t getType() const = 0;
-    virtual std::vector<uint8_t> beSerialized() = 0;
+    virtual void beSerialized(ClientProtocol *protocolo) = 0;
 };
 
 
