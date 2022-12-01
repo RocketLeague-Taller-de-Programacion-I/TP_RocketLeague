@@ -40,7 +40,9 @@ bool GameLoop::handle_events() {
     SDL_Event event;
 
     for (int i = 0; i < EVENTS_X_FRAME; ++i) {
-        SDL_PollEvent(&event);
+        if(!SDL_PollEvent(&event)) {
+            continue;
+        }
         switch(event.type) {
             case SDL_KEYDOWN: {
                 // ¿Qué pasa si mantengo presionada la tecla?
