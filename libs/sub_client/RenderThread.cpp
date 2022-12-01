@@ -63,7 +63,7 @@ void RenderThread::run() {
         std::map<uint8_t, GameSprite> sprites;
 
         Worldview worldview(textures, sprites);
-        GameLoop gameLoop(renderer, Width, Height, updatesQueue, actionsQueue, worldview);
+        GameLoop gameLoop(id, renderer, Width, Height, updatesQueue, actionsQueue, worldview);
         gameLoop.run();
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;

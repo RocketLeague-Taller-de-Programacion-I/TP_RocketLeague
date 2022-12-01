@@ -11,9 +11,11 @@
 
 #define EVENTS_X_FRAME 10
 
-GameLoop::GameLoop(SDL2pp::Renderer &renderer, int xMax, int yMax, ProtectedQueue<std::shared_ptr<ClientUpdate>> &updates,
+GameLoop::GameLoop(uint8_t &id, SDL2pp::Renderer &renderer, int xMax, int yMax,
+                   ProtectedQueue<std::shared_ptr<ClientUpdate>> &updates,
                    BlockingQueue<std::shared_ptr<ClientAction>> &actions, Worldview &wv)
-        : renderer(renderer),
+        : id(id),
+          renderer(renderer),
           updatesQueue(updates),
           actionsQueue(actions),
           running(true),
@@ -37,7 +39,8 @@ void GameLoop::run() {
 bool GameLoop::handle_events() {
     SDL_Event event;
 
-    for (int i = 0; i < EVENTS_X_FRAME and SDL_PollEvent(&event) ; ++i) {
+    for (int i = 0; i < EVENTS_X_FRAME; ++i) {
+        SDL_PollEvent(&event);
         switch(event.type) {
             case SDL_KEYDOWN: {
                 // ¿Qué pasa si mantengo presionada la tecla?
@@ -47,7 +50,7 @@ bool GameLoop::handle_events() {
                     break;
                 }
                 uint8_t movement = directionMap.at(keyEvent.keysym.sym);
-                std::shared_ptr<ClientAction> action = std::make_shared<ClientActionMove>(movement,ON);
+                std::shared_ptr<ClientAction> action = std::make_shared<ClientActionMove>(id,movement,ON);
                 actionsQueue.push(action);
             } // Fin KEY_DOWN
                 break;
@@ -55,7 +58,7 @@ bool GameLoop::handle_events() {
                 SDL_KeyboardEvent& keyEvent = (SDL_KeyboardEvent&) event;
 
                 uint8_t movement = directionMap.at(keyEvent.keysym.sym);
-                std::shared_ptr<ClientAction> action = std::make_shared<ClientActionMove>(movement,OFF);
+                std::shared_ptr<ClientAction> action = std::make_shared<ClientActionMove>(id,movement,OFF);
                 actionsQueue.push(action);
             }// Fin KEY_UP
             case SDL_QUIT:
