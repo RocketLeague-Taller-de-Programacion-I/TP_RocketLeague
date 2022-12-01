@@ -4,10 +4,6 @@
 
 #include "Worldview.h"
 
-
-// id: 2
-//id: 0 -> ball
-//id: 1 -> score
 Worldview::Worldview(std::map<std::string, SDL2pp::Texture *> textures, std::map<uint8_t, GameSprite> sprites) :
  textures(std::move(textures)),
  mapSprites(std::move(sprites)){}
