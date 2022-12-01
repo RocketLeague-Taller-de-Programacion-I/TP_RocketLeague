@@ -24,7 +24,7 @@ void Server::run() {
      * definir la cola bloqueante por aca, ya sea de atributo o lo que fuere
      */
     GameManager gameManager;
-    idPlayer_t idPlayer = INITIAL_ID_PLAYER;
+    uint8_t idPlayer = INITIAL_ID_PLAYER;
     try {
         while (not closed) {
             /*

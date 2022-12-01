@@ -17,7 +17,7 @@ void ClientReceiver::run() {
 
             this->skt_client.recvall(&actionType, sizeof(actionType), &closed);
 
-            std::function<void(std::vector<uint8_t>&, uint8_t&)> bytes_receiver_callable =
+            std::function<void(void *bytes_to_read, int size)> bytes_receiver_callable =
                     std::bind(&ClientReceiver::receiveBytes, this, std::placeholders::_1 ,std::placeholders::_2);
 
             // form the Action from the data
@@ -37,9 +37,9 @@ void ClientReceiver::setQueue(ProtectedQueue<std::shared_ptr<ServerAction>> *pQu
     clearQueue();
     this->updatesQueue = pQueue;
 }
-void ClientReceiver::receiveBytes(std::vector<uint8_t>& bytes_to_read, uint8_t& size) {
+void ClientReceiver::receiveBytes(void *bytes_to_read, int size) {
     if(!closed) {
-        this->skt_client.recvall(bytes_to_read.data(), size, &closed);
+        this->skt_client.recvall(bytes_to_read, size, &closed);
     }
 }
 

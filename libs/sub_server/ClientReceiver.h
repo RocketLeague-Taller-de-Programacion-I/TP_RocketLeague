@@ -28,7 +28,7 @@ public:
     void setQueue(ProtectedQueue<std::shared_ptr<ServerAction>> *pQueue);
     void clearQueue();
 
-    void receiveBytes(std::vector<uint8_t> &bytes_to_read, uint8_t &size);
+    void receiveBytes(void *bytes_to_read, int size);
 };
 
 

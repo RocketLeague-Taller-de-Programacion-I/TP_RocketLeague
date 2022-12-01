@@ -20,7 +20,7 @@
 #include "sub_server/server_actions/ServerCreateRoom.h"
 #include "sub_server/server_actions/ServerJoinRoom.h"
 #include "sub_server/server_actions/ServerListRooms.h"
-
+#include "sub_server/server_actions/ServerActionMove.h"
 
 enum action {
     NOP,
@@ -51,22 +51,23 @@ public:
     Protocolo(const std::function<void(void *, unsigned int)> &sendBytesCallable) : sendBytes(sendBytesCallable) {};
 
     static std::shared_ptr<ServerAction> deserializeData(const uint8_t &id, const uint8_t &type,
-                                                         const std::function<void(std::vector<uint8_t> &, uint8_t &)> &receiveBytes);
+                                                         const std::function<void(void *, int)> &receiveBytes);
     void serializeUpdate(std::shared_ptr<ServerUpdate> update);
     void serializeCreateACK(ServerCreateACK *update);
     void serializeJoinACK(ServerJoinACK *update);
     void serializeServerListACK(ServerListACK *update);
     void serializeWorldUpdate(ServerUpdateWorld *update);
 
-    static std::shared_ptr<ServerAction> parseCreateAction(const uint8_t &id, const std::function<void(std::vector<uint8_t> &,
-                                                                                                       uint8_t &)> &receiveBytes);
+    static std::shared_ptr<ServerAction> parseCreateAction(const uint8_t &id, const std::function<void(void *,
+                                                                                                       int)> &receiveBytes);
 
-    static std::shared_ptr<ServerAction> parseJoinAction(const uint8_t &id, const std::function<void(std::vector<uint8_t> &,
-                                                                                                     uint8_t &)> &receiveBytes);
+    static std::shared_ptr<ServerAction> parseJoinAction(const uint8_t &id, const std::function<void(void *,
+                                                                                                     int)> &receiveBytes);
 
     static std::shared_ptr<ServerAction> parseListAction(const uint8_t &id);
 
-    static std::unique_ptr<ServerAction> parseUpdateAction();
+    static std::shared_ptr<ServerAction>
+    parseUpdateAction(const std::function<void(void *, int)> &receiveBytes);
 };
 
 

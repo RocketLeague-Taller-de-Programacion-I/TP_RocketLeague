@@ -10,7 +10,7 @@ command_t Protocolo::getMapCommand(uint32_t action) {
 }
 
 std::shared_ptr<ServerAction> Protocolo::deserializeData(const uint8_t &id, const uint8_t &type,
-                                                         const std::function<void(std::vector<uint8_t> &, uint8_t &)> &receiveBytes) {
+                                                         const std::function<void(void *, int)> &receiveBytes) {
     switch (type) {
         case CREATE_ROOM:
             return parseCreateAction(id, receiveBytes);
@@ -19,38 +19,34 @@ std::shared_ptr<ServerAction> Protocolo::deserializeData(const uint8_t &id, cons
         case LIST_ROOMS:
             return parseListAction(id);
         case MOVE:
-            return parseUpdateAction();
+            return parseUpdateAction(receiveBytes);
     }
     return {};
 }
 
-std::shared_ptr<ServerAction>
-Protocolo::parseCreateAction(const uint8_t &id, const std::function<void(std::vector<uint8_t> &, uint8_t &)> &receiveBytes) {
+std::shared_ptr<ServerAction> Protocolo::parseCreateAction(const uint8_t &id,
+                                                           const std::function<void(void *, int)> &receiveBytes) {
 
     std::vector<uint8_t> capacity_and_nameSize(2);
-    uint8_t size = capacity_and_nameSize.size();
-    receiveBytes(capacity_and_nameSize, size);
+    receiveBytes(capacity_and_nameSize.data(), capacity_and_nameSize.size());
     uint8_t capacity = capacity_and_nameSize[0];
     uint8_t nameSize = capacity_and_nameSize[1];
 
     std::vector<uint8_t> name(nameSize);
-    size = name.size();
-    receiveBytes(name, size);
+    receiveBytes(name.data(), name.size());
     std::string nameString(name.begin(), name.end());
 
     std::shared_ptr<ServerAction> pAction = std::make_shared<ServerCreateRoom>(id, capacity, nameString);
     return pAction;
 }
 
-std::shared_ptr<ServerAction> Protocolo::parseJoinAction(const uint8_t &id, const std::function<void(std::vector<uint8_t> &,
-                                                                                                     uint8_t &)> &receiveBytes) {
+std::shared_ptr<ServerAction> Protocolo::parseJoinAction(const uint8_t &id,
+                                                         const std::function<void(void *, int)> &receiveBytes) {
     std::vector<uint8_t> nameSize(1);
-    uint8_t size = nameSize.size();
-    receiveBytes(nameSize, size);
+    receiveBytes(nameSize.data(), nameSize.size());
 
     std::vector<uint8_t> name(nameSize[0]);
-    size = name.size();
-    receiveBytes(name, size);
+    receiveBytes(name.data(), name.size());
     std::string nameString(name.begin(), name.end());
 
     std::shared_ptr<ServerAction> pAction = std::make_shared<ServerJoinRoom>(id, nameString);
@@ -135,6 +131,19 @@ void Protocolo::serializeWorldUpdate(ServerUpdateWorld *update) {
 
 }
 // TODO: IMPLEMENT
-std::unique_ptr<ServerAction> Protocolo::parseUpdateAction() {
-    return nullptr;
+std::shared_ptr<ServerAction> Protocolo::parseUpdateAction(const std::function<void(void *, int)> &receiveBytes) {
+    //id
+    // direction or type of movement {Right, Left, Jump, Down, Turbo}
+    // on or off
+    uint8_t idPlayer;
+    receiveBytes(&idPlayer, sizeof(idPlayer));
+
+    uint8_t direction;
+    receiveBytes(&direction, sizeof(direction));
+
+    bool state;
+    receiveBytes(&state, sizeof(state));
+
+    std::shared_ptr<ServerAction> pAction = std::make_shared<ServerActionMove>(idPlayer, direction, state);
+    return pAction;
 }
