@@ -31,7 +31,6 @@ public:
     void run();
 private:
     uint8_t &id;
-
     Worldview &wv;
 
     std::unordered_map<uint32_t ,uint8_t> directionMap = {

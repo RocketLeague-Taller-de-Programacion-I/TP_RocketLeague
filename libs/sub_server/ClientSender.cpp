@@ -5,7 +5,7 @@
 #include "ClientSender.h"
 
 ClientSender::ClientSender(Socket &skt_client, BlockingQueue<std::shared_ptr<ServerUpdate>> *queue, uint8_t idClient)
-        : skt_client(skt_client), idClient(idClient), actionsQueue(queue) {
+        : skt_client(skt_client), idClient(idClient), updatesQueue(queue) {
     this->closed = false;
 }
 
@@ -14,12 +14,11 @@ void ClientSender::run() {
     Protocolo p(callable);
     try {
         while (not closed) {
-            auto action = actionsQueue->pop();
-            uint8_t type = action->getType();
-            sendBytes(&type, sizeof(action->getType()));
+            auto update = updatesQueue->pop();
+            uint8_t type = update->getType();
+            sendBytes(&type, sizeof(update->getType()));
 
-            p.serializeUpdate(action);
-            // delete the action
+            p.serializeUpdate(update);
         }
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
@@ -37,9 +36,9 @@ void ClientSender::stop() {
 }
 
 ClientSender::~ClientSender() {
-    delete actionsQueue;
+    delete updatesQueue;
 }
 
 BlockingQueue<std::shared_ptr<ServerUpdate>> * ClientSender::getQueue() const {
-    return this->actionsQueue;
+    return this->updatesQueue;
 }

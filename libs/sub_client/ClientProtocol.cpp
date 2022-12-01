@@ -36,15 +36,6 @@ std::shared_ptr<ClientUpdate> ClientProtocol::parseCreateACK(
     return update;
 }
 
-/*std::shared_ptr<ClientUpdate> ClientProtocol::deserializeCreateACK(const std::vector<uint16_t> &data) {
-    uint16_t id = data[1];
-    uint16_t returnCode = data[2];
-    std::shared_ptr<ClientUpdate> update = std::make_shared<ClientCreateACK>(id, returnCode);
-    return update;
-    return new ClientCreateACK(reinterpret_cast<uint8_t &>(id), reinterpret_cast<uint8_t &>(returnCode));
-    //CreateACK -> CreateACK(id,returnCode) returnCode = 1 OK, 2 ERROR_Existe
-}*/
-
 std::shared_ptr<ClientUpdate> ClientProtocol::parseJoinACK(const std::function<void(void *, int)> &receiveBytes) {
     uint8_t id;
     receiveBytes(&id, sizeof(id));
@@ -157,12 +148,42 @@ std::shared_ptr<ClientUpdate> ClientProtocol::parseWorldUpdate(const std::functi
     return update;
 }
 
-std::shared_ptr<ClientUpdate>
-ClientProtocol::parseStartedGameACK(const std::function<void(std::vector<uint8_t> &, uint8_t &)> &function) {
-    std::vector<uint8_t> id_and_returncode(2);
-    uint8_t size = id_and_returncode.size();
-    function(id_and_returncode, size);
+void ClientProtocol::serializeAction(std::shared_ptr<ClientAction> action) {
+    action->beSerialized(this);
+}
 
-    std::shared_ptr<ClientUpdate> update = std::make_shared<ClientStartedGameACK>(id_and_returncode[0], id_and_returncode[1]);
-    return update;
+void ClientProtocol::serializeCreateRoom(ActionCreateRoom *action) {
+    std::vector<uint8_t> capacity_and_nameSize(2);
+    capacity_and_nameSize[0] = action->getCapacity();
+    capacity_and_nameSize[1] = action->getGameName().size();
+    sendBytes(capacity_and_nameSize.data(), capacity_and_nameSize.size());
+
+    std::string name = action->getGameName();
+    std::vector<uint8_t> nameVector(name.begin(), name.end());
+
+    sendBytes(nameVector.data(), sizeof(nameVector.size()));
+}
+
+void ClientProtocol::serializeJoinRoom(ActionJoinRoom *action) {
+    uint8_t nameSize = action->getRoomName().size();
+    sendBytes(&nameSize, sizeof(nameSize));
+
+    std::string name = action->getRoomName();
+    std::vector<uint8_t> nameVector(name.begin(), name.end());
+    sendBytes(nameVector.data(), sizeof(nameVector.size()));
+}
+
+void ClientProtocol::serializeListRooms(ActionListRooms *action) {
+    // Only send the type of action
+}
+
+void ClientProtocol::serializeMove(ClientActionMove *action) {
+    uint8_t id = action->getIdPlayer();
+    sendBytes(&id, sizeof(id));
+
+    uint8_t direction = action->getDirection();
+    sendBytes(&direction, sizeof(direction));
+
+    uint8_t state = action->getState();
+    sendBytes(&state, sizeof(state));
 }

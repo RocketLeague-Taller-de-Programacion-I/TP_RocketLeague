@@ -52,7 +52,7 @@ bool GameLoop::handle_events() {
                     break;
                 }
                 uint8_t movement = directionMap.at(keyEvent.keysym.sym);
-                std::shared_ptr<ClientAction> action = std::make_shared<ClientActionMove>(id,movement,ON);
+                std::shared_ptr<ClientAction> action = std::make_shared<ClientActionMove>(id, movement, ON);
                 actionsQueue.push(action);
             } // Fin KEY_DOWN
                 break;
@@ -60,7 +60,7 @@ bool GameLoop::handle_events() {
                 SDL_KeyboardEvent& keyEvent = (SDL_KeyboardEvent&) event;
 
                 uint8_t movement = directionMap.at(keyEvent.keysym.sym);
-                std::shared_ptr<ClientAction> action = std::make_shared<ClientActionMove>(id,movement,OFF);
+                std::shared_ptr<ClientAction> action = std::make_shared<ClientActionMove>(id, movement, OFF);
                 actionsQueue.push(action);
             }// Fin KEY_UP
             case SDL_QUIT:

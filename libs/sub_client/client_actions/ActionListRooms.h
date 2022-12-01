@@ -12,14 +12,8 @@ public:
     ActionListRooms() = default;
     ~ActionListRooms() override = default;
 
-    std::vector<uint8_t> beSerialized()  override {
-        std::vector<uint8_t> listData;
-        listData.push_back(LIST);
-        return listData;
-    };
-    uint8_t getType() const override {
-        return LIST;
-    };
+    uint8_t getType() const override;
+    void beSerialized(ClientProtocol *protocolo) override;
 };
 
 

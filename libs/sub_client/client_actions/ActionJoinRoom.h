@@ -10,14 +10,12 @@
 class ActionJoinRoom : public ClientAction{
 private:
     std::string roomName;
-    void serializeData();
 public:
     explicit ActionJoinRoom(std::string &roomName);
-
     ~ActionJoinRoom() override;
-    uint8_t getType() const override;
 
-    std::vector<uint8_t> beSerialized() override;
+    uint8_t getType() const override;
+    void beSerialized(ClientProtocol *protocolo) override;
 
     std::string getRoomName();
 };
