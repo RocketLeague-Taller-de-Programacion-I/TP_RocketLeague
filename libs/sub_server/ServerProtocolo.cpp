@@ -84,22 +84,12 @@ void Protocolo::serializeServerListACK(ServerListACK *update) {
 
     uint8_t returnCode = update->getReturnCode();
     sendBytes(&returnCode, sizeof(returnCode));
-//    //[id,returnCode, cantidadDeGames,{online,max,sieName,name},...]
 
     uint8_t numberOfGames = update->getNumberOfGames();
     sendBytes(&numberOfGames, sizeof(numberOfGames));
 
-    // vector of uint8_t from first 3 items of returnData
     std::vector<uint8_t> returnData = update->getReturnData();
-    std::vector<uint8_t> returnDataFirst3(returnData.begin(), returnData.begin() + 3);
-    sendBytes(returnDataFirst3.data(), returnDataFirst3.size());
-
-    // send the rest of returnData
-    std::vector<uint8_t> returnDataRest(returnData.begin() + 3, returnData.end());
-    sendBytes(returnDataRest.data(), returnDataRest.size());
-
-    uint16_t test = htons(3122);
-    sendBytes(&test, sizeof(test));
+    sendBytes(returnData.data(), returnData.size());
 }
 
 void Protocolo::serializeWorldUpdate(ServerUpdateWorld *update) {

@@ -73,10 +73,10 @@ void MainWindow::drawJoinGameMenu() {
     }
     //draw a button for each game
     if(update->getReturnCode() != OK){
-        label = new QLabel("No games available");
-        label->setGeometry(width() / 2 - 110 , 200 , 301, 71);
-        label->setStyleSheet("font: 20pt; color: white;");
-        this->scene.addWidget(label);
+        QLabel *labelNoGames = new QLabel("No games available");
+        labelNoGames->setGeometry(width() / 2 - 110 , 200 , 301, 71);
+        labelNoGames->setStyleSheet("font: 20pt; color: white;");
+        this->scene.addWidget(labelNoGames);
 
     } else {
         id = update->getId();

@@ -55,13 +55,6 @@ std::shared_ptr<ClientUpdate> ClientProtocol::parseListUpdate(
     uint8_t returnCode;
     receiveBytes(&returnCode, sizeof(returnCode));
 
-
-    if (returnCode == ERROR_FULL) {
-        std::map<std::string,std::string> games;
-        std::shared_ptr<ClientUpdate> update = std::make_shared<ClientListACK>(id, returnCode, games);
-        return update;
-    }
-
     uint8_t cantGames;
     receiveBytes(&cantGames, sizeof(cantGames));
 
@@ -83,10 +76,6 @@ std::shared_ptr<ClientUpdate> ClientProtocol::parseListUpdate(
 
         games[gameName] = std::to_string(playersOnLine) + "/" + std::to_string(capacity);
     }
-
-    uint16_t test;
-    receiveBytes(&test, sizeof(test));
-    test = ntohs(test);
 
     std::shared_ptr<ClientUpdate> update = std::make_shared<ClientListACK>(id, returnCode, games);
     return update;
