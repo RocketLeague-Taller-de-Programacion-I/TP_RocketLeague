@@ -8,16 +8,14 @@
 #include <cstdint>
 #include <string>
 #include <map>
+#include <atomic>
 #include "sub_common/thread.h"
 #include "sub_common/BlockingQueue.h"
 #include "sub_server/server_box2d/Match.h"
 
 #include "server_updates/ServerUpdateWorld.h"
 #include "server_updates/ServerStartedGameACK.h"
-#include "server_actions/ServerAction.h"
 #include "server_actions/ServerActionMove.h"
-
-typedef uint8_t idPlayer_t;
 
 class Game : public Thread {
 private:
@@ -26,7 +24,7 @@ private:
     int playerOnLine;
     std::string gameName;
     bool closed;
-
+    std::atomic<bool> finished;
     std::map<uint8_t ,BlockingQueue<std::shared_ptr<ServerUpdate>>*> mapSender;
     //map {id, BlockingQueue<ServerUpdate*>}
 

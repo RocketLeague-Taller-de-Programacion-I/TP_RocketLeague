@@ -11,7 +11,8 @@ Game::Game(int capacity,
         capacity(capacity),
         playerOnLine(0),
         gameName(std::move(name)),
-        queue(pQueue) {}
+        queue(pQueue),
+        finished(false){}
 
 std::vector<uint8_t> Game::information() {
     //data: online,max,sizeName,name
@@ -36,20 +37,21 @@ void Game::joinPlayer(uint8_t& id, BlockingQueue<std::shared_ptr<ServerUpdate>> 
 }
 
 void Game::run() {
-    // ActionMove cline [1, RIGHT, on]
-    // ActionMove cline  [2, LEFT, off]
     std::cout << "Game " << gameName << " started" << std::endl;
     std::shared_ptr<ServerAction> action;
-    while (!queue->tryPop(action)) {
+    while (not finished) {
+        if (!queue->tryPop(action)){
+            action->execute(match); //update model
+        }
+        match.step(); //update box2d
+        std::vector<int> info = match.info();
+        uint8_t id = 0, returnCode = OK;
+        std::vector<uint8_t> dummy;
+        std::shared_ptr<ServerUpdate> update = std::make_shared<ServerUpdateWorld>(id, returnCode, dummy , info);
+        broadcastUpdate(update);
     }
-    action->execute(match);
-    match.step();
-    std::vector<int> info = match.info();
-    std::vector<uint8_t> dummy;
-    uint8_t id = 0, returnCode = OK;
-    std::shared_ptr<ServerUpdate> update = std::make_shared<ServerUpdateWorld>(id, returnCode, dummy , info);
-    //ServerUpdate* update = new ServerUpdateWorld(id, returnCode, dummy , info);
-    broadcastUpdate(update);
+
+
 }
 
 bool Game::isFull() const {
