@@ -44,6 +44,7 @@ add_library(lib_client
         client_actions/ActionCreateRoom.h
         client_actions/ActionJoinRoom.cpp
         client_actions/ActionJoinRoom.h
+        client_actions/ActionListRooms.cpp
         client_actions/ActionListRooms.h
         client_updates/ClientUpdate.cpp
         client_updates/ClientUpdate.h

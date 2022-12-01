@@ -3,7 +3,7 @@
 //
 
 #include "ActionCreateRoom.h"
-
+#include "sub_client/ClientProtocol.h"
 ActionCreateRoom::ActionCreateRoom(uint8_t &capacity, const std::string &name) : capacity(capacity), name(name){
     type = CREATE;
 //    setDataVector*()
@@ -20,17 +20,8 @@ uint8_t ActionCreateRoom::getType() const {
     return type;
 }
 
-std::vector<uint8_t> ActionCreateRoom::beSerialized() {
-    // create a string from the name and the capacity
-//    std::string nameCapacity = std::to_string(capacityGame) + nameGame;
-    std::vector<uint8_t> createData;
-    createData.push_back(type);
-    createData.push_back(capacity);
-    createData.push_back(name.length());
-    createData.insert(createData.end(), name.begin(), name.end());
-    return createData;
-//    std::vector<uint8_t> createData(nameCapacity.begin(), nameCapacity.end());
-//    return Protocolo::serializeCreateAction(createData);
+void ActionCreateRoom::beSerialized(ClientProtocol *protocolo) {
+    protocolo->serializeCreateRoom(this);
 }
 
 ActionCreateRoom::~ActionCreateRoom() = default;
