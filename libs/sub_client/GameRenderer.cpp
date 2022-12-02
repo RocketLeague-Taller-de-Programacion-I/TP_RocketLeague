@@ -1,22 +1,22 @@
 // Copyright 2022 Sprenger Roberta
 
 #include <QApplication>
-#include "RenderThread.h"
+#include "GameRenderer.h"
 #include "sub_client/client_sdl/Worldview.h"
 using namespace SDL2pp;
 
-RenderThread::RenderThread(const char *host, const char *port) : skt_client(host, port){}
+GameRenderer::GameRenderer(const char *host, const char *port) : skt_client(host, port){}
 
-void RenderThread::run() {
+void GameRenderer::run() {
     uint8_t id = 0;
     BlockingQueue<std::optional<std::shared_ptr<ClientAction>>> actionsQueue;
     ProtectedQueue<std::shared_ptr<ClientUpdate>> updatesQueue;
 
-    ThreadActionsSender sender(skt_client, actionsQueue);
-    UpdatesReceiverThread receiver(skt_client, updatesQueue);
+    sender = new ThreadActionsSender(skt_client, actionsQueue);
+    receiver = new UpdatesReceiverThread(skt_client, updatesQueue);
 
-    sender.start();
-    receiver.start();
+    startThreads();
+
     try {
         // Clase que contiene el loop principal
         int argc = 0;
@@ -33,7 +33,6 @@ void RenderThread::run() {
         }
         // Initialize SDL library
         std::cout << "QT finalizó correctamente con: " << qt_return << std::endl;
-
 
         SDL sdl(SDL_INIT_VIDEO);
         SDL_DisplayMode DM;
@@ -70,16 +69,31 @@ void RenderThread::run() {
     } catch (...) {
         std::cerr << "Error desconocido en la función main" << std::endl;
     }
-    sender.join();
-    receiver.join();
-    join();
+    stop();
+}
+
+void GameRenderer::cleanThreads() {
+    sender->stop();
+    receiver->stop();
+
+    sender->join();
+    receiver->join();
+
+    delete sender;
+    delete receiver;
 }
 
 //  Closes the accepting socket and forces all the client managers to finish
-void RenderThread::stop() {
-    join();
+void GameRenderer::stop() {
+    skt_client.shutdown(2);
+    skt_client.close();
+    cleanThreads();
 }
 
-RenderThread::~RenderThread() {
-    join();
+void GameRenderer::startThreads() {
+    sender->start();
+    receiver->start();
+}
+
+GameRenderer::~GameRenderer() {
 }

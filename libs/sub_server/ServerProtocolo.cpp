@@ -58,6 +58,23 @@ std::shared_ptr<ServerAction> Protocolo::parseListAction(const uint8_t &id) {
     return pAction;
 }
 
+std::shared_ptr<ServerAction> Protocolo::parseUpdateAction(const std::function<void(void *, int)> &receiveBytes) {
+    //id
+    // direction or type of movement {Right, Left, Jump, Down, Turbo}
+    // on or off
+    uint8_t idPlayer;
+    receiveBytes(&idPlayer, sizeof(idPlayer));
+
+    uint8_t direction;
+    receiveBytes(&direction, sizeof(direction));
+
+    bool state;
+    receiveBytes(&state, sizeof(state));
+
+    std::shared_ptr<ServerAction> pAction = std::make_shared<ServerActionMove>(idPlayer, direction, state);
+    return pAction;
+}
+
 void Protocolo::serializeUpdate(std::shared_ptr<ServerUpdate> update) {
     update->beSerialized(this);
 }
@@ -91,7 +108,6 @@ void Protocolo::serializeServerListACK(ServerListACK *update) {
     std::vector<uint8_t> returnData = update->getReturnData();
     sendBytes(returnData.data(), returnData.size());
 }
-
 void Protocolo::serializeWorldUpdate(ServerUpdateWorld *update) {
     //implement
     std::vector<int> matchInfo = update->getInfo();
@@ -119,21 +135,4 @@ void Protocolo::serializeWorldUpdate(ServerUpdateWorld *update) {
         sendBytes(&carInfo, sizeof(carInfo));
     }
 
-}
-// TODO: IMPLEMENT
-std::shared_ptr<ServerAction> Protocolo::parseUpdateAction(const std::function<void(void *, int)> &receiveBytes) {
-    //id
-    // direction or type of movement {Right, Left, Jump, Down, Turbo}
-    // on or off
-    uint8_t idPlayer;
-    receiveBytes(&idPlayer, sizeof(idPlayer));
-
-    uint8_t direction;
-    receiveBytes(&direction, sizeof(direction));
-
-    bool state;
-    receiveBytes(&state, sizeof(state));
-
-    std::shared_ptr<ServerAction> pAction = std::make_shared<ServerActionMove>(idPlayer, direction, state);
-    return pAction;
 }

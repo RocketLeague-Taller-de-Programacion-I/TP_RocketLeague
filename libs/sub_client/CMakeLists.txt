@@ -25,8 +25,8 @@ add_library(lib_client
         client_qt/mainwindow.h
         client_qt/Button.cpp
         client_qt/Button.h
-        RenderThread.cpp
-        RenderThread.h
+        GameRenderer.cpp
+        GameRenderer.h
         client_sdl/Worldview.cpp
         client_sdl/Worldview.h
         client_sdl/GameSprite.cpp
