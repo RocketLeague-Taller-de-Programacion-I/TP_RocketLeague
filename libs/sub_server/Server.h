@@ -7,27 +7,26 @@
 #define ROCKETLEAGUE_SERVER_H
 
 #include <vector>
-#include "../sub_common/thread.h"
-#include "../sub_common/socket.h"
-#include "ClientManager.h"
 #include <iostream>
 #include <algorithm>
 #include <sys/socket.h>
+#include <atomic>
 
-class Server : public Thread{
+#include "../sub_common/socket.h"
+#include "ClientManager.h"
+
+class Server : public Thread {
 private:
-    bool closed;
+    std::atomic<bool> closed;
     Socket accept_skt;
     std::vector<ClientManager*> managers;
 protected:
     void run() override;
 public:
     explicit Server(const char *port);
-
     void stop() override;
 
     void garbageCollector();
-
     void cleanManagers();
 };
 

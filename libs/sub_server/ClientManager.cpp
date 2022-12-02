@@ -18,13 +18,15 @@ ClientManager::ClientManager(uint8_t &id, Socket &aClient, GameManager &aGameMan
 
 void ClientManager::run() {
     auto initialActionsQueue = new ProtectedQueue<std::shared_ptr<ServerAction>>;
-    //ProtectedQueue<ServerAction*>
     auto initialUpdatesQueue = new BlockingQueue<std::shared_ptr<ServerUpdate>>;
-    //BlockingQueue<ServerUpdate*>
+
     startClientThreads(initialActionsQueue, initialUpdatesQueue);
+
     std::shared_ptr<ServerAction> command;
+
     std::function<BlockingQueue<std::shared_ptr<ServerUpdate>>*(ProtectedQueue<std::shared_ptr<ServerAction>>*)> queue_setter_callable =
             std::bind(&ClientManager::setQueues, this, std::placeholders::_1);
+
     bool playing = false; //  Mientras no se una o no cree una partida == no este jugando
     while (!playing) {
         try {
@@ -75,7 +77,9 @@ BlockingQueue<std::shared_ptr<ServerUpdate>> * ClientManager::setQueues(
     return (clientSenderThread->getQueue());
 }
 
-void ClientManager::stop() {}
+void ClientManager::stop() {
+    endManager();
+}
 
 ClientManager::~ClientManager() {
     endManager();
