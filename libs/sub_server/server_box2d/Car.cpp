@@ -21,8 +21,8 @@ Car::Car(b2World* world, uint8_t& id) : id(id), turboOn(false), movingLeft(false
     vertices[4].Set(-1.15f, 0.9f);
     vertices[5].Set(-1.5f, 0.2f);
     */
-    vertices[0].Set(-1.5f, -.5f);
-    vertices[1].Set(1.5f, -.5f);
+    vertices[0].Set(-1.5f, -.25f);
+    vertices[1].Set(1.5f, -.25f);
     vertices[2].Set(-1.5f, 1.f);
     vertices[3].Set(1.5f, 1.f);
 
@@ -40,8 +40,86 @@ Car::Car(b2World* world, uint8_t& id) : id(id), turboOn(false), movingLeft(false
     myUserData->mOwningFixture =  m_car->CreateFixture(&fixDef);
     myUserData->mOwningFixture->SetFilterData(fixDef.filter);
 
+    // Down sensor
+    b2Vec2 vertDown[4];
+    vertDown[0].Set(-1.25f, -.5f);
+    vertDown[1].Set(1.25f,-.5f);
+    vertDown[2].Set(-1.25f, .05f);
+    vertDown[3].Set(1.25f, .05f);
+    b2PolygonShape down;
+    down.Set(vertDown, 4);
+    b2FixtureDef fixDefDown;
+    fixDefDown.density = 1.f;
+    fixDefDown.restitution = 0.3f;
+    fixDefDown.shape = &down;
+    fixDefDown.filter.groupIndex = CAR;
+    fixDefDown.isSensor = true;
+    userDataDown = std::make_unique<MyFixtureUserDataType>();
+    fixDefDown.userData.pointer = reinterpret_cast<uintptr_t>(userDataDown.get());
+    userDataDown->mObjectType = 4;  //  Down
+    userDataDown->mOwningFixture =  m_car->CreateFixture(&fixDefDown);
+    userDataDown->mOwningFixture->SetFilterData(fixDefDown.filter);
 
-}
+    // Left sensor
+    b2Vec2 vertLeft[4];
+    vertLeft[0].Set(-1.75f, 0.f);
+    vertLeft[1].Set(-1.25f,0.f);
+    vertLeft[2].Set(-1.75f, .75f);
+    vertLeft[3].Set(-1.25f, .75f);
+    b2PolygonShape left;
+    left.Set(vertLeft, 4);
+    b2FixtureDef fixDefLeft;
+    fixDefLeft.density = 1.f;
+    fixDefLeft.restitution = 0.3f;
+    fixDefLeft.shape = &left;
+    fixDefLeft.filter.groupIndex = CAR;
+    fixDefLeft.isSensor = true;
+    userDataLeft = std::make_unique<MyFixtureUserDataType>();
+    fixDefLeft.userData.pointer = reinterpret_cast<uintptr_t>(userDataLeft.get());
+    userDataLeft->mObjectType = 5;  //  Left
+    userDataLeft->mOwningFixture =  m_car->CreateFixture(&fixDefLeft);
+    userDataLeft->mOwningFixture->SetFilterData(fixDefLeft.filter);
+
+    // Right sensor
+    b2Vec2 vertRight[4];
+    vertRight[0].Set(1.25f, 0.f);
+    vertRight[1].Set(1.75f,0.f);
+    vertRight[2].Set(1.25f, .75f);
+    vertRight[3].Set(1.75f, .75f);
+    b2PolygonShape right;
+    right.Set(vertRight, 4);
+    b2FixtureDef fixDefRight;
+    fixDefRight.density = 1.f;
+    fixDefRight.restitution = 0.3f;
+    fixDefRight.shape = &right;
+    fixDefRight.filter.groupIndex = CAR;
+    fixDefRight.isSensor = true;
+    userDataRight = std::make_unique<MyFixtureUserDataType>();
+    fixDefRight.userData.pointer = reinterpret_cast<uintptr_t>(userDataRight.get());
+    userDataRight->mObjectType = 6;  //  Right
+    userDataRight->mOwningFixture =  m_car->CreateFixture(&fixDefRight);
+    userDataRight->mOwningFixture->SetFilterData(fixDefRight.filter);
+
+    // Upper sensor
+    b2Vec2 vertUp[4];
+    vertUp[0].Set(-1.25f, .75f);
+    vertUp[1].Set(1.25f,.75f);
+    vertUp[2].Set(-1.25f, 1.15f);
+    vertUp[3].Set(1.25f, 1.15f);
+    b2PolygonShape up;
+    up.Set(vertUp, 4);
+    b2FixtureDef fixDefUp;
+    fixDefUp.density = 1.f;
+    fixDefUp.restitution = 0.3f;
+    fixDefUp.shape = &up;
+    fixDefUp.filter.groupIndex = CAR;
+    fixDefUp.isSensor = true;
+    userDataUp = std::make_unique<MyFixtureUserDataType>();
+    fixDefUp.userData.pointer = reinterpret_cast<uintptr_t>(userDataUp.get());
+    userDataUp->mObjectType = 7;  //  Up
+    userDataUp->mOwningFixture =  m_car->CreateFixture(&fixDefUp);
+    userDataUp->mOwningFixture->SetFilterData(fixDefUp.filter);
+     }
 void Car::goRight() {
     if (this->m_car->GetPosition().y > 4) {
         m_car->ApplyTorque(-500.0, true);
