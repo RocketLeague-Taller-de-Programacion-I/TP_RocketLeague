@@ -13,11 +13,11 @@ int main(int argc, char const *argv[]) {
         std::string input;
         while (std::getline(std::cin, input)) {
             if (input == "q") {
-                server.stop();
-                server.join();
                 break;
             }
         }
+        server.stop();
+        server.join();
     } catch (const std::exception& e) {
         std::cerr << e.what() << std::endl;
         return 1;

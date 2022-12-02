@@ -12,7 +12,6 @@ Server::Server(const char *port)
           accept_skt(port) {}
 
 void Server::run() {
-
     GameManager gameManager;
     uint8_t idPlayer = INITIAL_ID_PLAYER;
     try {
@@ -26,18 +25,19 @@ void Server::run() {
 
             idPlayer++;
 
-            garbageCollector();
+            garbageCollector(gameManager);
         }
     } catch (...) {}
-    gameManager.cleanGames();
     cleanManagers();
+    gameManager.cleanGames();
 }
 
-void Server::garbageCollector() {
+void Server::garbageCollector(GameManager &gameManager) {
     managers.erase(std::remove_if(managers.begin(),
                                   managers.end(),
-                                  [](ClientManager *manager)
+                                  [&gameManager](ClientManager *manager)
                                   { if (manager->joinThread()) {
+                                      gameManager.deletePlayer(manager->getId());
                                       delete manager;
                                       return true;
                                   }
@@ -56,7 +56,8 @@ void Server::cleanManagers() {
 
 void Server::stop() {
     closed = true;
-    cleanManagers();
     accept_skt.shutdown(2);
     accept_skt.close();
 }
+
+Server::~Server() {}

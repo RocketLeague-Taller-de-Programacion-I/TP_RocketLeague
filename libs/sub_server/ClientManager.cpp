@@ -2,13 +2,8 @@
 // Created by lucaswaisten on 07/11/22.
 //
 
-#include <sys/socket.h>
-#include <iostream>
-#include <memory>
-#include <functional>
+
 #include "ClientManager.h"
-#include "ServerProtocolo.h"
-#include "ClientReceiver.h"
 
 ClientManager::ClientManager(uint8_t &id, Socket &aClient, GameManager &aGameManager) :
         client(std::move(aClient)),
@@ -43,25 +38,30 @@ void ClientManager::run() {
         }
         initialUpdatesQueue->push(update);
     }
+
+    waitClientThreads();
+}
+
+void ClientManager::waitClientThreads() {
+    clientReceiverThread->join();
+    clientSenderThread->join();
+    delete clientReceiverThread;
+    delete clientSenderThread;
+    closed = true;
 }
 
 bool ClientManager::joinThread() {
     if (not closed) return false;
-    return this->endManager();
+    return endManager();
 }
 
 bool ClientManager::endManager() {
-    closed = true;
     client.shutdown(2);
     client.close();
-    this->clientReceiverThread->join();
-    this->clientSenderThread->join();
-    delete this->clientReceiverThread;
-    delete this->clientSenderThread;
-    this->join();
+    clientReceiverThread->stop();
+    clientSenderThread->stop();
     return closed;
 }
-
 void ClientManager::startClientThreads(ProtectedQueue<std::shared_ptr<ServerAction>> *qReceiver, BlockingQueue<std::shared_ptr<ServerUpdate>> *senderQueue) {
     //qReceiver -> ServerAction
     //senderQueue -> ServerUpdate
@@ -71,16 +71,23 @@ void ClientManager::startClientThreads(ProtectedQueue<std::shared_ptr<ServerActi
     clientReceiverThread->start();
     clientSenderThread->start();
 }
+
 BlockingQueue<std::shared_ptr<ServerUpdate>> * ClientManager::setQueues(
         ProtectedQueue<std::shared_ptr<ServerAction>> *gameQueue) {
-    clientReceiverThread->setQueue(gameQueue);
+    clientReceiverThread->swapQueue(gameQueue);
     return (clientSenderThread->getQueue());
+}
+
+uint8_t ClientManager::getId() {
+    return id;
+}
+
+bool ClientManager::isClosed() {
+    return closed;
 }
 
 void ClientManager::stop() {
     endManager();
 }
 
-ClientManager::~ClientManager() {
-    endManager();
-}
+ClientManager::~ClientManager() {}

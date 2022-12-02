@@ -23,6 +23,7 @@ void ClientReceiver::run() {
             // form the Action from the data
             auto action = Protocolo::deserializeData(idClient, actionType, bytes_receiver_callable);
             // push the action to the queue
+
             updatesQueue->push(action);
         }
     } catch (const std::exception &e) {
@@ -31,24 +32,21 @@ void ClientReceiver::run() {
         std::cerr << "Error desconocido en la función receiver" << std::endl;
     }
 }
-void ClientReceiver::stop() {}
-
-void ClientReceiver::setQueue(ProtectedQueue<std::shared_ptr<ServerAction>> *pQueue) {
-    clearQueue();
-    this->updatesQueue = pQueue;
+void ClientReceiver::swapQueue(ProtectedQueue<std::shared_ptr<ServerAction>> *pQueue) {
+    ProtectedQueue<std::shared_ptr<ServerAction>>* old = updatesQueue;
+    std::swap(updatesQueue, pQueue);
+    // delete the old queue
+    delete old;
 }
+
 void ClientReceiver::receiveBytes(void *bytes_to_read, int size) {
     if(!closed) {
         this->skt_client.recvall(bytes_to_read, size, &closed);
     }
 }
 
-void ClientReceiver::clearQueue() {
-    std::queue<std::shared_ptr<ServerAction>> elements = this->updatesQueue->popAll();
+void ClientReceiver::stop() {
+    closed = true;
 }
 
-ClientReceiver::~ClientReceiver() {
-    delete this->updatesQueue;
-    closed = false;
-    this->join();
-}
+ClientReceiver::~ClientReceiver() {}

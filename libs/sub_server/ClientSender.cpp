@@ -32,13 +32,14 @@ void ClientSender::sendBytes(void* bytes_to_send, unsigned int size) {
         this->skt_client.sendall(bytes_to_send, size, &closed);
     }
 }
+BlockingQueue<std::shared_ptr<ServerUpdate>> * ClientSender::getQueue() const {
+    return updatesQueue;
+}
+
 void ClientSender::stop() {
+    closed = true;
 }
 
 ClientSender::~ClientSender() {
     delete updatesQueue;
-}
-
-BlockingQueue<std::shared_ptr<ServerUpdate>> * ClientSender::getQueue() const {
-    return this->updatesQueue;
 }

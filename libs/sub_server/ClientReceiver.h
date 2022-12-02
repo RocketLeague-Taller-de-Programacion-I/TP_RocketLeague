@@ -25,8 +25,7 @@ public:
     ClientReceiver(Socket &skt_client, ProtectedQueue<std::shared_ptr<ServerAction>> *updatesQueue, uint8_t idClient);
     ~ClientReceiver() override;
     void stop() override;
-    void setQueue(ProtectedQueue<std::shared_ptr<ServerAction>> *pQueue);
-    void clearQueue();
+    void swapQueue(ProtectedQueue<std::shared_ptr<ServerAction>> *pQueue);
 
     void receiveBytes(void *bytes_to_read, int size);
 };

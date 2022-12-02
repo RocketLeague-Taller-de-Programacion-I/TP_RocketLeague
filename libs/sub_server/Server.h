@@ -24,9 +24,10 @@ protected:
     void run() override;
 public:
     explicit Server(const char *port);
+    ~Server() override;
     void stop() override;
 
-    void garbageCollector();
+    void garbageCollector(GameManager &gameManager);
     void cleanManagers();
 };
 

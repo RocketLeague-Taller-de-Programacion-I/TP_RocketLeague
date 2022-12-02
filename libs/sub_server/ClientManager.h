@@ -6,6 +6,10 @@
 #ifndef ROCKETLEAGUE_CLIENTMANAGER_H
 #define ROCKETLEAGUE_CLIENTMANAGER_H
 
+#include <iostream>
+#include <memory>
+#include <functional>
+
 #include "gameManager.h"
 #include "../sub_common/thread.h"
 #include "../sub_common/socket.h"
@@ -36,6 +40,12 @@ public:
     void startClientThreads(ProtectedQueue<std::shared_ptr<ServerAction>> *qReceiver, BlockingQueue<std::shared_ptr<ServerUpdate>> *senderQueue);
 
     BlockingQueue<std::shared_ptr<ServerUpdate>> * setQueues(ProtectedQueue<std::shared_ptr<ServerAction>> *gameQueue);
+
+    void waitClientThreads();
+
+    bool isClosed();
+
+    uint8_t getId();
 };
 
 

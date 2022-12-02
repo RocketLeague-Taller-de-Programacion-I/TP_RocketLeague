@@ -52,6 +52,12 @@ public:
 
     void broadcastUpdate(const std::shared_ptr<ServerUpdate>& update);
     void brodcastUpdateGameEvents(std::vector<ServerUpdate *> updates);
+
+    bool hasPlayer(uint8_t idPlayer);
+
+    void deletePlayer(uint8_t idPlayer);
+
+    bool isFinished() const;
 };
 
 

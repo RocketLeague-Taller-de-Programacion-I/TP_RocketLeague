@@ -42,6 +42,7 @@ void Game::run() {
     while (not finished) {
         //check if time of match's usleep reached 3 minutes
         //TODO: check if clientManager are still alive
+
         if (match.isFinished()){
             finished = true;
             break;
@@ -57,11 +58,15 @@ void Game::run() {
         broadcastUpdate(update);
     }
 
-
+    std::cout << "Game " << gameName << " finished" << std::endl;
 }
 
 bool Game::isFull() const {
     return playerOnLine == capacity;
+}
+
+bool Game::isFinished() const {
+    return finished;
 }
 
 ProtectedQueue<std::shared_ptr<ServerAction>> * Game::getQueue() {
@@ -74,19 +79,21 @@ void Game::broadcastUpdate(const std::shared_ptr<ServerUpdate>& update) {
     }
 }
 
-/*void Game::brodcastUpdateGameEvents(std::vector<ServerUpdate *> updates) {
-    for (auto & sender : mapSender) {
-        for (auto & update : updates) {
-            sender.second->push(update);
-        }
-    }
-}*/
+bool Game::hasPlayer(uint8_t idPlayer) {
+    return mapSender.find(idPlayer) != mapSender.end();
+}
 
-void Game::stop() {}
+void Game::deletePlayer(uint8_t idPlayer) {
+    mapSender.erase(idPlayer);
+    playerOnLine--;
+    finished = (playerOnLine == 0);
+}
 
-Game::~Game() {
-    for (auto & sender : mapSender) {
-        delete sender.second;
-    }
+void Game::stop() {
+    finished = true;
+    delete queue;
     join();
 }
+
+Game::~Game() {}
+
