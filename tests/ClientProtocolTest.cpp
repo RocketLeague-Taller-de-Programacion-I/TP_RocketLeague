@@ -6,20 +6,38 @@
 #include "MockClientProtocol.h"
 
 /*
- * Test unitario de protocolo
- *      - Buscaremos testiar cuando recibe mensajes desde cliente
- *      y los mismos se serializan en comandos de 2 bytes.
- *      - Buscaremos testiar las respuestas del servidor
- *      los casos exitosos y los casos no exitosos.
- * recibir:
-      - createACK -> {type, id, returnCode}
-      - joinACK -> {type, id, returnCode}
-      - listACK -> {type, id, returnCode, cantidadDeGames = 2 , [online, max, size, name] , [online, max, size, name]}
-      - worldACK -> {ballX, ballY, localScore, visitScore, n_clients, [id,x_pos,y_pox,angleSing,angle, ... for each client]}
+ * TEST UNITARIOS DE PROTOCOLO
+ *
+ *  - PRIMERA SECCION:
+ *      - ClientProtocol deserialíza la data a travéz del método:
+ *          ClientProtocol::deserializeData(type,function)
+
+ *      - El método recibe dos parámetros:
+ *          - type: tipo de acción.
+ *          - function: callback que llama a un socket.
+
+ *      - Desde la callback se retorna la siguente data:
+ *          - createACK -> {type, id, returnCode}
+ *          - joinACK -> {type, id, returnCode}
+ *          - listACK -> {type, id, returnCode,
+ *                          cantidadDeGames = 2,
+ *                          [online, max, size, name],
+ *                          [online, max, size, name]}
+ *          - worldACK -> {ballX,
+ *                          ballY,
+ *                          localScore,
+ *                          visitScore,
+ *                          n_clients,
+ *                          [id,x_pos,
+ *                          y_pox,
+ *                          angleSing,angle,
+ *                          ...
+ *                          for each client
+ *                          ]}
  */
 
 /*
- * Defino los mock a utilizar en CreactACK
+ * Defino los mock a utilizar en CreateACK
  * mockCreateOK
  *      atributos:
  *          - id = 1
@@ -180,8 +198,8 @@ TEST_CASE("ClientProtocol can deserialize WorldACK update", "[clientProtocol]") 
         auto x = (int)(ball.getX()*1000);
         auto y = (int)(ball.getY()*1000);
 
-        REQUIRE(x == 2000);
-        REQUIRE(y == 3000);
+        REQUIRE(ball.getX() == 2000);
+        REQUIRE(ball.getY() == 3000);
         REQUIRE(score.getLocal() == 2);
         REQUIRE(score.getVisitor() == 0);
     }
@@ -200,7 +218,9 @@ TEST_CASE("ClientProtocol can deserialize WorldACK update", "[clientProtocol]") 
         REQUIRE((int)(cars[0].getAngle()*1000) == 60);
     }
 }
-
+/*
+ * En caso de que reciba un comando inexistente, se retorna un puntero a null.
+ */
 TEST_CASE("ClientProtocol receive an non-existed command", "[clientProtocol]") {
 
     std::function<void(void *, int)> bytes_receiver_callable =
@@ -210,4 +230,35 @@ TEST_CASE("ClientProtocol receive an non-existed command", "[clientProtocol]") {
                                                   bytes_receiver_callable);
 
     REQUIRE(update == nullptr);
+}
+
+/*
+*  - SEGUNDA SECCIÓN:
+*      - ClientProtocol serializa la accién mediante el método:
+*          ClientProtocol::serializeAction(action)
+*      - El método recibe un parámetro:
+*          - action: punto a ClientAction.
+*/
+
+/*
+ * Defino de forma global a ClientProtocol y al mock que utilizare.
+ */
+
+MockClientProtocol mock;
+std::function<void(void *, unsigned int)> sendBytes =
+        [](void * retuncode, unsigned int size) { mock.sendBytesMock(retuncode,size); };
+
+ClientProtocol clientProtocol(sendBytes);
+
+TEST_CASE("ClientProtocol serialize ActionCreateRoom","[clientProtocol]"){
+    uint8_t capacity = 1 ;
+    std::string name = "roomCreate";
+
+    std::shared_ptr<ClientAction> action = std::make_shared<ActionCreateRoom>(capacity,name);
+
+    clientProtocol.serializeAction(action);
+
+    REQUIRE(mock.getCapacity() == 1);
+    REQUIRE(mock.getSizeName() == name.size());
+    REQUIRE(mock.getName( name.size()) == name);
 }
