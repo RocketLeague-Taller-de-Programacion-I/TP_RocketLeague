@@ -5,6 +5,8 @@
 #ifndef ROCKETLEAGUE_SERVERUPDATEWORLD_H
 #define ROCKETLEAGUE_SERVERUPDATEWORLD_H
 
+#include <functional>
+
 #include "ServerUpdate.h"
 
 class ServerUpdateWorld : public ServerUpdate{
@@ -17,7 +19,7 @@ public:
     ~ServerUpdateWorld() override = default;
 
     uint8_t getType() const override;
-    void beSerialized(Protocolo *protocolo) override;
+    void beSerialized(ServerProtocolo *protocolo, std::function<void(void *, unsigned int)> &sendCallable) override;
     std::vector<int> getInfo() const { return info;};
 };
 

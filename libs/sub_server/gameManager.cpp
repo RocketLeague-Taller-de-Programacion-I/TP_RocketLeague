@@ -5,8 +5,8 @@
 #include "gameManager.h"
 
 bool GameManager::createGame(uint8_t idCreator, uint8_t capacityGame, const std::string &nameGame,
-                             std::function<BlockingQueue<std::shared_ptr<ServerUpdate>> *(
-                                     ProtectedQueue<std::shared_ptr<ServerAction>> *)> setQueue) {
+                             std::function<void(ProtectedQueue<std::shared_ptr<ServerAction>> *,
+                                                BlockingQueue<std::shared_ptr<ServerUpdate>> *)> &startThreadsCallable) {
     std::unique_lock<std::mutex> lock(this->mutex);
 
     if (games.find(nameGame) == games.end()) {
@@ -15,21 +15,26 @@ bool GameManager::createGame(uint8_t idCreator, uint8_t capacityGame, const std:
     } else {
         return false;
     }
-    auto queueSender = setQueue(games[nameGame]->getQueue());
+    auto queueSender = new BlockingQueue<std::shared_ptr<ServerUpdate>>;
     games[nameGame]->joinPlayer(idCreator,queueSender);
+
+    startThreadsCallable(games[nameGame]->getQueue(), queueSender);
 
     return true;
 }
-bool GameManager::joinGame(uint8_t idCreator, const std::string& nameGame, std::function<BlockingQueue<std::shared_ptr<ServerUpdate>> *(
-        ProtectedQueue<std::shared_ptr<ServerAction>> *)> setQueue) {
+bool GameManager::joinGame(uint8_t idCreator, const std::string& nameGame, std::function<void(
+        ProtectedQueue<std::shared_ptr<ServerAction>> *,
+        BlockingQueue<std::shared_ptr<ServerUpdate>> *)> &startThreadsCallable) {
 
     std::unique_lock<std::mutex> lock(this->mutex);
     if (this->games[nameGame]->isFull()) {
         // TODO: return update with ERROR message
         return false;
     } else {
-        auto *queueSender = setQueue(games[nameGame]->getQueue());
+        auto queueSender = new BlockingQueue<std::shared_ptr<ServerUpdate>>;
         games[nameGame]->joinPlayer(idCreator,queueSender);
+
+        startThreadsCallable(games[nameGame]->getQueue(), queueSender);
     }
     return true;
 }

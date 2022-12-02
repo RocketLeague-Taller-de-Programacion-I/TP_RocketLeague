@@ -2,63 +2,22 @@
 // Created by lucaswaisten on 04/11/22.
 //
 
-#include <iostream>
 #include "ServerProtocolo.h"
 
-command_t Protocolo::getMapCommand(uint32_t action) {
+command_t ServerProtocolo::getMapCommand(uint32_t action) {
     return this->mapCommand.at(action);
 }
 
-std::shared_ptr<ServerAction> Protocolo::deserializeData(const uint8_t &id, const uint8_t &type,
-                                                         const std::function<void(void *, int)> &receiveBytes) {
+std::shared_ptr<ServerAction> ServerProtocolo::deserializeData(const uint8_t &id, const uint8_t &type,
+                                                               const std::function<void(void *, int)> &receiveBytes) {
     switch (type) {
-        case CREATE_ROOM:
-            return parseCreateAction(id, receiveBytes);
-        case JOIN_ROOM:
-            return parseJoinAction(id, receiveBytes);
-        case LIST_ROOMS:
-            return parseListAction(id);
         case MOVE:
             return parseUpdateAction(receiveBytes);
     }
     return {};
 }
 
-std::shared_ptr<ServerAction> Protocolo::parseCreateAction(const uint8_t &id,
-                                                           const std::function<void(void *, int)> &receiveBytes) {
-
-    std::vector<uint8_t> capacity_and_nameSize(2);
-    receiveBytes(capacity_and_nameSize.data(), capacity_and_nameSize.size());
-    uint8_t capacity = capacity_and_nameSize[0];
-    uint8_t nameSize = capacity_and_nameSize[1];
-
-    std::vector<uint8_t> name(nameSize);
-    receiveBytes(name.data(), name.size());
-    std::string nameString(name.begin(), name.end());
-
-    std::shared_ptr<ServerAction> pAction = std::make_shared<ServerCreateRoom>(id, capacity, nameString);
-    return pAction;
-}
-
-std::shared_ptr<ServerAction> Protocolo::parseJoinAction(const uint8_t &id,
-                                                         const std::function<void(void *, int)> &receiveBytes) {
-    std::vector<uint8_t> nameSize(1);
-    receiveBytes(nameSize.data(), nameSize.size());
-
-    std::vector<uint8_t> name(nameSize[0]);
-    receiveBytes(name.data(), name.size());
-    std::string nameString(name.begin(), name.end());
-
-    std::shared_ptr<ServerAction> pAction = std::make_shared<ServerJoinRoom>(id, nameString);
-    return pAction;
-}
-
-std::shared_ptr<ServerAction> Protocolo::parseListAction(const uint8_t &id) {
-    std::shared_ptr<ServerAction> pAction = std::make_shared<ServerListRooms>(id);
-    return pAction;
-}
-
-std::shared_ptr<ServerAction> Protocolo::parseUpdateAction(const std::function<void(void *, int)> &receiveBytes) {
+std::shared_ptr<ServerAction> ServerProtocolo::parseUpdateAction(const std::function<void(void *, int)> &receiveBytes) {
     //id
     // direction or type of movement {Right, Left, Jump, Down, Turbo}
     // on or off
@@ -75,11 +34,16 @@ std::shared_ptr<ServerAction> Protocolo::parseUpdateAction(const std::function<v
     return pAction;
 }
 
-void Protocolo::serializeUpdate(std::shared_ptr<ServerUpdate> update) {
-    update->beSerialized(this);
+void ServerProtocolo::serializeUpdate(std::shared_ptr<ServerUpdate> update,
+                                      std::function<void(void *, unsigned int)> &sendCallable) {
+    update->beSerialized(this, sendCallable);
 }
 
-void Protocolo::serializeCreateACK(ServerCreateACK *update) {
+void
+ServerProtocolo::serializeCreateACK(ServerCreateACK *update, std::function<void(void *, unsigned int)> &sendBytes) {
+    uint8_t type = update->getType();
+    sendBytes(&type, sizeof(type));
+
     uint8_t id = update->getId();
     sendBytes(&id, sizeof(id));
 
@@ -87,7 +51,10 @@ void Protocolo::serializeCreateACK(ServerCreateACK *update) {
     sendBytes(&returnCode, sizeof(returnCode));
 }
 
-void Protocolo::serializeJoinACK(ServerJoinACK *update) {
+void ServerProtocolo::serializeJoinACK(ServerJoinACK *update, std::function<void(void *, unsigned int)> &sendBytes) {
+    uint8_t type = update->getType();
+    sendBytes(&type, sizeof(type));
+
     uint8_t id = update->getId();
     sendBytes(&id, sizeof(id));
 
@@ -95,7 +62,11 @@ void Protocolo::serializeJoinACK(ServerJoinACK *update) {
     sendBytes(&returnCode, sizeof(returnCode));
 }
 
-void Protocolo::serializeServerListACK(ServerListACK *update) {
+void
+ServerProtocolo::serializeServerListACK(ServerListACK *update, std::function<void(void *, unsigned int)> &sendBytes) {
+    uint8_t type = update->getType();
+    sendBytes(&type, sizeof(type));
+
     uint8_t id = update->getId();
     sendBytes(&id, sizeof(id));
 
@@ -108,7 +79,8 @@ void Protocolo::serializeServerListACK(ServerListACK *update) {
     std::vector<uint8_t> returnData = update->getReturnData();
     sendBytes(returnData.data(), returnData.size());
 }
-void Protocolo::serializeWorldUpdate(ServerUpdateWorld *update) {
+void
+ServerProtocolo::serializeWorldUpdate(ServerUpdateWorld *update, std::function<void(void *, unsigned int)> &sendBytes) {
     //implement
     std::vector<int> matchInfo = update->getInfo();
     //  Ball
@@ -135,4 +107,56 @@ void Protocolo::serializeWorldUpdate(ServerUpdateWorld *update) {
         sendBytes(&carInfo, sizeof(carInfo));
     }
 
+}
+
+std::shared_ptr<ServerAction>
+        ServerProtocolo::deserializeDataOnCommand(uint8_t &actionType, uint8_t &id, GameManager &gameManager,
+                                                  std::function<void(void *, int)> &receiveBytes,
+                                                  std::function<void(void *, unsigned int)> &sendBytes,
+                                                  std::function<void(ProtectedQueue<std::shared_ptr<ServerAction>> *,
+                                                                     BlockingQueue<std::shared_ptr<ServerUpdate>> *)> &startThreadsCallable) {
+    switch (actionType) {
+        case CREATE_ROOM:
+            return parseCreateAction(id, receiveBytes, gameManager);
+        case JOIN_ROOM:
+            return parseJoinAction(id, receiveBytes, gameManager);
+        case LIST_ROOMS:
+            return parseListAction(id, gameManager);
+    }
+    return {};
+}
+
+std::shared_ptr<ServerAction>
+        ServerProtocolo::parseCreateAction(uint8_t &id, const std::function<void(void *, int)>& receiveBytes,
+                                           GameManager &gameManager) {
+    std::vector<uint8_t> capacity_and_nameSize(2);
+    receiveBytes(capacity_and_nameSize.data(), capacity_and_nameSize.size());
+    uint8_t capacity = capacity_and_nameSize[0];
+    uint8_t nameSize = capacity_and_nameSize[1];
+
+    std::vector<uint8_t> name(nameSize);
+    receiveBytes(name.data(), name.size());
+    std::string nameString(name.begin(), name.end());
+
+    std::shared_ptr<ServerAction> pAction = std::make_shared<ServerCreateRoom>(id, capacity, nameString, gameManager);
+    return pAction;
+}
+
+std::shared_ptr<ServerAction>
+        ServerProtocolo::parseJoinAction(const uint8_t &id, const std::function<void(void *, int)> &receiveBytes,
+                                         GameManager &gameManager) {
+    std::vector<uint8_t> nameSize(1);
+    receiveBytes(nameSize.data(), nameSize.size());
+
+    std::vector<uint8_t> name(nameSize[0]);
+    receiveBytes(name.data(), name.size());
+    std::string nameString(name.begin(), name.end());
+
+    std::shared_ptr<ServerAction> pAction = std::make_shared<ServerJoinRoom>(id, nameString, gameManager);
+    return pAction;
+}
+
+std::shared_ptr<ServerAction> ServerProtocolo::parseListAction(const uint8_t &id, GameManager &gameManager) {
+    std::shared_ptr<ServerAction> pAction = std::make_shared<ServerListRooms>(id, gameManager);
+    return pAction;
 }

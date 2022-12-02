@@ -9,6 +9,7 @@ uint8_t ServerUpdateWorld::getType() const {
     return WORLD;
 }
 
-void ServerUpdateWorld::beSerialized(Protocolo *protocolo) { //TODO: check how to serialize
-    protocolo->serializeWorldUpdate(this);
+void
+ServerUpdateWorld::beSerialized(ServerProtocolo *protocolo, std::function<void(void *, unsigned int)> &sendCallable) {
+    protocolo->serializeWorldUpdate(this, sendCallable);
 }

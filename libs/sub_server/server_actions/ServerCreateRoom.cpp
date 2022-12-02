@@ -5,15 +5,15 @@
 #include "ServerCreateRoom.h"
 #include "sub_server/gameManager.h" //TODO: reever esto
 
-ServerCreateRoom::ServerCreateRoom(const uint8_t &id, uint8_t &capacity, std::string &data) : ServerAction(id, data) , capacity(capacity) {}
+void
+ServerCreateRoom::execute(std::function<void(ProtectedQueue<std::shared_ptr<ServerAction>> *,
+                                             BlockingQueue<std::shared_ptr<ServerUpdate>> *)> &startThreadsCallable,
+                          std::function<void(void *, unsigned int)> &sendCallable,
+                          ServerProtocolo &protocolo) {
 
-std::shared_ptr<ServerUpdate> ServerCreateRoom::execute(GameManager &manager, const std::function<BlockingQueue<std::shared_ptr<ServerUpdate>> *(
-        ProtectedQueue<std::shared_ptr<ServerAction>> *)> &setQueue) {
-
-    uint8_t returnCode = manager.createGame(id, capacity, roomName, setQueue) ? OK : ERROR_FULL;
-//    return new ServerCreateACK(id, returnMessage);
+    uint8_t returnCode = manager.createGame(id, capacity, roomName, startThreadsCallable) ? ERROR_FULL : OK;
     std::shared_ptr<ServerUpdate> update = std::make_shared<ServerCreateACK>(id, returnCode);
-    return update;
+    update->beSerialized(&protocolo, sendCallable);
 }
 
 void ServerCreateRoom::execute(Match &match) {

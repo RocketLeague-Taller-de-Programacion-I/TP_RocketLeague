@@ -9,13 +9,16 @@
 #include "sub_server/server_updates/ServerJoinACK.h"
 
 class ServerJoinRoom : public ServerAction {
-
+private:
+    GameManager &manager;
 public:
-    ServerJoinRoom(const uint8_t &id, std::string &data);
+    ServerJoinRoom(const uint8_t &id, std::string &data, GameManager &manager) : ServerAction(id, data), manager(manager) {};
     ~ServerJoinRoom() override = default;
     void execute(Match& match) override;
-    virtual std::shared_ptr<ServerUpdate> execute(GameManager &manager, const std::function<BlockingQueue<std::shared_ptr<ServerUpdate>> *(
-            ProtectedQueue<std::shared_ptr<ServerAction>> *)> &setQueue) override;
+    void execute(std::function<void(ProtectedQueue<std::shared_ptr<ServerAction>> *,
+                                    BlockingQueue<std::shared_ptr<ServerUpdate>> *)> &startThreadsCallable,
+                 std::function<void(void *, unsigned int)> &sendCallable,
+                 ServerProtocolo &protocolo) override;
 };
 
 

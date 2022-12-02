@@ -11,6 +11,7 @@
 #include <string>
 #include <unordered_map>
 #include <memory>
+#include <iostream>
 
 #include "server_updates/ServerCreateACK.h"
 #include "server_updates/ServerJoinACK.h"
@@ -34,7 +35,7 @@ enum action {
 
 typedef uint8_t command_t;
 
-class Protocolo {
+class ServerProtocolo {
 private:
     const std::unordered_map<uint32_t , command_t> mapCommand = {
             {SDLK_ESCAPE, NOP},
@@ -45,29 +46,40 @@ private:
             {SDLK_DOWN, DOWN},
             {SDLK_SPACE, TURBO}
     };
-    const std::function<void(void*, unsigned int)> &sendBytes;
 public:
     command_t getMapCommand(uint32_t action);
-    Protocolo(const std::function<void(void *, unsigned int)> &sendBytesCallable) : sendBytes(sendBytesCallable) {};
+    ServerProtocolo() = default;
 
     static std::shared_ptr<ServerAction> deserializeData(const uint8_t &id, const uint8_t &type,
                                                          const std::function<void(void *, int)> &receiveBytes);
-    void serializeUpdate(std::shared_ptr<ServerUpdate> update);
-    void serializeCreateACK(ServerCreateACK *update);
-    void serializeJoinACK(ServerJoinACK *update);
-    void serializeServerListACK(ServerListACK *update);
-    void serializeWorldUpdate(ServerUpdateWorld *update);
-
-    static std::shared_ptr<ServerAction> parseCreateAction(const uint8_t &id, const std::function<void(void *,
-                                                                                                       int)> &receiveBytes);
-
-    static std::shared_ptr<ServerAction> parseJoinAction(const uint8_t &id, const std::function<void(void *,
-                                                                                                     int)> &receiveBytes);
-
-    static std::shared_ptr<ServerAction> parseListAction(const uint8_t &id);
-
     static std::shared_ptr<ServerAction>
     parseUpdateAction(const std::function<void(void *, int)> &receiveBytes);
+
+    static std::shared_ptr<ServerAction>
+    deserializeDataOnCommand(uint8_t &actionType,
+                             uint8_t &id,
+                             GameManager &gameManager,
+                             std::function<void(void *, int)> &receiveBytes,
+                             std::function<void(void *, unsigned int)> &sendBytes,
+                             std::function<void(ProtectedQueue<std::shared_ptr<ServerAction>> *,
+                                                BlockingQueue<std::shared_ptr<ServerUpdate>> *)> &startThreadsCallable);
+
+    static std::shared_ptr<ServerAction>
+    parseCreateAction(uint8_t &id, const std::function<void(void *, int)>& receiveBytes,
+                      GameManager &gameManager);
+    static std::shared_ptr<ServerAction>
+    parseJoinAction(const uint8_t &id, const std::function<void(void *, int)> &receiveBytes,
+                    GameManager &gameManager);
+    static std::shared_ptr<ServerAction>
+    parseListAction(const uint8_t &id,
+                    GameManager &gameManager);
+
+    void serializeUpdate(std::shared_ptr<ServerUpdate> update,
+                         std::function<void(void *, unsigned int)> &sendCallable);
+    static void serializeCreateACK(ServerCreateACK *update, std::function<void(void *, unsigned int)> &sendBytes);
+    void serializeJoinACK(ServerJoinACK *update, std::function<void(void *, unsigned int)> &sendBytes);
+    void serializeServerListACK(ServerListACK *update, std::function<void(void *, unsigned int)> &sendBytes);
+    void serializeWorldUpdate(ServerUpdateWorld *update, std::function<void(void *, unsigned int)> &sendBytes);
 };
 
 

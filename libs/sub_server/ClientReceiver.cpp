@@ -20,9 +20,7 @@ void ClientReceiver::run() {
             std::function<void(void *bytes_to_read, int size)> bytes_receiver_callable =
                     std::bind(&ClientReceiver::receiveBytes, this, std::placeholders::_1 ,std::placeholders::_2);
 
-            // form the Action from the data
-            auto action = Protocolo::deserializeData(idClient, actionType, bytes_receiver_callable);
-            // push the action to the queue
+            auto action = ServerProtocolo::deserializeData(idClient, actionType, bytes_receiver_callable);
 
             updatesQueue->push(action);
         }
@@ -31,12 +29,6 @@ void ClientReceiver::run() {
     } catch (...) {
         std::cerr << "Error desconocido en la función receiver" << std::endl;
     }
-}
-void ClientReceiver::swapQueue(ProtectedQueue<std::shared_ptr<ServerAction>> *pQueue) {
-    ProtectedQueue<std::shared_ptr<ServerAction>>* old = updatesQueue;
-    std::swap(updatesQueue, pQueue);
-    // delete the old queue
-    delete old;
 }
 
 void ClientReceiver::receiveBytes(void *bytes_to_read, int size) {

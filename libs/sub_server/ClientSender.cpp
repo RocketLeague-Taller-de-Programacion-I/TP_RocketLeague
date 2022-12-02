@@ -10,15 +10,17 @@ ClientSender::ClientSender(Socket &skt_client, BlockingQueue<std::shared_ptr<Ser
 }
 
 void ClientSender::run() {
-    const std::function<void(void*, unsigned int)> callable = std::bind(&ClientSender::sendBytes, this, std::placeholders::_1, std::placeholders::_2);
-    Protocolo p(callable);
+    ServerProtocolo protocolo;
     try {
         while (not closed) {
             auto update = updatesQueue->pop();
             uint8_t type = update->getType();
             sendBytes(&type, sizeof(update->getType()));
 
-            p.serializeUpdate(update);
+            std::function<void(void*, unsigned int)> sendCallable =
+                    std::bind(&ClientSender::sendBytes, this, std::placeholders::_1, std::placeholders::_2);
+
+            protocolo.serializeUpdate(update, sendCallable);
         }
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;

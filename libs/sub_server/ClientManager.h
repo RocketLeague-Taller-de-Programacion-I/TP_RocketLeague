@@ -1,6 +1,3 @@
-//
-// Created by lucaswaisten on 07/11/22.
-//
 #pragma once
 
 #ifndef ROCKETLEAGUE_CLIENTMANAGER_H
@@ -9,6 +6,7 @@
 #include <iostream>
 #include <memory>
 #include <functional>
+#include <atomic>
 
 #include "gameManager.h"
 #include "../sub_common/thread.h"
@@ -24,13 +22,15 @@ private:
     GameManager &gameManager;
     bool closed;
     uint8_t id;
+    std::atomic<bool> shouldContinueLooping;
     ClientReceiver *clientReceiverThread;
     ClientSender *clientSenderThread;
-public:
 
+public:
     ClientManager(uint8_t &id, Socket &aClient, GameManager &aGameManager);
     ~ClientManager() override;
     void run() override;
+
     void stop() override;
 
     bool joinThread();
@@ -39,13 +39,15 @@ public:
 
     void startClientThreads(ProtectedQueue<std::shared_ptr<ServerAction>> *qReceiver, BlockingQueue<std::shared_ptr<ServerUpdate>> *senderQueue);
 
-    BlockingQueue<std::shared_ptr<ServerUpdate>> * setQueues(ProtectedQueue<std::shared_ptr<ServerAction>> *gameQueue);
-
     void waitClientThreads();
 
     bool isClosed();
 
     uint8_t getId();
+
+    void receiveBytes(void *bytes_to_receive, int sizeToReceive);
+
+    void sendBytes(void *bytes_to_send, unsigned int size);
 };
 
 

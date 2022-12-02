@@ -5,6 +5,8 @@
 #ifndef ROCKETLEAGUE_SERVERLISTACK_H
 #define ROCKETLEAGUE_SERVERLISTACK_H
 
+#include <functional>
+
 #include "ServerUpdate.h"
 
 class ServerListACK : public ServerUpdate{
@@ -21,7 +23,7 @@ public:
     ~ServerListACK() override = default;
 
     uint8_t getType() const override;
-    void beSerialized(Protocolo *protocolo) override;
+    void beSerialized(ServerProtocolo *protocolo, std::function<void(void *, unsigned int)> &sendCallable) override;
     uint8_t getNumberOfGames() const { return numberOfGames;};
 };
 

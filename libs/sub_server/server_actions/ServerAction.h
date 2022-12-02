@@ -49,29 +49,14 @@ public:
     virtual uint8_t getId() const { return id;};
     virtual std::string getRoomName() const { return roomName;};
 
-    virtual std::shared_ptr<ServerUpdate> execute(GameManager &manager, const std::function<BlockingQueue<std::shared_ptr<ServerUpdate>> *(
-            ProtectedQueue<std::shared_ptr<ServerAction>> *)> &setQueue) = 0;
+    virtual void
+        execute(std::function<void(ProtectedQueue<std::shared_ptr<ServerAction>> *,
+                                   BlockingQueue<std::shared_ptr<ServerUpdate>> *)> &startThreadsCallable,
+                std::function<void(void *, unsigned int)> &sendCallable,
+                ServerProtocolo &protocolo) = 0;
 
     virtual void execute(Match& match) = 0;
 };
 
 
 #endif //ROCKETLEAGUE_SERVERACTION_H
-
-//ServerAction
-// ActionCreateRoom
-//  - id
-//  - name
-//  - maxPlayers
-// ActionJoinRoom
-//  - id
-//  - name
-// ActionListRooms
-//  - id
-// ActionMove
-
-//ServerUpdate
-// CreateACK
-// JoinACK
-// ListACK
-// WorldUpdate

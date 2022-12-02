@@ -9,13 +9,17 @@
 #include "sub_server/server_updates/ServerListACK.h"
 
 class ServerListRooms : public ServerAction {
+private:
+    GameManager &manager;
 public:
-    explicit ServerListRooms(const uint8_t &id) : ServerAction(id) {};
+    explicit ServerListRooms(const uint8_t &id, GameManager &manager) : ServerAction(id), manager(manager) {};
     ~ServerListRooms() override = default;
 
     void execute(Match& match) override;
-    virtual std::shared_ptr<ServerUpdate> execute(GameManager &manager, const std::function<BlockingQueue<std::shared_ptr<ServerUpdate>> *(
-            ProtectedQueue<std::shared_ptr<ServerAction>> *)> &setQueue) override;
+    void execute(std::function<void(ProtectedQueue<std::shared_ptr<ServerAction>> *,
+                                    BlockingQueue<std::shared_ptr<ServerUpdate>> *)> &startThreadsCallable,
+                 std::function<void(void *, unsigned int)> &sendCallable,
+                 ServerProtocolo &protocolo) override;
 };
 
 
