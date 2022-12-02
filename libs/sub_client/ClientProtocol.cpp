@@ -15,6 +15,8 @@ std::shared_ptr<ClientUpdate> ClientProtocol::deserializeData(const uint8_t &typ
             return parseJoinACK(receiveBytes);
         case LIST_INFO:
             return parseListUpdate(receiveBytes);
+    // case STARTED_GAME_ACK:
+       // return parseStartedGameACK(receiveBytes);
         case WORLD:
             return parseWorldUpdate(receiveBytes);
     }
@@ -82,6 +84,10 @@ std::shared_ptr<ClientUpdate> ClientProtocol::parseListUpdate(
         games[gameName] = std::to_string(playersOnLine) + "/" + std::to_string(capacity);
     }
 
+    uint16_t test;
+    receiveBytes(&test, sizeof(test));
+    test = ntohs(test);
+
     std::shared_ptr<ClientUpdate> update = std::make_shared<ClientListACK>(id, returnCode, games);
     return update;
 }
@@ -140,4 +146,44 @@ std::shared_ptr<ClientUpdate> ClientProtocol::parseWorldUpdate(const std::functi
 
     std::shared_ptr<ClientUpdate> update = std::make_shared<ClientUpdateWorld>(ball, score, clientCars);
     return update;
+}
+
+void ClientProtocol::serializeAction(std::shared_ptr<ClientAction> action) {
+    action->beSerialized(this);
+}
+
+void ClientProtocol::serializeCreateRoom(ActionCreateRoom *action) {
+    std::vector<uint8_t> capacity_and_nameSize(2);
+    capacity_and_nameSize[0] = action->getCapacity();
+    capacity_and_nameSize[1] = action->getGameName().size();
+    sendBytes(capacity_and_nameSize.data(), capacity_and_nameSize.size());
+
+    std::string name = action->getGameName();
+    std::vector<uint8_t> nameVector(name.begin(), name.end());
+
+    sendBytes(nameVector.data(), sizeof(nameVector.size()));
+}
+
+void ClientProtocol::serializeJoinRoom(ActionJoinRoom *action) {
+    uint8_t nameSize = action->getRoomName().size();
+    sendBytes(&nameSize, sizeof(nameSize));
+
+    std::string name = action->getRoomName();
+    std::vector<uint8_t> nameVector(name.begin(), name.end());
+    sendBytes(nameVector.data(), sizeof(nameVector.size()));
+}
+
+void ClientProtocol::serializeListRooms(ActionListRooms *action) {
+    // Only send the type of action
+}
+
+void ClientProtocol::serializeMove(ClientActionMove *action) {
+    uint8_t id = action->getIdPlayer();
+    sendBytes(&id, sizeof(id));
+
+    uint8_t direction = action->getDirection();
+    sendBytes(&direction, sizeof(direction));
+
+    uint8_t state = action->getState();
+    sendBytes(&state, sizeof(state));
 }

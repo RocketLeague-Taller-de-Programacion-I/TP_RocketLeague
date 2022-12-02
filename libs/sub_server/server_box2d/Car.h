@@ -25,6 +25,10 @@ class Car {
     b2PolygonShape chassis;
     b2FixtureDef fixDef;
     std::unique_ptr<MyFixtureUserDataType> myUserData;
+    std::unique_ptr<MyFixtureUserDataType> userDataDown;
+    std::unique_ptr<MyFixtureUserDataType> userDataLeft;
+    std::unique_ptr<MyFixtureUserDataType> userDataRight;
+    std::unique_ptr<MyFixtureUserDataType> userDataUp;
 public:
     explicit Car(b2World* world, uint8_t& id);
     ~Car();

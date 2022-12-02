@@ -10,6 +10,7 @@
 #include "sub_common/thread.h"
 #include "../sub_common/BlockingQueue.h"
 #include "sub_client/client_actions/ClientAction.h"
+#include "ClientProtocol.h"
 
 class ThreadActionsSender : public Thread{
 private:
@@ -23,6 +24,8 @@ public:
     explicit ThreadActionsSender(Socket &skt_client, BlockingQueue<std::shared_ptr<ClientAction>> &actionsQueue);
     ~ThreadActionsSender() override;
     void stop() override;
+
+    void sendBytes(void *bytes_to_send, int i);
 };
 
 
