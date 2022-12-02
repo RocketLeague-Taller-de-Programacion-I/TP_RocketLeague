@@ -9,7 +9,7 @@ RenderThread::RenderThread(const char *host, const char *port) : skt_client(host
 
 void RenderThread::run() {
     uint8_t id = 0;
-    BlockingQueue<std::shared_ptr<ClientAction>> actionsQueue;
+    BlockingQueue<std::optional<std::shared_ptr<ClientAction>>> actionsQueue;
     ProtectedQueue<std::shared_ptr<ClientUpdate>> updatesQueue;
 
     ThreadActionsSender sender(skt_client, actionsQueue);

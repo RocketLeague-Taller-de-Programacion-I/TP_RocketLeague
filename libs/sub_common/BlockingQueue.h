@@ -28,9 +28,7 @@ public:
     }
 
     void wait_not_empty(std::unique_lock<std::mutex> &lock) {
-        while(queue.empty()) {
-            signal.wait(lock);
-        }
+        signal.wait(lock,[this]{return !queue.empty();});
     }
 
     bool isEmpty() {

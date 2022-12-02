@@ -4,7 +4,7 @@
 
 #include "ThreadActionsSender.h"
 
-ThreadActionsSender::ThreadActionsSender(Socket &skt_client, BlockingQueue<std::shared_ptr<ClientAction>> &actionsQueue) : skt_client(skt_client), actionsQueue(actionsQueue) {
+ThreadActionsSender::ThreadActionsSender(Socket &skt_client, BlockingQueue<std::optional<std::shared_ptr<ClientAction>>> &actionsQueue) : skt_client(skt_client), actionsQueue(actionsQueue) {
     this->closed = false;
 }
 
@@ -14,10 +14,15 @@ void ThreadActionsSender::run() {
     try {
         while (not closed) {
             auto action = actionsQueue.pop();
-            uint8_t type = action->getType();
-            sendBytes(&type, sizeof(action->getType()));
 
-            p.serializeAction(action);
+            if(!action.has_value()) {
+                break;
+            }
+
+            uint8_t type = action.value()->getType();
+            sendBytes(&type, sizeof(action.value()->getType()));
+
+            p.serializeAction(action.value());
         }
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
@@ -27,15 +32,16 @@ void ThreadActionsSender::run() {
 }
 
 void ThreadActionsSender::stop() {
-}
-
-ThreadActionsSender::~ThreadActionsSender() {
-    delete &actionsQueue;
+    closed = true;
+    // create option null poitner tu push
+    std::optional<std::shared_ptr<ClientAction>> null_pointer;
+    actionsQueue.push(null_pointer);
 }
 
 void ThreadActionsSender::sendBytes(void *bytes_to_send, int i) {
     if(!closed) {
         this->skt_client.sendall(bytes_to_send, i, &closed);
     }
-
 }
+
+ThreadActionsSender::~ThreadActionsSender() {}

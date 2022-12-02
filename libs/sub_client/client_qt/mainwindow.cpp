@@ -6,7 +6,7 @@
 #include <regex>
 
 MainWindow::MainWindow(uint8_t &id, QWidget *parent, ProtectedQueue<std::shared_ptr<ClientUpdate>> &updates,
-                       BlockingQueue<std::shared_ptr<ClientAction>> &actions)
+                       BlockingQueue<std::optional<std::shared_ptr<ClientAction>>> &actions)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , updatesQueue(updates)
@@ -64,7 +64,8 @@ void MainWindow::drawJoinGameMenu() {
 
     drawTitle("Join Game");
     std::shared_ptr<ClientAction> action = std::make_shared<ActionListRooms>();
-    this->actionsQueue.push(action);
+    std::optional<std::shared_ptr<ClientAction>> optAction = action;
+    this->actionsQueue.push(optAction);
 
     //list all the games
     std::shared_ptr<ClientUpdate> update;
@@ -104,7 +105,8 @@ void MainWindow::createRoom() {
     std::string roomName = this->lineEdit->text().toStdString();
     uint8_t players = this->cantPlayers->value();
     std::shared_ptr<ClientAction> actionCreate = std::make_shared<ActionCreateRoom>(players, roomName);
-    this->actionsQueue.push(actionCreate);
+    std::optional<std::shared_ptr<ClientAction>> optActionCreate = actionCreate;
+    this->actionsQueue.push(optActionCreate);
     popFirstUpdate(); //pop CreateACK
     drawLoadingScreen();
 }
@@ -117,8 +119,8 @@ void MainWindow::joinParticularGame(QString roomName) {
     std::string room = retrieveGameName(roomName.toStdString());
     std::cout << "Joining to " << room << std::endl;
     std::shared_ptr<ClientAction> actionJoin = std::make_shared<ActionJoinRoom>(room);
-    // ClientAction *actionJoin = new ActionJoinRoom(room);
-    this->actionsQueue.push(actionJoin);
+    std::optional<std::shared_ptr<ClientAction>> optActionJoin = actionJoin;
+    this->actionsQueue.push(optActionJoin);
 
     // popFirstUpdate(); //pop JoinACK
     drawLoadingScreen();

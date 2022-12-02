@@ -13,7 +13,7 @@
 
 GameLoop::GameLoop(uint8_t &id, SDL2pp::Renderer &renderer, int xMax, int yMax,
                    ProtectedQueue<std::shared_ptr<ClientUpdate>> &updates,
-                   BlockingQueue<std::shared_ptr<ClientAction>> &actions, Worldview &wv)
+                   BlockingQueue<std::optional<std::shared_ptr<ClientAction>>> &actions, Worldview &wv)
         : id(id),
           renderer(renderer),
           updatesQueue(updates),
@@ -44,25 +44,30 @@ bool GameLoop::handle_events() {
             continue;
         }
         switch(event.type) {
-            case SDL_KEYDOWN: {
-                // ¿Qué pasa si mantengo presionada la tecla?
-                auto &keyEvent = (SDL_KeyboardEvent&) event;
-                if(keyEvent.keysym.sym == SDLK_ESCAPE) {
-                    running = false;
-                    break;
+            case SDL_KEYDOWN:
+                {
+                    if(directionMap.count(event.key.keysym.sym) == 0) {
+                        continue;
+                    }
+                    uint8_t movement = directionMap.at(event.key.keysym.sym);
+                    std::shared_ptr<ClientAction> action = std::make_shared<ClientActionMove>(id, movement, ON);
+                    std::optional<std::shared_ptr<ClientAction>> optAction = action;
+                    actionsQueue.push(optAction);
                 }
-                uint8_t movement = directionMap.at(keyEvent.keysym.sym);
-                std::shared_ptr<ClientAction> action = std::make_shared<ClientActionMove>(id, movement, ON);
-                actionsQueue.push(action);
-            } // Fin KEY_DOWN
                 break;
-            case SDL_KEYUP: {
-                SDL_KeyboardEvent& keyEvent = (SDL_KeyboardEvent&) event;
+            case SDL_KEYUP:
+                {
+                    if(directionMap.count(event.key.keysym.sym) == 0) {
+                        continue;
+                    }
 
-                uint8_t movement = directionMap.at(keyEvent.keysym.sym);
-                std::shared_ptr<ClientAction> action = std::make_shared<ClientActionMove>(id, movement, OFF);
-                actionsQueue.push(action);
-            }// Fin KEY_UP
+                    uint8_t movement = directionMap.at(event.key.keysym.sym);
+                    std::shared_ptr<ClientAction> action = std::make_shared<ClientActionMove>(id, movement, OFF);
+                    std::optional<std::shared_ptr<ClientAction>> optAction = action;
+                    actionsQueue.push(optAction);
+                }
+                break;
+
             case SDL_QUIT:
                 running = false;
                 break;
@@ -75,7 +80,6 @@ void GameLoop::render() {
     renderer.SetDrawColor(0x00, 0x00, 0x00);
     renderer.Clear();
     wv.render(renderer);
-    //    player.render(renderer);
     renderer.Present();
 }
 
