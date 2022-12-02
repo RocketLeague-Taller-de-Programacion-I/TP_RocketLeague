@@ -21,7 +21,7 @@ std::shared_ptr<ServerAction> Protocolo::deserializeData(const uint8_t &id, cons
         case MOVE:
             return parseUpdateAction();
     }
-    return {};
+    return nullptr;
 }
 
 std::shared_ptr<ServerAction>

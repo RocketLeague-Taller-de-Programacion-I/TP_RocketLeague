@@ -1,8 +1,11 @@
 # These tests can use the Catch2-provided main
-add_executable(tests
-        ClientProtocoloTest.cpp
-        serverTest.cpp
-        actionsTest.cpp MockClientProtocol.h)
+add_executable(testsClient
+        ClientProtocolTest.cpp
+        MockClientProtocol.h)
+add_executable(testsServer
+        ServerProtocolTest.cpp
+        MockServerProtocol.h)
 find_package(Catch2 3 REQUIRED)
 # These tests can use the Catch2-provided main
-target_link_libraries(tests PRIVATE Catch2::Catch2WithMain lib_client)
+target_link_libraries(testsClient PRIVATE Catch2::Catch2WithMain lib_client )
+target_link_libraries(testsServer PRIVATE Catch2::Catch2WithMain lib_server)
