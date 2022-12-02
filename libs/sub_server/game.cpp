@@ -37,10 +37,16 @@ void Game::joinPlayer(uint8_t& id, BlockingQueue<std::shared_ptr<ServerUpdate>> 
 }
 
 void Game::run() {
-    std::cout << "Game " << gameName << " started" << std::endl;
+   std::cout << "Game " << gameName << " started" << std::endl;
     std::shared_ptr<ServerAction> action;
     while (not finished) {
-        if (!queue->tryPop(action)){
+        //check if time of match's usleep reached 3 minutes
+        //TODO: check if clientManager are still alive
+        if (match.isFinished()){
+            finished = true;
+            break;
+        }
+        if (!queue->tryPop(action) and action){
             action->execute(match); //update model
         }
         match.step(); //update box2d

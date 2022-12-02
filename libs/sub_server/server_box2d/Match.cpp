@@ -54,9 +54,9 @@ void Match::step() {
     for ( std::pair<const uint8_t,Car*> &player : players){
         player.second->update();
     }
-    this->world.Step(0.15, 42, 3);
-    usleep(0.015*1000000);
-    //  enviar a todos los clientes la respuesta
+    this->world.Step(BX2D_TIMESTEP, BX2D_VELOCITY_ITERATIONS, BX2D_POSITION_ITERATIONS);
+    usleep(SECONDS_TO_SLEEP);
+    timeElapsed += SECONDS_TO_SLEEP;
 }
 
 void Match::moveRight(uint8_t &id, bool state) {
@@ -131,4 +131,8 @@ int Match::local() {
 }
 int Match::visit() {
     return this->goalsVisit;
+}
+
+bool Match::isFinished() {
+    return timeElapsed >= (unsigned int)TIME_TO_PLAY;
 }

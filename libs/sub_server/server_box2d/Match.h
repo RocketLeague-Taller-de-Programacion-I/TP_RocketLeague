@@ -12,11 +12,17 @@
 
 #include "box2d/box2d.h"
 
-#include "sub_server/server_box2d/Car.h"
+#include "Car.h"
+#include "Ball.h"
 #include "MyContactListener.h"
-#include "sub_server/server_box2d/Ball.h"
 
 #include "sub_server/server_updates/ServerUpdate.h"
+
+#define SECONDS_TO_SLEEP 600000
+#define TIME_TO_PLAY 180000000
+#define BX2D_TIMESTEP 0.6f
+#define BX2D_VELOCITY_ITERATIONS 8
+#define BX2D_POSITION_ITERATIONS 3
 
 class Match {
 private:
@@ -34,20 +40,27 @@ private:
     b2FixtureDef fixDef;
     std::unique_ptr<MyFixtureUserDataType> myUserData;
     MyContactListener listener;
+
 public:
     Match(std::string name, int required);
     ~Match();
     void addPlayer(uint8_t &id);
+
     void moveRight(uint8_t  &id, bool state);
     std::vector<int> info();
+
     void moveLeft(uint8_t &id, bool state);
+
     void jump(uint8_t &id, bool state);
     void checkGoals();
     void step();
     int visit();
     int local();
-
     void turbo(uint8_t &id, bool state);
+
+    unsigned int timeElapsed = 0;
+
+    bool isFinished();
 };
 
 
