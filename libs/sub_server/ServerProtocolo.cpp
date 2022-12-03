@@ -76,7 +76,7 @@ ServerProtocolo::serializeServerListACK(ServerListACK *update, std::function<voi
     uint8_t numberOfGames = update->getNumberOfGames();
     sendBytes(&numberOfGames, sizeof(numberOfGames));
 
-    std::vector<uint8_t> returnData = update->getReturnData();
+    std::vector<uint8_t> returnData = update->getListData();
     sendBytes(returnData.data(), returnData.size());
 }
 void

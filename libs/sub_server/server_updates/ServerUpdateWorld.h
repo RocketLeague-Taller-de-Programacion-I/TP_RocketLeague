@@ -13,9 +13,7 @@ class ServerUpdateWorld : public ServerUpdate{
 private:
         std::vector<int> info;
 public:
-    ServerUpdateWorld(uint8_t &id, uint8_t &returnCode, std::vector<uint8_t> &returnData, std::vector<int> &data) :
-                                    ServerUpdate(id,returnCode,returnData),
-                                    info(data){};
+    explicit ServerUpdateWorld(std::vector<int> &data) : info(data){};
     ~ServerUpdateWorld() override = default;
 
     uint8_t getType() const override;

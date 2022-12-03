@@ -27,11 +27,7 @@ std::vector<uint8_t> Game::information() {
 void Game::joinPlayer(uint8_t& id, BlockingQueue<std::optional<std::shared_ptr<ServerUpdate>>> *sender) {
     playerOnLine++;
     mapSender.insert(std::pair<uint8_t ,BlockingQueue<std::optional<std::shared_ptr<ServerUpdate>>>*>(id, sender));
-    uint8_t direction = 5;
-    bool state = false;
     match.addPlayer(id);
-    std::shared_ptr<ServerAction> action = std::make_shared<ServerActionMove>(id, direction, state);
-    queue->push(action);
     if (playerOnLine == capacity){
         start();
     }
@@ -53,9 +49,7 @@ void Game::run() {
         }
         match.step(); //update box2d
         std::vector<int> info = match.info();
-        uint8_t id = 0, returnCode = OK;
-        std::vector<uint8_t> dummy;
-        std::optional<std::shared_ptr<ServerUpdate>> update = std::make_shared<ServerUpdateWorld>(id, returnCode, dummy , info);
+        std::optional<std::shared_ptr<ServerUpdate>> update = std::make_shared<ServerUpdateWorld>(info);
         broadcastUpdate(update);
     }
 

@@ -84,7 +84,7 @@ uint8_t ClientManager::getId() {
     return id;
 }
 bool ClientManager::isDisconnected() {
-    return this->disconnected;
+    return disconnected;
 }
 
 void ClientManager::stop() {
