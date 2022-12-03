@@ -17,7 +17,7 @@ public:
     ~ServerUpdateWorld() override = default;
 
     uint8_t getType() const override;
-    void beSerialized(Protocolo *protocolo) override;
+    void beSerialized(ServerProtocolo *protocolo) override;
     std::vector<int> getInfo() const { return info;};
 };
 

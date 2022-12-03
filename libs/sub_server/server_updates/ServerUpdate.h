@@ -5,7 +5,7 @@
 #ifndef ROCKETLEAGUE_SERVERUPDATE_H
 #define ROCKETLEAGUE_SERVERUPDATE_H
 
-class Protocolo;
+class ServerProtocolo;
 #include <cstdint>
 #include <string>
 #include <vector>
@@ -37,7 +37,7 @@ public:
     virtual uint8_t getId() const { return id; };
     virtual uint8_t getReturnCode() const { return returnCode; };
     virtual std::vector<uint8_t> getReturnData() const { return returnData; };
-    virtual void beSerialized(Protocolo *protocolo) = 0;
+    virtual void beSerialized(ServerProtocolo *protocolo) = 0;
 };
 
 

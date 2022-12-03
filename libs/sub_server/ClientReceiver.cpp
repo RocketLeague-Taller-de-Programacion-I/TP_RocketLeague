@@ -21,7 +21,7 @@ void ClientReceiver::run() {
                     std::bind(&ClientReceiver::receiveBytes, this, std::placeholders::_1 ,std::placeholders::_2);
 
             // form the Action from the data
-            auto action = Protocolo::deserializeData(idClient, byte_to_read, bytes_receiver_callable);
+            auto action = ServerProtocolo::deserializeData(idClient, byte_to_read, bytes_receiver_callable);
             // push the action to the queue
             updatesQueue->push(action);
         }

@@ -5,7 +5,7 @@
 #include "ServerJoinACK.h"
 #include "sub_server/ServerProtocolo.h"
 
-void ServerJoinACK::beSerialized(Protocolo *protocolo) {
+void ServerJoinACK::beSerialized(ServerProtocolo *protocolo) {
     protocolo->serializeJoinACK(this);
 }
 

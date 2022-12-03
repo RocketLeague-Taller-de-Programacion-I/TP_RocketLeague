@@ -5,12 +5,12 @@
 #include <iostream>
 #include "ServerProtocolo.h"
 
-command_t Protocolo::getMapCommand(uint32_t action) {
+command_t ServerProtocolo::getMapCommand(uint32_t action) {
     return this->mapCommand.at(action);
 }
 
-std::shared_ptr<ServerAction> Protocolo::deserializeData(const uint8_t &id, const uint8_t &type,
-                                                         const std::function<void(std::vector<uint8_t> &, uint8_t &)> &receiveBytes) {
+std::shared_ptr<ServerAction> ServerProtocolo::deserializeData(const uint8_t &id, const uint8_t &type,
+                                                               const std::function<void(std::vector<uint8_t> &, uint8_t &)> &receiveBytes) {
     switch (type) {
         case CREATE_ROOM:
             return parseCreateAction(id, receiveBytes);
@@ -25,7 +25,7 @@ std::shared_ptr<ServerAction> Protocolo::deserializeData(const uint8_t &id, cons
 }
 
 std::shared_ptr<ServerAction>
-Protocolo::parseCreateAction(const uint8_t &id, const std::function<void(std::vector<uint8_t> &, uint8_t &)> &receiveBytes) {
+ServerProtocolo::parseCreateAction(const uint8_t &id, const std::function<void(std::vector<uint8_t> &, uint8_t &)> &receiveBytes) {
 
     std::vector<uint8_t> capacity_and_nameSize(2);
     uint8_t size = capacity_and_nameSize.size();
@@ -42,8 +42,8 @@ Protocolo::parseCreateAction(const uint8_t &id, const std::function<void(std::ve
     return pAction;
 }
 
-std::shared_ptr<ServerAction> Protocolo::parseJoinAction(const uint8_t &id, const std::function<void(std::vector<uint8_t> &,
-                                                                                                     uint8_t &)> &receiveBytes) {
+std::shared_ptr<ServerAction> ServerProtocolo::parseJoinAction(const uint8_t &id, const std::function<void(std::vector<uint8_t> &,
+                                                                                                           uint8_t &)> &receiveBytes) {
     std::vector<uint8_t> nameSize(1);
     uint8_t size = nameSize.size();
     receiveBytes(nameSize, size);
@@ -57,16 +57,16 @@ std::shared_ptr<ServerAction> Protocolo::parseJoinAction(const uint8_t &id, cons
     return pAction;
 }
 
-std::shared_ptr<ServerAction> Protocolo::parseListAction(const uint8_t &id) {
+std::shared_ptr<ServerAction> ServerProtocolo::parseListAction(const uint8_t &id) {
     std::shared_ptr<ServerAction> pAction = std::make_shared<ServerListRooms>(id);
     return pAction;
 }
 
-void Protocolo::serializeUpdate(std::shared_ptr<ServerUpdate> update) {
+void ServerProtocolo::serializeUpdate(std::shared_ptr<ServerUpdate> update) {
     update->beSerialized(this);
 }
 
-void Protocolo::serializeCreateACK(ServerCreateACK *update) {
+void ServerProtocolo::serializeCreateACK(ServerCreateACK *update) {
     uint8_t id = update->getId();
     sendBytes(&id, sizeof(id));
 
@@ -74,7 +74,7 @@ void Protocolo::serializeCreateACK(ServerCreateACK *update) {
     sendBytes(&returnCode, sizeof(returnCode));
 }
 
-void Protocolo::serializeJoinACK(ServerJoinACK *update) {
+void ServerProtocolo::serializeJoinACK(ServerJoinACK *update) {
     uint8_t id = update->getId();
     sendBytes(&id, sizeof(id));
 
@@ -82,7 +82,7 @@ void Protocolo::serializeJoinACK(ServerJoinACK *update) {
     sendBytes(&returnCode, sizeof(returnCode));
 }
 
-void Protocolo::serializeServerListACK(ServerListACK *update) {
+void ServerProtocolo::serializeServerListACK(ServerListACK *update) {
     uint8_t id = update->getId();
     sendBytes(&id, sizeof(id));
 
@@ -106,7 +106,7 @@ void Protocolo::serializeServerListACK(ServerListACK *update) {
     sendBytes(&test, sizeof(test));
 }
 
-void Protocolo::serializeWorldUpdate(ServerUpdateWorld *update) {
+void ServerProtocolo::serializeWorldUpdate(ServerUpdateWorld *update) {
     //implement
     std::vector<int> matchInfo = update->getInfo();
     //  Ball
@@ -135,6 +135,6 @@ void Protocolo::serializeWorldUpdate(ServerUpdateWorld *update) {
 
 }
 // TODO: IMPLEMENT
-std::unique_ptr<ServerAction> Protocolo::parseUpdateAction() {
+std::unique_ptr<ServerAction> ServerProtocolo::parseUpdateAction() {
     return nullptr;
 }

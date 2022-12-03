@@ -5,7 +5,7 @@
 #include "ServerCreateACK.h"
 #include "sub_server/ServerProtocolo.h"
 
-void ServerCreateACK::beSerialized(Protocolo *protocolo) {
+void ServerCreateACK::beSerialized(ServerProtocolo *protocolo) {
     protocolo->serializeCreateACK(this);
 }
 

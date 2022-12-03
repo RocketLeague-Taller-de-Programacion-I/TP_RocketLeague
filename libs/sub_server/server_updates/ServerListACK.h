@@ -21,7 +21,7 @@ public:
     ~ServerListACK() override = default;
 
     uint8_t getType() const override;
-    void beSerialized(Protocolo *protocolo) override;
+    void beSerialized(ServerProtocolo *protocolo) override;
     uint8_t getNumberOfGames() const { return numberOfGames;};
 };
 

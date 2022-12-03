@@ -11,7 +11,7 @@ ClientSender::ClientSender(Socket &skt_client, BlockingQueue<std::shared_ptr<Ser
 
 void ClientSender::run() {
     const std::function<void(void*, unsigned int)> callable = std::bind(&ClientSender::sendBytes, this, std::placeholders::_1, std::placeholders::_2);
-    Protocolo p(callable);
+    ServerProtocolo p(callable);
     try {
         while (not closed) {
             auto update = updatesQueue->pop();

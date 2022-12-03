@@ -4,7 +4,7 @@
 
 #include "ServerStartedGameACK.h"
 
-void ServerStartedGameACK::beSerialized(Protocolo *protocolo) {
+void ServerStartedGameACK::beSerialized(ServerProtocolo *protocolo) {
 //    std::vector<uint16_t> startedGameACKData;
 //    startedGameACKData.push_back(htons(getType()));
 //    startedGameACKData.push_back(htons(id));

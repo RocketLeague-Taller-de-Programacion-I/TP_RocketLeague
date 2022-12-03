@@ -13,7 +13,7 @@ public:
     ~ServerCreateACK() override = default;
 
     uint8_t getType() const override;
-    void beSerialized(Protocolo *protocolo) override;
+    void beSerialized(ServerProtocolo *protocolo) override;
 
 };
 

@@ -34,7 +34,7 @@ enum action {
 
 typedef uint8_t command_t;
 
-class Protocolo {
+class ServerProtocolo {
 private:
     const std::unordered_map<uint32_t , command_t> mapCommand = {
             {SDLK_ESCAPE, NOP},
@@ -48,7 +48,7 @@ private:
     const std::function<void(void*, unsigned int)> &sendBytes;
 public:
     command_t getMapCommand(uint32_t action);
-    Protocolo(const std::function<void(void *, unsigned int)> &sendBytesCallable) : sendBytes(sendBytesCallable) {};
+    ServerProtocolo(const std::function<void(void *, unsigned int)> &sendBytesCallable) : sendBytes(sendBytesCallable) {};
 
     static std::shared_ptr<ServerAction> deserializeData(const uint8_t &id, const uint8_t &type,
                                                          const std::function<void(std::vector<uint8_t> &, uint8_t &)> &receiveBytes);

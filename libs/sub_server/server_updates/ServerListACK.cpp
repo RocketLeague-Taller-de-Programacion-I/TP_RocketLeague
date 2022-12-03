@@ -6,7 +6,7 @@
 #include "ServerListACK.h"
 #include "sub_server/ServerProtocolo.h"
 
-void ServerListACK::beSerialized(Protocolo *protocolo) {
+void ServerListACK::beSerialized(ServerProtocolo *protocolo) {
 //    //[id,returnCode, cantidadDeGames,{online,max,sieName,name},...]
 //    std::vector<uint16_t> listACKData;
 //    listACKData.push_back(htons(getType()));
