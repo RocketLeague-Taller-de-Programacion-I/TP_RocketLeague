@@ -12,7 +12,8 @@ Game::Game(int capacity,
         playerOnLine(0),
         gameName(std::move(name)),
         queue(pQueue),
-        finished(false){}
+        finished(false),
+        gameStarted(false){}
 
 std::vector<uint8_t> Game::information() {
     //data: online,max,sizeName,name
@@ -23,9 +24,9 @@ std::vector<uint8_t> Game::information() {
     data.insert(data.end(), gameName.begin(), gameName.end());
     return data;
 }
-void Game::joinPlayer(uint8_t& id, BlockingQueue<std::shared_ptr<ServerUpdate>> *sender) {
+void Game::joinPlayer(uint8_t& id, BlockingQueue<std::optional<std::shared_ptr<ServerUpdate>>> *sender) {
     playerOnLine++;
-    mapSender.insert(std::pair<uint8_t ,BlockingQueue<std::shared_ptr<ServerUpdate>>*>(id, sender));
+    mapSender.insert(std::pair<uint8_t ,BlockingQueue<std::optional<std::shared_ptr<ServerUpdate>>>*>(id, sender));
     uint8_t direction = 5;
     bool state = false;
     match.addPlayer(id);
@@ -54,7 +55,7 @@ void Game::run() {
         std::vector<int> info = match.info();
         uint8_t id = 0, returnCode = OK;
         std::vector<uint8_t> dummy;
-        std::shared_ptr<ServerUpdate> update = std::make_shared<ServerUpdateWorld>(id, returnCode, dummy , info);
+        std::optional<std::shared_ptr<ServerUpdate>> update = std::make_shared<ServerUpdateWorld>(id, returnCode, dummy , info);
         broadcastUpdate(update);
     }
 
@@ -73,9 +74,9 @@ ProtectedQueue<std::shared_ptr<ServerAction>> * Game::getQueue() {
     return queue;
 }
 
-void Game::broadcastUpdate(const std::shared_ptr<ServerUpdate>& update) {
+void Game::broadcastUpdate(std::optional<std::shared_ptr<ServerUpdate>> &update) {
     for (auto & sender : mapSender) {
-        sender.second->push(const_cast<std::shared_ptr<ServerUpdate> &>(update));
+        sender.second->push(update);
     }
 }
 
@@ -92,7 +93,6 @@ void Game::deletePlayer(uint8_t idPlayer) {
 void Game::stop() {
     finished = true;
     delete queue;
-    join();
 }
 
 Game::~Game() {}

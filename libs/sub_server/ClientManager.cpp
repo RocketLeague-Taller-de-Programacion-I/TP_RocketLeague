@@ -17,7 +17,7 @@ void ClientManager::run() {
                 std::bind(&ClientManager::sendBytes, this, std::placeholders::_1, std::placeholders::_2);
 
         std::function<void(ProtectedQueue<std::shared_ptr<ServerAction>> *,
-                BlockingQueue<std::shared_ptr<ServerUpdate>> *)> startThreadsCallable =
+               BlockingQueue<std::optional<std::shared_ptr<ServerUpdate>>> *)> startThreadsCallable =
                 std::bind(&ClientManager::startClientThreads, this, std::placeholders::_1, std::placeholders::_2);
 
         while (this->shouldContinueLooping) {
@@ -52,7 +52,8 @@ void ClientManager::waitClientThreads() {
     closed = true;
 }
 
-void ClientManager::startClientThreads(ProtectedQueue<std::shared_ptr<ServerAction>> *qReceiver, BlockingQueue<std::shared_ptr<ServerUpdate>> *senderQueue) {
+void ClientManager::startClientThreads(ProtectedQueue<std::shared_ptr<ServerAction>> *qReceiver,
+                                       BlockingQueue<std::optional<std::shared_ptr<ServerUpdate>>> *senderQueue) {
     //qReceiver -> ServerAction
     //senderQueue -> ServerUpdate
     this->shouldContinueLooping = false;
@@ -76,10 +77,6 @@ bool ClientManager::endManager() {
 
 uint8_t ClientManager::getId() {
     return id;
-}
-
-bool ClientManager::isClosed() {
-    return closed;
 }
 
 void ClientManager::stop() {

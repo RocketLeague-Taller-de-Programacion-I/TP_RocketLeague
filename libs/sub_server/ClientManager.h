@@ -37,11 +37,9 @@ public:
 
     bool endManager();
 
-    void startClientThreads(ProtectedQueue<std::shared_ptr<ServerAction>> *qReceiver, BlockingQueue<std::shared_ptr<ServerUpdate>> *senderQueue);
+    void startClientThreads(ProtectedQueue<std::shared_ptr<ServerAction>> *qReceiver, BlockingQueue<std::optional<std::shared_ptr<ServerUpdate>>> *senderQueue);
 
     void waitClientThreads();
-
-    bool isClosed();
 
     uint8_t getId();
 

@@ -114,7 +114,7 @@ std::shared_ptr<ServerAction>
                                                   std::function<void(void *, int)> &receiveBytes,
                                                   std::function<void(void *, unsigned int)> &sendBytes,
                                                   std::function<void(ProtectedQueue<std::shared_ptr<ServerAction>> *,
-                                                                     BlockingQueue<std::shared_ptr<ServerUpdate>> *)> &startThreadsCallable) {
+                                                                     BlockingQueue<std::optional<std::shared_ptr<ServerUpdate>>> *)> &startThreadsCallable) {
     switch (actionType) {
         case CREATE_ROOM:
             return parseCreateAction(id, receiveBytes, gameManager);

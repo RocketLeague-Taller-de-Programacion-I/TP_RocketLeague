@@ -4,7 +4,7 @@
 
 #include "ClientSender.h"
 
-ClientSender::ClientSender(Socket &skt_client, BlockingQueue<std::shared_ptr<ServerUpdate>> *queue, uint8_t idClient)
+ClientSender::ClientSender(Socket &skt_client, BlockingQueue<std::optional<std::shared_ptr<ServerUpdate>>> *queue, uint8_t idClient)
         : skt_client(skt_client), idClient(idClient), updatesQueue(queue) {
     this->closed = false;
 }
@@ -14,13 +14,19 @@ void ClientSender::run() {
     try {
         while (not closed) {
             auto update = updatesQueue->pop();
-            uint8_t type = update->getType();
-            sendBytes(&type, sizeof(update->getType()));
+
+            // check if we push a nullpointer to close the thread
+            if(!update.has_value()) {
+                break;
+            }
+
+            uint8_t type = update.value()->getType();
+            sendBytes(&type, sizeof(update.value()->getType()));
 
             std::function<void(void*, unsigned int)> sendCallable =
                     std::bind(&ClientSender::sendBytes, this, std::placeholders::_1, std::placeholders::_2);
 
-            protocolo.serializeUpdate(update, sendCallable);
+            protocolo.serializeUpdate(update.value(), sendCallable);
         }
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
@@ -34,12 +40,12 @@ void ClientSender::sendBytes(void* bytes_to_send, unsigned int size) {
         this->skt_client.sendall(bytes_to_send, size, &closed);
     }
 }
-BlockingQueue<std::shared_ptr<ServerUpdate>> * ClientSender::getQueue() const {
-    return updatesQueue;
-}
 
 void ClientSender::stop() {
     closed = true;
+    // create option null poitner tu push
+    std::optional<std::shared_ptr<ServerUpdate>> null_pointer;
+    updatesQueue->push(null_pointer);
 }
 
 ClientSender::~ClientSender() {

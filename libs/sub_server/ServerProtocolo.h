@@ -62,7 +62,7 @@ public:
                              std::function<void(void *, int)> &receiveBytes,
                              std::function<void(void *, unsigned int)> &sendBytes,
                              std::function<void(ProtectedQueue<std::shared_ptr<ServerAction>> *,
-                                                BlockingQueue<std::shared_ptr<ServerUpdate>> *)> &startThreadsCallable);
+                                                BlockingQueue<std::optional<std::shared_ptr<ServerUpdate>>> *)> &startThreadsCallable);
 
     static std::shared_ptr<ServerAction>
     parseCreateAction(uint8_t &id, const std::function<void(void *, int)>& receiveBytes,

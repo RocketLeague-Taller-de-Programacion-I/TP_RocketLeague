@@ -25,14 +25,13 @@ private:
     std::string gameName;
     bool closed;
     std::atomic<bool> finished;
-    std::map<uint8_t ,BlockingQueue<std::shared_ptr<ServerUpdate>>*> mapSender;
-    //map {id, BlockingQueue<ServerUpdate*>}
+    std::atomic<bool> gameStarted;
 
+    std::map<uint8_t,BlockingQueue<std::optional<std::shared_ptr<ServerUpdate>>>*> mapSender;
     ProtectedQueue<std::shared_ptr<ServerAction>> *queue;
-    //BlockingQueue<ServerAction*> *queue;
+
 public:
     std::vector<uint8_t> information();
-
     void run() override;
     void stop() override;
     /*
@@ -40,23 +39,21 @@ public:
     */
     Game(const Game&) = delete;
     Game(int capacity, std::string  name, ProtectedQueue<std::shared_ptr<ServerAction>> *pQueue);
+
     ~Game() override;
 
     Game& operator=(const Game&) = delete;
 
-    void joinPlayer(uint8_t& id, BlockingQueue<std::shared_ptr<ServerUpdate>> *sender);
+    void joinPlayer(uint8_t& id, BlockingQueue<std::optional<std::shared_ptr<ServerUpdate>>> *sender);
 
     bool isFull() const;
 
     ProtectedQueue<std::shared_ptr<ServerAction>> * getQueue();
-
-    void broadcastUpdate(const std::shared_ptr<ServerUpdate>& update);
-    void brodcastUpdateGameEvents(std::vector<ServerUpdate *> updates);
+    void broadcastUpdate(std::optional<std::shared_ptr<ServerUpdate>> &update);
 
     bool hasPlayer(uint8_t idPlayer);
-
     void deletePlayer(uint8_t idPlayer);
-
+    bool started() { return gameStarted; };
     bool isFinished() const;
 };
 

@@ -8,7 +8,7 @@
 
 void
 ServerListRooms::execute(std::function<void(ProtectedQueue<std::shared_ptr<ServerAction>> *,
-                                            BlockingQueue<std::shared_ptr<ServerUpdate>> *)> &startThreadsCallable,
+                                            BlockingQueue<std::optional<std::shared_ptr<ServerUpdate>>> *)> &startThreadsCallable,
                          std::function<void(void *, unsigned int)> &sendCallable,
                          ServerProtocolo &protocolo) {
 
