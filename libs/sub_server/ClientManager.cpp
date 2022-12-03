@@ -5,31 +5,37 @@ ClientManager::ClientManager(uint8_t &id, Socket &aClient, GameManager &aGameMan
         gameManager(aGameManager),
         closed(false),
         id(id),
-        shouldContinueLooping(true){}
+        shouldContinueLooping(true), disconnected(false){}
 
 void ClientManager::run() {
     ServerProtocolo protocolo;
     try {
-        std::function<void(void *, int )> recvCallable =
-                std::bind(&ClientManager::receiveBytes, this, std::placeholders::_1 ,std::placeholders::_2);
+        std::function<void(void *, int)> recvCallable =
+                std::bind(&ClientManager::receiveBytes, this, std::placeholders::_1, std::placeholders::_2);
 
-        std::function<void(void*, unsigned int)> sendCallable =
+        std::function<void(void *, unsigned int)> sendCallable =
                 std::bind(&ClientManager::sendBytes, this, std::placeholders::_1, std::placeholders::_2);
 
         std::function<void(ProtectedQueue<std::shared_ptr<ServerAction>> *,
-               BlockingQueue<std::optional<std::shared_ptr<ServerUpdate>>> *)> startThreadsCallable =
+                           BlockingQueue<std::optional<std::shared_ptr<ServerUpdate>>> *)> startThreadsCallable =
                 std::bind(&ClientManager::startClientThreads, this, std::placeholders::_1, std::placeholders::_2);
 
         while (this->shouldContinueLooping) {
             uint8_t actionType = 0x0;
-            this->client.recvall(&actionType, sizeof(actionType), &closed);
+            if (this->client.recvall(&actionType, sizeof(actionType), &closed) <= 0) {
+                throw LibError(1, "Client disconnected");
+            }
             auto actionCommand = protocolo.deserializeDataOnCommand(actionType, id,
-                                                                           gameManager,
-                                                                           recvCallable,
-                                                                           sendCallable,
-                                                                           startThreadsCallable);
+                                                                    gameManager,
+                                                                    recvCallable,
+                                                                    sendCallable,
+                                                                    startThreadsCallable);
             actionCommand->execute(startThreadsCallable, sendCallable, protocolo);
         }
+    } catch (const LibError &e) {
+            disconnected = true;
+            return;
+
     } catch (...) {}
     waitClientThreads();
 }
@@ -64,19 +70,21 @@ void ClientManager::startClientThreads(ProtectedQueue<std::shared_ptr<ServerActi
     clientSenderThread->start();
 }
 
-bool ClientManager::joinThread() {
-    return false;
-}
-bool ClientManager::endManager() {
+void ClientManager::endManager() {
     client.shutdown(2);
     client.close();
+    if (isDisconnected()) {
+        return;
+    }
     clientReceiverThread->stop();
     clientSenderThread->stop();
-    return closed;
 }
 
 uint8_t ClientManager::getId() {
     return id;
+}
+bool ClientManager::isDisconnected() {
+    return this->disconnected;
 }
 
 void ClientManager::stop() {

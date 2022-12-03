@@ -11,6 +11,7 @@
 #include "gameManager.h"
 #include "../sub_common/thread.h"
 #include "../sub_common/socket.h"
+#include "../sub_common/liberror.h"
 #include "ServerProtocolo.h"
 #include "sub_common/BlockingQueue.h"
 #include "ClientReceiver.h"
@@ -23,6 +24,7 @@ private:
     bool closed;
     uint8_t id;
     std::atomic<bool> shouldContinueLooping;
+    std::atomic<bool> disconnected;
     ClientReceiver *clientReceiverThread;
     ClientSender *clientSenderThread;
 
@@ -35,7 +37,7 @@ public:
 
     bool joinThread();
 
-    bool endManager();
+    void endManager();
 
     void startClientThreads(ProtectedQueue<std::shared_ptr<ServerAction>> *qReceiver, BlockingQueue<std::optional<std::shared_ptr<ServerUpdate>>> *senderQueue);
 
@@ -46,6 +48,8 @@ public:
     void receiveBytes(void *bytes_to_receive, int sizeToReceive);
 
     void sendBytes(void *bytes_to_send, unsigned int size);
+
+    bool isDisconnected();
 };
 
 

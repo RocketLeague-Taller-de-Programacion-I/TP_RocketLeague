@@ -36,7 +36,7 @@ void Server::garbageCollector(GameManager &gameManager) {
     managers.erase(std::remove_if(managers.begin(),
                                   managers.end(),
                                   [&gameManager](ClientManager *manager)
-                                  { if (manager->joinThread()) {
+                                  { if (manager->isDisconnected()) {
                                       gameManager.deletePlayer(manager->getId());
                                       delete manager;
                                       return true;
@@ -47,7 +47,7 @@ void Server::garbageCollector(GameManager &gameManager) {
 }
 
 void Server::cleanManagers() {
-    for (auto & manager : managers){
+    for (auto & manager : managers) {
         manager->stop();
         manager->join();
         delete manager;
