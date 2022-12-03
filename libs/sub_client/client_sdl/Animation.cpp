@@ -37,6 +37,8 @@ void Animation::update(float dt) {
  * @param x X coordinate.
  * @param y Y corrdinate.
  */
+ //  TODO: Revisar
+
 void Animation::render(SDL2pp::Renderer &renderer, const SDL2pp::Rect dst, SDL_RendererFlip &flipType) {
     renderer.Copy(
             texture,
