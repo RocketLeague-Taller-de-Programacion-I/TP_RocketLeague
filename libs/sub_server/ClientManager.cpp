@@ -23,11 +23,6 @@ void ClientManager::run() {
         while (this->shouldContinueLooping) {
             uint8_t actionType = 0x0;
             this->client.recvall(&actionType, sizeof(actionType), &closed);
-                  // actionCommand será alguno de los comandos (ActionCreate, ActionJoin, ActionList)
-                    // cuando se crea, recibe al GameManager (entonces sabe a que metodo de ese monitor llamar)
-                    // deserializeDataOnCommand recibe el opcode del comando (un byte) y switchea sobre el mismo
-                    // El protocolo tiene acceso a recvCallable para recibir el resto del payload del comando y poder crearlo
-                    // Si hay que enviarle una rta. al cliente, hacemos uso del sendCallable!
             auto actionCommand = protocolo.deserializeDataOnCommand(actionType, id,
                                                                            gameManager,
                                                                            recvCallable,

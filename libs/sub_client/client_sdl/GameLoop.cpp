@@ -53,6 +53,8 @@ bool GameLoop::handle_events() {
                     std::shared_ptr<ClientAction> action = std::make_shared<ClientActionMove>(id, movement, ON);
                     std::optional<std::shared_ptr<ClientAction>> optAction = action;
                     actionsQueue.push(optAction);
+                    // si estoy en keydown y nunca  me llego keyup no mando nada
+                    // keydown de esta tecla (todas las teclas, para no llenar el skt)
                 }
                 break;
             case SDL_KEYUP:

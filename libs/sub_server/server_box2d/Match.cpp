@@ -55,8 +55,8 @@ void Match::step() {
         player.second->update();
     }
     this->world.Step(BX2D_TIMESTEP, BX2D_VELOCITY_ITERATIONS, BX2D_POSITION_ITERATIONS);
-    usleep(SECONDS_TO_SLEEP);
-    timeElapsed += SECONDS_TO_SLEEP;
+    usleep(USECONDS_TO_SLEEP);
+    timeElapsed += USECONDS_TO_SLEEP;
 }
 
 void Match::moveRight(uint8_t &id, bool state) {
@@ -65,7 +65,6 @@ void Match::moveRight(uint8_t &id, bool state) {
     } else {
         this->players.at(id)->stopMovingRight();
     }
-    // info(
 }
 
 std::vector<int> Match::info() {

@@ -86,13 +86,15 @@ std::shared_ptr<ClientUpdate> ClientProtocol::parseWorldUpdate(const std::functi
     float ballXFloat;
     receiveBytes(&ballX, sizeof(ballX));
     ballX = ntohs(ballX);
-    ballXFloat = ballX/1000;
+    ballXFloat = ballX/1000.0;
+
     uint16_t ballY;
     float ballYFloat;
     receiveBytes(&ballY, sizeof(ballY));
     ballY = ntohs(ballY);
-    ballYFloat = ballY/1000;
+    ballYFloat = ballY/1000.0;
     Ball ball(ballXFloat, ballYFloat);
+
     //  Score
     uint16_t local;
     receiveBytes(&local, sizeof(local));
@@ -101,6 +103,7 @@ std::shared_ptr<ClientUpdate> ClientProtocol::parseWorldUpdate(const std::functi
     receiveBytes(&visit, sizeof(visit));
     visit = ntohs(visit);
     Score score(local, visit);
+
     //  n_clients
     uint16_t n_clients;
     receiveBytes(&n_clients, sizeof(n_clients));
@@ -115,12 +118,12 @@ std::shared_ptr<ClientUpdate> ClientProtocol::parseWorldUpdate(const std::functi
         receiveBytes(&x, sizeof(x));
         x = ntohs(x);
         float xFloat = float(x);
-        xFloat = xFloat/1000;
+        xFloat = xFloat/1000.0;
         uint16_t y;
         receiveBytes(&y, sizeof(y));
         y = ntohs(y);
         float yFloat = float(y);
-        yFloat = y/1000;
+        yFloat = y/1000.0;
         uint16_t angleSign;
         receiveBytes(&angleSign, sizeof(angleSign));
         angleSign = ntohs(angleSign);
@@ -128,7 +131,7 @@ std::shared_ptr<ClientUpdate> ClientProtocol::parseWorldUpdate(const std::functi
         receiveBytes(&angle, sizeof(angle));
         angle = ntohs(angle);
         float angleFloat = float(angle);
-        angleFloat = angleFloat/1000;
+        angleFloat = angleFloat/1000.0;
         Car car(id, xFloat, yFloat, angleSign, angleFloat);
         clientCars.emplace_back(car);
     }
@@ -150,7 +153,7 @@ void ClientProtocol::serializeCreateRoom(ActionCreateRoom *action) {
     std::string name = action->getGameName();
     std::vector<uint8_t> nameVector(name.begin(), name.end());
 
-    sendBytes(nameVector.data(), sizeof(nameVector.size()));
+    sendBytes(nameVector.data(), (nameVector.size()));
 }
 
 void ClientProtocol::serializeJoinRoom(ActionJoinRoom *action) {
@@ -159,7 +162,7 @@ void ClientProtocol::serializeJoinRoom(ActionJoinRoom *action) {
 
     std::string name = action->getRoomName();
     std::vector<uint8_t> nameVector(name.begin(), name.end());
-    sendBytes(nameVector.data(), sizeof(nameVector.size()));
+    sendBytes(nameVector.data(), (nameVector.size()));
 }
 
 void ClientProtocol::serializeListRooms(ActionListRooms *action) {

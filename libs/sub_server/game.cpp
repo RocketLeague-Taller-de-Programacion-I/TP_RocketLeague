@@ -47,7 +47,7 @@ void Game::run() {
             finished = true;
             break;
         }
-        if (!queue->tryPop(action) and action){
+        if (queue->tryPop(action) and action){
             action->execute(match); //update model
         }
         match.step(); //update box2d

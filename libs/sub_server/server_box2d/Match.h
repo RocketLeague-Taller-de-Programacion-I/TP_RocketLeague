@@ -18,9 +18,9 @@
 
 #include "sub_server/server_updates/ServerUpdate.h"
 
-#define SECONDS_TO_SLEEP 600000
+#define USECONDS_TO_SLEEP 6000
 #define TIME_TO_PLAY 180000000
-#define BX2D_TIMESTEP 0.6f
+#define BX2D_TIMESTEP 0.006f
 #define BX2D_VELOCITY_ITERATIONS 8
 #define BX2D_POSITION_ITERATIONS 3
 
