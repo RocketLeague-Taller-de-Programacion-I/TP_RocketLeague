@@ -32,12 +32,19 @@ public:
         }
     }
 
+    MockServerProtocol(uint8_t id, uint8_t capacity, std::string nameRoom) {
+        data.push(htons(id));
+        data.push(htons(capacity));
+        for(auto & c : nameRoom){
+            data.push(htons(c));
+        }
+    }
+
     void receiveBytes(std::vector<uint8_t> &bytes_to_read, uint8_t &size) {
-       /* for (int i =0 ; i<size;i++) {
-            bytes_to_read = data.front() ;
-            if (size > 1)  bytes_to_read++ ;
+        for (int i =0 ; i<size;i++) {
+             bytes_to_read.push_back(data.front()) ;
             data.pop();
-        }*/
+        }
     }
     void receiveBytesWorld(void *bytes_to_read, int size) {
         auto * pbytes_to_read = (uint16_t *) bytes_to_read;
