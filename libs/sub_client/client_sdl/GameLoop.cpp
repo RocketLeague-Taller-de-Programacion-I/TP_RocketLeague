@@ -46,15 +46,23 @@ bool GameLoop::handle_events() {
         switch(event.type) {
             case SDL_KEYDOWN:
                 {
+                    //catch every other key down that is not in the map
                     if(directionMap.count(event.key.keysym.sym) == 0) {
                         continue;
                     }
+                    //if the key is already down, do nothing
+                    if(keyDownStateMap[event.key.keysym.sym]) {
+                        continue;
+                    }
+                    std::cout << "key down: " << (int) keyDownStateMap[event.key.keysym.sym] << std::endl;
+
                     uint8_t movement = directionMap.at(event.key.keysym.sym);
                     std::shared_ptr<ClientAction> action = std::make_shared<ClientActionMove>(id, movement, ON);
                     std::optional<std::shared_ptr<ClientAction>> optAction = action;
                     actionsQueue.push(optAction);
-                    // si estoy en keydown y nunca  me llego keyup no mando nada
-                    // keydown de esta tecla (todas las teclas, para no llenar el skt)
+
+                    // set the key down state to true
+                    keyDownStateMap[event.key.keysym.sym] = true;
                 }
                 break;
             case SDL_KEYUP:
@@ -67,6 +75,9 @@ bool GameLoop::handle_events() {
                     std::shared_ptr<ClientAction> action = std::make_shared<ClientActionMove>(id, movement, OFF);
                     std::optional<std::shared_ptr<ClientAction>> optAction = action;
                     actionsQueue.push(optAction);
+                    std::cout << "key up: " << (int) keyDownStateMap[event.key.keysym.sym] << std::endl;
+
+                    keyDownStateMap[event.key.keysym.sym] = false;
                 }
                 break;
 

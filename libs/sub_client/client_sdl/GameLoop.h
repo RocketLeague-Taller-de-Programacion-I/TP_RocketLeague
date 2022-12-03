@@ -41,6 +41,13 @@ private:
             {SDLK_SPACE,TURBO_D}
     };
 
+    std::map<uint32_t ,uint8_t> keyDownStateMap = {
+            {SDLK_d, false},
+            {SDLK_a, false},
+            {SDLK_w, false},
+            {SDLK_s, false},
+            {SDLK_SPACE, false}
+    };
     void popUpdates();
 };
 #endif //ROCKETLEAGUE_GAMELOOP_H
