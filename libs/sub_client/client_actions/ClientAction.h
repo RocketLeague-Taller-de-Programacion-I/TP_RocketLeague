@@ -19,7 +19,7 @@ enum action_type {
     MOVE
 };
 
-enum direction {
+enum direction: uint8_t {
     RIGHT_D = 0,
     LEFT_D = 1,
     JUMP_D = 2,
