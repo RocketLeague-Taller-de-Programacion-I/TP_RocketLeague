@@ -5,7 +5,7 @@
 #include "ClientActionMove.h"
 #include "sub_client/ClientProtocol.h"
 
-ClientActionMove::ClientActionMove(uint8_t &idPlayer, uint8_t direction, bool state) :
+ClientActionMove::ClientActionMove(uint8_t &idPlayer, uint8_t &direction, bool state) :
                                 idPlayer(idPlayer),
                                 direction(direction),
                                 state(state){

@@ -13,7 +13,7 @@ private:
     uint8_t direction;
     bool state;
 public:
-    ClientActionMove(uint8_t &idPlayer, uint8_t direction, bool state);
+    ClientActionMove(uint8_t &idPlayer, uint8_t &direction, bool state);
     ~ClientActionMove() override = default;
 
     uint8_t getType() const override { return MOVE; };

@@ -74,6 +74,24 @@ public:
         return name;
     }
 
+    uint8_t getId() {
+        uint8_t id = data.front();
+        data.pop();
+        return id;
+    }
+
+    uint8_t getDirection() {
+        uint8_t direction = data.front();
+        data.pop();
+        return direction;
+    }
+
+    bool getState() {
+        bool direction = data.front();
+        data.pop();
+        return direction;
+    }
+
 private:
     std::queue<uint8_t> data;
     std::queue<uint16_t> dataWorld;
