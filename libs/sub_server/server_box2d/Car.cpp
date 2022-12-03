@@ -122,7 +122,7 @@ Car::Car(b2World* world, uint8_t& id) : id(id), turboOn(false), movingLeft(false
      }
 void Car::goRight() {
     if (this->m_car->GetPosition().y > 4) {
-        m_car->ApplyTorque(-1000.0, true);
+        m_car->ApplyTorque(-500.0, true);
         return;
     }
     if (turboOn) {
@@ -136,7 +136,7 @@ void Car::goRight() {
 //
 void Car::goLeft() {
     if (this->m_car->GetPosition().y > 4) {
-        m_car->ApplyTorque(1000.0, true);
+        m_car->ApplyTorque(500.0, true);
         return;
     }
     if (turboOn) {
@@ -202,10 +202,10 @@ void Car::stopMovingLeft() {
     this->movingLeft = false;
 }
 void Car::update() {
-    if (movingRight) {
+    if (movingRight && X() < 39.9) {
         goRight();
     }
-    if (movingLeft) {
+    if (movingLeft && X() > 0.5) {
         goLeft();
     }
 }
