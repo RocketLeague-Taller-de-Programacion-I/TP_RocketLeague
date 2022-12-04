@@ -1,7 +1,3 @@
-//
-// Created by roby on 21/11/22.
-//
-
 #include "Worldview.h"
 
 Worldview::Worldview(std::map<std::string, SDL2pp::Texture *> textures, int &windowWidth, int &windowHeight) :
@@ -43,7 +39,9 @@ void Worldview::updateSprites(Ball &ball, Score &score, std::vector<Car> &player
     for (auto & player : players) {
         uint8_t id = player.getId();
         if (mapSprites.find(id) == mapSprites.end()) {
-            auto carSprite = new CarSprite(textures[CAR_TEXT], id, windowWidth, windowHeight, player);
+            // if id is even -> red car
+            std::string carColor = (id % 2 == 0) ? RED_CAR_TEXT : BLUE_CAR_TEXT;
+            auto carSprite = new CarSprite(textures[carColor], id, windowWidth, windowHeight, player);
             mapSprites.insert(std::pair<uint8_t, GameSprite*>(id, carSprite));
         } else {
             mapSprites.at(id)->updateSprite(player);

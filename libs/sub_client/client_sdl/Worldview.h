@@ -9,7 +9,8 @@
 #include "CarSprite.h"
 
 #define BALL_TEXT "ballTexture"
-#define CAR_TEXT "carTexture"
+#define RED_CAR_TEXT "redCarTexture"
+#define BLUE_CAR_TEXT "blueCarTexture"
 #define FIELD_TEXT "fieldTexture"
 #define SCORE_TEXT "scoreTexture"
 

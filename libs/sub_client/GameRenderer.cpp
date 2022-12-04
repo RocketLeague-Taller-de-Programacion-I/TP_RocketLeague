@@ -48,25 +48,26 @@ void GameRenderer::run() {
         Renderer renderer(sdlWindow, -1, SDL_RENDERER_SOFTWARE);
 
         //textures
-        Texture carTexture(renderer, SDL2pp::Surface("../images/car.png").SetColorKey(true, 0));
-        Texture ballTexture(renderer, SDL2pp::Surface("../images/ball.png").SetColorKey(true, 0));
-        Texture fieldTexture(renderer, SDL2pp::Surface("../images/field.png").SetColorKey(true, 0));
-//        Texture scoreBoardTexture(renderer, SDL2pp::Surface("../images/clock.png"));
+        Texture blueCarTexture(renderer, SDL2pp::Surface("../assets/blueCar.png").SetColorKey(true, 0));
+        Texture redCarTexture(renderer, SDL2pp::Surface("../assets/redCar.png").SetColorKey(true, 0));
+        Texture ballTexture(renderer, SDL2pp::Surface("../assets/ball.png").SetColorKey(true, 0));
+        Texture fieldTexture(renderer, SDL2pp::Surface("../assets/field.png").SetColorKey(true, 0));
 
         //setting tfont for score
         int fontsize = 50;
-        Color color(255, 255, 255);
-        std::string fontpath = "../images/fonts/Jost-500-Medium.ttf";
-        std::string text = "0 1 2 3 4 5 6 7 8 9 - Local Visitor";
+//        Color color(0, 0, 0);
+        Color color(255,255, 255);
+        std::string fontpath = "../assets/fonts/Jost-500-Medium.ttf";
+        std::string text = "0 1 2 3 4 5 6 7 8 9 - Local Visitor : ";
         Font font(fontpath.c_str(), fontsize);
         Surface text_surface = font.RenderText_Solid(text, color);
         // create a texture from the surface
         Texture scoreTexture(renderer,text_surface);
 
-        textures.emplace("carTexture", &carTexture);
+        textures.emplace("redCarTexture", &redCarTexture);
+        textures.emplace("blueCarTexture", &blueCarTexture);
         textures.emplace("ballTexture", &ballTexture);
         textures.emplace("fieldTexture", &fieldTexture);
-//        textures.emplace("scoreBoardTexture", &scoreBoardTexture);
         textures.emplace("scoreTexture", &scoreTexture);
 
         Worldview worldview(textures, Width, Height);
