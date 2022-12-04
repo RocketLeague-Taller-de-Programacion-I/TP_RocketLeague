@@ -16,7 +16,7 @@
 #include "Ball.h"
 #include "MyContactListener.h"
 
-#include "sub_server/server_updates/ServerUpdate.h"
+#include "../server_updates/ServerUpdate.h"
 
 #define USECONDS_TO_SLEEP 6000
 #define TIME_TO_PLAY 180000000

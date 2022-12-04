@@ -50,7 +50,7 @@ Car::Car(b2World* world, uint8_t& id) : id(id), turboOn(false), movingLeft(false
     down.Set(vertDown, 4);
     b2FixtureDef fixDefDown;
     fixDefDown.density = 1.f;
-    fixDefDown.restitution = 0.3f;
+    fixDefDown.restitution = 0.1f;
     fixDefDown.shape = &down;
     fixDefDown.filter.groupIndex = CAR;
     fixDefDown.isSensor = true;
@@ -70,7 +70,7 @@ Car::Car(b2World* world, uint8_t& id) : id(id), turboOn(false), movingLeft(false
     left.Set(vertLeft, 4);
     b2FixtureDef fixDefLeft;
     fixDefLeft.density = 1.f;
-    fixDefLeft.restitution = 0.3f;
+    fixDefLeft.restitution = 0.1f;
     fixDefLeft.shape = &left;
     fixDefLeft.filter.groupIndex = CAR;
     fixDefLeft.isSensor = true;
@@ -90,7 +90,7 @@ Car::Car(b2World* world, uint8_t& id) : id(id), turboOn(false), movingLeft(false
     right.Set(vertRight, 4);
     b2FixtureDef fixDefRight;
     fixDefRight.density = 1.f;
-    fixDefRight.restitution = 0.3f;
+    fixDefRight.restitution = 0.1f;
     fixDefRight.shape = &right;
     fixDefRight.filter.groupIndex = CAR;
     fixDefRight.isSensor = true;
@@ -122,29 +122,29 @@ Car::Car(b2World* world, uint8_t& id) : id(id), turboOn(false), movingLeft(false
      }
 void Car::goRight() {
     if (this->m_car->GetPosition().y > 4) {
-        m_car->ApplyTorque(-500.0, true);
+        m_car->ApplyTorque(-100.0, true);
         return;
     }
     if (turboOn) {
-        m_car->ApplyForce(b2Vec2(200, 0), m_car->GetWorldCenter(), true);
+        m_car->ApplyForce(b2Vec2(75, 0), m_car->GetWorldCenter(), true);
         turboOn = false;
         return;
     }
     //  ApplyForceToCenter
-    m_car->ApplyForce(b2Vec2(120, 0), m_car->GetWorldCenter(), true);
+    m_car->ApplyForce(b2Vec2(50, 0), m_car->GetWorldCenter(), true);
 }
 //
 void Car::goLeft() {
     if (this->m_car->GetPosition().y > 4) {
-        m_car->ApplyTorque(500.0, true);
+        m_car->ApplyTorque(100.0, true);
         return;
     }
     if (turboOn) {
-        m_car->ApplyForce(b2Vec2(-200,0), m_car->GetWorldCenter(), true);
+        m_car->ApplyForce(b2Vec2(-75,0), m_car->GetWorldCenter(), true);
         turboOn = false;
         return;
     }
-    m_car->ApplyForce(b2Vec2(-120, 0), m_car->GetWorldCenter(), true);
+    m_car->ApplyForce(b2Vec2(-50, 0), m_car->GetWorldCenter(), true);
 }
 void Car::stop() {
     // fixture->SetFriction(100);
@@ -162,12 +162,12 @@ Car::~Car() {
 
 //  OK
 void Car::check_y_pos() {
-    if (Y() > 6) { return; }
+    if (Y() > 5) { return; }
     if (Y() > 3) {
-        m_car->ApplyForce(b2Vec2(0, 120), m_car->GetWorldCenter(), true);
+        m_car->ApplyForce(b2Vec2(0, 3000), m_car->GetWorldCenter(), true);
         return;
     }
-    m_car->ApplyForce(b2Vec2(0, 200), m_car->GetWorldCenter(), true);
+    m_car->ApplyForce(b2Vec2(0, 5000), m_car->GetWorldCenter(), true);
 }
 float Car::Y() {
     return this->m_car->GetPosition().y;
@@ -202,10 +202,18 @@ void Car::stopMovingLeft() {
     this->movingLeft = false;
 }
 void Car::update() {
-    if (movingRight) {
+    if (movingRight and X() < 38.0) {
         goRight();
     }
-    if (movingLeft) {
+    if (movingLeft and X() > 1) {
         goLeft();
+    }
+    if(X() > 38.0) {
+        this->m_car->SetTransform(b2Vec2(38.0, Y()), true);
+        m_car->ApplyLinearImpulseToCenter(b2Vec2(-5,0), true);
+    }
+    if(X() < 0.5) {
+        this->m_car->SetTransform(b2Vec2(0.5, Y()), true);
+        m_car->ApplyLinearImpulseToCenter(b2Vec2(5,0), true);
     }
 }
