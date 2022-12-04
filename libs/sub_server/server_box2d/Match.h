@@ -40,7 +40,7 @@ private:
     b2FixtureDef fixDef;
     std::unique_ptr<MyFixtureUserDataType> myUserData;
     MyContactListener listener;
-
+    unsigned int timeElapsed = 0;
 public:
     Match(std::string name, int required);
     ~Match();
@@ -58,9 +58,11 @@ public:
     int local();
     void turbo(uint8_t &id, bool state);
 
-    unsigned int timeElapsed = 0;
+
 
     bool isFinished();
+
+
 };
 
 

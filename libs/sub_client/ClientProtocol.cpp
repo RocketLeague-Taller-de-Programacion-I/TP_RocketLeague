@@ -108,6 +108,12 @@ std::shared_ptr<ClientUpdate> ClientProtocol::parseWorldUpdate(const std::functi
     uint16_t n_clients;
     receiveBytes(&n_clients, sizeof(n_clients));
     n_clients = ntohs(n_clients);
+
+    // Time
+    uint16_t time;
+    receiveBytes(&time, sizeof(time));
+    time = ntohs(time);
+
     std::vector<Car> clientCars;
     //  CLients
     for (unsigned int i = 0; i < n_clients; i++) {
@@ -132,10 +138,11 @@ std::shared_ptr<ClientUpdate> ClientProtocol::parseWorldUpdate(const std::functi
         angle = ntohs(angle);
         float angleFloat = float(angle);
         angleFloat = angleFloat/1000.0;
-        Car car(id, xFloat, yFloat, angleSign, angleFloat);
+        uint16_t facingWhere;  // 0 right, 1 left
+        receiveBytes(&facingWhere, sizeof(facingWhere));
+        Car car(id, xFloat, yFloat, angleSign, angleFloat, facingWhere);
         clientCars.emplace_back(car);
     }
-
     std::shared_ptr<ClientUpdate> update = std::make_shared<ClientUpdateWorld>(ball, score, clientCars);
     return update;
 }
