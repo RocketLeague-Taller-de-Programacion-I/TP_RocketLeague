@@ -50,7 +50,7 @@ Car::Car(b2World* world, uint8_t& id) : id(id), turboOn(false), movingLeft(false
     down.Set(vertDown, 4);
     b2FixtureDef fixDefDown;
     fixDefDown.density = 1.f;
-    fixDefDown.restitution = 0.3f;
+    fixDefDown.restitution = 0.1f;
     fixDefDown.shape = &down;
     fixDefDown.filter.groupIndex = CAR;
     fixDefDown.isSensor = true;
@@ -70,7 +70,7 @@ Car::Car(b2World* world, uint8_t& id) : id(id), turboOn(false), movingLeft(false
     left.Set(vertLeft, 4);
     b2FixtureDef fixDefLeft;
     fixDefLeft.density = 1.f;
-    fixDefLeft.restitution = 0.3f;
+    fixDefLeft.restitution = 0.1f;
     fixDefLeft.shape = &left;
     fixDefLeft.filter.groupIndex = CAR;
     fixDefLeft.isSensor = true;
@@ -90,7 +90,7 @@ Car::Car(b2World* world, uint8_t& id) : id(id), turboOn(false), movingLeft(false
     right.Set(vertRight, 4);
     b2FixtureDef fixDefRight;
     fixDefRight.density = 1.f;
-    fixDefRight.restitution = 0.3f;
+    fixDefRight.restitution = 0.1f;
     fixDefRight.shape = &right;
     fixDefRight.filter.groupIndex = CAR;
     fixDefRight.isSensor = true;
