@@ -2,8 +2,8 @@
 // Created by roby on 22/11/22.
 //
 
-#ifndef ROCKETLEAGUE_THREADACTIONSSENDER_H
-#define ROCKETLEAGUE_THREADACTIONSSENDER_H
+#ifndef ROCKETLEAGUE_ACTIONSSENDERTHREAD_H
+#define ROCKETLEAGUE_ACTIONSSENDERTHREAD_H
 
 
 #include "sub_common/socket.h"
@@ -12,7 +12,7 @@
 #include "sub_client/client_actions/ClientAction.h"
 #include "ClientProtocol.h"
 
-class ThreadActionsSender : public Thread{
+class ActionsSenderThread : public Thread{
 private:
     Socket &skt_client;
     bool closed;
@@ -21,14 +21,14 @@ protected:
 public:
     BlockingQueue<std::optional<std::shared_ptr<ClientAction>>> &actionsQueue;
 
-    explicit ThreadActionsSender(Socket &skt_client, BlockingQueue<std::optional<std::shared_ptr<ClientAction>>> &actionsQueue);
-    ThreadActionsSender();
+    explicit ActionsSenderThread(Socket &skt_client, BlockingQueue<std::optional<std::shared_ptr<ClientAction>>> &actionsQueue);
+    ActionsSenderThread();
 
-    ~ThreadActionsSender() override;
+    ~ActionsSenderThread() override;
     void stop() override;
 
     void sendBytes(void *bytes_to_send, int i);
 };
 
 
-#endif //ROCKETLEAGUE_THREADACTIONSSENDER_H
+#endif //ROCKETLEAGUE_ACTIONSSENDERTHREAD_H

@@ -33,8 +33,8 @@ add_library(lib_client
         client_sdl/GameSprite.h
         UpdatesReceiverThread.cpp
         UpdatesReceiverThread.h
-        ThreadActionsSender.cpp
-        ThreadActionsSender.h
+        ActionsSenderThread.cpp
+        ActionsSenderThread.h
         ClientProtocol.cpp
         ClientProtocol.h
         client_actions/ClientAction.h

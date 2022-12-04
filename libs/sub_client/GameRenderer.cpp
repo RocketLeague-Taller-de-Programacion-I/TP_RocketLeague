@@ -12,7 +12,7 @@ void GameRenderer::run() {
     BlockingQueue<std::optional<std::shared_ptr<ClientAction>>> actionsQueue;
     ProtectedQueue<std::shared_ptr<ClientUpdate>> updatesQueue;
 
-    sender = new ThreadActionsSender(skt_client, actionsQueue);
+    sender = new ActionsSenderThread(skt_client, actionsQueue);
     receiver = new UpdatesReceiverThread(skt_client, updatesQueue);
 
     startThreads();

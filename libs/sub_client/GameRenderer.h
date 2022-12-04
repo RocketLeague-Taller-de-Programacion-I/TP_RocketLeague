@@ -23,14 +23,14 @@
 #include "sub_common/liberror.h"
 
 #include "sub_client/UpdatesReceiverThread.h"
-#include "sub_client/ThreadActionsSender.h"
+#include "sub_client/ActionsSenderThread.h"
 
 #include "sub_client/client_qt/mainwindow.h"
 
 class GameRenderer {
 private:
     Socket skt_client;
-    ThreadActionsSender* sender;
+    ActionsSenderThread* sender;
     UpdatesReceiverThread* receiver;
 protected:
     std::map<std::string,SDL2pp::Texture*> textures;

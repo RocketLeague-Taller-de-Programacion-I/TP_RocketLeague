@@ -1,10 +1,5 @@
-//
-// Created by roby on 27/11/22.
-//
-
 #ifndef ROCKETLEAGUE_SCORE_H
 #define ROCKETLEAGUE_SCORE_H
-
 
 #include <cstdint>
 

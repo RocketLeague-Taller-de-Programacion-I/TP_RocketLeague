@@ -2,14 +2,14 @@
 // Created by roby on 22/11/22.
 //
 
-#include "ThreadActionsSender.h"
+#include "ActionsSenderThread.h"
 
-ThreadActionsSender::ThreadActionsSender(Socket &skt_client, BlockingQueue<std::optional<std::shared_ptr<ClientAction>>> &actionsQueue) : skt_client(skt_client), actionsQueue(actionsQueue) {
+ActionsSenderThread::ActionsSenderThread(Socket &skt_client, BlockingQueue<std::optional<std::shared_ptr<ClientAction>>> &actionsQueue) : skt_client(skt_client), actionsQueue(actionsQueue) {
     this->closed = false;
 }
 
-void ThreadActionsSender::run() {
-    const std::function<void(void*, unsigned int)> callable = std::bind(&ThreadActionsSender::sendBytes, this, std::placeholders::_1, std::placeholders::_2);
+void ActionsSenderThread::run() {
+    const std::function<void(void*, unsigned int)> callable = std::bind(&ActionsSenderThread::sendBytes, this, std::placeholders::_1, std::placeholders::_2);
     ClientProtocol p(callable);
     try {
         while (not closed) {
@@ -31,17 +31,17 @@ void ThreadActionsSender::run() {
     }
 }
 
-void ThreadActionsSender::stop() {
+void ActionsSenderThread::stop() {
     closed = true;
     // create option null poitner tu push
     std::optional<std::shared_ptr<ClientAction>> null_pointer;
     actionsQueue.push(null_pointer);
 }
 
-void ThreadActionsSender::sendBytes(void *bytes_to_send, int i) {
+void ActionsSenderThread::sendBytes(void *bytes_to_send, int i) {
     if(!closed) {
         this->skt_client.sendall(bytes_to_send, i, &closed);
     }
 }
 
-ThreadActionsSender::~ThreadActionsSender() {}
+ActionsSenderThread::~ActionsSenderThread() {}
