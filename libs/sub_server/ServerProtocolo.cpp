@@ -111,10 +111,7 @@ ServerProtocolo::serializeWorldUpdate(ServerUpdateWorld *update, std::function<v
 
 std::shared_ptr<ServerAction>
         ServerProtocolo::deserializeDataOnCommand(uint8_t &actionType, uint8_t &id, GameManager &gameManager,
-                                                  std::function<void(void *, int)> &receiveBytes,
-                                                  std::function<void(void *, unsigned int)> &sendBytes,
-                                                  std::function<void(ProtectedQueue<std::shared_ptr<ServerAction>> *,
-                                                                     BlockingQueue<std::optional<std::shared_ptr<ServerUpdate>>> *)> &startThreadsCallable) {
+                                                  std::function<void(void *, int)> &receiveBytes) {
     switch (actionType) {
         case CREATE_ROOM:
             return parseCreateAction(id, receiveBytes, gameManager);

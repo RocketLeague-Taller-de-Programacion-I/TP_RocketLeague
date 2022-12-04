@@ -6,6 +6,7 @@
 #include <string>
 #include <netinet/in.h>
 #include <queue>
+#include "sub_server/server_updates/ServerUpdate.h"
 
 class MockServerProtocol {
 public:
@@ -27,9 +28,11 @@ public:
         }
     }
 
-    void receiveBytes(std::vector<uint8_t> &bytes_to_read, uint8_t &size) {
+    void receiveBytes(void *bytes_to_read, int size) {
+        auto * pbytes_to_read = (uint8_t *) bytes_to_read;
         for (int i =0 ; i<size;i++) {
-             bytes_to_read[i] = (data.front()) ;
+            *pbytes_to_read = data.front() ;
+            if (size > 1)  *pbytes_to_read++ ;
             data.pop();
         }
     }
@@ -45,6 +48,10 @@ public:
             data.push(*pbytes_to_read);
             if (size > 1)  *pbytes_to_read++ ;
         }
+    }
+    void sendBytesMockWorld(void *bytes_to_read, int size) {
+        auto * pbytes_to_read = (uint8_t *) bytes_to_read;
+        data.push(*pbytes_to_read);
     }
     uint8_t getId() {
         uint8_t id = data.front();
@@ -72,6 +79,12 @@ public:
         uint8_t code = data.front();
         data.pop();
         return code;
+    }
+
+    uint8_t getType(){
+        uint8_t type = data.front();
+        data.pop();
+        return type;
     }
 
 private:

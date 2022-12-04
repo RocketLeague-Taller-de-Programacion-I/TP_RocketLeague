@@ -128,7 +128,6 @@ TEST_CASE("ClientProtocol can deserialize JoinACK update", "[clientProtocol]") {
  *          - retunCode = ERROR_FULL
  */
 std::vector<uint8_t> dataList = {1, OK, 1, 1, 2, 4,};
-//MockClientProtocol mockListOK(1, OK, 1, 1, 2, 4, "test");
 MockClientProtocol mockListOK(dataList,"test");
 MockClientProtocol mockListERROR(1,ERROR_FULL);
 
