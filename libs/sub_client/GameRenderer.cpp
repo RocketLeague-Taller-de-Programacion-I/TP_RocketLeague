@@ -104,5 +104,4 @@ void GameRenderer::startThreads() {
     receiver->start();
 }
 
-GameRenderer::~GameRenderer() {
-}
+GameRenderer::~GameRenderer() {}

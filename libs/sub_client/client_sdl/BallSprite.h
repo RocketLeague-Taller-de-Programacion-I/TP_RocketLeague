@@ -17,8 +17,9 @@ public:
     ~BallSprite() = default; //TODO: free surface?
 
     void updateSprite(Ball &ball) override;
-    void updateSprite(Car &car) override {};
     void updateSprite(Score &score) override {};
+    void updateSprite(GameTime &time) override {};
+    void updateSprite(Car &car) override {};
     void render(SDL2pp::Renderer &renderer) override;
 };
 

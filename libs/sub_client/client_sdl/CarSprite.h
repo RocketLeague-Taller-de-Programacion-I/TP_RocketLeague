@@ -23,6 +23,7 @@ public:
     void update(float dt) override;
     void updateSprite(Car &car) override;
     void updateSprite(Ball &ball) override {};
+    void updateSprite(GameTime &time) override {};
     void updateSprite(Score &score) override {};
     void render(SDL2pp::Renderer &renderer) override;
 };

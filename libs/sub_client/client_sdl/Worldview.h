@@ -7,6 +7,7 @@
 #include "BallSprite.h"
 #include "ScoreSprite.h"
 #include "CarSprite.h"
+#include "GameTimeSprite.h"
 
 #define BALL_TEXT "ballTexture"
 #define RED_CAR_TEXT "redCarTexture"
@@ -19,7 +20,7 @@ using namespace SDL2pp;
 enum ids {
     BALL  = 0,
     SCORE = 1,
-    FIELD = 2
+    TIME = 2
 };
 
 
@@ -35,7 +36,7 @@ public:
     void render(SDL2pp::Renderer &renderer);
     void update(float dt);
 
-    void updateSprites(Ball &ball, Score &score, std::vector<Car> &players);
+    void updateSprites(Ball &ball, Score &score, GameTime &gameTime, std::vector<Car> &players);
 };
 
 

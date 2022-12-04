@@ -20,7 +20,7 @@ void Worldview::render(Renderer &renderer) {
     }
 }
 
-void Worldview::updateSprites(Ball &ball, Score &score, std::vector<Car> &players) {
+void Worldview::updateSprites(Ball &ball, Score &score, GameTime &gameTime, std::vector<Car> &players) {
     // check if sprite BALL exists in mapSprites
     if(mapSprites.find(BALL) == mapSprites.end()){
         auto ballSprite = new BallSprite(textures[BALL_TEXT], BALL, windowWidth, windowHeight, ball);
@@ -34,6 +34,13 @@ void Worldview::updateSprites(Ball &ball, Score &score, std::vector<Car> &player
         mapSprites.insert(std::pair<uint8_t, GameSprite*>(SCORE, scoreSprite));
     } else {
         mapSprites.at(SCORE)->updateSprite(score);
+    }
+
+    if(mapSprites.find(TIME) == mapSprites.end()){
+        auto timeSprite = new GameTimeSprite(textures[SCORE_TEXT], TIME, windowWidth, windowHeight, gameTime);
+        mapSprites.insert(std::pair<uint8_t, GameSprite*>(TIME, timeSprite));
+    } else {
+        mapSprites.at(TIME)->updateSprite(gameTime);
     }
 
     for (auto & player : players) {
