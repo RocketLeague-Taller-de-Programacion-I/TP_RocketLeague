@@ -15,9 +15,11 @@ private:
     float x;
     float y;
     float angle;
+    int facing;
 
 public:
-    Car(uint16_t id, float x, float y, float angle) : id(id), x(x), y(y), angle(angle) {};
+    Car(uint16_t id, float x, float y, float angle, int facingWhere)
+            : id(id), x(x), y(y), angle(angle), facing(facingWhere)  {};
     ~Car() = default;
 
     //getters

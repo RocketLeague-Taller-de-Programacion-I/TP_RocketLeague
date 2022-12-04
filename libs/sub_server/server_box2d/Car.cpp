@@ -11,7 +11,7 @@
 #define GROUND 0x0004
 
 
-Car::Car(b2World* world, uint8_t& id) : id(id), turboOn(false), movingLeft(false), movingRight(false) {
+Car::Car(b2World* world, uint8_t& id) : id(id), turboOn(false), movingLeft(false), movingRight(false), facingRight(true) {
     b2Vec2 vertices[8];
     /*
     vertices[0].Set(-1.5f, -0.5f);
@@ -189,10 +189,12 @@ uint8_t Car::getId() {
 }
 void Car::startMovingRight() {
     this->movingRight = true;
+    this->facingRight = true;
     this->movingLeft = false;
 }
 void Car::startMovingLeft() {
     this->movingRight = false;
+    this->facingRight = false;
     this->movingLeft = true;
 }
 void Car::stopMovingRight() {
@@ -216,4 +218,7 @@ void Car::update() {
         this->m_car->SetTransform(b2Vec2(0.5, Y()), true);
         m_car->ApplyLinearImpulseToCenter(b2Vec2(5,0), true);
     }
+}
+bool Car::facingWhere() {
+    return this->facingRight;
 }

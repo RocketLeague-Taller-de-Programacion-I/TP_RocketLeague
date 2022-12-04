@@ -20,6 +20,7 @@ class Car {
     bool turboOn;
     bool movingLeft;
     bool movingRight;
+    bool facingRight;
     b2Body *m_car;
     b2BodyDef bd;
     b2PolygonShape chassis;
@@ -53,6 +54,8 @@ public:
     void stopMovingLeft();
 
     void update();
+
+    bool facingWhere();
 };
 
 
