@@ -1,6 +1,3 @@
-//
-// Created by lucaswaisten on 04/11/22.
-//
 #include <catch2/catch_test_macros.hpp>
 #include "sub_client/ClientProtocol.h"
 #include "MockClientProtocol.h"
@@ -38,7 +35,7 @@
 
 /*
  * Defino los mock a utilizar en CreateACK
- * mockCreateOK
+ * mockCreate
  *      atributos:
  *          - id = 1
  *          - retunCode = OK;
@@ -47,14 +44,14 @@
  *          - id = 1
  *          - retunCode = ERROR_FULL;
  */
-MockClientProtocol mockCreateOK(1,OK);
+MockClientProtocol mockCreate(1, OK);
 MockClientProtocol mockCreateERROR(1,ERROR_FULL);
 
 TEST_CASE("ClientProtocol can deserialize CreateACK update", "[clientProtocol]") {
 
     SECTION("CreateACK with return code OK") {
         std::function<void(void *, int)> bytes_receiver_callable =
-                [](void * retuncode, int size) { mockCreateOK.receiveBytes(retuncode, size); };
+                [](void * retuncode, int size) { mockCreate.receiveBytes(retuncode, size); };
 
         auto update = ClientProtocol::deserializeData(CREATE_ACK,
                                                       bytes_receiver_callable);
@@ -248,7 +245,7 @@ MockClientProtocol mock;
 std::function<void(void *, unsigned int)> sendBytes =
         [](void * retuncode, unsigned int size) { mock.sendBytesMock(retuncode,size); };
 
-ClientProtocol clientProtocol(sendBytes);
+ClientProtocol serverProtocol(sendBytes);
 
 TEST_CASE("ClientProtocol serialize ActionCreateRoom","[clientProtocol]"){
     uint8_t capacity = 1 ;
@@ -256,7 +253,7 @@ TEST_CASE("ClientProtocol serialize ActionCreateRoom","[clientProtocol]"){
 
     std::shared_ptr<ClientAction> action = std::make_shared<ActionCreateRoom>(capacity,name);
 
-    clientProtocol.serializeAction(action);
+    serverProtocol.serializeAction(action);
 
     REQUIRE(mock.getCapacity() == 1);
     REQUIRE(mock.getSizeName() == name.size());
@@ -268,7 +265,7 @@ TEST_CASE("ClientProtocol serialize ActionJoinRoom","[clientProtocol]"){
 
     std::shared_ptr<ClientAction> action = std::make_shared<ActionJoinRoom>(name);
 
-    clientProtocol.serializeAction(action);
+    serverProtocol.serializeAction(action);
 
     REQUIRE(mock.getSizeName() == name.size());
     REQUIRE(mock.getName( name.size()) == name);
@@ -277,7 +274,7 @@ TEST_CASE("ClientProtocol serialize ActionJoinRoom","[clientProtocol]"){
 TEST_CASE("ClientProtocol serialize ActionListRoom","[clientProtocol]"){
     std::shared_ptr<ClientAction> action = std::make_shared<ActionListRooms>();
 
-    clientProtocol.serializeAction(action);
+    serverProtocol.serializeAction(action);
     REQUIRE(true == true);
 }
 
@@ -287,7 +284,7 @@ TEST_CASE("ClientProtocol serialize ActionMove","[clientProtocol]"){
 
     std::shared_ptr<ClientAction> action = std::make_shared<ClientActionMove>(id,direction,true);
 
-    clientProtocol.serializeAction(action);
+    serverProtocol.serializeAction(action);
 
     REQUIRE(mock.getId() == id);
     REQUIRE(mock.getDirection() == direction);

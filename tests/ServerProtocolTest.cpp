@@ -8,29 +8,109 @@
 
 /*
  * Test unitario de protocolo
- *      - Buscaremos testiar cuando recibe mensajes desde cliente
- *      y los mismos se serializan en comandos de 2 bytes.
- *      - Buscaremos testiar las respuestas del servidor
- *      los casos exitosos y los casos no exitosos.
- * recibir:
-      - createACK -> {type, id, returnCode}
-      - joinACK -> {type, id, returnCode}
-      - listACK -> {type, id, returnCode, cantidadDeGames = 2 , [online, max, size, name] , [online, max, size, name]}
-      - worldACK -> {ballX, ballY, localScore, visitScore, n_clients, [id,x_pos,y_pox,angleSing,angle, ... for each client]}
+ *      - Se testea la deserialziacion de la data en una Action.
+ *      - Se testea la serializacion de la action a data.
  */
 
-MockServerProtocol mockCreateOK(1,1,"test");
-MockServerProtocol mockCreateERROR(1,ERROR_FULL);
+MockServerProtocol mockCreate(2, "test");
 
 TEST_CASE("ServerProtocol can deserialize create action", "[severProtocol]") {
     uint8_t id = 1;
     SECTION("CreateAction with return code OK") {
         std::function<void(std::vector<uint8_t> &, uint8_t &)> bytes_receiver_callable =
-                [](std::vector<uint8_t> &toRead, uint8_t &size) { mockCreateOK.receiveBytes(toRead, size); };
+                [](std::vector<uint8_t> &toRead, uint8_t &size) { mockCreate.receiveBytes(toRead, size); };
 
-        auto action = ServerProtocolo::deserializeData(id, CREATE_ACK,
-                                                       bytes_receiver_callable);
+        auto action =  std::reinterpret_pointer_cast<ServerCreateRoom>(ServerProtocolo::deserializeData(id, CREATE_ROOM,
+                                                                                                       bytes_receiver_callable));
 
         REQUIRE(action->getId() == 1);
+        REQUIRE(action->getRoomName() == "test");
+        REQUIRE(action->getCapacity() == 2);
     }
+}
+
+MockServerProtocol mockJoin( "testJoin");
+TEST_CASE("ServerProtocol can deserialize join action", "[severProtocol]") {
+    uint8_t id = 4;
+    SECTION("JoinAction with return code OK") {
+        std::function<void(std::vector<uint8_t> &, uint8_t &)> bytes_receiver_callable =
+                [](std::vector<uint8_t> &toRead, uint8_t &size) { mockJoin.receiveBytes(toRead, size); };
+
+        auto action = ServerProtocolo::deserializeData(id, JOIN_ROOM,
+                                                      bytes_receiver_callable);
+
+        REQUIRE(action->getId() == 4);
+        REQUIRE(action->getRoomName() == "testJoin");
+    }
+}
+
+MockServerProtocol mockList;
+TEST_CASE("ServerProtocol can deserialize list action", "[severProtocol]") {
+    uint8_t id = 2;
+    SECTION("ListAction with return code OK") {
+        std::function<void(std::vector<uint8_t> &, uint8_t &)> bytes_receiver_callable =
+                [](std::vector<uint8_t> &toRead, uint8_t &size) { mockList.receiveBytes(toRead, size); };
+
+        auto action = ServerProtocolo::deserializeData(id, LIST_ROOMS,
+                                                      bytes_receiver_callable);
+
+        REQUIRE(action->getId() == 2);
+    }
+}
+
+/*
+ * SERIALIZE TEST
+ */
+MockServerProtocol mock;
+std::function<void(void *, unsigned int)> sendBytes =
+        [](void * retuncode, unsigned int size) { mock.sendBytesMock(retuncode,size); };
+
+ServerProtocolo serverProtocol(sendBytes);
+
+TEST_CASE("ServerProtocol serialize CreateACK update","[serverProtocol]"){
+    uint8_t id = 1, retunCode = OK;
+
+    std::shared_ptr<ServerUpdate> update = std::make_shared<ServerCreateACK>(id,retunCode);
+
+    serverProtocol.serializeUpdate(update);
+
+    REQUIRE(mock.getId() == id);
+    REQUIRE(mock.getRetunCode() == OK);
+}
+
+TEST_CASE("ServerProtocol serialize JoinACK update","[serverProtocol]"){
+    uint8_t id = 1, retunCode = OK;
+
+    std::shared_ptr<ServerUpdate> update = std::make_shared<ServerJoinACK>(id,retunCode);
+
+    serverProtocol.serializeUpdate(update);
+
+    REQUIRE(mock.getId() == id);
+    REQUIRE(mock.getRetunCode() == OK);
+}
+std::vector<uint8_t> returnData = {1,1,1,10,10};
+
+TEST_CASE("ServerProtocol serialize ListACK update","[serverProtocol]"){
+    uint8_t id = 1, retunCode = OK, numberGame=2;
+
+    std::shared_ptr<ServerUpdate> update = std::make_shared<ServerListACK>(id,retunCode,numberGame,returnData);
+
+    serverProtocol.serializeUpdate(update);
+
+    REQUIRE(mock.getId() == id);
+    REQUIRE(mock.getRetunCode() == OK);
+    REQUIRE(mock.getRetunCode() == OK);
+}
+std::vector<int> data = {0,0,2,3,2};
+TEST_CASE("ServerProtocol serialize WordlACK update","[serverProtocol]"){
+    uint8_t id = 1, retunCode = OK;
+
+    std::shared_ptr<ServerUpdate> update = std::make_shared<ServerUpdateWorld>(id,retunCode,returnData,data);
+
+    serverProtocol.serializeUpdate(update);
+
+    REQUIRE(mock.ballPosition() == 0);
+    REQUIRE(mock.ballPosition() == 0);
+    REQUIRE(mock.getScoreLocal() == 2);
+    REQUIRE(mock.getScoreVisitor() == 3);
 }
