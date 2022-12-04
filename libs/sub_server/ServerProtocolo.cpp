@@ -95,13 +95,13 @@ ServerProtocolo::serializeWorldUpdate(ServerUpdateWorld *update, std::function<v
     sendBytes(&local, sizeof(local));
     sendBytes(&visit, sizeof(visit));
 
-    //  Numero de Clientes
-    uint16_t n_clients = (uint16_t) htons(matchInfo[4]);
-    sendBytes(&n_clients, sizeof(n_clients));
-
     //  Tiempo restante
     uint16_t time = (uint16_t) htons(matchInfo[5]);
     sendBytes(&time, sizeof(time));
+
+    //  Numero de Clientes
+    uint16_t n_clients = (uint16_t) htons(matchInfo[4]);
+    sendBytes(&n_clients, sizeof(n_clients));
 
     int vSize = matchInfo.size();
 

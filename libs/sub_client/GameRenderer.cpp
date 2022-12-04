@@ -55,8 +55,8 @@ void GameRenderer::run() {
 
         //setting tfont for score
         int fontsize = 50;
-//        Color color(0, 0, 0);
-        Color color(255,255, 255);
+        Color color(0, 0, 0);
+//        Color color(255,255, 255);
         std::string fontpath = "../assets/fonts/Jost-500-Medium.ttf";
         std::string text = "0 1 2 3 4 5 6 7 8 9 - Local Visitor : ";
         Font font(fontpath.c_str(), fontsize);

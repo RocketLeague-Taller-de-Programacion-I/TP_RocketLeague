@@ -12,6 +12,10 @@ Score ClientUpdate::getScore() {
     return Score();
 }
 
+GameTime ClientUpdate::getTime() {
+    return GameTime();
+}
+
 std::vector<Car> ClientUpdate::getCars() {
     return std::vector<Car>();
 }

@@ -20,11 +20,11 @@ void GameTimeSprite::render(SDL2pp::Renderer &renderer) {
     SDL2pp::Rect unityMinutesDst(MARGIN + DIGIT_WIDTH, 0, DIGIT_WIDTH, FONT_HEIGHT);
     renderer.Copy(texture, unityMinutesSrc, unityMinutesDst);
 
-    SDL2pp::Rect dozenSecondsSrc(DIGIT_WIDTH * seconds, 0 , DIGIT_WIDTH, FONT_HEIGHT);
+    SDL2pp::Rect dozenSecondsSrc(DIGIT_WIDTH * dozens, 0 , DIGIT_WIDTH, FONT_HEIGHT);
     SDL2pp::Rect dozenSecondsDst(MARGIN + COLON_WIDTH + DIGIT_WIDTH * 2, 0, DIGIT_WIDTH, FONT_HEIGHT);
     renderer.Copy(texture, dozenSecondsSrc, dozenSecondsDst);
 
-    SDL2pp::Rect unitySecondsSrc(DIGIT_WIDTH * dozens, 0 , DIGIT_WIDTH, FONT_HEIGHT);
+    SDL2pp::Rect unitySecondsSrc(DIGIT_WIDTH * seconds, 0 , DIGIT_WIDTH, FONT_HEIGHT);
     SDL2pp::Rect unitySecondsDst(MARGIN + COLON_WIDTH + DIGIT_WIDTH * 3, 0, DIGIT_WIDTH, FONT_HEIGHT);
     renderer.Copy(texture, unitySecondsSrc, unitySecondsDst);
 

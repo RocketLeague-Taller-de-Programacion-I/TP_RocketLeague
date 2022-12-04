@@ -5,7 +5,7 @@
 #include "Server.h"
 #include "box2d/b2_world.h"
 
-#define INITIAL_ID_PLAYER 2
+#define INITIAL_ID_PLAYER 3
 
 Server::Server(const char *port)
         : closed(false),

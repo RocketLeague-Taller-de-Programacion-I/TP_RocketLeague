@@ -1,7 +1,3 @@
-//
-// Created by roby on 22/11/22.
-//
-
 #include <netinet/in.h>
 #include <memory>
 #include "ClientProtocol.h"
@@ -104,15 +100,16 @@ std::shared_ptr<ClientUpdate> ClientProtocol::parseWorldUpdate(const std::functi
     visit = ntohs(visit);
     Score score(local, visit);
 
-    //  n_clients
-    uint16_t n_clients;
-    receiveBytes(&n_clients, sizeof(n_clients));
-    n_clients = ntohs(n_clients);
-
     // Time
     uint16_t time;
     receiveBytes(&time, sizeof(time));
     time = ntohs(time);
+    GameTime gameTime(time);
+
+    //  n_clients
+    uint16_t n_clients;
+    receiveBytes(&n_clients, sizeof(n_clients));
+    n_clients = ntohs(n_clients);
 
     std::vector<Car> clientCars;
     //  CLients
@@ -145,10 +142,12 @@ std::shared_ptr<ClientUpdate> ClientProtocol::parseWorldUpdate(const std::functi
 
         uint16_t facingWhere;  // 0 right, 1 left
         receiveBytes(&facingWhere, sizeof(facingWhere));
+
         Car car(id, xFloat, yFloat, angleFloat, facingWhere);
         clientCars.emplace_back(car);
     }
-    std::shared_ptr<ClientUpdate> update = std::make_shared<ClientUpdateWorld>(ball, score, clientCars);
+
+    std::shared_ptr<ClientUpdate> update = std::make_shared<ClientUpdateWorld>(ball, score, gameTime, clientCars);
     return update;
 }
 
