@@ -15,7 +15,7 @@
 
 MockServerProtocol mockCreate(2, "test");
 
-TEST_CASE("ServerProtocol can deserialize create action", "[severProtocol]") {
+TEST_CASE("ServerProtocol can deserialize create action", "[serverProtocol]") {
     uint8_t id = 1,type=CREATE_ROOM;
     GameManager manager;
 
@@ -35,7 +35,7 @@ TEST_CASE("ServerProtocol can deserialize create action", "[severProtocol]") {
 }
 
 MockServerProtocol mockJoin( "testJoin");
-TEST_CASE("ServerProtocol can deserialize join action", "[severProtocol]") {
+TEST_CASE("ServerProtocol can deserialize join action", "[serverProtocol]") {
     uint8_t id = 4,type=JOIN_ROOM;
     GameManager manager;
     SECTION("JoinAction with return code OK") {
@@ -53,7 +53,7 @@ TEST_CASE("ServerProtocol can deserialize join action", "[severProtocol]") {
 }
 
 MockServerProtocol mockList;
-TEST_CASE("ServerProtocol can deserialize list action", "[severProtocol]") {
+TEST_CASE("ServerProtocol can deserialize list action", "[serverProtocol]") {
     uint8_t id = 2,type=JOIN_ROOM;
     GameManager manager;
     SECTION("ListAction with return code OK") {
