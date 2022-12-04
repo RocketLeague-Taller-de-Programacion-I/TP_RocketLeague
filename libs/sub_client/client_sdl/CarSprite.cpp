@@ -16,10 +16,9 @@ void CarSprite::updateSprite(Car &car) {
     positionX = car.getX();
     positionY = car.getY();
     angle = car.getAngle();
-    angleSign = car.getSign();
 }
 
 void CarSprite::render(SDL2pp::Renderer &renderer) {
     SDL_RendererFlip flip = facingLeft ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
-    an.render(renderer, SDL2pp::Rect(positionX, positionY, carWidth, carHeight), flip);
+    an.render(renderer, SDL2pp::Rect(positionX, positionY, carWidth, carHeight), flip, angle);
 }

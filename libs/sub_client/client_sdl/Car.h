@@ -14,11 +14,10 @@ private:
     uint16_t id;
     float x;
     float y;
-    uint16_t sign;
     float angle;
 
 public:
-    Car(uint16_t id, float x, float y, uint16_t sign, float angle) : id(id), x(x), y(y), sign(sign), angle(angle) {};
+    Car(uint16_t id, float x, float y, float angle) : id(id), x(x), y(y), angle(angle) {};
     ~Car() = default;
 
     //getters
@@ -29,7 +28,6 @@ public:
     float getY() const {
         return HEIGHT - (y * PXM) - CAR_H_PX/2;//mas?
     };
-    uint16_t getSign() const { return sign; };
     float getAngle() const { return angle; };
 };
 

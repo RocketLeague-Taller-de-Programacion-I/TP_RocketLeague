@@ -1,7 +1,3 @@
-//
-// Created by roby on 03/12/22.
-//
-
 #ifndef ROCKETLEAGUE_CARSPRITE_H
 #define ROCKETLEAGUE_CARSPRITE_H
 
@@ -18,7 +14,8 @@ private:
     int positionX;
     int positionY;
     uint16_t angleSign;
-    uint8_t angle;
+    int angle;
+
 public:
     CarSprite(SDL2pp::Texture *texture, const uint8_t id, int &windowWidth, int &windowHeight, Car& car);
     ~CarSprite() = default; //TODO: free surface?

@@ -9,7 +9,7 @@
 
 #define FONT_HEIGHT 69
 
-#define DIGIT_WIDTH  44
+#define DIGIT_WIDTH  43
 
 #define LOCAL_WIDTH 127
 #define LOCALX 465

@@ -114,25 +114,30 @@ std::shared_ptr<ClientUpdate> ClientProtocol::parseWorldUpdate(const std::functi
         uint16_t id;
         receiveBytes(&id, sizeof(id));
         id = ntohs(id);
+
         uint16_t x;
         receiveBytes(&x, sizeof(x));
         x = ntohs(x);
         float xFloat = float(x);
         xFloat = xFloat/1000.0;
+
         uint16_t y;
         receiveBytes(&y, sizeof(y));
         y = ntohs(y);
         float yFloat = float(y);
         yFloat = y/1000.0;
+
         uint16_t angleSign;
         receiveBytes(&angleSign, sizeof(angleSign));
         angleSign = ntohs(angleSign);
+
         uint16_t angle;
         receiveBytes(&angle, sizeof(angle));
         angle = ntohs(angle);
         float angleFloat = float(angle);
-        angleFloat = angleFloat/1000.0;
-        Car car(id, xFloat, yFloat, angleSign, angleFloat);
+        angleFloat = angleFloat / 1000.0 * angleSign;
+
+        Car car(id, xFloat, yFloat, angleFloat);
         clientCars.emplace_back(car);
     }
 
