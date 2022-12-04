@@ -111,5 +111,5 @@ void GameLoop::popUpdates() {
     }
 }
 void GameLoop::update(float dt) {
-    wv.update(dt);
+//    wv.update(dt);
 }
