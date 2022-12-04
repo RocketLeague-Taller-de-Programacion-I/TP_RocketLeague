@@ -209,11 +209,11 @@ void Car::update() {
         goLeft();
     }
     if(X() > 38.0) {
-        this->m_car->SetTransform(b2Vec2(38.0, 1.0), true);
-        m_car->ApplyLinearImpulseToCenter(b2Vec2(5,0), true);
+        this->m_car->SetTransform(b2Vec2(38.0, Y()), true);
+        m_car->ApplyLinearImpulseToCenter(b2Vec2(-5,0), true);
     }
     if(X() < 0.5) {
-        this->m_car->SetTransform(b2Vec2(0.5, 1.0), true);
+        this->m_car->SetTransform(b2Vec2(0.5, Y()), true);
         m_car->ApplyLinearImpulseToCenter(b2Vec2(5,0), true);
     }
 }
