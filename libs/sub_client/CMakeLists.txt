@@ -64,6 +64,6 @@ add_library(lib_client
         client_sdl/Car.h
         client_sdl/Score.cpp
         client_sdl/Score.h
-        client_sdl/Ball.h)
+        client_sdl/Ball.h client_sdl/ScoreSprite.cpp client_sdl/ScoreSprite.h client_sdl/CarSprite.cpp client_sdl/CarSprite.h client_sdl/BallSprite.cpp client_sdl/BallSprite.h)
 
 target_link_libraries(lib_client SDL2pp::SDL2pp Qt5::Widgets)

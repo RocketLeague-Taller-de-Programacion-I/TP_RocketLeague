@@ -59,9 +59,7 @@ void GameRenderer::run() {
         textures.emplace("scoreBoardTexture", &scoreBoardTexture);
 
 
-        std::map<uint8_t, GameSprite> sprites;
-
-        Worldview worldview(textures, sprites);
+        Worldview worldview(textures, Width, Height);
         GameLoop gameLoop(id, renderer, Width, Height, updatesQueue, actionsQueue, worldview);
         gameLoop.run();
     } catch (const std::exception &e) {
