@@ -13,7 +13,7 @@ ServerJoinRoom::execute(std::function<void(ProtectedQueue<std::shared_ptr<Server
 
     uint8_t returnCode = manager.joinGame(id, roomName, startThreadsCallable) ? OK : ERROR_FULL;
     std::shared_ptr<ServerUpdate> update = std::make_shared<ServerJoinACK>(id, returnCode);
-    update->beSerialized(&protocolo, sendCallable);
+//    update->beSerialized(&protocolo, sendCallable);
 }
 
 void ServerJoinRoom::execute(Match &match) {}

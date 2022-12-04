@@ -87,10 +87,8 @@ std::vector<int> Match::info() {
         data.push_back((id));
         auto carX = (uint16_t) (player.second->X() * 1000);
         data.push_back((carX));
-
         auto carY = (uint16_t) (player.second->Y() * 1000);
         data.push_back((carY));
-
         uint16_t angle = (uint16_t) abs(player.second->angleDeg() * 1000);
         // get sign bit from angle
         uint8_t sign = (player.second->angleDeg() < 0) ? 1 : 0;

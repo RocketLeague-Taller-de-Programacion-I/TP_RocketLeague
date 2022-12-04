@@ -39,7 +39,6 @@ void Game::run() {
     while (not finished) {
         //check if time of match's usleep reached 3 minutes
         //TODO: check if clientManager are still alive
-
         if (match.isFinished()){
             finished = true;
             break;

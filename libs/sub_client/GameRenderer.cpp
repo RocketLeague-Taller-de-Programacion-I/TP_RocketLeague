@@ -12,7 +12,7 @@ void GameRenderer::run() {
     BlockingQueue<std::optional<std::shared_ptr<ClientAction>>> actionsQueue;
     ProtectedQueue<std::shared_ptr<ClientUpdate>> updatesQueue;
 
-    sender = new ThreadActionsSender(skt_client, actionsQueue);
+    sender = new ActionsSenderThread(skt_client, actionsQueue);
     receiver = new UpdatesReceiverThread(skt_client, updatesQueue);
 
     startThreads();
@@ -35,6 +35,8 @@ void GameRenderer::run() {
         std::cout << "QT finalizó correctamente con: " << qt_return << std::endl;
 
         SDL sdl(SDL_INIT_VIDEO);
+        //inizialize ttf library
+        SDL2pp::SDLTTF ttf;
         SDL_DisplayMode DM;
         SDL_GetCurrentDisplayMode(0, &DM);
         auto Width = 1544;
@@ -44,24 +46,30 @@ void GameRenderer::run() {
         SDL_SetWindowResizable(sdlWindow.Get(), SDL_FALSE);
         // Creo renderer
         Renderer renderer(sdlWindow, -1, SDL_RENDERER_SOFTWARE);
+
+        //textures
         Texture carTexture(renderer, SDL2pp::Surface("../images/car.png").SetColorKey(true, 0));
         Texture ballTexture(renderer, SDL2pp::Surface("../images/ball.png").SetColorKey(true, 0));
         Texture fieldTexture(renderer, SDL2pp::Surface("../images/field.png").SetColorKey(true, 0));
-        Texture scoreBoardTexture(renderer, SDL2pp::Surface("../images/clock.png"));
+//        Texture scoreBoardTexture(renderer, SDL2pp::Surface("../images/clock.png"));
 
-        //render field
+        //setting tfont for score
+        int fontsize = 50;
+        Color color(255, 255, 255);
+        std::string fontpath = "../images/fonts/Jost-500-Medium.ttf";
+        std::string text = "0 1 2 3 4 5 6 7 8 9 - Local Visitor";
+        Font font(fontpath.c_str(), fontsize);
+        Surface text_surface = font.RenderText_Solid(text, color);
+        // create a texture from the surface
+        Texture scoreTexture(renderer,text_surface);
 
-        SDL_RenderCopy(renderer.Get(), fieldTexture.Get(), NULL, NULL);
-        SDL_RenderPresent(renderer.Get());
         textures.emplace("carTexture", &carTexture);
         textures.emplace("ballTexture", &ballTexture);
         textures.emplace("fieldTexture", &fieldTexture);
-        textures.emplace("scoreBoardTexture", &scoreBoardTexture);
+//        textures.emplace("scoreBoardTexture", &scoreBoardTexture);
+        textures.emplace("scoreTexture", &scoreTexture);
 
-
-        std::map<uint8_t, GameSprite> sprites;
-
-        Worldview worldview(textures, sprites);
+        Worldview worldview(textures, Width, Height);
         GameLoop gameLoop(id, renderer, Width, Height, updatesQueue, actionsQueue, worldview);
         gameLoop.run();
     } catch (const std::exception &e) {
