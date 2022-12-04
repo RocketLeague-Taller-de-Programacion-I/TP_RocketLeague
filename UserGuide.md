@@ -15,22 +15,30 @@ $ git clone https://github.com/RocketLeague-Taller-de-Programacion-I/TP_RocketLe
 #### Step Two
 Init and update the submodule.
 ```
-$ git submodule init
-$ git submodule update
+$ cd RocketLeague 
+RocketLeague$ git submodule init
+RocketLeague$ git submodule update
 ```
 #### Step Three
 Then build the project.
 
 We will use the [cmake](https://cmake.org/download/) tool to build and compile the project.
 ```
-cd RocketLeague
-mkdir build
-cd build
-cmake ..
-make -j4
+$ cd RocketLeague
+$ mkdir build
+$ cd build
+build$ cmake ..
+build$ make -j4
 ```
 #### Step Four
-Start to play
+Start to play between two player.
+
+Init server first.
 ```
-cd ./client
+build$ ./server_main <serv>
+```
+Then, init two client.
+```
+build$ ./client_main <port> <serv>
+build$ ./client_main <port> <serv>
 ```
