@@ -1,11 +1,5 @@
-//
-// Created by franco on 24/10/22.
-//
 
-#include <iostream>
 #include "sub_server/Server.h"
-//  Cada vez que queramos hacer include de box2d
-#include "box2d/box2d.h"
 
 int main(int argc, char const *argv[]) {
     if (argc != 2) {
@@ -15,6 +9,14 @@ int main(int argc, char const *argv[]) {
     try {
         Server server(argv[1]);
         server.start();
+
+        std::string input;
+        while (std::getline(std::cin, input)) {
+            if (input == "q") {
+                break;
+            }
+        }
+        server.stop();
         server.join();
     } catch (const std::exception& e) {
         std::cerr << e.what() << std::endl;

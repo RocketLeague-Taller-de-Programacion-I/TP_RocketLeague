@@ -13,7 +13,7 @@ public:
     ~ServerStartedGameACK() override = default;
 
     uint8_t getType() const override;
-    void beSerialized(ServerProtocolo *protocolo) override;
+    void beSerialized(ServerProtocolo *protocolo, std::function<void(void *, unsigned int)> &sendCallable) override;
 };
 
 

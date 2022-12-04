@@ -1,7 +1,7 @@
 // Copyright 2022 Sprenger Roberta
 
-#ifndef ROCKETLEAGUE_RENDERTHREAD_H
-#define ROCKETLEAGUE_RENDERTHREAD_H
+#ifndef ROCKETLEAGUE_GAMERENDERER_H
+#define ROCKETLEAGUE_GAMERENDERER_H
 
 #include <atomic>
 #include <utility>
@@ -19,7 +19,6 @@
 #include <SDL2pp/Texture.hh>
 #include <SDL2pp/Surface.hh>
 
-#include "sub_common/thread.h"
 #include "sub_common/socket.h"
 #include "sub_common/liberror.h"
 
@@ -28,22 +27,22 @@
 
 #include "sub_client/client_qt/mainwindow.h"
 
-class RenderThread : public Thread {
+class GameRenderer {
 private:
     Socket skt_client;
-
+    ThreadActionsSender* sender;
+    UpdatesReceiverThread* receiver;
 protected:
-//    ProtectedQueue<std::shared_ptr<ClientUpdate>> updatesQueue;
-//    BlockingQueue<std::shared_ptr<ClientAction>> actionsQueue;
     std::map<std::string,SDL2pp::Texture*> textures;
-    void run() override;
 public:
-    void stop() override;
-    explicit RenderThread();
+    GameRenderer(const char *host, const char *port);
+    ~GameRenderer();
 
-    ~RenderThread() override;
+    void run();
+    void stop();
 
-    RenderThread(const char *host, const char *port);
+    void cleanThreads();
+    void startThreads();
 };
 
-#endif  //  ROCKETLEAGUE_RENDERTHREAD_H
+#endif  //  ROCKETLEAGUE_GAMERENDERER_H

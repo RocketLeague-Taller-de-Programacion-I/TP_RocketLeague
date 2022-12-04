@@ -5,8 +5,8 @@
 #include "ServerJoinACK.h"
 #include "sub_server/ServerProtocolo.h"
 
-void ServerJoinACK::beSerialized(ServerProtocolo *protocolo) {
-    protocolo->serializeJoinACK(this);
+void ServerJoinACK::beSerialized(ServerProtocolo *protocolo, std::function<void(void *, unsigned int)> &sendCallable) {
+    protocolo->serializeJoinACK(this, sendCallable);
 }
 
 uint8_t ServerJoinACK::getType() const {

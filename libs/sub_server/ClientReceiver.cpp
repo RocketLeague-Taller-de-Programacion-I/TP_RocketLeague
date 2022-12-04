@@ -13,16 +13,15 @@ ClientReceiver::ClientReceiver(Socket &skt_client, ProtectedQueue<std::shared_pt
 void ClientReceiver::run() {
     try {
         while (!closed) {
-            uint8_t byte_to_read;
+            uint8_t actionType;
 
-            this->skt_client.recvall(&byte_to_read, sizeof(byte_to_read), &closed);
+            this->skt_client.recvall(&actionType, sizeof(actionType), &closed);
 
-            std::function<void(std::vector<uint8_t>&, uint8_t&)> bytes_receiver_callable =
+            std::function<void(void *bytes_to_read, int size)> bytes_receiver_callable =
                     std::bind(&ClientReceiver::receiveBytes, this, std::placeholders::_1 ,std::placeholders::_2);
 
-            // form the Action from the data
-            auto action = ServerProtocolo::deserializeData(idClient, byte_to_read, bytes_receiver_callable);
-            // push the action to the queue
+            auto action = ServerProtocolo::deserializeData(idClient, actionType, bytes_receiver_callable);
+
             updatesQueue->push(action);
         }
     } catch (const std::exception &e) {
@@ -31,24 +30,15 @@ void ClientReceiver::run() {
         std::cerr << "Error desconocido en la función receiver" << std::endl;
     }
 }
-void ClientReceiver::stop() {}
 
-void ClientReceiver::setQueue(ProtectedQueue<std::shared_ptr<ServerAction>> *pQueue) {
-    clearQueue();
-    this->updatesQueue = pQueue;
-}
-void ClientReceiver::receiveBytes(std::vector<uint8_t>& bytes_to_read, uint8_t& size) {
+void ClientReceiver::receiveBytes(void *bytes_to_read, int size) {
     if(!closed) {
-        this->skt_client.recvall(bytes_to_read.data(), size, &closed);
+        this->skt_client.recvall(bytes_to_read, size, &closed);
     }
 }
 
-void ClientReceiver::clearQueue() {
-    std::queue<std::shared_ptr<ServerAction>> elements = this->updatesQueue->popAll();
+void ClientReceiver::stop() {
+    closed = true;
 }
 
-ClientReceiver::~ClientReceiver() {
-    delete this->updatesQueue;
-    closed = false;
-    this->join();
-}
+ClientReceiver::~ClientReceiver() {}

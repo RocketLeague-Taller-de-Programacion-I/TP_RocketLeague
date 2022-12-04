@@ -162,12 +162,12 @@ Car::~Car() {
 
 //  OK
 void Car::check_y_pos() {
-    if (Y() > 6) { return; }
+    if (Y() > 5) { return; }
     if (Y() > 3) {
-        m_car->ApplyForce(b2Vec2(0, 120), m_car->GetWorldCenter(), true);
+        m_car->ApplyForce(b2Vec2(0, 3000), m_car->GetWorldCenter(), true);
         return;
     }
-    m_car->ApplyForce(b2Vec2(0, 200), m_car->GetWorldCenter(), true);
+    m_car->ApplyForce(b2Vec2(0, 5000), m_car->GetWorldCenter(), true);
 }
 float Car::Y() {
     return this->m_car->GetPosition().y;
@@ -202,10 +202,10 @@ void Car::stopMovingLeft() {
     this->movingLeft = false;
 }
 void Car::update() {
-    if (movingRight) {
+    if (movingRight && X() < 39.9) {
         goRight();
     }
-    if (movingLeft) {
+    if (movingLeft && X() > 0.5) {
         goLeft();
     }
 }

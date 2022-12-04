@@ -12,7 +12,7 @@
 
 #define LOCALGOAL (0.005)
 #define VISITGOAL  (40.000)
-#define GOALSIZE 5
+#define GOALSIZE 2.5
 #define BALL 0x0002
 #define CAR 0x0003
 #define GROUND 0x0004
@@ -28,12 +28,13 @@ Match::Match(std::string gameName, int required) : name(std::move(gameName)), wo
     staticBody = world.CreateBody(&myBodyDef);
     b2PolygonShape polygonShape;
     fixDef.shape = &polygonShape;
+    fixDef.restitution = 0.5;
     polygonShape.SetAsBox( 20, 0.5, b2Vec2(20, 0), 0);  //ground
     myUserData->mOwningFixture = staticBody->CreateFixture(&fixDef);
     fixDef.filter.groupIndex = GROUND;
     myUserData->mOwningFixture->SetFilterData(fixDef.filter);
-    //  Creo ball
-    this->ball = new Ball(&this->world, 0.7);
+    //  Balls creation
+    this->ball = new Ball(&this->world, 1);
 }
 
 
@@ -54,9 +55,10 @@ void Match::step() {
     for ( std::pair<const uint8_t,Car*> &player : players){
         player.second->update();
     }
-    this->world.Step(0.15, 42, 3);
-    usleep(0.015*1000000);
-    //  enviar a todos los clientes la respuesta
+    checkGoals();
+    this->world.Step(BX2D_TIMESTEP, BX2D_VELOCITY_ITERATIONS, BX2D_POSITION_ITERATIONS);
+    usleep(USECONDS_TO_SLEEP);
+    timeElapsed += USECONDS_TO_SLEEP;
 }
 
 void Match::moveRight(uint8_t &id, bool state) {
@@ -65,7 +67,6 @@ void Match::moveRight(uint8_t &id, bool state) {
     } else {
         this->players.at(id)->stopMovingRight();
     }
-    // info(
 }
 
 std::vector<int> Match::info() {
@@ -131,4 +132,8 @@ int Match::local() {
 }
 int Match::visit() {
     return this->goalsVisit;
+}
+
+bool Match::isFinished() {
+    return timeElapsed >= (unsigned int)TIME_TO_PLAY;
 }

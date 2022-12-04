@@ -2,7 +2,6 @@
 // Created by franco on 03/11/22.
 //
 
-#include <map>
 #include <unistd.h>
 #include "GameLoop.h"
 #include "sub_client/client_actions/ClientActionMove.h"
@@ -10,9 +9,11 @@
 #include "Score.h"
 #include "sub_client/client_updates/ClientUpdateWorld.h"
 
+#define EVENTS_X_FRAME 10
+
 GameLoop::GameLoop(uint8_t &id, SDL2pp::Renderer &renderer, int xMax, int yMax,
                    ProtectedQueue<std::shared_ptr<ClientUpdate>> &updates,
-                   BlockingQueue<std::shared_ptr<ClientAction>> &actions, Worldview &wv)
+                   BlockingQueue<std::optional<std::shared_ptr<ClientAction>>> &actions, Worldview &wv)
         : id(id),
           renderer(renderer),
           updatesQueue(updates),
@@ -23,8 +24,6 @@ GameLoop::GameLoop(uint8_t &id, SDL2pp::Renderer &renderer, int xMax, int yMax,
           wv(wv){}
 
 void GameLoop::run() {
-    // Gameloop, notar como tenemos desacoplado el procesamiento de los inputs (handleEvents)
-    // del update del modelo.
     while (running) {
         handle_events();
         //pop from updates queue
@@ -40,32 +39,53 @@ void GameLoop::run() {
 bool GameLoop::handle_events() {
     SDL_Event event;
 
-    while(SDL_PollEvent(&event)){
+    for (int i = 0; i < EVENTS_X_FRAME; ++i) {
+        if(!SDL_PollEvent(&event)) {
+            continue;
+        }
         switch(event.type) {
-            case SDL_KEYDOWN: {
-                // ¿Qué pasa si mantengo presionada la tecla?
-                auto &keyEvent = (SDL_KeyboardEvent&) event;
-                if(keyEvent.keysym.sym == SDLK_ESCAPE) {
-                    running = false;
-                    break;
-                }
-                uint8_t movement = directionMap.at(keyEvent.keysym.sym);
-                std::shared_ptr<ClientAction> action = std::make_shared<ClientActionMove>(id, movement, ON);
-                actionsQueue.push(action);
-            } // Fin KEY_DOWN
-                break;
-            case SDL_KEYUP: {
-                SDL_KeyboardEvent& keyEvent = (SDL_KeyboardEvent&) event;
+            case SDL_KEYDOWN:
+                {
+                    //catch every other key down that is not in the map
+                    if(directionMap.count(event.key.keysym.sym) == 0) {
+                        continue;
+                    }
+                    //if the key is already down, do nothing
+                    if(keyDownStateMap[event.key.keysym.sym]) {
+                        continue;
+                    }
+                    std::cout << "key down: " << (int) keyDownStateMap[event.key.keysym.sym] << std::endl;
 
-                uint8_t movement = directionMap.at(keyEvent.keysym.sym);
-                std::shared_ptr<ClientAction> action = std::make_shared<ClientActionMove>(id, movement, OFF);
-                actionsQueue.push(action);
-            }// Fin KEY_UP
+                    uint8_t movement = directionMap.at(event.key.keysym.sym);
+                    std::shared_ptr<ClientAction> action = std::make_shared<ClientActionMove>(id, movement, ON);
+                    std::optional<std::shared_ptr<ClientAction>> optAction = action;
+                    actionsQueue.push(optAction);
+
+                    // set the key down state to true
+                    keyDownStateMap[event.key.keysym.sym] = true;
+                }
+                break;
+            case SDL_KEYUP:
+                {
+                    if(directionMap.count(event.key.keysym.sym) == 0) {
+                        continue;
+                    }
+
+                    uint8_t movement = directionMap.at(event.key.keysym.sym);
+                    std::shared_ptr<ClientAction> action = std::make_shared<ClientActionMove>(id, movement, OFF);
+                    std::optional<std::shared_ptr<ClientAction>> optAction = action;
+                    actionsQueue.push(optAction);
+                    std::cout << "key up: " << (int) keyDownStateMap[event.key.keysym.sym] << std::endl;
+
+                    keyDownStateMap[event.key.keysym.sym] = false;
+                }
+                break;
+
             case SDL_QUIT:
                 running = false;
                 break;
-        } // fin switch(event)
-    } // fin while(SDL_PollEvents)
+        }
+    }
     return true;
 }
 
@@ -73,23 +93,21 @@ void GameLoop::render() {
     renderer.SetDrawColor(0x00, 0x00, 0x00);
     renderer.Clear();
     wv.render(renderer);
-    //    player.render(renderer);
     renderer.Present();
 }
 
 void GameLoop::popUpdates() {
-    // TODO: implement swap between queues
-    std::shared_ptr<ClientUpdate> update;
-    while (!updatesQueue.tryPop(update)) {
-        Ball ball = update->getBall();
-        std::cout << "Ball: " << (int)ball.getX() << " " << (int)ball.getY() << std::endl;
-        Score score = update->getScore();
-        std::cout << "Score: " << (int)score.getLocal() << " " << (int)score.getVisitor() << std::endl;
+    std::queue<std::shared_ptr<ClientUpdate>> updates = updatesQueue.popAll();
 
-        std::vector<Car> players = update->getCars();
-        for (auto &player : players) {
-            std::cout << "Player: " << (int)player.getX() << " " << (int)player.getY() << std::endl;
-        }
+    std::shared_ptr<ClientUpdate> update;
+
+    while(!updates.empty()) {
+        update = updates.front();
+        Ball ball = update->getBall();
+        Score score = update->getScore();
+        std::vector<Car> cars = update->getCars();
+        wv.updateSprites(ball, score, cars);
+        updates.pop();
     }
 }
 void GameLoop::update(float dt) {

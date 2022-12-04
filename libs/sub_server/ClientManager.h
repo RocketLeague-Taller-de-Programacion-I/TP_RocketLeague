@@ -1,14 +1,17 @@
-//
-// Created by lucaswaisten on 07/11/22.
-//
 #pragma once
 
 #ifndef ROCKETLEAGUE_CLIENTMANAGER_H
 #define ROCKETLEAGUE_CLIENTMANAGER_H
 
+#include <iostream>
+#include <memory>
+#include <functional>
+#include <atomic>
+
 #include "gameManager.h"
 #include "../sub_common/thread.h"
 #include "../sub_common/socket.h"
+#include "../sub_common/liberror.h"
 #include "ServerProtocolo.h"
 #include "sub_common/BlockingQueue.h"
 #include "ClientReceiver.h"
@@ -20,24 +23,33 @@ private:
     GameManager &gameManager;
     bool closed;
     uint8_t id;
+    std::atomic<bool> shouldContinueLooping;
+    std::atomic<bool> disconnected;
     ClientReceiver *clientReceiverThread;
     ClientSender *clientSenderThread;
-public:
 
-    ClientManager(Socket &aClient, GameManager &aGameManager);
+public:
+    ClientManager(uint8_t &id, Socket &aClient, GameManager &aGameManager);
     ~ClientManager() override;
     void run() override;
+
     void stop() override;
 
     bool joinThread();
 
-    bool endManager();
+    void endManager();
 
-    void attendClient(unsigned long aId);
+    void startClientThreads(ProtectedQueue<std::shared_ptr<ServerAction>> *qReceiver, BlockingQueue<std::optional<std::shared_ptr<ServerUpdate>>> *senderQueue);
 
-    void startClientThreads(ProtectedQueue<std::shared_ptr<ServerAction>> *qReceiver, BlockingQueue<std::shared_ptr<ServerUpdate>> *senderQueue);
+    void waitClientThreads();
 
-    BlockingQueue<std::shared_ptr<ServerUpdate>> * setQueues(ProtectedQueue<std::shared_ptr<ServerAction>> *gameQueue);
+    uint8_t getId();
+
+    void receiveBytes(void *bytes_to_receive, int sizeToReceive);
+
+    void sendBytes(void *bytes_to_send, unsigned int size);
+
+    bool isDisconnected();
 };
 
 

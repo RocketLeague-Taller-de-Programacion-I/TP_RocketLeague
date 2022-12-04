@@ -19,12 +19,12 @@ enum action_type {
     MOVE
 };
 
-enum direction {
-    RIGHT_D,
-    LEFT_D,
-    JUMP_D,
-    DOWN_D,
-    TURBO_D
+enum direction: uint8_t {
+    RIGHT_D = 0,
+    LEFT_D = 1,
+    JUMP_D = 2,
+    DOWN_D = 3,
+    TURBO_D = 4
 } ;
 enum state : bool {
     ON = true,

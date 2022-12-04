@@ -53,13 +53,6 @@ std::shared_ptr<ClientUpdate> ClientProtocol::parseListUpdate(
     uint8_t returnCode;
     receiveBytes(&returnCode, sizeof(returnCode));
 
-
-    if (returnCode == ERROR_FULL) {
-        std::map<std::string,std::string> games;
-        std::shared_ptr<ClientUpdate> update = std::make_shared<ClientListACK>(id, returnCode, games);
-        return update;
-    }
-
     uint8_t cantGames;
     receiveBytes(&cantGames, sizeof(cantGames));
 
@@ -82,10 +75,6 @@ std::shared_ptr<ClientUpdate> ClientProtocol::parseListUpdate(
         games[gameName] = std::to_string(playersOnLine) + "/" + std::to_string(capacity);
     }
 
-    uint16_t test;
-    receiveBytes(&test, sizeof(test));
-    test = ntohs(test);
-
     std::shared_ptr<ClientUpdate> update = std::make_shared<ClientListACK>(id, returnCode, games);
     return update;
 }
@@ -96,12 +85,14 @@ std::shared_ptr<ClientUpdate> ClientProtocol::parseWorldUpdate(const std::functi
     receiveBytes(&ballX, sizeof(ballX));
     ballX = ntohs(ballX);
     ballXFloat = ballX/1000.0;
+
     uint16_t ballY;
     float ballYFloat;
     receiveBytes(&ballY, sizeof(ballY));
     ballY = ntohs(ballY);
     ballYFloat = ballY/1000.0;
     Ball ball(ballXFloat, ballYFloat);
+
     //  Score
     uint16_t local;
     receiveBytes(&local, sizeof(local));
@@ -110,6 +101,7 @@ std::shared_ptr<ClientUpdate> ClientProtocol::parseWorldUpdate(const std::functi
     receiveBytes(&visit, sizeof(visit));
     visit = ntohs(visit);
     Score score(local, visit);
+
     //  n_clients
     uint16_t n_clients;
     receiveBytes(&n_clients, sizeof(n_clients));
@@ -159,7 +151,7 @@ void ClientProtocol::serializeCreateRoom(ActionCreateRoom *action) {
     std::string name = action->getGameName();
     std::vector<uint8_t> nameVector(name.begin(), name.end());
 
-    sendBytes(nameVector.data(), nameVector.size());
+    sendBytes(nameVector.data(), (nameVector.size()));
 }
 
 void ClientProtocol::serializeJoinRoom(ActionJoinRoom *action) {
@@ -168,7 +160,7 @@ void ClientProtocol::serializeJoinRoom(ActionJoinRoom *action) {
 
     std::string name = action->getRoomName();
     std::vector<uint8_t> nameVector(name.begin(), name.end());
-    sendBytes(nameVector.data(), nameVector.size());
+    sendBytes(nameVector.data(), (nameVector.size()));
 }
 
 void ClientProtocol::serializeListRooms(ActionListRooms *action) {
