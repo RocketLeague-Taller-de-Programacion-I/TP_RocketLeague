@@ -10,7 +10,7 @@ class GameManager; //TODO: reveer esto
 #include <cstdint>
 #include <string>
 #include <functional>
-
+#include <optional>
 #include "sub_common/BlockingQueue.h"
 #include "sub_common/ProtectedQueue.h"
 #include "sub_server/server_updates/ServerUpdate.h"
