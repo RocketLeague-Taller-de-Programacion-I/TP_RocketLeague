@@ -2,7 +2,11 @@
 #define ROCKETLEAGUE_CARSPRITE_H
 
 #include "GameSprite.h"
-#include "Animation.h"
+#include "sub_client/client_sdl/Animation.h"
+
+#define PXM 37 //  Pixeles por metro
+#define CAR_W_PX 67
+#define CAR_H_PX 30
 
 class CarSprite : public GameSprite {
 private:
@@ -10,7 +14,7 @@ private:
     int carHeight;
 
     Animation an;
-    bool facingLeft;
+    bool facingWhere;
     int positionX;
     int positionY;
     uint16_t angleSign;

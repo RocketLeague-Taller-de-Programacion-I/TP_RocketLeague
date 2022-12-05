@@ -2,10 +2,10 @@
 #define ROCKETLEAGUE_GAMESPRITE_H
 
 #include "libSDL2pp/SDL2pp/SDL2pp.hh"
-#include "Ball.h"
-#include "Score.h"
-#include "GameTime.h"
-#include "Car.h"
+#include "sub_client/client_sdl/Ball.h"
+#include "sub_client/client_sdl/Score.h"
+#include "sub_client/client_sdl/GameTime.h"
+#include "sub_client/client_sdl/Car.h"
 
 class GameSprite {
 protected:

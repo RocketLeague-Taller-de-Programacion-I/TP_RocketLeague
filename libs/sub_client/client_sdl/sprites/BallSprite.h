@@ -2,7 +2,10 @@
 #define ROCKETLEAGUE_BALLSPRITE_H
 
 #include "GameSprite.h"
+#define PXM 37 //  Pixeles por metro
 
+#define BALL_W_PX 55
+#define BALL_H_PX 48
 class BallSprite : public GameSprite {
 private:
     SDL2pp::Texture &texture;

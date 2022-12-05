@@ -1,8 +1,9 @@
-//
-// Created by roby on 27/11/22.
-//
-
 #include "ServerActionMove.h"
+
+ServerActionMove::ServerActionMove(const uint8_t &id, uint8_t &direction, bool &state) :
+        ServerAction(id),
+        direction(direction),
+        state(state) {}
 
 void ServerActionMove::execute(Match &match) {
     switch (direction) {
@@ -20,8 +21,3 @@ void ServerActionMove::execute(Match &match) {
             break;
     }
 }
-
-ServerActionMove::ServerActionMove(const uint8_t &id, uint8_t &direction, bool &state) :
-        ServerAction(id),
-        direction(direction),
-        state(state) {}

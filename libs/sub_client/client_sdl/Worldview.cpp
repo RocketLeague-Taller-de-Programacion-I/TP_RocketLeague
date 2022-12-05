@@ -3,13 +3,9 @@
 Worldview::Worldview(std::map<std::string, SDL2pp::Texture *> textures, int &windowWidth, int &windowHeight) :
         textures(std::move(textures)),
         windowWidth(windowWidth),
-        windowHeight(windowHeight){}
-
-//void Worldview::update(float dt) {
-//    for (auto &sprite : mapSprites) {
-//        sprite.second.update(dt);
-//    }
-//}
+        windowHeight(windowHeight){
+    onlinePlayers = 0;
+}
 
 void Worldview::render(Renderer &renderer) {
     //  render field
@@ -50,6 +46,7 @@ void Worldview::updateSprites(Ball &ball, Score &score, GameTime &gameTime, std:
             std::string carColor = (id % 2 == 0) ? RED_CAR_TEXT : BLUE_CAR_TEXT;
             auto carSprite = new CarSprite(textures[carColor], id, windowWidth, windowHeight, player);
             mapSprites.insert(std::pair<uint8_t, GameSprite*>(id, carSprite));
+            onlinePlayers++;
         } else {
             mapSprites.at(id)->updateSprite(player);
         }

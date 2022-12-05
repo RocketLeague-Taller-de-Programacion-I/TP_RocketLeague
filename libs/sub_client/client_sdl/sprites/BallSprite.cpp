@@ -1,7 +1,3 @@
-//
-// Created by roby on 04/12/22.
-//
-
 #include "BallSprite.h"
 
 BallSprite::BallSprite(SDL2pp::Texture *texture, const uint8_t id, int &windowWidth, int &windowHeight, Ball &ball) :
@@ -15,8 +11,8 @@ void BallSprite::render(SDL2pp::Renderer &renderer) {
 }
 
 void BallSprite::updateSprite(Ball &ball) {
-    positionX = ball.getX();
-    positionY = ball.getY();
+    positionX = (ball.getX() * PXM) - BALL_W_PX/2; // TODO: check in match the size of the sensors
+    positionY = windowHeight - (ball.getY() * PXM) - BALL_H_PX/2;
 
     ballWidth = texture.GetWidth();
     ballHeight = texture.GetHeight();

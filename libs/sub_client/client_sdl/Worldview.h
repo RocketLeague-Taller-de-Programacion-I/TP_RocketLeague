@@ -4,10 +4,10 @@
 #include "libSDL2pp/SDL2pp/SDL2pp.hh"
 #include <map>
 
-#include "BallSprite.h"
-#include "ScoreSprite.h"
-#include "CarSprite.h"
-#include "GameTimeSprite.h"
+#include "sub_client/client_sdl/sprites/BallSprite.h"
+#include "sub_client/client_sdl/sprites/ScoreSprite.h"
+#include "sub_client/client_sdl/sprites/CarSprite.h"
+#include "sub_client/client_sdl/sprites/GameTimeSprite.h"
 
 #define BALL_TEXT "ballTexture"
 #define RED_CAR_TEXT "redCarTexture"
@@ -28,6 +28,7 @@ class Worldview {
 private:
     std::map<std::string, Texture *> textures;
     std::map<uint8_t, GameSprite*> mapSprites;
+    int onlinePlayers;
     int windowWidth;
     int windowHeight;
 public:

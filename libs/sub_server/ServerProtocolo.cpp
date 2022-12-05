@@ -10,11 +10,7 @@ command_t ServerProtocolo::getMapCommand(uint32_t action) {
 
 std::shared_ptr<ServerAction> ServerProtocolo::deserializeData(const uint8_t &id, const uint8_t &type,
                                                                const std::function<void(void *, int)> &receiveBytes) {
-    switch (type) {
-        case MOVE:
-            return parseUpdateAction(receiveBytes);
-    }
-    return {};
+    return parseUpdateAction(receiveBytes);
 }
 
 std::shared_ptr<ServerAction> ServerProtocolo::parseUpdateAction(const std::function<void(void *, int)> &receiveBytes) {
