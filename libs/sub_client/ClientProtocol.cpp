@@ -138,7 +138,7 @@ std::shared_ptr<ClientUpdate> ClientProtocol::parseWorldUpdate(const std::functi
         receiveBytes(&angle, sizeof(angle));
         angle = ntohs(angle);
         float angleFloat = float(angle);
-        angleFloat = angleFloat / 1000.0 * angleSign;
+        angleFloat = angleFloat / 1000.0 *  (angleSign ? 1 : -1);
 
         uint16_t facingWhere;  // 0 right, 1 left
         receiveBytes(&facingWhere, sizeof(facingWhere));
