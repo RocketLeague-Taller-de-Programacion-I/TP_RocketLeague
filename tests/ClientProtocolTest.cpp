@@ -158,60 +158,118 @@ TEST_CASE("ClientProtocol can deserialize ListACK update", "[clientProtocol]") {
     }
 }
 /*
- * Defino los mock a utilizar en JoinACK
- * mockListOK
- *      atributos:
- *          - ballX = 0
- *          - ballY = 0
- *          - score_local = 0
- *          - score_visit = 0
- *          - n_clients = 1
- *          - id = 1
- *          - x_pos = 100
- *          - y_pos = 200
- *          - angleSign = 0
- *          - angle = 60
- * mockListERROR
- *      atributos:
- *          - id = 1
- *          - retunCode = ERROR_FULL
+ * WorldACK update
+ * Explain data:
+ * [x_ball, y_ball, local, visitor, time, n_client, [player_data]]
+ * [player_data] = [id,x_car,y_car,angle_sing,angle,facing_where]
+ *
  */
-std::vector<uint16_t> dataTestOne = {2000, 3000, 2, 0, 1, 1, 0, 0, 0, 0};
+std::vector<uint16_t> dataTestOne = {10, 10, 2, 0, 1, 1, 2, 200, 330, 1, 80,0};
 MockClientProtocol mockWorldOneOK(dataTestOne);
-std::vector<uint16_t> dataTestTwo = {0, 0, 0, 0, 1, 1, 2000, 4000, 0, 60};
+
+std::vector<uint16_t> dataTestTwo = {20,20, 3, 2, 5, 1, 3, 400, 500, 1, 30,1};
 MockClientProtocol mockWorldTwoOK(dataTestTwo);
 
 TEST_CASE("ClientProtocol can deserialize WorldACK update", "[clientProtocol]") {
 
-    SECTION("Update WorldACK with ball in position (0,0) and score (0,0)") {
+    SECTION("Update WorldACK with dataTestOne") {
         std::function<void(void *, int)> bytes_receiver_callable =
                 [](void * retuncode, int size) { mockWorldOneOK.receiveBytesWorld(retuncode,size); };
 
-        auto update = ClientProtocol::deserializeData(WORLD,
-                                                      bytes_receiver_callable);
+        auto update = ClientProtocol::deserializeData(WORLD,bytes_receiver_callable);
+
+        REQUIRE(update->getType() == WORLD);
+        /*
+         * Ball Assert
+         */
         auto ball = update->getBall();
-        auto score = update->getScore();
         auto x = (int)(ball.getX()*1000);
         auto y = (int)(ball.getY()*1000);
 
-      //  REQUIRE(ball.getX() == 2000);
-       // REQUIRE(ball.getY() == 3000);
+        REQUIRE(x == 10);
+        REQUIRE(y == 10);
+
+        /*
+         * Score Assert
+         */
+        auto score = update->getScore();
+
         REQUIRE(score.getLocal() == 2);
         REQUIRE(score.getVisitor() == 0);
+
+        /*
+         * Cars Assert
+         */
+        auto cars = update->getCars();
+
+        auto x_car = (int)(cars[0].getX()*1000);
+        auto y_car = (int)(cars[0].getY()*1000);
+        auto angle  = (int) (cars[0].getAngle() * 1000);
+        auto facing  = cars[0].getFacing();
+        auto id = cars[0].getId();
+
+        REQUIRE(id == 2);
+        REQUIRE(x_car == 200);
+        REQUIRE(y_car == 330);
+        REQUIRE(angle == 80);
+        REQUIRE(facing == 0);
+
+        /*
+         * Time Assert
+         */
+        auto gametime = update->getTime();
+        auto time = gametime.getTime();
+        REQUIRE(time == 1);
     }
 
-    SECTION("Update WorldACK with car in position (200,400) and angle 60 degrees") {
+    SECTION("Update WorldACK with dataTestOne") {
         std::function<void(void *, int)> bytes_receiver_callable =
                 [](void * retuncode, int size) { mockWorldTwoOK.receiveBytesWorld(retuncode,size); };
 
-        auto update = ClientProtocol::deserializeData(WORLD,
-                                                      bytes_receiver_callable);
+        auto update = ClientProtocol::deserializeData(WORLD,bytes_receiver_callable);
+
+        REQUIRE(update->getType() == WORLD);
+        /*
+         * Ball Assert
+         */
+        auto ball = update->getBall();
+        auto x = (int)(ball.getX()*1000);
+        auto y = (int)(ball.getY()*1000);
+
+        REQUIRE(x == 20);
+        REQUIRE(y == 20);
+
+        /*
+         * Score Assert
+         */
+        auto score = update->getScore();
+
+        REQUIRE(score.getLocal() == 3);
+        REQUIRE(score.getVisitor() == 2);
+
+        /*
+         * Cars Assert
+         */
         auto cars = update->getCars();
-       // auto x = (int)(cars[0].getX()*1000);
-      //  auto y = (int)(cars[0].getY()*1000);
-        //REQUIRE(x == 2000);
-       // REQUIRE(y == 4000);
-        REQUIRE((int)(cars[0].getAngle()*1000) == 60);
+
+        auto x_car = (int)(cars[0].getX()*1000);
+        auto y_car = (int)(cars[0].getY()*1000);
+        auto angle  = (int) (cars[0].getAngle() * 1000);
+        auto facing  = cars[0].getFacing();
+        auto id = cars[0].getId();
+
+        REQUIRE(id == 3);
+        REQUIRE(x_car == 400);
+        REQUIRE(y_car == 500);
+        REQUIRE(angle == 30);
+        REQUIRE(facing == 1);
+
+        /*
+         * Time Assert
+         */
+        auto gametime = update->getTime();
+        auto time = gametime.getTime();
+        REQUIRE(time == 5);
     }
 }
 /*
@@ -254,6 +312,7 @@ TEST_CASE("ClientProtocol serialize ActionCreateRoom","[clientProtocol]"){
 
     serverProtocol.serializeAction(action);
 
+    REQUIRE(action->getType() == CREATE );
     REQUIRE(mock.getCapacity() == 1);
     REQUIRE(mock.getSizeName() == name.size());
     REQUIRE(mock.getName( name.size()) == name);
@@ -266,6 +325,7 @@ TEST_CASE("ClientProtocol serialize ActionJoinRoom","[clientProtocol]"){
 
     serverProtocol.serializeAction(action);
 
+    REQUIRE(action->getType() == JOIN );
     REQUIRE(mock.getSizeName() == name.size());
     REQUIRE(mock.getName( name.size()) == name);
 }
@@ -274,7 +334,8 @@ TEST_CASE("ClientProtocol serialize ActionListRoom","[clientProtocol]"){
     std::shared_ptr<ClientAction> action = std::make_shared<ActionListRooms>();
 
     serverProtocol.serializeAction(action);
-    REQUIRE(true == true);
+
+    REQUIRE(action->getType() == LIST );
 }
 
 TEST_CASE("ClientProtocol serialize ActionMove","[clientProtocol]"){
@@ -285,6 +346,7 @@ TEST_CASE("ClientProtocol serialize ActionMove","[clientProtocol]"){
 
     serverProtocol.serializeAction(action);
 
+    REQUIRE(action->getType() == MOVE );
     REQUIRE(mock.getId() == id);
     REQUIRE(mock.getDirection() == direction);
     REQUIRE(mock.getState() == true);
