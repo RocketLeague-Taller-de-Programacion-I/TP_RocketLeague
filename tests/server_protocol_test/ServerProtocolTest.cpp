@@ -1,11 +1,14 @@
 //
 // Created by lucaswaisten on 29/11/22.
 //
-#include <catch2/catch_test_macros.hpp>
+#include "Catch2/src/catch2/catch_test_macros.hpp"
 #include <functional>
-#include "MockServerProtocol.h"
 #include "sub_server/ServerProtocolo.h"
 #include "sub_server/gameManager.h"
+#include "MockMoveProtocol.h"
+#include "MockActionProtocol.h"
+#include "MockUpdateProtocol.h"
+#include "MockUpdateWorldProtocol.h"
 
 /*
  * Test unitario de protocolo
@@ -13,7 +16,7 @@
  *      - Se testea la serializacion de la action a data.
  */
 
-MockServerProtocol mockCreate(2, "test");
+MockActionProtocol mockCreate(2, "test");
 
 TEST_CASE("ServerProtocol can deserialize create action", "[serverProtocol]") {
     uint8_t id = 1,type=CREATE_ROOM;
@@ -34,7 +37,7 @@ TEST_CASE("ServerProtocol can deserialize create action", "[serverProtocol]") {
     }
 }
 
-MockServerProtocol mockJoin( "testJoin");
+MockActionProtocol mockJoin("testJoin");
 TEST_CASE("ServerProtocol can deserialize join action", "[serverProtocol]") {
     uint8_t id = 4,type=JOIN_ROOM;
     GameManager manager;
@@ -52,7 +55,7 @@ TEST_CASE("ServerProtocol can deserialize join action", "[serverProtocol]") {
     }
 }
 
-MockServerProtocol mockList;
+MockActionProtocol mockList;
 TEST_CASE("ServerProtocol can deserialize list action", "[serverProtocol]") {
     uint8_t id = 2,type=LIST_ROOMS;
     GameManager manager;
@@ -68,18 +71,18 @@ TEST_CASE("ServerProtocol can deserialize list action", "[serverProtocol]") {
     }
 }
 
-MockServerProtocol mockMove;
+MockMoveProtocol mockMove(1,2,0);
+
 TEST_CASE("ServerProtocol can deserialize move action", "[serverProtocol]") {
     uint8_t id = 2,type=MOVE;
     GameManager manager;
     SECTION("ListAction with return code OK") {
         std::function<void(void *, int)> bytes_receiver_callable =
-                [](void *toRead, int size) { mockMove.receiveDataMove(toRead, size); };
+                [](void *toRead, int size) { mockMove.receiveData(toRead, size); };
 
-        auto action =  std::reinterpret_pointer_cast<ServerActionMove>(ServerProtocolo::deserializeData(id,
-                                                                                                                type,
-                                                                                                                bytes_receiver_callable));
-        REQUIRE(action->getId() == 2);
+        auto action = ServerProtocolo::deserializeData(
+                bytes_receiver_callable);
+        REQUIRE(action->getId() == 1);
     }
 }
 
@@ -87,9 +90,9 @@ TEST_CASE("ServerProtocol can deserialize move action", "[serverProtocol]") {
  * SERIALIZE TEST
  */
 
-MockServerProtocol mock;
+MockUpdateProtocol mock;
 std::function<void(void *, unsigned int)> sendBytes =
-        [](void * retuncode, unsigned int size) { mock.sendBytesMock(retuncode,size); };
+        [](void * retuncode, unsigned int size) { mock.sendBytes(retuncode,size); };
 ServerProtocolo serverProtocol;
 
 TEST_CASE("ServerProtocol serialize CreateACK update","[serverProtocol]"){
@@ -126,12 +129,12 @@ TEST_CASE("ServerProtocol serialize ListACK update","[serverProtocol]"){
     REQUIRE(mock.getRetunCode() == OK);
 }
 
-MockServerProtocol mockWorld;
+MockUpdateWorldProtocol mockWorld;
 std::vector<int> data = {10,10,3,2,1,
                          1,10,10,60,1,
                          2,10,10,60,1,};
 std::function<void(void *, unsigned int)> sendBytesWorld =
-        [](void * retuncode, unsigned int size) { mockWorld.sendBytesMockWorld(retuncode,size); };
+        [](void * retuncode, unsigned int size) { mockWorld.sendBytes(retuncode,size); };
 
 TEST_CASE("ServerProtocol serialize WordlACK update","[serverProtocol]"){
     std::shared_ptr<ServerUpdate> update = std::make_shared<ServerUpdateWorld>(data);
