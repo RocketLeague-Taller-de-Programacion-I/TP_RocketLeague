@@ -11,6 +11,19 @@ Developers:
 * [Cuppari, Franco](https://github.com/francupp9-12)
 * [Waisten, Lucas](https://github.com/LucasWaisten)
 
+## Supported Platforms and Tools
+### C++ Support
+
+| Dimension   | Supported Version | 
+|-------------|-------------------|
+| Ubuntu      | >= 18.04          |
+| C++ Version | >= 17             | 
+| CMake       | >= 3.16           | 
+| GCC         | >= 7.3.1          | 
+| Catch2      | >= 1.11.0         |
+| Box2D       | >= 2.4.0          |
+| libSDLpp    | >= 0.17.0         |
+
 ## Getting Started
 
 See the [RocketLeague User's Guide](https://github.com/RocketLeague-Taller-de-Programacion-I/TP_RocketLeague/blob/main/UserGuide.md) for
@@ -19,15 +32,14 @@ documentation.
 ## Features
 
 *   ClientProtocol and ServerProtocol unit test % 100
-*   
-*   
-*  
-*  
-*  
-*  
-*  
-*   
-*   
+* 
+* 
+* 
+* 
+* 
+* 
+* 
+* 
+* 
 
-## Supported Platforms
 
