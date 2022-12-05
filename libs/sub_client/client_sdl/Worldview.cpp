@@ -51,8 +51,38 @@ void Worldview::updateSprites(Ball &ball, Score &score, GameTime &gameTime, std:
             mapSprites.at(id)->updateSprite(player);
         }
     }
+    //clean ids that are on the mapSprites but not in the players vector
+    cleanDisconnected(players);
+}
+
+void Worldview::cleanDisconnected(std::vector<Car> &players) {
+    std::vector<uint8_t> idsToDelete;
+    for (auto & sprite : mapSprites) {
+        uint8_t id = sprite.first;
+        if (id != BALL && id != SCORE && id != TIME) {
+            bool found = false;
+            for (auto & player : players) {
+                if (player.getId() == id) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                delete sprite.second;
+                idsToDelete.push_back(id);
+                onlinePlayers--;
+            }
+        }
+    }
+    for (auto & id : idsToDelete) {
+        mapSprites.erase(id);
+    }
 }
 
 
 // TODO: check if we need to destroy textures
-Worldview::~Worldview() = default;
+Worldview::~Worldview() {
+    for (auto & sprite : mapSprites) {
+        delete sprite.second;
+    }
+}

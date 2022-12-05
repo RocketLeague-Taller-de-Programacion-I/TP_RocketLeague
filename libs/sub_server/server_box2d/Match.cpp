@@ -43,12 +43,9 @@ void Match::addPlayer(uint8_t &id) {
     this->playersConnected++;
 }
 
-Match::~Match() {
-    for ( std::pair<const uint8_t,Car*> &player : players){
-        delete player.second;
-        player.second = nullptr;
-    }
-    delete this->ball;
+void Match::removePlayer(uint8_t &id) {
+    this->players.erase(id);
+    this->playersConnected--;
 }
 
 void Match::step() {
@@ -102,6 +99,7 @@ std::vector<int> Match::info() {
     }
     return data;
 }
+
 void Match::moveLeft(uint8_t &id, bool state) {
     if(state == ON) {
         this->players.at(id)->startMovingLeft();
@@ -114,12 +112,12 @@ void Match::jump(uint8_t &id, bool state) {
         this->players.at(id)->jump();
     }
 }
-
 void Match::turbo(uint8_t &id, bool state) {
     if(state == ON) {
         this->players.at(id)->turbo();
     }
 }
+
 void Match::checkGoals() {
     if (this->ball->X() <= LOCALGOAL and this->ball->Y() <= GOALSIZE) {  //  LOCALGOAL es el arco del local
         this->goalsVisit++;
@@ -136,7 +134,14 @@ int Match::local() {
 int Match::visit() {
     return this->goalsVisit;
 }
-
 bool Match::isFinished() {
     return timeElapsed >= (unsigned int)TIME_TO_PLAY;
+}
+
+Match::~Match() {
+    for ( std::pair<const uint8_t,Car*> &player : players){
+        delete player.second;
+        player.second = nullptr;
+    }
+    delete this->ball;
 }

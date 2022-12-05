@@ -69,7 +69,10 @@ ProtectedQueue<std::shared_ptr<ServerAction>> * Game::getQueue() {
 
 void Game::broadcastUpdate(std::optional<std::shared_ptr<ServerUpdate>> &update) {
     for (auto & sender : mapSender) {
-        sender.second->push(update);
+        //if sender is null then the client disconnected
+        if (sender.second) {
+            sender.second->push(update);
+        }
     }
 }
 
@@ -79,6 +82,7 @@ bool Game::hasPlayer(uint8_t idPlayer) {
 
 void Game::deletePlayer(uint8_t idPlayer) {
     mapSender.erase(idPlayer);
+    match.removePlayer(idPlayer);
     playerOnLine--;
     finished = (playerOnLine == 0);
 }

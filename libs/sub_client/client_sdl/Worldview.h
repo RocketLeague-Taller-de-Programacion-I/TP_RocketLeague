@@ -38,6 +38,8 @@ public:
     void update(float dt);
 
     void updateSprites(Ball &ball, Score &score, GameTime &gameTime, std::vector<Car> &players);
+
+    void cleanDisconnected(std::vector<Car> &players);
 };
 
 

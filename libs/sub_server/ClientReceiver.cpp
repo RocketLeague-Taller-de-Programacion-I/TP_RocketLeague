@@ -1,7 +1,3 @@
-//
-// Created by lucaswaisten on 12/11/22.
-//
-
 #include "ClientReceiver.h"
 
 
@@ -15,8 +11,9 @@ void ClientReceiver::run() {
         while (!closed) {
             uint8_t actionType;
 
-            this->skt_client.recvall(&actionType, sizeof(actionType), &closed);
-
+            if (this->skt_client.recvall(&actionType, sizeof(actionType), &closed)<= 0) {
+                throw LibError(1, "Client disconnected");
+            }
             std::function<void(void *bytes_to_read, int size)> bytes_receiver_callable =
                     std::bind(&ClientReceiver::receiveBytes, this, std::placeholders::_1 ,std::placeholders::_2);
 
@@ -25,7 +22,9 @@ void ClientReceiver::run() {
             updatesQueue->push(action);
         }
     } catch (const std::exception &e) {
-        std::cerr << e.what() << std::endl;
+//        std::cerr << e.what() << std::endl;
+        closed = true;
+        return;
     } catch (...) {
         std::cerr << "Error desconocido en la función receiver" << std::endl;
     }

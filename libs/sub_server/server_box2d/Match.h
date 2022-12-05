@@ -42,27 +42,25 @@ private:
     MyContactListener listener;
     unsigned int timeElapsed = 0;
 public:
-    Match(std::string name, int required);
-    ~Match();
-    void addPlayer(uint8_t &id);
-
-    void moveRight(uint8_t  &id, bool state);
     std::vector<int> info();
 
-    void moveLeft(uint8_t &id, bool state);
+    Match(std::string name, int required);
+    ~Match();
 
+    void addPlayer(uint8_t &id);
+    void removePlayer(uint8_t &id);
+
+    void moveRight(uint8_t  &id, bool state);
+    void moveLeft(uint8_t &id, bool state);
     void jump(uint8_t &id, bool state);
+    void turbo(uint8_t &id, bool state);
+
     void checkGoals();
     void step();
     int visit();
     int local();
-    void turbo(uint8_t &id, bool state);
-
-
 
     bool isFinished();
-
-
 };
 
 

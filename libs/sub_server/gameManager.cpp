@@ -68,6 +68,7 @@ void GameManager::deletePlayer(uint8_t idPlayer) {
             // if player was deleted, delete game if is empty
             if (game.second->isFinished()) {
                 game.second->stop();
+                game.second->join();
                 delete game.second;
                 games.erase(game.first);
             }
