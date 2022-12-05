@@ -90,10 +90,11 @@ std::vector<int> Match::info() {
         data.push_back((carX));
         int carY = (int) (player.second->Y() * 1000);
         data.push_back((carY));
-        int angle = (int) abs(player.second->angleDeg() * 1000);
-        // get sign bit from angle
+
         int sign = (player.second->angleDeg() < 0) ? 1 : 0;
+        int angle = (int) abs(player.second->angleDeg() * 1000);
         int facing = player.second->facingWhere();
+
         data.push_back((sign));
         data.push_back((angle));
         data.push_back(facing);

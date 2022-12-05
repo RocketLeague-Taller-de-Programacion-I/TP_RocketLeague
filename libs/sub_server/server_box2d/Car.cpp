@@ -23,6 +23,7 @@
 
 Car::Car(b2World* world, uint8_t& id) : id(id), turboOn(false), movingLeft(false), movingRight(false), facingRight(true) {
     b2Vec2 vertices[8];
+
     vertices[0].Set(-1.5f, -.25f);
     vertices[1].Set(1.5f, -.25f);
     vertices[2].Set(-1.5f, 1.f);
