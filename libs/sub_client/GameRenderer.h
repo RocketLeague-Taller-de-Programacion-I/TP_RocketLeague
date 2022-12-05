@@ -43,6 +43,7 @@ public:
 
     void cleanThreads();
     void startThreads();
+
 };
 
 #endif  //  ROCKETLEAGUE_GAMERENDERER_H

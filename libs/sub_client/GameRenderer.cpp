@@ -3,6 +3,8 @@
 #include <QApplication>
 #include "GameRenderer.h"
 #include "sub_client/client_sdl/Worldview.h"
+
+#define MUSIC_VOLUME 15
 using namespace SDL2pp;
 
 GameRenderer::GameRenderer(const char *host, const char *port) : skt_client(host, port){}
@@ -31,12 +33,21 @@ void GameRenderer::run() {
         if (qt_return) {
             throw std::runtime_error("La aplicación QT finalizó de forma incorrecta");
         }
-        // Initialize SDL library
         std::cout << "QT finalizó correctamente con: " << qt_return << std::endl;
 
-        SDL sdl(SDL_INIT_VIDEO);
+        // Initialize SDL library
+        SDL sdl(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
         //inizialize ttf library
-        SDL2pp::SDLTTF ttf;
+        SDLTTF ttf;
+        //initialize sdl mixer library
+        Mixer mixer(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096);
+
+        //The music that will be played
+        Music *music = NULL;
+        music = new Music("../assets/sounds/backgroundMusic.mp3");
+        mixer.SetMusicVolume(MUSIC_VOLUME);
+        mixer.FadeInMusic(*music);
+        // Open a window
         SDL_DisplayMode DM;
         SDL_GetCurrentDisplayMode(0, &DM);
         auto Width = 1544;
@@ -48,10 +59,10 @@ void GameRenderer::run() {
         Renderer renderer(sdlWindow, -1, SDL_RENDERER_SOFTWARE);
 
         //textures
-        Texture blueCarTexture(renderer, SDL2pp::Surface("../assets/blueCar.png").SetColorKey(true, 0));
-        Texture redCarTexture(renderer, SDL2pp::Surface("../assets/redCar.png").SetColorKey(true, 0));
-        Texture ballTexture(renderer, SDL2pp::Surface("../assets/ball.png").SetColorKey(true, 0));
-        Texture fieldTexture(renderer, SDL2pp::Surface("../assets/field.png").SetColorKey(true, 0));
+        Texture blueCarTexture(renderer, SDL2pp::Surface("../assets/images/blueCar.png").SetColorKey(true, 0));
+        Texture redCarTexture(renderer, SDL2pp::Surface("../assets/images/redCar.png").SetColorKey(true, 0));
+        Texture ballTexture(renderer, SDL2pp::Surface("../assets/images/ball.png").SetColorKey(true, 0));
+        Texture fieldTexture(renderer, SDL2pp::Surface("../assets/images/field.png").SetColorKey(true, 0));
 
         //setting tfont for score
         int fontsize = 50;
@@ -73,6 +84,9 @@ void GameRenderer::run() {
         Worldview worldview(textures, Width, Height);
         GameLoop gameLoop(id, renderer, Width, Height, updatesQueue, actionsQueue, worldview);
         gameLoop.run();
+
+        //free everything
+        mixer.HaltMusic();
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
     } catch (...) {
