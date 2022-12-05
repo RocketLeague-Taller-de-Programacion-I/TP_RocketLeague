@@ -29,8 +29,8 @@ add_library(lib_client
         GameRenderer.h
         client_sdl/Worldview.cpp
         client_sdl/Worldview.h
-        client_sdl/GameSprite.cpp
-        client_sdl/GameSprite.h
+        client_sdl/sprites/GameSprite.cpp
+        client_sdl/sprites/GameSprite.h
         UpdatesReceiverThread.cpp
         UpdatesReceiverThread.h
         ActionsSenderThread.cpp
@@ -64,6 +64,16 @@ add_library(lib_client
         client_sdl/Car.h
         client_sdl/Score.cpp
         client_sdl/Score.h
-        client_sdl/Ball.h client_sdl/ScoreSprite.cpp client_sdl/ScoreSprite.h client_sdl/CarSprite.cpp client_sdl/CarSprite.h client_sdl/BallSprite.cpp client_sdl/BallSprite.h)
+        client_sdl/Ball.h
+        client_sdl/sprites/ScoreSprite.cpp
+        client_sdl/sprites/ScoreSprite.h
+        client_sdl/sprites/CarSprite.cpp
+        client_sdl/sprites/CarSprite.h
+        client_sdl/sprites/BallSprite.cpp
+        client_sdl/sprites/BallSprite.h
+        client_sdl/sprites/GameTimeSprite.cpp
+        client_sdl/sprites/GameTimeSprite.h
+        client_sdl/GameTime.cpp
+        client_sdl/GameTime.h)
 
 target_link_libraries(lib_client SDL2pp::SDL2pp Qt5::Widgets)

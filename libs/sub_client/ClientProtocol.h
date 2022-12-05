@@ -1,7 +1,3 @@
-//
-// Created by roby on 22/11/22.
-//
-
 #ifndef ROCKETLEAGUE_CLIENTPROTOCOL_H
 #define ROCKETLEAGUE_CLIENTPROTOCOL_H
 

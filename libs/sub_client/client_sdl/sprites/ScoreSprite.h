@@ -1,7 +1,3 @@
-//
-// Created by roby on 03/12/22.
-//
-
 #ifndef ROCKETLEAGUE_SCORESPRITE_H
 #define ROCKETLEAGUE_SCORESPRITE_H
 
@@ -9,7 +5,7 @@
 
 #define FONT_HEIGHT 69
 
-#define DIGIT_WIDTH  44
+#define DIGIT_WIDTH  43
 
 #define LOCAL_WIDTH 127
 #define LOCALX 465
@@ -32,6 +28,7 @@ public:
     ~ScoreSprite() = default;
 
     void updateSprite(Score &score) override;
+    void updateSprite(GameTime &time) override {};
     void updateSprite(Car &car) override {};
     void updateSprite(Ball &ball) override {};
     void render(SDL2pp::Renderer &renderer) override;

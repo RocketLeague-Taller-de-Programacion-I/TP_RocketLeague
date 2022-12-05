@@ -37,7 +37,6 @@ float Ball::Y() const {
 }
 void Ball::restartGame() const {
     m_body->SetTransform(b2Vec2(20,10),m_body->GetAngle());
-    m_body->ApplyLinearImpulseToCenter(b2Vec2(0,2), true);
 }
 
 Ball::~Ball() { }

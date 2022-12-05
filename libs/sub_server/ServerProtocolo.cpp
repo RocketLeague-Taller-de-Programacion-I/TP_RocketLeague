@@ -10,11 +10,7 @@ command_t ServerProtocolo::getMapCommand(uint32_t action) {
 
 std::shared_ptr<ServerAction> ServerProtocolo::deserializeData(const uint8_t &id, const uint8_t &type,
                                                                const std::function<void(void *, int)> &receiveBytes) {
-    switch (type) {
-        case MOVE:
-            return parseUpdateAction(receiveBytes);
-    }
-    return {};
+    return parseUpdateAction(receiveBytes);
 }
 
 std::shared_ptr<ServerAction> ServerProtocolo::parseUpdateAction(const std::function<void(void *, int)> &receiveBytes) {
@@ -95,6 +91,10 @@ ServerProtocolo::serializeWorldUpdate(ServerUpdateWorld *update, std::function<v
     sendBytes(&local, sizeof(local));
     sendBytes(&visit, sizeof(visit));
 
+    //  Tiempo restante
+    uint16_t time = (uint16_t) htons(matchInfo[5]);
+    sendBytes(&time, sizeof(time));
+
     //  Numero de Clientes
     uint16_t n_clients = (uint16_t) htons(matchInfo[4]);
     sendBytes(&n_clients, sizeof(n_clients));
@@ -102,7 +102,7 @@ ServerProtocolo::serializeWorldUpdate(ServerUpdateWorld *update, std::function<v
     int vSize = matchInfo.size();
 
     //  Clientes
-    for (int i = 5; i<vSize; i++) {
+    for (int i = 6 ; i<vSize; i++) {
         uint16_t carInfo = (uint16_t) htons(matchInfo[i]);
         sendBytes(&carInfo, sizeof(carInfo));
     }

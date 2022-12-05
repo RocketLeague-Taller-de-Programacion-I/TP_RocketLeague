@@ -18,7 +18,7 @@ MainWindow::MainWindow(uint8_t &id, QWidget *parent, ProtectedQueue<std::shared_
     this->scene.setSceneRect(0,0,1500,750);
 
     ui->view->setScene(&scene);
-    ui->view->setStyleSheet("border-image: url(../images/rocketLig.jpg);");
+    ui->view->setStyleSheet("border-image: url(../assets/rocketLig.jpg);");
     this->lineEdit = findChild<QLineEdit*>("lineEditName");
     this->cantPlayers = findChild<QSpinBox*>("cantPlayers");
     this->label = findChild<QLabel*>("label");
@@ -32,7 +32,7 @@ void MainWindow::start() {
     this->label->hide();
 
     //set menu background
-    ui->view->setStyleSheet("border-image: url(../images/menu.png);");
+    ui->view->setStyleSheet("border-image: url(../assets/menu.png);");
 
     drawGUI();
 }
@@ -165,7 +165,7 @@ void MainWindow::drawGUI() {
 
 void MainWindow::displayMainMenu() {
     //set menu background
-    ui->view->setStyleSheet("border-image: url(../images/rocketLig.jpg);");
+    ui->view->setStyleSheet("border-image: url(../assets/rocketLig.jpg);");
     this->lineEdit->show();
     this->cantPlayers->hide();
     this->label->hide();
@@ -245,7 +245,7 @@ void MainWindow::drawLoadingScreen() {
     this->cantPlayers->hide();
     this->label->hide();
 
-    ui->view->setStyleSheet("border-image: url(../images/loadingScreen.jpeg);");
+    ui->view->setStyleSheet("border-image: url(../assets/loadingScreen.jpeg);");
 
     // create the title text
     auto *titleText = new QGraphicsTextItem(QString("Waiting for more players to join"));

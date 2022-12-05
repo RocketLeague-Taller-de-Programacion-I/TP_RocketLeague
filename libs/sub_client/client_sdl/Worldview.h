@@ -4,12 +4,14 @@
 #include "libSDL2pp/SDL2pp/SDL2pp.hh"
 #include <map>
 
-#include "BallSprite.h"
-#include "ScoreSprite.h"
-#include "CarSprite.h"
+#include "sub_client/client_sdl/sprites/BallSprite.h"
+#include "sub_client/client_sdl/sprites/ScoreSprite.h"
+#include "sub_client/client_sdl/sprites/CarSprite.h"
+#include "sub_client/client_sdl/sprites/GameTimeSprite.h"
 
 #define BALL_TEXT "ballTexture"
-#define CAR_TEXT "carTexture"
+#define RED_CAR_TEXT "redCarTexture"
+#define BLUE_CAR_TEXT "blueCarTexture"
 #define FIELD_TEXT "fieldTexture"
 #define SCORE_TEXT "scoreTexture"
 
@@ -18,7 +20,7 @@ using namespace SDL2pp;
 enum ids {
     BALL  = 0,
     SCORE = 1,
-    FIELD = 2
+    TIME = 2
 };
 
 
@@ -26,6 +28,7 @@ class Worldview {
 private:
     std::map<std::string, Texture *> textures;
     std::map<uint8_t, GameSprite*> mapSprites;
+    int onlinePlayers;
     int windowWidth;
     int windowHeight;
 public:
@@ -34,7 +37,9 @@ public:
     void render(SDL2pp::Renderer &renderer);
     void update(float dt);
 
-    void updateSprites(Ball &ball, Score &score, std::vector<Car> &players);
+    void updateSprites(Ball &ball, Score &score, GameTime &gameTime, std::vector<Car> &players);
+
+    void cleanDisconnected(std::vector<Car> &players);
 };
 
 

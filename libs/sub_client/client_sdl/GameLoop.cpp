@@ -105,8 +105,9 @@ void GameLoop::popUpdates() {
         update = updates.front();
         Ball ball = update->getBall();
         Score score = update->getScore();
+        GameTime gameTime = update->getTime();
         std::vector<Car> cars = update->getCars();
-        wv.updateSprites(ball, score, cars);
+        wv.updateSprites(ball, score, gameTime, cars);
         updates.pop();
     }
 }

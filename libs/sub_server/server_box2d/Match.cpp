@@ -12,7 +12,7 @@
 
 #define LOCALGOAL (0.005)
 #define VISITGOAL  (40.000)
-#define GOALSIZE 2.5
+#define GOALSIZE 1.5
 #define BALL 0x0002
 #define CAR 0x0003
 #define GROUND 0x0004
@@ -43,12 +43,9 @@ void Match::addPlayer(uint8_t &id) {
     this->playersConnected++;
 }
 
-Match::~Match() {
-    for ( std::pair<const uint8_t,Car*> &player : players){
-        delete player.second;
-        player.second = nullptr;
-    }
-    delete this->ball;
+void Match::removePlayer(uint8_t &id) {
+    this->players.erase(id);
+    this->playersConnected--;
 }
 
 void Match::step() {
@@ -81,6 +78,9 @@ std::vector<int> Match::info() {
     data.push_back((this->goalsVisit));
 //    numero de clientes 2 bytes
     data.push_back((this->playersConnected));
+//    tiempo restante
+    uint16_t time = (TIME_TO_PLAY - timeElapsed)/1000000;
+    data.push_back(time);
 //    cliente 7bytes
     for ( auto &player : players){
         uint16_t  id = (uint16_t) player.first;
@@ -92,11 +92,14 @@ std::vector<int> Match::info() {
         uint16_t angle = (uint16_t) abs(player.second->angleDeg() * 1000);
         // get sign bit from angle
         uint8_t sign = (player.second->angleDeg() < 0) ? 1 : 0;
+        uint8_t facing = player.second->facingWhere();
         data.push_back((sign));
-        data.push_back((angle)); //  1er byte
+        data.push_back((angle));
+        data.push_back(facing);
     }
     return data;
 }
+
 void Match::moveLeft(uint8_t &id, bool state) {
     if(state == ON) {
         this->players.at(id)->startMovingLeft();
@@ -109,18 +112,18 @@ void Match::jump(uint8_t &id, bool state) {
         this->players.at(id)->jump();
     }
 }
-
 void Match::turbo(uint8_t &id, bool state) {
     if(state == ON) {
         this->players.at(id)->turbo();
     }
 }
+
 void Match::checkGoals() {
-    if (this->ball->X() <= LOCALGOAL && this->ball->Y() <= GOALSIZE) {  //  LOCALGOAL es el arco del local
+    if (this->ball->X() <= LOCALGOAL and this->ball->Y() <= GOALSIZE) {  //  LOCALGOAL es el arco del local
         this->goalsVisit++;
         this->ball->restartGame();
     }
-    else if (this->ball->X() >= VISITGOAL && this->ball->Y() <= GOALSIZE) {  //  VISITGOAL es el arco del visitante
+    else if (this->ball->X() >= VISITGOAL and this->ball->Y() <= GOALSIZE) {  //  VISITGOAL es el arco del visitante
         this->goalsLocal++;
         this->ball->restartGame();
     }
@@ -131,7 +134,14 @@ int Match::local() {
 int Match::visit() {
     return this->goalsVisit;
 }
-
 bool Match::isFinished() {
     return timeElapsed >= (unsigned int)TIME_TO_PLAY;
+}
+
+Match::~Match() {
+    for ( std::pair<const uint8_t,Car*> &player : players){
+        delete player.second;
+        player.second = nullptr;
+    }
+    delete this->ball;
 }

@@ -1,11 +1,6 @@
-//
-// Created by franco on 24/10/22.
-//
-
 #include "Server.h"
-#include "box2d/b2_world.h"
 
-#define INITIAL_ID_PLAYER 2
+#define INITIAL_ID_PLAYER 3
 
 Server::Server(const char *port)
         : closed(false),
@@ -25,7 +20,7 @@ void Server::run() {
 
             idPlayer++;
 
-            garbageCollector(gameManager);
+//            garbageCollector(gameManager);
         }
     } catch (...) {}
     cleanManagers();

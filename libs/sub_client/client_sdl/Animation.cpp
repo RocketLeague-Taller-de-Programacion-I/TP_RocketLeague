@@ -39,12 +39,12 @@ void Animation::update(float dt) {
  */
  //  TODO: Revisar
 
-void Animation::render(SDL2pp::Renderer &renderer, const SDL2pp::Rect dst, SDL_RendererFlip &flipType) {
+void Animation::render(SDL2pp::Renderer &renderer, const SDL2pp::Rect dst, SDL_RendererFlip &flipType, int &angle) {
     renderer.Copy(
             texture,
             SDL2pp::NullOpt,
             dst,
-            0.0,                // don't rotate
+            angle,                // don't rotate
             SDL2pp::NullOpt,    // rotation center - not needed
             flipType
     );

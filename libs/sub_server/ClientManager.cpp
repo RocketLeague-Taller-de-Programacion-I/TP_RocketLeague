@@ -51,6 +51,7 @@ void ClientManager::sendBytes(void* bytes_to_send, unsigned int size) {
 void ClientManager::waitClientThreads() {
     clientReceiverThread->join();
     clientSenderThread->join();
+    gameManager.deletePlayer(id);
     delete clientReceiverThread;
     delete clientSenderThread;
     closed = true;

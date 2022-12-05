@@ -16,13 +16,13 @@ void ScoreSprite::render(SDL2pp::Renderer &renderer) {
     SDL2pp::Rect visitorTextDst(windowWidth / 2 + VISITOR_DST_X, 0, VISITOR_WIDTH, FONT_HEIGHT);
     renderer.Copy(texture, visitorTextSrc, visitorTextDst);
 
-    SDL2pp::Rect xSrc(DIGIT_WIDTH * localGoals, 0 , DIGIT_WIDTH, FONT_HEIGHT);
-    SDL2pp::Rect xDst(windowWidth/2 - 3*DIGIT_WIDTH/2, 0, DIGIT_WIDTH, FONT_HEIGHT);
-    renderer.Copy(texture,xSrc,xDst);
+    SDL2pp::Rect localGoalsSrc(DIGIT_WIDTH * localGoals, 0 , DIGIT_WIDTH, FONT_HEIGHT);
+    SDL2pp::Rect localGoalsDst(windowWidth / 2 - 3 * DIGIT_WIDTH / 2, 0, DIGIT_WIDTH, FONT_HEIGHT);
+    renderer.Copy(texture, localGoalsSrc, localGoalsDst);
 
-    SDL2pp::Rect ySrc(DIGIT_WIDTH * visitorGoals, 0 , DIGIT_WIDTH, FONT_HEIGHT);
-    SDL2pp::Rect yDst(windowWidth/2+ DIGIT_WIDTH/2 , 0, DIGIT_WIDTH, FONT_HEIGHT);
-    renderer.Copy(texture,ySrc,yDst);
+    SDL2pp::Rect visitorGoalsSrc(DIGIT_WIDTH * visitorGoals, 0 , DIGIT_WIDTH, FONT_HEIGHT);
+    SDL2pp::Rect visitorGoalsDst(windowWidth / 2 + DIGIT_WIDTH / 2 , 0, DIGIT_WIDTH, FONT_HEIGHT);
+    renderer.Copy(texture, visitorGoalsSrc, visitorGoalsDst);
 
     SDL2pp::Rect dashSrc(DASHX, 0, DASH_WIDTH, FONT_HEIGHT);
     SDL2pp::Rect dashDst(windowWidth/2 - DASH_WIDTH/2, 0, DASH_WIDTH, FONT_HEIGHT);

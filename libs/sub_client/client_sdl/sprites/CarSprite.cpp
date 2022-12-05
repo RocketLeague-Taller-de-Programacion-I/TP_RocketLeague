@@ -13,13 +13,13 @@ void CarSprite::update(float dt) {
 }
 
 void CarSprite::updateSprite(Car &car) {
-    positionX = car.getX();
-    positionY = car.getY();
+    positionX = (car.getX() * PXM) - CAR_W_PX/2;
+    positionY = windowHeight - (car.getY() * PXM) - CAR_H_PX/2;
     angle = car.getAngle();
-    angleSign = car.getSign();
+    facingWhere = car.getFacing(); //true ->left , false->right
 }
 
 void CarSprite::render(SDL2pp::Renderer &renderer) {
-    SDL_RendererFlip flip = facingLeft ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
-    an.render(renderer, SDL2pp::Rect(positionX, positionY, carWidth, carHeight), flip);
+    SDL_RendererFlip flip = (facingWhere == RIGHT) ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
+    an.render(renderer, SDL2pp::Rect(positionX, positionY, carWidth, carHeight), flip, angle);
 }

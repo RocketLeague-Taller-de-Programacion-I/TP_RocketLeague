@@ -1,7 +1,3 @@
-//
-// Created by roby on 22/11/22.
-//
-
 #include <netinet/in.h>
 #include <memory>
 #include "ClientProtocol.h"
@@ -102,39 +98,54 @@ std::shared_ptr<ClientUpdate> ClientProtocol::parseWorldUpdate(const std::functi
     visit = ntohs(visit);
     Score score(local, visit);
 
+    // Time
+    uint16_t time;
+    receiveBytes(&time, sizeof(time));
+    time = ntohs(time);
+    GameTime gameTime(time);
+
     //  n_clients
     uint16_t n_clients;
     receiveBytes(&n_clients, sizeof(n_clients));
     n_clients = ntohs(n_clients);
+
     std::vector<Car> clientCars;
     //  CLients
     for (unsigned int i = 0; i < n_clients; i++) {
         uint16_t id;
         receiveBytes(&id, sizeof(id));
         id = ntohs(id);
+
         uint16_t x;
         receiveBytes(&x, sizeof(x));
         x = ntohs(x);
         float xFloat = float(x);
         xFloat = xFloat/1000.0;
+
         uint16_t y;
         receiveBytes(&y, sizeof(y));
         y = ntohs(y);
         float yFloat = float(y);
         yFloat = y/1000.0;
+
         uint16_t angleSign;
         receiveBytes(&angleSign, sizeof(angleSign));
         angleSign = ntohs(angleSign);
+
         uint16_t angle;
         receiveBytes(&angle, sizeof(angle));
         angle = ntohs(angle);
         float angleFloat = float(angle);
-        angleFloat = angleFloat/1000.0;
-        Car car(id, xFloat, yFloat, angleSign, angleFloat);
+        angleFloat = angleFloat / 1000.0 * angleSign;
+
+        uint16_t facingWhere;  // 0 right, 1 left
+        receiveBytes(&facingWhere, sizeof(facingWhere));
+
+        Car car(id, xFloat, yFloat, angleFloat, facingWhere);
         clientCars.emplace_back(car);
     }
 
-    std::shared_ptr<ClientUpdate> update = std::make_shared<ClientUpdateWorld>(ball, score, clientCars);
+    std::shared_ptr<ClientUpdate> update = std::make_shared<ClientUpdateWorld>(ball, score, gameTime, clientCars);
     return update;
 }
 
