@@ -42,7 +42,7 @@ TEST_CASE("ServerProtocol can deserialize join action", "[serverProtocol]") {
         std::function<void(void *, int)> bytes_receiver_callable =
                 [](void *toRead, int size) { mockJoin.receiveBytes(toRead, size); };
 
-        auto action =  std::reinterpret_pointer_cast<ServerCreateRoom>(ServerProtocolo::deserializeDataOnCommand(type,
+        auto action =  std::reinterpret_pointer_cast<ServerJoinRoom>(ServerProtocolo::deserializeDataOnCommand(type,
                                                                                                                  id,
                                                                                                                  manager,
                                                                                                                  bytes_receiver_callable));
@@ -54,17 +54,31 @@ TEST_CASE("ServerProtocol can deserialize join action", "[serverProtocol]") {
 
 MockServerProtocol mockList;
 TEST_CASE("ServerProtocol can deserialize list action", "[serverProtocol]") {
-    uint8_t id = 2,type=JOIN_ROOM;
+    uint8_t id = 2,type=LIST_ROOMS;
     GameManager manager;
     SECTION("ListAction with return code OK") {
         std::function<void(void *, int)> bytes_receiver_callable =
                 [](void *toRead, int size) { mockList.receiveBytes(toRead, size); };
 
-        auto action =  std::reinterpret_pointer_cast<ServerCreateRoom>(ServerProtocolo::deserializeDataOnCommand(type,
+        auto action =  std::reinterpret_pointer_cast<ServerListRooms>(ServerProtocolo::deserializeDataOnCommand(type,
                                                                                                                  id,
                                                                                                                  manager,
                                                                                                                  bytes_receiver_callable));
+        REQUIRE(action->getId() == 2);
+    }
+}
 
+MockServerProtocol mockMove;
+TEST_CASE("ServerProtocol can deserialize move action", "[serverProtocol]") {
+    uint8_t id = 2,type=MOVE;
+    GameManager manager;
+    SECTION("ListAction with return code OK") {
+        std::function<void(void *, int)> bytes_receiver_callable =
+                [](void *toRead, int size) { mockMove.receiveDataMove(toRead, size); };
+
+        auto action =  std::reinterpret_pointer_cast<ServerActionMove>(ServerProtocolo::deserializeData(id,
+                                                                                                                type,
+                                                                                                                bytes_receiver_callable));
         REQUIRE(action->getId() == 2);
     }
 }
@@ -76,8 +90,6 @@ TEST_CASE("ServerProtocol can deserialize list action", "[serverProtocol]") {
 MockServerProtocol mock;
 std::function<void(void *, unsigned int)> sendBytes =
         [](void * retuncode, unsigned int size) { mock.sendBytesMock(retuncode,size); };
-std::function<void(void *, unsigned int)> sendBytesWorld =
-        [](void * retuncode, unsigned int size) { mock.sendBytesMockWorld(retuncode,size); };
 ServerProtocolo serverProtocol;
 
 TEST_CASE("ServerProtocol serialize CreateACK update","[serverProtocol]"){
@@ -113,17 +125,23 @@ TEST_CASE("ServerProtocol serialize ListACK update","[serverProtocol]"){
     REQUIRE(mock.getId() == id);
     REQUIRE(mock.getRetunCode() == OK);
 }
-std::vector<int> data = {0,0,2,3,2,
+
+MockServerProtocol mockWorld;
+std::vector<int> data = {10,10,3,2,1,
                          1,10,10,60,1,
                          2,10,10,60,1,};
+std::function<void(void *, unsigned int)> sendBytesWorld =
+        [](void * retuncode, unsigned int size) { mockWorld.sendBytesMockWorld(retuncode,size); };
+
 TEST_CASE("ServerProtocol serialize WordlACK update","[serverProtocol]"){
     std::shared_ptr<ServerUpdate> update = std::make_shared<ServerUpdateWorld>(data);
 
     serverProtocol.serializeUpdate(update,sendBytesWorld);
 
-    REQUIRE(mock.ballPosition() == 0);
-    REQUIRE(mock.ballPosition() == 0);
-    REQUIRE(mock.getScoreLocal() == 2);
-    REQUIRE(mock.getScoreVisitor() == 3);
+    REQUIRE( mockWorld.ballPosition() == 10);
+    REQUIRE(mockWorld.ballPosition() == 10);
+    REQUIRE(mockWorld.getScoreLocal() == 3);
+    REQUIRE(mockWorld.getScoreVisitor() == 2);
+    REQUIRE(mockWorld.getTime() == 1);
 }
 

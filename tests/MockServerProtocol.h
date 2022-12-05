@@ -36,6 +36,11 @@ public:
             data.pop();
         }
     }
+    void receiveDataMove(void *bytes_to_read, int size){
+        auto * pbytes_to_read = (uint8_t *) bytes_to_read;
+        *pbytes_to_read = data.front() ;
+        data.pop();
+    }
     void receiveBytesWorld(void *bytes_to_read, int size) {
         auto * pbytes_to_read = (uint16_t *) bytes_to_read;
         *pbytes_to_read = dataWorld.front() ;
@@ -50,34 +55,35 @@ public:
         }
     }
     void sendBytesMockWorld(void *bytes_to_read, int size) {
-        auto * pbytes_to_read = (uint8_t *) bytes_to_read;
-        data.push(*pbytes_to_read);
+        auto * pbytes_to_read = (uint16_t *) bytes_to_read;
+        auto i = htons((*pbytes_to_read));
+        dataWorld.push(i);
     }
-    uint8_t getId() {
-        uint8_t id = data.front();
+    uint16_t getId() {
+        uint16_t id = data.front();
         data.pop();
         return id;
     }
-    uint8_t getRetunCode() {
-        uint8_t code = data.front();
+    uint16_t getRetunCode() {
+        uint16_t code = data.front();
         data.pop();
         return code;
     }
 
-    uint8_t ballPosition() {
-        uint8_t code = data.front();
-        data.pop();
+    uint16_t ballPosition() {
+        uint16_t code = dataWorld.front();
+        dataWorld.pop();
         return code;
     }
 
     int getScoreLocal() {
-        uint8_t code = data.front();
-        data.pop();
+        uint8_t code = dataWorld.front();
+        dataWorld.pop();
         return code;
     }
     int getScoreVisitor() {
-        uint8_t code = data.front();
-        data.pop();
+        uint8_t code = dataWorld.front();
+        dataWorld.pop();
         return code;
     }
 
@@ -85,6 +91,12 @@ public:
         uint8_t type = data.front();
         data.pop();
         return type;
+    }
+
+    uint16_t getTime() {
+        uint8_t code = dataWorld.front();
+        dataWorld.pop();
+        return code;
     }
 
 private:
