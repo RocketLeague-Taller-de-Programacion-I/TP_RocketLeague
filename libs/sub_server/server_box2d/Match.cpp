@@ -69,9 +69,9 @@ void Match::moveRight(uint8_t &id, bool state) {
 std::vector<int> Match::info() {
     std::vector<int> data;
     //    bola -> 4bytes
-    uint16_t x = (uint16_t) (this->ball->X() * 1000);
+    int x = (int) (this->ball->X() * 1000);
     data.push_back(x);
-    uint16_t y = (uint16_t) (this->ball->Y() * 1000);
+    int y = (int) (this->ball->Y() * 1000);
     data.push_back(y);
 //    score -> 4bytes
     data.push_back((this->goalsLocal));
@@ -79,20 +79,20 @@ std::vector<int> Match::info() {
 //    numero de clientes 2 bytes
     data.push_back((this->playersConnected));
 //    tiempo restante
-    uint16_t time = (TIME_TO_PLAY - timeElapsed)/1000000;
+    int time = (TIME_TO_PLAY - timeElapsed)/1000000;
     data.push_back(time);
 //    cliente 7bytes
     for ( auto &player : players){
-        uint16_t  id = (uint16_t) player.first;
+        int  id = (int) player.first;
         data.push_back((id));
-        auto carX = (uint16_t) (player.second->X() * 1000);
+        int carX = (int) (player.second->X() * 1000);
         data.push_back((carX));
-        auto carY = (uint16_t) (player.second->Y() * 1000);
+        int carY = (int) (player.second->Y() * 1000);
         data.push_back((carY));
-        uint16_t angle = (uint16_t) abs(player.second->angleDeg() * 1000);
+        int angle = (int) abs(player.second->angleDeg() * 1000);
         // get sign bit from angle
-        uint8_t sign = (player.second->angleDeg() < 0) ? 1 : 0;
-        uint8_t facing = player.second->facingWhere();
+        int sign = (player.second->angleDeg() < 0) ? 1 : 0;
+        int facing = player.second->facingWhere();
         data.push_back((sign));
         data.push_back((angle));
         data.push_back(facing);
