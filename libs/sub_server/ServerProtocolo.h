@@ -12,6 +12,7 @@
 #include <unordered_map>
 #include <memory>
 #include <iostream>
+#include <optional>
 
 #include "server_updates/ServerCreateACK.h"
 #include "server_updates/ServerJoinACK.h"
@@ -50,8 +51,7 @@ public:
     command_t getMapCommand(uint32_t action);
     ServerProtocolo() = default;
 
-    static std::shared_ptr<ServerAction> deserializeData(const uint8_t &id, const uint8_t &type,
-                                                         const std::function<void(void *, int)> &receiveBytes);
+    static std::shared_ptr<ServerAction> deserializeData(const std::function<void(void *, int)> &receiveBytes);
     static std::shared_ptr<ServerAction>
     parseUpdateAction(const std::function<void(void *, int)> &receiveBytes);
 

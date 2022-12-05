@@ -8,8 +8,7 @@ command_t ServerProtocolo::getMapCommand(uint32_t action) {
     return this->mapCommand.at(action);
 }
 
-std::shared_ptr<ServerAction> ServerProtocolo::deserializeData(const uint8_t &id, const uint8_t &type,
-                                                               const std::function<void(void *, int)> &receiveBytes) {
+std::shared_ptr<ServerAction> ServerProtocolo::deserializeData(const std::function<void(void *, int)> &receiveBytes) {
     return parseUpdateAction(receiveBytes);
 }
 
