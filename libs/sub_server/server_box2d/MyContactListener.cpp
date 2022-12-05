@@ -18,14 +18,41 @@ void MyContactListener::BeginContact(b2Contact* contact) {
     auto typeB = reinterpret_cast<MyFixtureUserDataType*> (dataB.pointer)->mObjectType;
     //  Purple shot
     if ((typeA == 2 & typeB == 4)) {
-        float magnitude=50;
+        float magnitude=25;
         b2Vec2 force = b2Vec2((cos(fB->GetBody()->GetAngle()-4.7) * magnitude) ,(sin(fB->GetBody()->GetAngle()-4.7) * magnitude));
         fA->GetBody()->ApplyLinearImpulse(force, fA->GetBody()->GetPosition(), true);
+        //  Impulso contrario al auto
+        fB->GetBody()->ApplyLinearImpulse(-force, fB->GetBody()->GetPosition(), true);
+        return;
     }
     if ((typeB == 2 & typeA == 4)) {
-        float magnitude=50;
+        float magnitude=25;
         b2Vec2 force = b2Vec2((cos(fA->GetBody()->GetAngle()-4.7) * magnitude) ,(sin(fA->GetBody()->GetAngle()-4.7) * magnitude));
         fB->GetBody()->ApplyLinearImpulseToCenter(force, true);
+        //  Impulso contrario al auto
+        fA->GetBody()->ApplyLinearImpulse(-force, fA->GetBody()->GetPosition(), true);
+        return;
+    }
+    //  Gold shot
+    bool right = reinterpret_cast<MyFixtureUserDataType*> (dataA.pointer)->facingRight;
+    /*  En estos dos casos los autos estan mirando para la izquierda, entonces su parte trasera será la derecha,
+    * y como no hay precisión de cual es cada cuerpo (A auto o B bola ó viceversa) contemplo ambos casos.
+     */
+    if (typeA == 2 and typeB == 6 and !right) {
+        fA->GetBody()->ApplyForceToCenter(b2Vec2(2000.0,0), true);
+        return;
+    }
+    if (typeA == 6 and typeB == 2 and !right) {
+        fB->GetBody()->ApplyForceToCenter(b2Vec2(2000.0,0), true);
+        return;
+    }
+    if (typeA == 2 and typeB == 5 and right) {
+        fA->GetBody()->ApplyForceToCenter(b2Vec2(-2000.0,0), true);
+        return;
+    }
+    if (typeA == 5 and typeB == 2 and right) {
+        fB->GetBody()->ApplyForceToCenter(b2Vec2(-2000.0,0), true);
+        return;
     }
 }
 

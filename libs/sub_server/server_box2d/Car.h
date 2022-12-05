@@ -8,11 +8,12 @@
 #include "box2d/box2d.h"
 #include <iostream>
 #include <memory>
-
+class Car;
 struct MyFixtureUserDataType
 {
     int mObjectType {};
     b2Fixture* mOwningFixture {};
+    bool* facingRight;
 };
 class Car {
     uint8_t id;
@@ -35,7 +36,6 @@ public:
     ~Car();
     void goRight();
     void goLeft();
-    void stop();
     void jump();
     void turbo();
     void check_y_pos();
@@ -44,17 +44,11 @@ public:
     float angle();
     float angleDeg();
     uint8_t getId();
-
     void startMovingRight();
-
     void startMovingLeft();
-
     void stopMovingRight();
-
     void stopMovingLeft();
-
     void update();
-
     bool facingWhere();
 };
 

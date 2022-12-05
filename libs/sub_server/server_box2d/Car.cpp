@@ -9,18 +9,20 @@
 #define BALL 0x0002
 #define CAR -3
 #define GROUND 0x0004
-
+#define MAXY 3
+#define FLIPYHEIGHT 1.5
+#define ONEJUMP 0.5
+#define ONEJUMPFORCE 7000
+#define TWOJUMPFORCE 5000
+#define XFORCE 50
+#define SENSORDOWN 4
+#define SENSORLEFT 5
+#define SENSORRIGHT 6
+#define SENSORUP 7
+#define TURBOXFORCE 75
 
 Car::Car(b2World* world, uint8_t& id) : id(id), turboOn(false), movingLeft(false), movingRight(false), facingRight(true) {
     b2Vec2 vertices[8];
-    /*
-    vertices[0].Set(-1.5f, -0.5f);
-    vertices[1].Set(1.5f, -0.5f);
-    vertices[2].Set(1.5f, 0.0f);
-    vertices[3].Set(0.0f, 0.9f);
-    vertices[4].Set(-1.15f, 0.9f);
-    vertices[5].Set(-1.5f, 0.2f);
-    */
     vertices[0].Set(-1.5f, -.25f);
     vertices[1].Set(1.5f, -.25f);
     vertices[2].Set(-1.5f, 1.f);
@@ -39,6 +41,7 @@ Car::Car(b2World* world, uint8_t& id) : id(id), turboOn(false), movingLeft(false
     m_car = world->CreateBody(&bd);
     myUserData->mOwningFixture =  m_car->CreateFixture(&fixDef);
     myUserData->mOwningFixture->SetFilterData(fixDef.filter);
+    myUserData->facingRight = &this->facingRight;
 
     // Down sensor
     b2Vec2 vertDown[4];
@@ -56,9 +59,10 @@ Car::Car(b2World* world, uint8_t& id) : id(id), turboOn(false), movingLeft(false
     fixDefDown.isSensor = true;
     userDataDown = std::make_unique<MyFixtureUserDataType>();
     fixDefDown.userData.pointer = reinterpret_cast<uintptr_t>(userDataDown.get());
-    userDataDown->mObjectType = 4;  //  Down
+    userDataDown->mObjectType = SENSORDOWN;  //  Down
     userDataDown->mOwningFixture =  m_car->CreateFixture(&fixDefDown);
     userDataDown->mOwningFixture->SetFilterData(fixDefDown.filter);
+
 
     // Left sensor
     b2Vec2 vertLeft[4];
@@ -76,9 +80,10 @@ Car::Car(b2World* world, uint8_t& id) : id(id), turboOn(false), movingLeft(false
     fixDefLeft.isSensor = true;
     userDataLeft = std::make_unique<MyFixtureUserDataType>();
     fixDefLeft.userData.pointer = reinterpret_cast<uintptr_t>(userDataLeft.get());
-    userDataLeft->mObjectType = 5;  //  Left
+    userDataLeft->mObjectType = SENSORLEFT;  //  Left
     userDataLeft->mOwningFixture =  m_car->CreateFixture(&fixDefLeft);
     userDataLeft->mOwningFixture->SetFilterData(fixDefLeft.filter);
+    userDataLeft->facingRight = &this->facingRight;
 
     // Right sensor
     b2Vec2 vertRight[4];
@@ -96,10 +101,10 @@ Car::Car(b2World* world, uint8_t& id) : id(id), turboOn(false), movingLeft(false
     fixDefRight.isSensor = true;
     userDataRight = std::make_unique<MyFixtureUserDataType>();
     fixDefRight.userData.pointer = reinterpret_cast<uintptr_t>(userDataRight.get());
-    userDataRight->mObjectType = 6;  //  Right
+    userDataRight->mObjectType = SENSORRIGHT;  //  Right
     userDataRight->mOwningFixture =  m_car->CreateFixture(&fixDefRight);
     userDataRight->mOwningFixture->SetFilterData(fixDefRight.filter);
-
+    userDataRight->facingRight = &this->facingRight;
     // Upper sensor
     b2Vec2 vertUp[4];
     vertUp[0].Set(-1.25f, .75f);
@@ -116,39 +121,37 @@ Car::Car(b2World* world, uint8_t& id) : id(id), turboOn(false), movingLeft(false
     fixDefUp.isSensor = true;
     userDataUp = std::make_unique<MyFixtureUserDataType>();
     fixDefUp.userData.pointer = reinterpret_cast<uintptr_t>(userDataUp.get());
-    userDataUp->mObjectType = 7;  //  Up
+    userDataUp->mObjectType = SENSORUP;  //  Up
     userDataUp->mOwningFixture =  m_car->CreateFixture(&fixDefUp);
     userDataUp->mOwningFixture->SetFilterData(fixDefUp.filter);
      }
 void Car::goRight() {
-    if (this->m_car->GetPosition().y > 4) {
-        m_car->ApplyTorque(-100.0, true);
+    if (this->m_car->GetPosition().y > FLIPYHEIGHT) {
+        m_car->ApplyTorque(-50.0, true);
         return;
     }
     if (turboOn) {
-        m_car->ApplyForce(b2Vec2(75, 0), m_car->GetWorldCenter(), true);
+        m_car->ApplyForce(b2Vec2(TURBOXFORCE, 0), m_car->GetWorldCenter(), true);
         turboOn = false;
         return;
     }
     //  ApplyForceToCenter
-    m_car->ApplyForce(b2Vec2(50, 0), m_car->GetWorldCenter(), true);
+    m_car->ApplyForce(b2Vec2(XFORCE, 0), m_car->GetWorldCenter(), true);
 }
 //
 void Car::goLeft() {
-    if (this->m_car->GetPosition().y > 4) {
-        m_car->ApplyTorque(100.0, true);
+    if (this->m_car->GetPosition().y > FLIPYHEIGHT) {
+        m_car->ApplyTorque(50.0, true);
         return;
     }
     if (turboOn) {
-        m_car->ApplyForce(b2Vec2(-75,0), m_car->GetWorldCenter(), true);
+        m_car->ApplyForce(b2Vec2(-TURBOXFORCE,0), m_car->GetWorldCenter(), true);
         turboOn = false;
         return;
     }
-    m_car->ApplyForce(b2Vec2(-50, 0), m_car->GetWorldCenter(), true);
+    m_car->ApplyForce(b2Vec2(-XFORCE, 0), m_car->GetWorldCenter(), true);
 }
-void Car::stop() {
-    // fixture->SetFriction(100);
-}
+
 
 void Car::turbo() {
     this->turboOn = true;
@@ -157,17 +160,16 @@ void Car::jump() {
     check_y_pos();
 }
 
-Car::~Car() {
-}
+Car::~Car() { }
 
 //  OK
 void Car::check_y_pos() {
-    if (Y() > 5) { return; }
-    if (Y() > 3) {
-        m_car->ApplyForce(b2Vec2(0, 3000), m_car->GetWorldCenter(), true);
+    if (Y() > MAXY) { return; }
+    if (Y() > ONEJUMP) {
+        m_car->ApplyForce(b2Vec2(0, TWOJUMPFORCE), m_car->GetWorldCenter(), true);
         return;
     }
-    m_car->ApplyForce(b2Vec2(0, 5000), m_car->GetWorldCenter(), true);
+    m_car->ApplyForce(b2Vec2(0, ONEJUMPFORCE), m_car->GetWorldCenter(), true);
 }
 float Car::Y() {
     return this->m_car->GetPosition().y;
