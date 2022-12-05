@@ -3,10 +3,14 @@
 //
 
 #include <iostream>
+#include <vector>
 #include "MyContactListener.h"
 #include "sub_server/server_box2d/Car.h"
+#define BALL 0x0002
+#define CAR 0x0003
+#define GROUND 0x0004
 
-MyContactListener::MyContactListener() {
+MyContactListener::MyContactListener(std::vector<int> &contacts) : contacts(contacts) {
 }
 MyContactListener::~MyContactListener()  = default;
 void MyContactListener::BeginContact(b2Contact* contact) {
@@ -16,6 +20,14 @@ void MyContactListener::BeginContact(b2Contact* contact) {
     auto dataA = fA->GetUserData();
     auto typeA = reinterpret_cast<MyFixtureUserDataType*> (dataA.pointer)->mObjectType;
     auto typeB = reinterpret_cast<MyFixtureUserDataType*> (dataB.pointer)->mObjectType;
+    if (typeA != 2 and typeA != 4 and typeA != 0) { //  Es un auto
+        auto id = reinterpret_cast<MyFixtureUserDataType*> (dataA.pointer)->id;
+        this->contacts.push_back(id);
+    }
+    else if (typeB != 2 and typeB != 4 and typeB != 0)  { //  Es un auto
+        auto id = reinterpret_cast<MyFixtureUserDataType*> (dataB.pointer)->id;
+        this->contacts.push_back(id);
+    }
     //  Purple shot
     if ((typeA == 2 & typeB == 4)) {
         float magnitude=25;

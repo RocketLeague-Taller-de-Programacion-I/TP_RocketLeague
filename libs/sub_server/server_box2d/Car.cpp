@@ -42,6 +42,7 @@ Car::Car(b2World* world, uint8_t& id) : id(id), turboOn(false), movingLeft(false
     myUserData->mOwningFixture =  m_car->CreateFixture(&fixDef);
     myUserData->mOwningFixture->SetFilterData(fixDef.filter);
     myUserData->facingRight = &this->facingRight;
+    myUserData->id = this->id;
 
     // Down sensor
     b2Vec2 vertDown[4];
@@ -62,7 +63,7 @@ Car::Car(b2World* world, uint8_t& id) : id(id), turboOn(false), movingLeft(false
     userDataDown->mObjectType = SENSORDOWN;  //  Down
     userDataDown->mOwningFixture =  m_car->CreateFixture(&fixDefDown);
     userDataDown->mOwningFixture->SetFilterData(fixDefDown.filter);
-
+    userDataDown->id = this->id;
 
     // Left sensor
     b2Vec2 vertLeft[4];
@@ -84,6 +85,7 @@ Car::Car(b2World* world, uint8_t& id) : id(id), turboOn(false), movingLeft(false
     userDataLeft->mOwningFixture =  m_car->CreateFixture(&fixDefLeft);
     userDataLeft->mOwningFixture->SetFilterData(fixDefLeft.filter);
     userDataLeft->facingRight = &this->facingRight;
+    userDataLeft->id = this->id;
 
     // Right sensor
     b2Vec2 vertRight[4];
@@ -105,6 +107,7 @@ Car::Car(b2World* world, uint8_t& id) : id(id), turboOn(false), movingLeft(false
     userDataRight->mOwningFixture =  m_car->CreateFixture(&fixDefRight);
     userDataRight->mOwningFixture->SetFilterData(fixDefRight.filter);
     userDataRight->facingRight = &this->facingRight;
+    userDataRight->id = this->id;
     // Upper sensor
     b2Vec2 vertUp[4];
     vertUp[0].Set(-1.25f, .75f);
@@ -124,7 +127,8 @@ Car::Car(b2World* world, uint8_t& id) : id(id), turboOn(false), movingLeft(false
     userDataUp->mObjectType = SENSORUP;  //  Up
     userDataUp->mOwningFixture =  m_car->CreateFixture(&fixDefUp);
     userDataUp->mOwningFixture->SetFilterData(fixDefUp.filter);
-     }
+    userDataUp->id = this->id;
+}
 void Car::goRight() {
     if (this->m_car->GetPosition().y > FLIPYHEIGHT) {
         m_car->ApplyTorque(-50.0, true);
@@ -223,4 +227,7 @@ void Car::update() {
 }
 bool Car::facingWhere() {
     return this->facingRight;
+}
+uint8_t Car::carId() {
+    return this->id;
 }

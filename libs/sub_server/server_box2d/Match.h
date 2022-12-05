@@ -30,8 +30,9 @@ private:
     b2World world;
     Ball* ball;
     std::map<uint8_t, Car*> players;
-    std::map<uint8_t, Car*> scorers;
+    std::map<uint8_t, int> scorers;
     std::map<uint8_t, Car*> assistants;
+    std::vector<int> contacts;
     int playersConnected;
     int playersRequired;
     int goalsLocal;
@@ -57,10 +58,14 @@ public:
 
     void checkGoals();
     void step();
-    int visit();
-    int local();
+    int visit() const;
+    int local() const;
 
-    bool isFinished();
+    bool isFinished() const;
+
+    void checkContacts();
+
+    void addGoalToScorer();
 };
 
 

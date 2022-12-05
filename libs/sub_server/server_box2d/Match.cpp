@@ -16,7 +16,8 @@
 #define BALL 0x0002
 #define CAR 0x0003
 #define GROUND 0x0004
-Match::Match(std::string gameName, int required) : name(std::move(gameName)), world(b2World(b2Vec2(0,-10))), playersConnected(0), playersRequired(required), goalsLocal(0), goalsVisit(0) {
+Match::Match(std::string gameName, int required) : name(std::move(gameName)), world(b2World(b2Vec2(0,-10))), playersConnected(0), playersRequired(required), goalsLocal(0), goalsVisit(0),
+                                                   listener(contacts) {
     world.SetContactListener(&this->listener);
     myUserData = std::make_unique<MyFixtureUserDataType>();
     fixDef.userData.pointer = reinterpret_cast<uintptr_t>(myUserData.get());
@@ -122,19 +123,21 @@ void Match::checkGoals() {
     if (this->ball->X() <= LOCALGOAL and this->ball->Y() <= GOALSIZE) {  //  LOCALGOAL es el arco del local
         this->goalsVisit++;
         this->ball->restartGame();
+        addGoalToScorer();
     }
     else if (this->ball->X() >= VISITGOAL and this->ball->Y() <= GOALSIZE) {  //  VISITGOAL es el arco del visitante
         this->goalsLocal++;
         this->ball->restartGame();
+        addGoalToScorer();
     }
 }
-int Match::local() {
+int Match::local() const {
     return this->goalsLocal;
 }
-int Match::visit() {
+int Match::visit() const {
     return this->goalsVisit;
 }
-bool Match::isFinished() {
+bool Match::isFinished() const {
     return timeElapsed >= (unsigned int)TIME_TO_PLAY;
 }
 
@@ -144,4 +147,15 @@ Match::~Match() {
         player.second = nullptr;
     }
     delete this->ball;
+}
+
+
+void Match::addGoalToScorer() {
+    uint8_t id = this->contacts.back();
+    auto search = this->scorers.find(id);
+    if (search != scorers.end()) {
+        scorers[id] = scorers[id]+1;
+    } else {
+        scorers[id] = 1;
+    }
 }
