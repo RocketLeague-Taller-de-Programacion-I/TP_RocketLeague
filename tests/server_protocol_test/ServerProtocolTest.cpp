@@ -11,9 +11,28 @@
 #include "MockUpdateWorldProtocol.h"
 
 /*
- * Test unitario de protocolo
- *      - Se testea la deserialziacion de la data en una Action.
- *      - Se testea la serializacion de la action a data.
+ * TEST UNITARIOS DE PROTOCOLO SERVIDOR
+ *
+ *  - PRIMERA SECCION:
+ *      - ServerProtocol deserialíza la data a travéz del método:
+ *          ServerProtocolo::deserializeDataOnCommand para las
+ *          acciones comunes que son:
+ *          - Create
+ *          - Join
+ *          - List
+ *
+ *      - ServerProtocol deserialíza la data de los movimientos
+ *          por medio del metodo:
+ *          ServerProtocolo::deserializeData
+ *
+ *      - Ambos métodos reciben una callback:
+ *          - function: callback que llama a un socket.
+ *
+ *      - Desde la callback se retorna la siguente data:
+ *          - create -> {capacity, nameSize, name}
+ *          - join -> {nameSize, name}
+ *          - list -> {}
+ *          - move -> {idPlayer, direction, state}
  */
 
 MockActionProtocol mockCreate(2, "test");
@@ -22,7 +41,7 @@ TEST_CASE("ServerProtocol can deserialize create action", "[serverProtocol]") {
     uint8_t id = 1,type=CREATE_ROOM;
     GameManager manager;
 
-    SECTION("CreateAction with return code OK") {
+    SECTION("Create action with id == 41and name 'test' ") {
         std::function<void(void *, int)> bytes_receiver_callable =
                 [](void *toRead, int size) { mockCreate.receiveBytes(toRead, size); };
 
@@ -41,7 +60,7 @@ MockActionProtocol mockJoin("testJoin");
 TEST_CASE("ServerProtocol can deserialize join action", "[serverProtocol]") {
     uint8_t id = 4,type=JOIN_ROOM;
     GameManager manager;
-    SECTION("JoinAction with return code OK") {
+    SECTION("Join action with id == 4 and name 'testJoin' ") {
         std::function<void(void *, int)> bytes_receiver_callable =
                 [](void *toRead, int size) { mockJoin.receiveBytes(toRead, size); };
 
@@ -59,7 +78,7 @@ MockActionProtocol mockList;
 TEST_CASE("ServerProtocol can deserialize list action", "[serverProtocol]") {
     uint8_t id = 2,type=LIST_ROOMS;
     GameManager manager;
-    SECTION("ListAction with return code OK") {
+    SECTION("List action with id == 2") {
         std::function<void(void *, int)> bytes_receiver_callable =
                 [](void *toRead, int size) { mockList.receiveBytes(toRead, size); };
 
@@ -74,21 +93,24 @@ TEST_CASE("ServerProtocol can deserialize list action", "[serverProtocol]") {
 MockMoveProtocol mockMove(1,2,0);
 
 TEST_CASE("ServerProtocol can deserialize move action", "[serverProtocol]") {
-    uint8_t id = 2,type=MOVE;
     GameManager manager;
-    SECTION("ListAction with return code OK") {
+    SECTION("Move action") {
         std::function<void(void *, int)> bytes_receiver_callable =
                 [](void *toRead, int size) { mockMove.receiveData(toRead, size); };
 
-        auto action = ServerProtocolo::deserializeData(
-                bytes_receiver_callable);
+        auto action = ServerProtocolo::deserializeData(bytes_receiver_callable);
+
         REQUIRE(action->getId() == 1);
     }
 }
 
 /*
- * SERIALIZE TEST
- */
+*  - SEGUNDA SECCIÓN:
+*      - ClientProtocol serializa los updates mediante el método:
+*          ClientProtocol::serializeUpdate
+*      - El método recibe un parámetro:
+*          - update: punto a UpdateServer.
+*/
 
 MockUpdateProtocol mock;
 std::function<void(void *, unsigned int)> sendBytes =

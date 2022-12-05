@@ -5,6 +5,7 @@
 #ifndef ROCKETLEAGUE_MOCKACKPROTOCOL_H
 #define ROCKETLEAGUE_MOCKACKPROTOCOL_H
 
+#include <queue>
 
 class MockACKProtocol {
 public:

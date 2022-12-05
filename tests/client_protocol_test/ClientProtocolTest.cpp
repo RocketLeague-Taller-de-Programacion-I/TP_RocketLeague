@@ -5,7 +5,7 @@
 #include "MockActionProtocol.h"
 
 /*
- * TEST UNITARIOS DE PROTOCOLO
+ * TEST UNITARIOS DE PROTOCOLO CLIENTE
  *
  *  - PRIMERA SECCION:
  *      - ClientProtocol deserialíza la data a travéz del método:
@@ -36,18 +36,12 @@
  */
 
 /*
- * Defino los mock a utilizar en CreateACK
- * mockCreate
- *      atributos:
- *          - id = 1
- *          - retunCode = OK;
- * mockCreateERROR
- *      atributos:
- *          - id = 1
- *          - retunCode = ERROR_FULL;
+ * MockACKProtocol recibe dos parametros:
+ *  - id
+ *  - retunCode
  */
 MockACKProtocol mockCreateOK(1, OK);
-MockACKProtocol mockCreateERROR(1,ERROR_FULL);
+MockACKProtocol mockCreateERROR(2,ERROR_FULL);
 
 TEST_CASE("ClientProtocol can deserialize CreateACK update", "[clientProtocol]") {
 
@@ -69,23 +63,13 @@ TEST_CASE("ClientProtocol can deserialize CreateACK update", "[clientProtocol]")
         auto update = ClientProtocol::deserializeData(CREATE_ACK,
                                                       bytes_receiver_callable);
 
-        REQUIRE(update->getId() == 1);
+        REQUIRE(update->getId() == 2);
         REQUIRE(update->getReturnCode() == ERROR_FULL);
         REQUIRE(update->getType() == CREATE_ACK);
     }
 }
-/*
- * Defino los mock a utilizar en JoinACK
- * mockJoinOK
- *      atributos:
- *          - id = 1
- *          - retunCode = OK;
- * mockJoinERROR
- *      atributos:
- *          - id = 1
- *          - retunCode = ERROR_FULL;
- */
-MockACKProtocol mockJoinOK(1,OK);
+
+MockACKProtocol mockJoinOK(2,OK);
 MockACKProtocol mockJoinERROR(1,ERROR_FULL);
 
 TEST_CASE("ClientProtocol can deserialize JoinACK update", "[clientProtocol]") {
@@ -97,7 +81,7 @@ TEST_CASE("ClientProtocol can deserialize JoinACK update", "[clientProtocol]") {
         auto update = ClientProtocol::deserializeData(JOIN_ACK,
                                                       bytes_receiver_callable);
 
-        REQUIRE(update->getId() == 1);
+        REQUIRE(update->getId() == 2);
         REQUIRE(update->getReturnCode() == OK);
         REQUIRE(update->getType() == JOIN_ACK);
     }
@@ -114,24 +98,21 @@ TEST_CASE("ClientProtocol can deserialize JoinACK update", "[clientProtocol]") {
     }
 }
 /*
- * Defino los mock a utilizar en JoinACK
- * mockListOK
- *      atributos:
- *          - id = 1
- *          - retunCode = OK
- *          - cantGame = 1
- *          - online = 1
- *          - capacity = 2
- *          - sizeName = 4
- *          - name = "test"
- * mockListERROR
- *      atributos:
- *          - id = 1
- *          - retunCode = ERROR_FULL
+ * MockACKProtocol recibe dos parametros:
+ *  - data = [id,
+ *            returnCode,
+ *            cantGame,
+ *            online,
+ *            capacity,
+ *            sizeName,
+ *            name]
+ *  - retunCode
  */
-std::vector<uint8_t> dataList = {1, OK, 1, 1, 2, 4,};
-MockACKProtocol mockListOK(dataList,"test");
-MockACKProtocol mockListERROR(1,ERROR_FULL);
+std::vector<uint8_t> dataOK = {1, OK, 1, 1, 2, 4,};
+MockACKProtocol mockListOK(dataOK,"test");
+
+std::vector<uint8_t> dataError = {1, ERROR_FULL, 1, 1, 2, 4,};
+MockACKProtocol mockListERROR(dataError,"test");
 
 TEST_CASE("ClientProtocol can deserialize ListACK update", "[clientProtocol]") {
 
@@ -160,16 +141,52 @@ TEST_CASE("ClientProtocol can deserialize ListACK update", "[clientProtocol]") {
     }
 }
 /*
- * WorldACK update
- * Explain data:
- * [x_ball, y_ball, local, visitor, time, n_client, [player_data]]
- * [player_data] = [id,x_car,y_car,angle_sing,angle,facing_where]
+ * MockWorldProtocol recibe por parametro:
+ *  - data = [x_ball,
+ *            y_ball,
+ *            local,
+ *            visitor,
+ *            time,
+ *            n_client,
+ *            [player_data] = [id,
+ *                             x_car,
+ *                             y_car,
+ *                             angle_sing,
+ *                             angle,
+ *                             facing_where]
  *
+ *            ... for each `n_client`
+ *            ]
  */
-std::vector<uint16_t> dataTestOne = {10, 10, 2, 0, 1, 1, 2, 200, 330, 1, 80,0};
+
+std::vector<uint16_t> dataTestOne = {10, // x_ball
+                                     10, // y_ball
+                                     2, // local
+                                     0, // visitor
+                                     1, // time
+                                     1, // n_client
+                                     2, // id_client1
+                                     200, // x_car
+                                     330, // y_car
+                                     1, // angle_sing
+                                     60,// angle
+                                     0 // facing_where
+                                        };
 MockWorldProtocol mockWorldOneOK(dataTestOne);
 
-std::vector<uint16_t> dataTestTwo = {20,20, 3, 2, 5, 1, 3, 400, 500, 1, 30,1};
+std::vector<uint16_t> dataTestTwo = {20, // x_ball
+                                     20, // y_ball
+                                     3, // local
+                                     2, // visitor
+                                     5, // time
+                                     1, // n_client
+                                     3, // id_client1
+                                     400, // x_car
+                                     500, // y_car
+                                     1, // angle_sing
+                                     30,// angle
+                                     1 // facing_where
+};
 MockWorldProtocol mockWorldTwoOK(dataTestTwo);
 
 TEST_CASE("ClientProtocol can deserialize WorldACK update", "[clientProtocol]") {
@@ -213,7 +230,7 @@ TEST_CASE("ClientProtocol can deserialize WorldACK update", "[clientProtocol]") 
         REQUIRE(id == 2);
         REQUIRE(x_car == 200);
         REQUIRE(y_car == 330);
-        REQUIRE(angle == 80);
+        REQUIRE(angle == 60);
         REQUIRE(facing == 0);
 
         /*
@@ -297,7 +314,7 @@ TEST_CASE("ClientProtocol receive an non-existed command", "[clientProtocol]") {
 */
 
 /*
- * Defino de forma global a ClientProtocol y al mock que utilizare.
+ * Defino de forma global a ClientProtocol y a MockActionProtocol que utilizare.
  */
 
 MockActionProtocol mock;
