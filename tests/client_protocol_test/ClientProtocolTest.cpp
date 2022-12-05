@@ -1,6 +1,8 @@
-#include <catch2/catch_test_macros.hpp>
+#include "Catch2/src/catch2/catch_test_macros.hpp"
 #include "sub_client/ClientProtocol.h"
-#include "MockClientProtocol.h"
+#include "MockACKProtocol.h"
+#include "MockWorldProtocol.h"
+#include "MockActionProtocol.h"
 
 /*
  * TEST UNITARIOS DE PROTOCOLO
@@ -44,14 +46,14 @@
  *          - id = 1
  *          - retunCode = ERROR_FULL;
  */
-MockClientProtocol mockCreate(1, OK);
-MockClientProtocol mockCreateERROR(1,ERROR_FULL);
+MockACKProtocol mockCreateOK(1, OK);
+MockACKProtocol mockCreateERROR(1,ERROR_FULL);
 
 TEST_CASE("ClientProtocol can deserialize CreateACK update", "[clientProtocol]") {
 
     SECTION("CreateACK with return code OK") {
         std::function<void(void *, int)> bytes_receiver_callable =
-                [](void * retuncode, int size) { mockCreate.receiveBytes(retuncode, size); };
+                [](void * retuncode, int size) { mockCreateOK.receiveBytes(retuncode, size); };
 
         auto update = ClientProtocol::deserializeData(CREATE_ACK,
                                                       bytes_receiver_callable);
@@ -83,8 +85,8 @@ TEST_CASE("ClientProtocol can deserialize CreateACK update", "[clientProtocol]")
  *          - id = 1
  *          - retunCode = ERROR_FULL;
  */
-MockClientProtocol mockJoinOK(1,OK);
-MockClientProtocol mockJoinERROR(1,ERROR_FULL);
+MockACKProtocol mockJoinOK(1,OK);
+MockACKProtocol mockJoinERROR(1,ERROR_FULL);
 
 TEST_CASE("ClientProtocol can deserialize JoinACK update", "[clientProtocol]") {
 
@@ -128,8 +130,8 @@ TEST_CASE("ClientProtocol can deserialize JoinACK update", "[clientProtocol]") {
  *          - retunCode = ERROR_FULL
  */
 std::vector<uint8_t> dataList = {1, OK, 1, 1, 2, 4,};
-MockClientProtocol mockListOK(dataList,"test");
-MockClientProtocol mockListERROR(1,ERROR_FULL);
+MockACKProtocol mockListOK(dataList,"test");
+MockACKProtocol mockListERROR(1,ERROR_FULL);
 
 TEST_CASE("ClientProtocol can deserialize ListACK update", "[clientProtocol]") {
 
@@ -165,16 +167,16 @@ TEST_CASE("ClientProtocol can deserialize ListACK update", "[clientProtocol]") {
  *
  */
 std::vector<uint16_t> dataTestOne = {10, 10, 2, 0, 1, 1, 2, 200, 330, 1, 80,0};
-MockClientProtocol mockWorldOneOK(dataTestOne);
+MockWorldProtocol mockWorldOneOK(dataTestOne);
 
 std::vector<uint16_t> dataTestTwo = {20,20, 3, 2, 5, 1, 3, 400, 500, 1, 30,1};
-MockClientProtocol mockWorldTwoOK(dataTestTwo);
+MockWorldProtocol mockWorldTwoOK(dataTestTwo);
 
 TEST_CASE("ClientProtocol can deserialize WorldACK update", "[clientProtocol]") {
 
     SECTION("Update WorldACK with dataTestOne") {
         std::function<void(void *, int)> bytes_receiver_callable =
-                [](void * retuncode, int size) { mockWorldOneOK.receiveBytesWorld(retuncode,size); };
+                [](void * retuncode, int size) { mockWorldOneOK.receiveBytes(retuncode,size); };
 
         auto update = ClientProtocol::deserializeData(WORLD,bytes_receiver_callable);
 
@@ -224,7 +226,7 @@ TEST_CASE("ClientProtocol can deserialize WorldACK update", "[clientProtocol]") 
 
     SECTION("Update WorldACK with dataTestOne") {
         std::function<void(void *, int)> bytes_receiver_callable =
-                [](void * retuncode, int size) { mockWorldTwoOK.receiveBytesWorld(retuncode,size); };
+                [](void * retuncode, int size) { mockWorldTwoOK.receiveBytes(retuncode,size); };
 
         auto update = ClientProtocol::deserializeData(WORLD,bytes_receiver_callable);
 
@@ -278,7 +280,7 @@ TEST_CASE("ClientProtocol can deserialize WorldACK update", "[clientProtocol]") 
 TEST_CASE("ClientProtocol receive an non-existed command", "[clientProtocol]") {
 
     std::function<void(void *, int)> bytes_receiver_callable =
-            [](void * retuncode, int size) { mockWorldOneOK.receiveBytesWorld(retuncode,size); };
+            [](void * retuncode, int size) {};
 
     auto update = ClientProtocol::deserializeData(-1,
                                                   bytes_receiver_callable);
@@ -298,9 +300,9 @@ TEST_CASE("ClientProtocol receive an non-existed command", "[clientProtocol]") {
  * Defino de forma global a ClientProtocol y al mock que utilizare.
  */
 
-MockClientProtocol mock;
+MockActionProtocol mock;
 std::function<void(void *, unsigned int)> sendBytes =
-        [](void * retuncode, unsigned int size) { mock.sendBytesMock(retuncode,size); };
+        [](void * retuncode, unsigned int size) { mock.sendBytes(retuncode,size); };
 
 ClientProtocol serverProtocol(sendBytes);
 
