@@ -11,6 +11,7 @@
 #include "../sub_common/BlockingQueue.h"
 #include "sub_client/client_actions/ClientAction.h"
 #include "ClientProtocol.h"
+#include <optional>
 
 class ActionsSenderThread : public Thread{
 private:

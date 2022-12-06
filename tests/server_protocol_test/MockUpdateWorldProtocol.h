@@ -12,12 +12,19 @@
 
 class MockUpdateWorldProtocol {
 public:
-    MockUpdateWorldProtocol() = default;
+    MockUpdateWorldProtocol() : isBall(false){}
 
     void sendBytes(void *bytes_to_read, int size) {
         if (size == 4) {
-            auto * pbytes_to_read = (uint32_t *) bytes_to_read;
-            angle = htonl((*pbytes_to_read));
+            if(!isBall) {
+                auto * pbytes_to_read = (uint32_t *) bytes_to_read;
+                angleBall = htonl((*pbytes_to_read));
+                isBall = true;
+            }
+            else {
+                auto * pbytes_to_read = (uint32_t *) bytes_to_read;
+                angle = htonl((*pbytes_to_read));
+            }
             return;
         }
         auto * pbytes_to_read = (uint16_t *) bytes_to_read;
@@ -56,8 +63,15 @@ public:
     uint32_t getAngle() {
         return angle;
     }
+
+    uint32_t getAngleBall() {
+        return angleBall;
+    }
+
 private:
+    bool isBall;
     uint32_t angle;
+    uint32_t angleBall;
     std::queue<uint8_t> data;
 };
 
