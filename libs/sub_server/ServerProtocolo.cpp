@@ -77,7 +77,6 @@ ServerProtocolo::serializeServerListACK(ServerListACK *update, std::function<voi
 }
 void
 ServerProtocolo::serializeWorldUpdate(ServerUpdateWorld *update, std::function<void(void *, unsigned int)> &sendBytes) {
-    //implement
     std::vector<int> matchInfo = update->getInfo();
     //  Ball
     uint16_t ballX = (uint16_t) htons(matchInfo[0]);
@@ -124,6 +123,11 @@ ServerProtocolo::serializeWorldUpdate(ServerUpdateWorld *update, std::function<v
         sendBytes(&facing, sizeof(facing));
     }
 
+}
+
+void
+ServerProtocolo::serializeStatsUpdate(ServerUpdateStats *updateStats, std::function<void(void *, unsigned int)> &function) {
+    std::vector<int> stats = updateStats->getStats();
 }
 
 std::shared_ptr<ServerAction>
