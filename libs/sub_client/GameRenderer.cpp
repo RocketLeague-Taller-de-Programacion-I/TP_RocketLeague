@@ -5,13 +5,13 @@
 #define MUSIC_VOLUME 0
 using namespace SDL2pp;
 
-GameRenderer::GameRenderer(const char *host, const char *port){}
+GameRenderer::GameRenderer(const char *host, const char *port) : host(host), port(port){}
 
 void GameRenderer::run() {
     uint8_t id = 0;
     while(!quit) {
         //open a new socket
-        Socket skt_client("localhost", "8081");
+        Socket skt_client(host, port);
 
         BlockingQueue<std::optional<std::shared_ptr<ClientAction>>> actionsQueue;
         ProtectedQueue<std::shared_ptr<ClientUpdate>> updatesQueue;

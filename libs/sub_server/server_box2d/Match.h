@@ -28,8 +28,8 @@ class Match {
 private:
     std::string name;
     b2World world;
-    Ball* ball;
-    std::map<uint8_t, Car*> players;
+    std::shared_ptr<Ball> ball;
+    std::map<uint8_t, std::shared_ptr<Car>> players;
     std::map<uint8_t, int> scorers;
     std::vector<int> contacts;
     int playersConnected;

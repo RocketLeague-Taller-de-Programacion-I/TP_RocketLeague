@@ -29,6 +29,8 @@
 
 class GameRenderer {
 private:
+    const char* host;
+    const char* port;
     bool quit = false;
     ActionsSenderThread* sender;
     UpdatesReceiverThread* receiver;

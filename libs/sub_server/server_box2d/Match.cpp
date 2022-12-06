@@ -16,6 +16,7 @@
 #define BALL 0x0002
 #define CAR 0x0003
 #define GROUND 0x0004
+#define RADIO 1
 Match::Match(std::string gameName, int required) : name(std::move(gameName)), world(b2World(b2Vec2(0,-10))), playersConnected(0), playersRequired(required), goalsLocal(0), goalsVisit(0),
                                                    listener(contacts) {
     world.SetContactListener(&this->listener);
@@ -35,12 +36,14 @@ Match::Match(std::string gameName, int required) : name(std::move(gameName)), wo
     fixDef.filter.groupIndex = GROUND;
     myUserData->mOwningFixture->SetFilterData(fixDef.filter);
     //  Balls creation
-    this->ball = new Ball(&this->world, 1);
+    std::shared_ptr<Ball> myBall = std::make_shared<Ball>(&this->world, RADIO);
+    this->ball = myBall;
 }
 
 
 void Match::addPlayer(uint8_t &id) {
-    this->players[id] = new Car(&this->world, id);
+    std::shared_ptr<Car> car = std::make_shared<Car>(&this->world, id);
+    this->players[id] = car;
     this->playersConnected++;
 }
 
@@ -50,7 +53,7 @@ void Match::removePlayer(uint8_t &id) {
 }
 
 void Match::step() {
-    for ( std::pair<const uint8_t,Car*> &player : players){
+    for ( std::pair<const uint8_t,std::shared_ptr<Car>> &player : players){
         player.second->update();
     }
     checkGoals();
@@ -171,9 +174,5 @@ std::vector<int> Match::stats() {
 }
 
 void Match::deleteMatch() {
-    for ( auto &player : players){
-        delete player.second;
-    }
     players.clear();
-    delete this->ball;
 }
