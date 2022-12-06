@@ -30,6 +30,7 @@
 class GameRenderer {
 private:
     Socket skt_client;
+    bool quit = false;
     ActionsSenderThread* sender;
     UpdatesReceiverThread* receiver;
 protected:
@@ -44,6 +45,7 @@ public:
     void cleanThreads();
     void startThreads();
 
+    void loadTextures(Renderer &renderer);
 };
 
 #endif  //  ROCKETLEAGUE_GAMERENDERER_H

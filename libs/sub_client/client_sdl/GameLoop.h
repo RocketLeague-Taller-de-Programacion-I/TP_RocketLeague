@@ -28,7 +28,7 @@ public:
              ProtectedQueue<std::shared_ptr<ClientUpdate>> &updates,
              BlockingQueue<std::optional<std::shared_ptr<ClientAction>>> &actions, Worldview &wv);
 
-    void run();
+    bool run();
 private:
     uint8_t &id;
     Worldview &wv;

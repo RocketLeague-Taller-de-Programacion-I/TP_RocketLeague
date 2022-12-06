@@ -8,6 +8,7 @@
 #include "Ball.h"
 #include "Score.h"
 #include "sub_client/client_updates/ClientUpdateWorld.h"
+#include "sub_client/client_updates/ClientUpdateStats.h"
 
 #define EVENTS_X_FRAME 10
 
@@ -22,10 +23,11 @@ GameLoop::GameLoop(uint8_t &id, SDL2pp::Renderer &renderer, int xMax, int yMax,
           xMax(xMax),
           yMax(yMax),
           wv(wv){}
-
-void GameLoop::run() {
+// Returns if the user still wants to play another game
+bool GameLoop::run() {
+    bool wantsToquit = false;
     while (running) {
-        handle_events();
+        wantsToquit = handle_events();
         //pop from updates queue
         popUpdates();
         update(FRAME_RATE);
@@ -34,6 +36,7 @@ void GameLoop::run() {
         // de la cantidad de tiempo que demoró el handleEvents y el render
         usleep(FRAME_RATE);
     }
+    return wantsToquit;
 }
 
 bool GameLoop::handle_events() {
@@ -83,10 +86,10 @@ bool GameLoop::handle_events() {
 
             case SDL_QUIT:
                 running = false;
-                break;
+                return true;
         }
     }
-    return true;
+    return false;
 }
 
 void GameLoop::render() {
@@ -103,6 +106,12 @@ void GameLoop::popUpdates() {
 
     while(!updates.empty()) {
         update = updates.front();
+
+        if(update->getType() == GAME_OVER) {
+            std::map<uint8_t, uint8_t> scores = std::static_pointer_cast<ClientUpdateStats>(update)->getStats();
+            wv.updateStats(scores);
+            break;
+        }
         Ball ball = update->getBall();
         Score score = update->getScore();
         GameTime gameTime = update->getTime();
