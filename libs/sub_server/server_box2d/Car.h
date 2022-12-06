@@ -1,13 +1,19 @@
-//
-// Created by franco on 07/11/22.
-//
-
 #ifndef ROCKETLEAGUE_CAR_H
 #define ROCKETLEAGUE_CAR_H
+
 #include "box2d/b2_body.h"
 #include "box2d/box2d.h"
 #include <iostream>
 #include <memory>
+
+#define RADTODEG 57.2958
+#define GROUND 0x0004
+#define MAXY 2.5
+#define SENSORDOWN 4
+#define SENSORLEFT 5
+#define SENSORRIGHT 6
+#define SENSORUP 7
+
 class Car;
 struct MyFixtureUserDataType
 {

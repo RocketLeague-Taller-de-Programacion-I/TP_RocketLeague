@@ -1,24 +1,14 @@
-//
-// Created by franco on 07/11/22.
-//
-
 #include <memory>
 #include "Car.h"
 #include "box2d/box2d.h"
-#define RADTODEG 57.2958
 #define BALL 0x0002
 #define CAR -3
-#define GROUND 0x0004
-#define MAXY 2.5
+
 #define FLIPYHEIGHT 2
 #define ONEJUMP 0.5
 #define ONEJUMPFORCE 7000
 #define TWOJUMPFORCE 6000
 #define XFORCE 50
-#define SENSORDOWN 4
-#define SENSORLEFT 5
-#define SENSORRIGHT 6
-#define SENSORUP 7
 #define TURBOXFORCE 75
 
 Car::Car(b2World* world, uint8_t& id) : id(id), turboOn(false), movingLeft(false), movingRight(false), facingRight(true) {

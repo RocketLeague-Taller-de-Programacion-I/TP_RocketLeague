@@ -19,26 +19,10 @@ void Server::run() {
             manager->start();
 
             idPlayer++;
-
-//            garbageCollector(gameManager);
         }
     } catch (...) {}
     cleanManagers();
     gameManager.cleanGames();
-}
-
-void Server::garbageCollector(GameManager &gameManager) {
-    managers.erase(std::remove_if(managers.begin(),
-                                  managers.end(),
-                                  [&gameManager](ClientManager *manager)
-                                  { if (manager->NotConnectedToGame()) {
-                                      gameManager.deletePlayer(manager->getId());
-                                      delete manager;
-                                      return true;
-                                  }
-                                      return false;
-                                  }),
-                   managers.end());
 }
 
 void Server::cleanManagers() {

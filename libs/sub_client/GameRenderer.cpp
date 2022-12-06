@@ -2,7 +2,7 @@
 #include "GameRenderer.h"
 #include "sub_client/client_sdl/Worldview.h"
 
-#define MUSIC_VOLUME 1
+#define MUSIC_VOLUME 10
 using namespace SDL2pp;
 
 GameRenderer::GameRenderer(const char *host, const char *port) : host(host), port(port){}

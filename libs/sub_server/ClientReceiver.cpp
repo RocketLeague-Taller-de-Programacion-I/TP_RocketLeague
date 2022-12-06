@@ -17,9 +17,9 @@ void ClientReceiver::run() {
             std::function<void(void *bytes_to_read, int size)> bytes_receiver_callable =
                     std::bind(&ClientReceiver::receiveBytes, this, std::placeholders::_1 ,std::placeholders::_2);
 
-            auto action = ServerProtocolo::deserializeData(idClient, actionType, bytes_receiver_callable);
+            auto update = ServerProtocolo::deserializeData(idClient, actionType, bytes_receiver_callable);
 
-            updatesQueue->push(action);
+            updatesQueue->push(update);
         }
     } catch (const std::exception &e) {
 //        std::cerr << e.what() << std::endl;

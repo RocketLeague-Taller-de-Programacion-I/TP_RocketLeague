@@ -27,7 +27,6 @@ public:
     ~Server() override;
     void stop() override;
 
-    void garbageCollector(GameManager &gameManager);
     void cleanManagers();
 };
 

@@ -1,7 +1,3 @@
-//
-// Created by franco on 16/11/22.
-//
-
 #ifndef ROCKETLEAGUE_MATCH_H
 #define ROCKETLEAGUE_MATCH_H
 
@@ -19,10 +15,16 @@
 #include "../server_updates/ServerUpdate.h"
 
 #define USECONDS_TO_SLEEP 6000
-#define TIME_TO_PLAY 60000000 //TODO: Change back to 3min
 #define BX2D_TIMESTEP 0.006f
 #define BX2D_VELOCITY_ITERATIONS 8
 #define BX2D_POSITION_ITERATIONS 3
+#define LOCALGOAL (0.005)
+#define VISITGOAL  (40.000)
+#define GOALSIZE 1.5
+#define BALL 0x0002
+#define CAR 0x0003
+#define GROUND 0x0004
+#define RADIO 1
 
 class Match {
 private:

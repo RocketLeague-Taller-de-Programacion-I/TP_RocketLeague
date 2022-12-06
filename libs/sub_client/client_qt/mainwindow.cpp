@@ -1,6 +1,4 @@
-
 #include "mainwindow.h"
-#include "../WaitingForGameToStartThread.h"
 #include "ui_mainwindow.h"
 #include <iostream>
 #include <regex>
