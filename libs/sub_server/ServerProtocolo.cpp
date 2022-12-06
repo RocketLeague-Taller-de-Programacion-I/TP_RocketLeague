@@ -8,8 +8,7 @@ command_t ServerProtocolo::getMapCommand(uint32_t action) {
     return this->mapCommand.at(action);
 }
 
-std::shared_ptr<ServerAction> ServerProtocolo::deserializeData(const uint8_t &id, const uint8_t &type,
-                                                               const std::function<void(void *, int)> &receiveBytes) {
+std::shared_ptr<ServerAction> ServerProtocolo::deserializeData(const std::function<void(void *, int)> &receiveBytes) {
     return parseUpdateAction(receiveBytes);
 }
 
@@ -144,10 +143,7 @@ ServerProtocolo::serializeStatsUpdate(ServerUpdateStats *updateStats, std::funct
 
 std::shared_ptr<ServerAction>
         ServerProtocolo::deserializeDataOnCommand(uint8_t &actionType, uint8_t &id, GameManager &gameManager,
-                                                  std::function<void(void *, int)> &receiveBytes,
-                                                  std::function<void(void *, unsigned int)> &sendBytes,
-                                                  std::function<void(ProtectedQueue<std::shared_ptr<ServerAction>> *,
-                                                                     BlockingQueue<std::optional<std::shared_ptr<ServerUpdate>>> *)> &startThreadsCallable) {
+                                                  std::function<void(void *, int)> &receiveBytes) {
     switch (actionType) {
         case CREATE_ROOM:
             return parseCreateAction(id, receiveBytes, gameManager);

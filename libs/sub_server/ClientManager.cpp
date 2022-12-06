@@ -27,9 +27,7 @@ void ClientManager::run() {
             }
             auto actionCommand = protocolo.deserializeDataOnCommand(actionType, id,
                                                                     gameManager,
-                                                                    recvCallable,
-                                                                    sendCallable,
-                                                                    startThreadsCallable);
+                                                                    recvCallable);
             actionCommand->execute(startThreadsCallable, sendCallable, protocolo);
         }
     } catch (const LibError &e) {

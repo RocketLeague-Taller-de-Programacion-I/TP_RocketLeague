@@ -1,24 +1,99 @@
-# TP_RocketLeague
+# Project Rocket League
 
-Logica de movimiento.
-En la metadata de las actions move tiene que estar el ID del player para que
-el monitor pueda buscar en que partida esta el player.
-Luego de eso, la partida le avisa al jugador que hizo un Action de type move,
-el jugador le dice le avisa la juego que hizo tal move y el juego se encarga de corroborar 
-toda la fisica, possiciones, socres, etc de lo que hizo el jugador.
-El juego retorna la metada de todos los objetos update, y player retorna esta metadata.
-Por ultimo la partida crea un Update con esta metadata y la pushea a la queueSender.
-clientSender popea este ultimo update y lo envia por medio del socket.
+## Welcome to Rocket League!
 
-El client manager que lanze los thread reciver y sender
+In this project, the development of the Rocket League video game in its 2D version was carried out. <br/>
 
-La queue receiver la tiene que crear el Game. De alguna manera se tiene que devolver esa queue para que el client manager 
-le diga a ClientReceiver la cola a la cula tiene que pushear. 
+[Directives](https://docs.google.com/document/d/1ydDQTjWoBjPnxWz0Sg475QeaCKU-irbYuRWb0VkcJ2o/edit?usp=sharing).
 
-En el join sera lo mismo
+Developers:
+* [Sprenger, Roberta](https://github.com/robyspr)
+* [Cuppari, Franco](https://github.com/francupp9-12)
+* [Waisten, Lucas](https://github.com/LucasWaisten)
 
+## Supported Platforms and Tools
+### C++ Support
 
-Que la action le pase un callback del client manager al game manager. 
-Leer la docu pasada por discord. Bindear el setQueueRecivercer para el client manager
+| Dimension   | Supported Version | 
+|-------------|-------------------|
+| Ubuntu      | >= 18.04          |
+| C++ Version | >= 17             | 
+| CMake       | >= 3.16           | 
+| GCC         | >= 7.3.1          | 
+| Catch2      | >= 1.11.0         |
+| Box2D       | >= 2.4.0          |
+| libSDLpp    | >= 0.17.0         |
 
-Si client manager se va de scope antes que los hilos de receiver, sender y socket. Tenemos el receriver y el sender apuntando a memoria que fue liberada
+## Getting Started
+
+See the [RocketLeague User's Guide](UserGuide.md) for
+documentation.
+
+How to play, see in [Manual Game](Manual.md)
+## For Development
+The proyect: [RocketLeague Code Documentation](CodeDocumentation.md)
+
+## Features
+* ### Car:
+*  **Jump**: jump and double jump.
+*  **Flips**: both sides.
+*  **Shots**: 
+  -  **Purple Shot**
+  -  **Gold Shot**
+
+* ### Game
+  - **Duration**
+  - **Stats**
+
+  - **Scene**
+
+  - **Camera**
+
+  - **Repeat**
+
+  - **Collisions** 
+
+* ### GUI:
+
+  -  **Score**
+
+  -  **Time**
+
+* ### Animation
+
+  -  **Car movements**.
+  - **Ball spin**
+
+* ### Sound
+
+  -  **Ambience Music**
+* ### Configuration
+
+  Macros in Match.cpp: 
+    - GRAVITY, 
+    - TIME_TO_PLAY
+  Macros in Car.cpp:
+    - FLIPYHEIGHT 
+    - ONEJUMP  
+    - ONEJUMPFORCE 
+    - TWOJUMPFORCE 
+    - XFORCE  
+    - TURBOXFORCE
+  Macron in ball.cpp:
+    - BALL_RESTITUTION
+
+* ### Tests
+
+  - a) **Server Protocolo**
+
+  - b) **Cliente Protocolo**
+
+  - c) **Manejo de partidas**
+
+* ### Documentation
+
+  - a) **User's Guide**
+
+  - b) **Documentation Development**
+
+  - c) **Project Manual**

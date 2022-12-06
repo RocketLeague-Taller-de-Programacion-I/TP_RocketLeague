@@ -51,19 +51,13 @@ public:
     command_t getMapCommand(uint32_t action);
     ServerProtocolo() = default;
 
-    static std::shared_ptr<ServerAction> deserializeData(const uint8_t &id, const uint8_t &type,
-                                                         const std::function<void(void *, int)> &receiveBytes);
+    static std::shared_ptr<ServerAction> deserializeData(const std::function<void(void *, int)> &receiveBytes);
     static std::shared_ptr<ServerAction>
     parseUpdateAction(const std::function<void(void *, int)> &receiveBytes);
 
     static std::shared_ptr<ServerAction>
-    deserializeDataOnCommand(uint8_t &actionType,
-                             uint8_t &id,
-                             GameManager &gameManager,
-                             std::function<void(void *, int)> &receiveBytes,
-                             std::function<void(void *, unsigned int)> &sendBytes,
-                             std::function<void(ProtectedQueue<std::shared_ptr<ServerAction>> *,
-                                                BlockingQueue<std::optional<std::shared_ptr<ServerUpdate>>> *)> &startThreadsCallable);
+    deserializeDataOnCommand(uint8_t &actionType, uint8_t &id, GameManager &gameManager,
+                             std::function<void(void *, int)> &receiveBytes);
 
     static std::shared_ptr<ServerAction>
     parseCreateAction(uint8_t &id, const std::function<void(void *, int)>& receiveBytes,

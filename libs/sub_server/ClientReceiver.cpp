@@ -17,7 +17,7 @@ void ClientReceiver::run() {
             std::function<void(void *bytes_to_read, int size)> bytes_receiver_callable =
                     std::bind(&ClientReceiver::receiveBytes, this, std::placeholders::_1 ,std::placeholders::_2);
 
-            auto update = ServerProtocolo::deserializeData(idClient, actionType, bytes_receiver_callable);
+            auto update = ServerProtocolo::deserializeData(bytes_receiver_callable);
 
             updatesQueue->push(update);
         }
