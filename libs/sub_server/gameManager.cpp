@@ -1,7 +1,3 @@
-//
-// Created by lucaswaisten on 04/11/22.
-//
-
 #include "gameManager.h"
 
 bool GameManager::createGame(uint8_t idCreator, uint8_t capacityGame, const std::string &nameGame,
