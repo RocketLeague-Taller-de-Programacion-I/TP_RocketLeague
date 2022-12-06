@@ -22,13 +22,13 @@ public:
 };
 
 TEST_CASE("create a empty blockingQueue",
-          "[single-file]") {
+          "[serverProtocol]") {
     BlockingQueue<char> queue;
 
     REQUIRE(queue.isEmpty() == true);
 }
 TEST_CASE("pushed two elements, verified if the queue is empty and popped the pushed element before",
-          "[single-file]") {
+          "[serverProtocol]") {
     BlockingQueue<char> queue;
     char element1 = 'a';
     char element2 = 'b';
@@ -50,7 +50,7 @@ TEST_CASE("pushed two elements, verified if the queue is empty and popped the pu
  */
 
 TEST_CASE("thread is blocked trying to pop",
-          "[single-file]") {
+          "[serverProtocol]") {
     BlockingQueue<char> queue;
     std::atomic<bool> waiting(false);
     TessterQueue tester(queue,waiting);

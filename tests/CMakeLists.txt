@@ -20,6 +20,6 @@ find_package(Catch2 3 REQUIRED)
 
 target_link_libraries(lib_testCommon Catch2::Catch2WithMain lib_common)
 target_link_libraries(lib_testClient PRIVATE Catch2::Catch2WithMain lib_client )
-target_link_libraries(lib_testServer PRIVATE Catch2::Catch2WithMain lib_server box2d)
+target_link_libraries(lib_testServer PRIVATE Catch2::Catch2WithMain lib_server box2d lib_common)
 
 
