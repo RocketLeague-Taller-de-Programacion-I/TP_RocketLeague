@@ -20,29 +20,32 @@ void MyContactListener::BeginContact(b2Contact* contact) {
     auto dataA = fA->GetUserData();
     auto typeA = reinterpret_cast<MyFixtureUserDataType*> (dataA.pointer)->mObjectType;
     auto typeB = reinterpret_cast<MyFixtureUserDataType*> (dataB.pointer)->mObjectType;
-    if (typeA != 2 and typeA != 4 and typeA != 0) { //  Es un auto
+    //  Registro mis contactos
+    if (typeA != 2 and typeA != 4 and typeA != 0 and typeB == 2) { //  Es un auto y B es pelota
         auto id = reinterpret_cast<MyFixtureUserDataType*> (dataA.pointer)->id;
         this->contacts.push_back(id);
     }
-    else if (typeB != 2 and typeB != 4 and typeB != 0)  { //  Es un auto
+    else if (typeB != 2 and typeB != 4 and typeB != 0 and typeA == 2)  { //  Es un auto
         auto id = reinterpret_cast<MyFixtureUserDataType*> (dataB.pointer)->id;
         this->contacts.push_back(id);
     }
     //  Purple shot
     if ((typeA == 2 & typeB == 4)) {
-        float magnitude=25;
+        float magnitude=50;
         b2Vec2 force = b2Vec2((cos(fB->GetBody()->GetAngle()-4.7) * magnitude) ,(sin(fB->GetBody()->GetAngle()-4.7) * magnitude));
+        auto forceCar = b2Vec2(force.x/3, force.y/3);
         fA->GetBody()->ApplyLinearImpulse(force, fA->GetBody()->GetPosition(), true);
         //  Impulso contrario al auto
-        fB->GetBody()->ApplyLinearImpulse(-force, fB->GetBody()->GetPosition(), true);
+        fB->GetBody()->ApplyLinearImpulse(-forceCar, fB->GetBody()->GetPosition(), true);
         return;
     }
     if ((typeB == 2 & typeA == 4)) {
-        float magnitude=25;
+        float magnitude=50;
         b2Vec2 force = b2Vec2((cos(fA->GetBody()->GetAngle()-4.7) * magnitude) ,(sin(fA->GetBody()->GetAngle()-4.7) * magnitude));
+        auto forceCar = b2Vec2(force.x/3, force.y/3);
         fB->GetBody()->ApplyLinearImpulseToCenter(force, true);
         //  Impulso contrario al auto
-        fA->GetBody()->ApplyLinearImpulse(-force, fA->GetBody()->GetPosition(), true);
+        fA->GetBody()->ApplyLinearImpulse(-forceCar, fA->GetBody()->GetPosition(), true);
         return;
     }
     //  Gold shot
@@ -51,19 +54,19 @@ void MyContactListener::BeginContact(b2Contact* contact) {
     * y como no hay precisión de cual es cada cuerpo (A auto o B bola ó viceversa) contemplo ambos casos.
      */
     if (typeA == 2 and typeB == 6 and !right) {
-        fA->GetBody()->ApplyForceToCenter(b2Vec2(2000.0,0), true);
+        fA->GetBody()->ApplyForceToCenter(b2Vec2(5000.0,0), true);
         return;
     }
     if (typeA == 6 and typeB == 2 and !right) {
-        fB->GetBody()->ApplyForceToCenter(b2Vec2(2000.0,0), true);
+        fB->GetBody()->ApplyForceToCenter(b2Vec2(5000.0,0), true);
         return;
     }
     if (typeA == 2 and typeB == 5 and right) {
-        fA->GetBody()->ApplyForceToCenter(b2Vec2(-2000.0,0), true);
+        fA->GetBody()->ApplyForceToCenter(b2Vec2(-5000.0,0), true);
         return;
     }
     if (typeA == 5 and typeB == 2 and right) {
-        fB->GetBody()->ApplyForceToCenter(b2Vec2(-2000.0,0), true);
+        fB->GetBody()->ApplyForceToCenter(b2Vec2(-5000.0,0), true);
         return;
     }
 }
