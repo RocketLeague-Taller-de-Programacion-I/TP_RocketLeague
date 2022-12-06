@@ -1,5 +1,5 @@
 # RocketLeague User's Guide
-
+[Go Back](README.md)
 ## Welcome to Rocket League!
 
 To get started, you need to install all dependencies used in this project. <br/>
@@ -27,18 +27,17 @@ We will use the [cmake](https://cmake.org/download/) tool to build and compile t
 $ cd RocketLeague
 $ mkdir build
 $ cd build
-build$ cmake ..
-build$ make -j4
+build$ cmake .. && make -j4
 ```
 #### Step Four
 Start to play between two player.
 
 Init server first.
 ```
-build$ ./server_main <serv>
+build$ ./server_main <SERVPORT>
 ```
 Then, init two client.
 ```
-build$ ./client_main <port> <serv>
-build$ ./client_main <port> <serv>
+build$ ./client_main <HOST> <SERVPORT>
+build$ ./client_main <HOST> <SERVPORT>
 ```

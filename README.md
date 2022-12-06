@@ -26,9 +26,12 @@ Developers:
 
 ## Getting Started
 
-See the [RocketLeague User's Guide](https://github.com/RocketLeague-Taller-de-Programacion-I/TP_RocketLeague/blob/main/UserGuide.md) for
+See the [RocketLeague User's Guide](UserGuide.md) for
 documentation.
 
+How play see in [Manual Game](Manual.md)
+## For Development
+The proyect nose que [RocketLeague Code Documentation](CodeDocumentation.md)
 ## Features
 
 *   ClientProtocol and ServerProtocol unit test % 100
