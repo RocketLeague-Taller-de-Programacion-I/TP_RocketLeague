@@ -29,7 +29,7 @@ Developers:
 See the [RocketLeague User's Guide](UserGuide.md) for
 documentation.
 
-How play see in [Manual Game](Manual.md)
+How to play, see in [Manual Game](Manual.md)
 ## For Development
 The proyect nose que [RocketLeague Code Documentation](CodeDocumentation.md)
 ## Features
