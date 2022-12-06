@@ -33,4 +33,53 @@ How to play, see in [Manual Game](Manual.md)
 ## For Development
 The proyect nose que [RocketLeague Code Documentation](CodeDocumentation.md)
 
+## Features
+* ### Car:
+*  **Jump**: jump and double jump.
+*  **Flips**: both sides.
+*  **Shots**: 
+  -  **Purple Shot**
+  -  **Gold Shot**
 
+* ### Game
+  - **Duration**
+  - **Stats**
+
+  - **Scene**
+
+  - **Camera**
+
+  - **Repeat**
+
+  - **Collisions** 
+
+* ### GUI:
+
+  -  **Score**
+
+  -  **Time**
+
+* ### Animation
+
+  -  **Car movements**.
+  - **Ball spin**
+
+* ### Sound
+
+  -  **Ambience Music**
+
+* ### Tests
+
+  - a) **Server Protocolo**
+
+  - b) **Cliente Protocolo**
+
+  - c) **Manejo de partidas**
+
+* ### Documentation
+
+  - a) **User's Guide**
+
+  - b) **Documentation Development**
+
+  - c) **Project Manual**
