@@ -1,11 +1,12 @@
-# These tests can use the Catch2-provided main
-add_executable(testsClient
+add_library(lib_testClient
         client_protocol_test/ClientProtocolTest.cpp
         client_protocol_test/MockACKProtocol.h
         client_protocol_test/MockWorldProtocol.h
         client_protocol_test/MockActionProtocol.h)
-add_executable(testCommon blockingQueueTest.cpp)
-add_executable(testsServer
+
+add_library(lib_testCommon blockingQueueTest.cpp)
+
+add_library(lib_testServer
         server_protocol_test/ServerProtocolTest.cpp
         server_protocol_test/MockMoveProtocol.h
         server_protocol_test/MockActionProtocol.h
@@ -16,6 +17,9 @@ add_executable(testsServer
 
 # These tests can use the Catch2-provided main
 find_package(Catch2 3 REQUIRED)
-target_link_libraries(testCommon Catch2::Catch2WithMain lib_common)
-target_link_libraries(testsClient PRIVATE Catch2::Catch2WithMain lib_client )
-target_link_libraries(testsServer PRIVATE Catch2::Catch2WithMain lib_server box2d)
+
+target_link_libraries(lib_testCommon Catch2::Catch2WithMain lib_common)
+target_link_libraries(lib_testClient PRIVATE Catch2::Catch2WithMain lib_client )
+target_link_libraries(lib_testServer PRIVATE Catch2::Catch2WithMain lib_server box2d)
+
+

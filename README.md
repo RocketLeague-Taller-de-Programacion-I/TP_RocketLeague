@@ -32,17 +32,5 @@ documentation.
 How to play, see in [Manual Game](Manual.md)
 ## For Development
 The proyect nose que [RocketLeague Code Documentation](CodeDocumentation.md)
-## Features
-
-*   ClientProtocol and ServerProtocol unit test % 100
-* 
-* 
-* 
-* 
-* 
-* 
-* 
-* 
-* 
 
 

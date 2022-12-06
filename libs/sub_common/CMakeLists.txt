@@ -9,8 +9,6 @@ add_library(lib_common
         resolver.h
         resolvererror.h
         resolvererror.cpp
-#        ../sub_server/protocolo.h
-#        ../sub_server/protocolo.cpp
         BlockingQueue.h
         ProtectedQueue.h
         QueueIsEmptyException.cpp

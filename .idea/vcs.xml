@@ -3,7 +3,7 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/box2d" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/libSDL2pp" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/libs/Catch2" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/libs/libSDL2pp" vcs="Git" />
   </component>
 </project>

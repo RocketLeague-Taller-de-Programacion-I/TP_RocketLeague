@@ -36,6 +36,15 @@ add_executable(client_main client_main.cpp ${UIS_HEADERS})
 add_executable(server_main server_main.cpp)
 
 #  Linkeo las bibliotecas con los ejecutables
-target_link_libraries(server_main PUBLIC lib_server lib_common box2d Qt5::Widgets)
+target_link_libraries(server_main PUBLIC lib_server lib_common box2d Qt5::Widgets )
 target_link_libraries(client_main PUBLIC lib_client lib_common SDL2pp::SDL2pp Qt5::Widgets)
 
+# Ejecutables y bilbiotecas de los test
+add_executable(testsClient tests/client_protocol_test/ClientProtocolTest.cpp)
+target_link_libraries(testsClient PRIVATE Catch2::Catch2WithMain lib_testClient)
+
+add_executable(testsServer tests/server_protocol_test/ServerProtocolTest.cpp tests/GamesTest.cpp)
+target_link_libraries(testsServer PRIVATE Catch2::Catch2WithMain lib_testServer)
+
+add_executable(testsCommon tests/blockingQueueTest.cpp)
+target_link_libraries(testsCommon PRIVATE Catch2::Catch2WithMain lib_testCommon)
