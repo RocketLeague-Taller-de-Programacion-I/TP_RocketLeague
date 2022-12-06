@@ -5,7 +5,7 @@ ClientManager::ClientManager(uint8_t &id, Socket &aClient, GameManager &aGameMan
         gameManager(aGameManager),
         closed(false),
         id(id),
-        shouldContinueLooping(true), disconnected(false){}
+        shouldContinueLooping(true), notConnectedToGame(true){}
 
 void ClientManager::run() {
     ServerProtocolo protocolo;
@@ -33,7 +33,7 @@ void ClientManager::run() {
             actionCommand->execute(startThreadsCallable, sendCallable, protocolo);
         }
     } catch (const LibError &e) {
-            disconnected = true;
+            notConnectedToGame = true;
             return;
 
     } catch (...) {}
@@ -51,6 +51,7 @@ void ClientManager::sendBytes(void* bytes_to_send, unsigned int size) {
 }
 
 void ClientManager::waitClientThreads() {
+    notConnectedToGame = false;
     clientReceiverThread->join();
     clientSenderThread->join();
     gameManager.deletePlayer(id);
@@ -74,7 +75,7 @@ void ClientManager::startClientThreads(ProtectedQueue<std::shared_ptr<ServerActi
 void ClientManager::endManager() {
     client.shutdown(2);
     client.close();
-    if (isDisconnected()) {
+    if (NotConnectedToGame()) {
         return;
     }
     clientReceiverThread->stop();
@@ -84,8 +85,8 @@ void ClientManager::endManager() {
 uint8_t ClientManager::getId() {
     return id;
 }
-bool ClientManager::isDisconnected() {
-    return disconnected;
+bool ClientManager::NotConnectedToGame() {
+    return notConnectedToGame;
 }
 
 void ClientManager::stop() {
