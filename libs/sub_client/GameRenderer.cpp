@@ -114,9 +114,13 @@ void GameRenderer::cleanThreads() {
 
 //  Closes the accepting socket and forces all the client managers to finish
 void GameRenderer::stop(Socket &skt) {
-    skt.shutdown(2);
-    skt.close();
-    cleanThreads();
+    try {
+        skt.shutdown(2);
+        skt.close();
+        cleanThreads();
+    } catch(...) {
+        return;
+    }
 }
 
 void GameRenderer::startThreads() {
