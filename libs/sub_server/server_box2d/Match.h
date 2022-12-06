@@ -66,6 +66,8 @@ public:
     void checkContacts();
 
     void addGoalToScorer();
+
+    std::vector<int> stats();
 };
 
 

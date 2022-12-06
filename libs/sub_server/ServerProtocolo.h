@@ -81,7 +81,7 @@ public:
     void serializeJoinACK(ServerJoinACK *update, std::function<void(void *, unsigned int)> &sendBytes);
     void serializeServerListACK(ServerListACK *update, std::function<void(void *, unsigned int)> &sendBytes);
     void serializeWorldUpdate(ServerUpdateWorld *update, std::function<void(void *, unsigned int)> &sendBytes);
-    void serializeStatsUpdate(ServerUpdateStats *updateStats, std::function<void(void *, unsigned int)> &function);
+    void serializeStatsUpdate(ServerUpdateStats *updateStats, std::function<void(void *, unsigned int)> &sendBytes);
 };
 
 

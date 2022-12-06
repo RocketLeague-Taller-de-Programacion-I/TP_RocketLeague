@@ -21,11 +21,11 @@ void MyContactListener::BeginContact(b2Contact* contact) {
     auto typeA = reinterpret_cast<MyFixtureUserDataType*> (dataA.pointer)->mObjectType;
     auto typeB = reinterpret_cast<MyFixtureUserDataType*> (dataB.pointer)->mObjectType;
     //  Registro mis contactos
-    if (typeA != 2 and typeA != 4 and typeA != 0 and typeB == 2) { //  Es un auto y B es pelota
+    if (typeA != 2 and typeA != 4 and typeA != 0 and typeB == 2) { //  A es un auto y B es pelota
         auto id = reinterpret_cast<MyFixtureUserDataType*> (dataA.pointer)->id;
         this->contacts.push_back(id);
     }
-    else if (typeB != 2 and typeB != 4 and typeB != 0 and typeA == 2)  { //  Es un auto
+    else if (typeB != 2 and typeB != 4 and typeB != 0 and typeA == 2)  { // B es un auto y A es pelota
         auto id = reinterpret_cast<MyFixtureUserDataType*> (dataB.pointer)->id;
         this->contacts.push_back(id);
     }

@@ -150,7 +150,6 @@ Match::~Match() {
     delete this->ball;
 }
 
-
 void Match::addGoalToScorer() {
     uint8_t id = this->contacts.back();
     auto search = this->scorers.find(id);
@@ -159,4 +158,16 @@ void Match::addGoalToScorer() {
     } else {
         scorers[id] = 1;
     }
+}
+std::vector<int> Match::stats() {
+    std::vector<int> stats;
+    uint8_t players = this->scorers.size();
+    stats.emplace_back(players);
+    for (std::pair<const uint8_t,int> &scorer : scorers) {
+        uint8_t id = scorer.first;
+        uint8_t goals = scorer.second;
+        stats.emplace_back(id);
+        stats.emplace_back(goals);
+    }
+    return stats;
 }
