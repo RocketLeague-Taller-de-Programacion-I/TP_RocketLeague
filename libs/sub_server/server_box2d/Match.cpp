@@ -1,7 +1,3 @@
-//
-// Created by franco on 16/11/22.
-//
-
 #include "Match.h"
 #include "sub_server/server_actions/ServerAction.h"
 
@@ -10,14 +6,10 @@
 #include <unistd.h>
 #include <memory>
 
-#define LOCALGOAL (0.005)
-#define VISITGOAL  (40.000)
-#define GOALSIZE 1.5
-#define BALL 0x0002
-#define CAR 0x0003
-#define GROUND 0x0004
-#define RADIO 1
-Match::Match(std::string gameName, int required) : name(std::move(gameName)), world(b2World(b2Vec2(0,-10))), playersConnected(0), playersRequired(required), goalsLocal(0), goalsVisit(0),
+#define GRAVITY (-10)
+#define TIME_TO_PLAY 180000000
+
+Match::Match(std::string gameName, int required) : name(std::move(gameName)), world(b2World(b2Vec2(0,GRAVITY))), playersConnected(0), playersRequired(required), goalsLocal(0), goalsVisit(0),
                                                    listener(contacts) {
     world.SetContactListener(&this->listener);
     myUserData = std::make_unique<MyFixtureUserDataType>();

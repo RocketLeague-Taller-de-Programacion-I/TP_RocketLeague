@@ -49,8 +49,6 @@ add_library(lib_client
         client_updates/ClientJoinACK.h
         client_updates/ClientListACK.cpp
         client_updates/ClientListACK.h
-        WaitingForGameToStartThread.cpp
-        WaitingForGameToStartThread.h
         client_updates/ClientStartedGameACK.h
         client_updates/ClientUpdateWorld.cpp
         client_updates/ClientUpdateWorld.h
