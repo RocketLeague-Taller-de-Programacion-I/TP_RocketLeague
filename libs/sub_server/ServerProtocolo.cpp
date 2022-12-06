@@ -132,9 +132,7 @@ ServerProtocolo::serializeStatsUpdate(ServerUpdateStats *updateStats, std::funct
 
     for (int i = 1; i < (stats.size()); i+=2) {
         uint8_t id = stats[i];
-        std::cout << "id: " << (int)id << std::endl;
         uint8_t goals = stats[i+1];
-        std::cout << "goals: " << (int)goals << std::endl;
         sendBytes(&id, sizeof(id));
         sendBytes(&goals, sizeof(goals));
     }
