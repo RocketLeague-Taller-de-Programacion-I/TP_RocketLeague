@@ -170,7 +170,7 @@ TEST_CASE("ServerProtocol serialize ListACK update","[serverProtocol]"){
 }
 
 MockUpdateWorldProtocol mockWorld;
-std::vector<int> data = {10,10,3,2,1,
+std::vector<int> data = {10,10,0, 30,3,2,1,
                          1,10,10,60,1,
                          2,10,10,60,1,};
 std::function<void(void *, unsigned int)> sendBytesWorld =
@@ -183,6 +183,8 @@ TEST_CASE("ServerProtocol serialize WordlACK update","[serverProtocol]"){
 
     REQUIRE(mockWorld.ballPosition() == 10);
     REQUIRE(mockWorld.ballPosition() == 10);
+    REQUIRE(mockWorld.getSign() == 0);
+    REQUIRE(mockWorld.getAngle()== 30);
     REQUIRE(mockWorld.getScoreLocal() == 3);
     REQUIRE(mockWorld.getScoreVisitor() == 2);
     REQUIRE(mockWorld.getTime() == 1);

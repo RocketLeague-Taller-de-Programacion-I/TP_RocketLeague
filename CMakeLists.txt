@@ -26,6 +26,7 @@ add_subdirectory(libs/sub_common)
 add_subdirectory(tests)
 
 # Find the QtWidgets library
+find_package(Catch2 3 REQUIRED)
 find_package(Qt5 REQUIRED COMPONENTS Widgets)
 qt5_wrap_ui(UIS_HEADERS
         ui/mainwindow.ui
@@ -34,10 +35,15 @@ qt5_wrap_ui(UIS_HEADERS
 #  Creo los ejecutables
 add_executable(client_main client_main.cpp ${UIS_HEADERS})
 add_executable(server_main server_main.cpp)
+
 add_executable(test_client tests/client_protocol_test/ClientProtocolTest.cpp)
 add_executable(test_server tests/server_protocol_test/ServerProtocolTest.cpp)
 
 #  Linkeo las bibliotecas con los ejecutables
 target_link_libraries(server_main PUBLIC lib_server lib_common box2d Qt5::Widgets)
 target_link_libraries(client_main PUBLIC lib_client lib_common SDL2pp::SDL2pp Qt5::Widgets)
+
+target_link_libraries(test_server PRIVATE Catch2::Catch2WithMain lib_testServer)
+
+target_link_libraries(test_client PRIVATE Catch2::Catch2WithMain lib_testClient)
 
