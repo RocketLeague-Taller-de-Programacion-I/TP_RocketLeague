@@ -18,6 +18,9 @@ public:
     float getY() const {
         return y;
     };
+    float getAngle() const {
+        return angle;
+    };
 };
 
 

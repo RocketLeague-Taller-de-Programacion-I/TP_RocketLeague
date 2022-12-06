@@ -17,7 +17,6 @@ private:
     bool facingWhere;
     int positionX;
     int positionY;
-    uint16_t angleSign;
     int angle;
 
 public:

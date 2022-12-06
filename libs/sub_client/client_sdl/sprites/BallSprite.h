@@ -12,6 +12,7 @@ private:
 
     int ballWidth;
     int ballHeight;
+    int ballAngle;
 
     int positionX;
     int positionY;
