@@ -291,6 +291,31 @@ TEST_CASE("ClientProtocol can deserialize WorldACK update", "[clientProtocol]") 
         REQUIRE(time == 5);
     }
 }
+std::vector<uint8_t> data = { 2, // numberOfPlayers
+                              1, // id_player1
+                              3, // score_player1
+                              2, // id_player2
+                              0, // score_player2
+                              };
+MockACKProtocol mockStat(data);
+
+TEST_CASE("ClientProtocol can deserialize StatACK update", "[clientProtocol]") {
+
+    SECTION("Update StatACK with data") {
+        std::function<void(void *, int)> bytes_receiver_callable =
+                [](void * retuncode, int size) { mockStat.receiveBytes(retuncode,size); };
+
+        auto update = ClientProtocol::deserializeData(GAME_OVER,bytes_receiver_callable);
+
+        REQUIRE(update->getType() == GAME_OVER);
+        /*
+         * Score Assert
+         */
+        auto stats = update->getStats();
+        REQUIRE(stats.at(1)==3);
+        REQUIRE(stats.at(2)==0);
+    }
+}
 /*
  * En caso de que reciba un comando inexistente, se retorna un puntero a null.
  */

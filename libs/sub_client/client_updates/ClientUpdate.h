@@ -45,6 +45,7 @@ public:
     virtual GameTime getTime() ;
     virtual std::vector<Car> getCars() ;
     virtual std::map<std::string, std::string> getList();
+    virtual std::map<uint8_t,uint8_t> getStats();
 };
 
 

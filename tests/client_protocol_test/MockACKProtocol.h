@@ -21,6 +21,13 @@ public:
             data.push(i);
         }
     }
+
+    explicit MockACKProtocol(const std::vector<uint8_t>& dataRecive) {
+        for ( auto & iter  : dataRecive){
+            data.push(iter);
+        }
+    }
+
     void receiveBytes(void *bytes_to_read, int size) {
         auto * pbytes_to_read = (uint8_t *) bytes_to_read;
         for (int i =0 ; i<size;i++) {

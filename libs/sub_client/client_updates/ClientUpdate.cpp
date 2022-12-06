@@ -23,3 +23,7 @@ std::vector<Car> ClientUpdate::getCars() {
 std::map<std::string, std::string> ClientUpdate::getList() {
     return std::map<std::string, std::string>();
 }
+
+std::map<uint8_t, uint8_t> ClientUpdate::getStats() {
+    return std::map<uint8_t, uint8_t>();
+}
