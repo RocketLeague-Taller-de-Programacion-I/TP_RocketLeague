@@ -4,9 +4,7 @@
 
 #include "ServerProtocolo.h"
 #define INITIAL_POSITION 6
-command_t ServerProtocolo::getMapCommand(uint32_t action) {
-    return this->mapCommand.at(action);
-}
+
 
 std::shared_ptr<ServerAction> ServerProtocolo::deserializeData(const std::function<void(void *, int)> &receiveBytes) {
     return parseUpdateAction(receiveBytes);
@@ -131,9 +129,7 @@ ServerProtocolo::serializeStatsUpdate(ServerUpdateStats *updateStats, std::funct
 
     for (int i = 1; i < (stats.size()); i+=2) {
         uint8_t id = stats[i];
-        std::cout << "id: " << (int)id << std::endl;
         uint8_t goals = stats[i+1];
-        std::cout << "goals: " << (int)goals << std::endl;
         sendBytes(&id, sizeof(id));
         sendBytes(&goals, sizeof(goals));
     }
@@ -150,7 +146,7 @@ std::shared_ptr<ServerAction>
         case LIST_ROOMS:
             return parseListAction(id, gameManager);
     }
-    return {};
+    return nullptr;
 }
 
 std::shared_ptr<ServerAction>

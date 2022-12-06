@@ -35,6 +35,7 @@
  *                          ]}
  */
 
+#define INVALID_TYPE -1
 /*
  * MockACKProtocol recibe dos parametros:
  *  - id
@@ -320,11 +321,10 @@ TEST_CASE("ClientProtocol can deserialize StatACK update", "[clientProtocol]") {
  * En caso de que reciba un comando inexistente, se retorna un puntero a null.
  */
 TEST_CASE("ClientProtocol receive an non-existed command", "[clientProtocol]") {
+    auto type = INVALID_TYPE;
+    std::function<void(void *, int)> bytes_receiver_callable = [](void * retuncode, int size) { };
 
-    std::function<void(void *, int)> bytes_receiver_callable =
-            [](void * retuncode, int size) {};
-
-    auto update = ClientProtocol::deserializeData(-1,
+    auto update = ClientProtocol::deserializeData(type,
                                                   bytes_receiver_callable);
 
     REQUIRE(update == nullptr);

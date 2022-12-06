@@ -2,7 +2,6 @@
 #define ROCKETLEAGUE_SERVERUPDATESTATS_H
 
 #include <functional>
-
 #include "ServerUpdate.h"
 
 class ServerUpdateStats : public ServerUpdate{

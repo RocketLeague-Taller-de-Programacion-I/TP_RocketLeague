@@ -23,16 +23,17 @@ public:
         data.pop();
         return type;
     }
-    uint16_t getId() {
-        uint16_t id = data.front();
+    uint8_t getId() {
+        uint8_t id = data.front();
         data.pop();
         return id;
     }
-    uint16_t getRetunCode() {
-        uint16_t code = data.front();
+    uint8_t getRetunCode() {
+        uint8_t code = data.front();
         data.pop();
         return code;
     }
+
 private:
     std::queue<uint8_t> data;
 };

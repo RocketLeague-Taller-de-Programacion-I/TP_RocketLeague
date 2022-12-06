@@ -9,7 +9,9 @@
 #include "MockActionProtocol.h"
 #include "MockUpdateProtocol.h"
 #include "MockUpdateWorldProtocol.h"
+#include "MockStatsProtocol.h"
 
+#define INVALID_TYPE -1
 /*
  * TEST UNITARIOS DE PROTOCOLO SERVIDOR
  *
@@ -68,7 +70,6 @@ TEST_CASE("ServerProtocol can deserialize join action", "[serverProtocol]") {
                                                                                                                  id,
                                                                                                                  manager,
                                                                                                                  bytes_receiver_callable));
-
         REQUIRE(action->getId() == 4);
         REQUIRE(action->getRoomName() == "testJoin");
     }
@@ -82,10 +83,10 @@ TEST_CASE("ServerProtocol can deserialize list action", "[serverProtocol]") {
         std::function<void(void *, int)> bytes_receiver_callable =
                 [](void *toRead, int size) { mockList.receiveBytes(toRead, size); };
 
-        auto action =  std::reinterpret_pointer_cast<ServerListRooms>(ServerProtocolo::deserializeDataOnCommand(type,
-                                                                                                                 id,
-                                                                                                                 manager,
-                                                                                                                 bytes_receiver_callable));
+        auto action =  std::reinterpret_pointer_cast<ServerJoinRoom>(ServerProtocolo::deserializeDataOnCommand(type,
+                                                                                                               id,
+                                                                                                               manager,
+                                                                                                               bytes_receiver_callable));
         REQUIRE(action->getId() == 2);
     }
 }
@@ -102,6 +103,23 @@ TEST_CASE("ServerProtocol can deserialize move action", "[serverProtocol]") {
 
         REQUIRE(action->getId() == 1);
     }
+}
+/*
+ * En caso de que reciba un comando inexistente, se retorna un puntero a null.
+ */
+TEST_CASE("ServerProtocol receive an non-existed command", "[serverProtocol]") {
+    uint8_t id = 2,type=INVALID_TYPE ;
+    GameManager manager;
+
+    std::function<void(void *, int)> bytes_receiver_callable =
+            [](void *toRead, int size) {};
+
+    auto action = ServerProtocolo::deserializeDataOnCommand(type,
+                                                            id,
+                                                            manager,
+                                                            bytes_receiver_callable);
+
+    REQUIRE(action == nullptr);
 }
 
 /*
@@ -163,10 +181,37 @@ TEST_CASE("ServerProtocol serialize WordlACK update","[serverProtocol]"){
 
     serverProtocol.serializeUpdate(update,sendBytesWorld);
 
-    REQUIRE( mockWorld.ballPosition() == 10);
+    REQUIRE(mockWorld.ballPosition() == 10);
     REQUIRE(mockWorld.ballPosition() == 10);
     REQUIRE(mockWorld.getScoreLocal() == 3);
     REQUIRE(mockWorld.getScoreVisitor() == 2);
     REQUIRE(mockWorld.getTime() == 1);
 }
+std::vector<int> stats = { 2, // numberOfPlayers
+                              1, // id_player1
+                              5, // score_player1
+                              2, // id_player2
+                              1, // score_player2
+};
 
+MockStatsProtocol mockStats;
+std::function<void(void *, unsigned int)> sendBytesStatsMock =
+        [](void * bytes, unsigned int size) { mockStats.sendBytesStatsMock(bytes,size); };
+TEST_CASE("ServerProtocol serialize StatsACK update","[serverProtocol]"){
+
+    std::shared_ptr<ServerUpdate> update = std::make_shared<ServerUpdateStats>(stats);
+
+    serverProtocol.serializeUpdate(update,sendBytesStatsMock);
+
+    REQUIRE(mockStats.getCantPlayer() == 2);
+
+    /* Player one */
+
+    REQUIRE(mockStats.getId() == 1);
+    REQUIRE(mockStats.getScore() == 5);
+
+    /* Player two*/
+
+    REQUIRE(mockStats.getId() == 2);
+    REQUIRE(mockStats.getScore() == 1);
+}

@@ -1,7 +1,3 @@
-//
-// Created by lucaswaisten on 04/11/22.
-//
-#pragma once
 
 #ifndef ROCKETLEAGUE_SERVERPROTOCOLO_H
 #define ROCKETLEAGUE_SERVERPROTOCOLO_H
@@ -49,7 +45,6 @@ private:
             {SDLK_SPACE, TURBO}
     };
 public:
-    command_t getMapCommand(uint32_t action);
     ServerProtocolo() = default;
 
     static std::shared_ptr<ServerAction> deserializeData(const std::function<void(void *, int)> &receiveBytes);
