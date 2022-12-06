@@ -92,6 +92,7 @@ std::shared_ptr<ClientUpdate> ClientProtocol::parseWorldUpdate(const std::functi
 
     uint16_t angleSign;
     receiveBytes(&angleSign, sizeof(angleSign));
+
     uint32_t angleBall; //uint32_t
     receiveBytes(&angleBall, sizeof(angleBall));
     angleBall = ntohl(angleBall);

@@ -77,21 +77,25 @@ ServerProtocolo::serializeWorldUpdate(ServerUpdateWorld *update, std::function<v
     //  Ball
     uint16_t ballX = (uint16_t) htons(matchInfo[0]);
     uint16_t ballY = (uint16_t) htons(matchInfo[1]);
+    uint16_t sign = (uint16_t) htons(matchInfo[2]);
+    uint32_t angle = (uint32_t) htonl(matchInfo[3]);
     sendBytes(&ballX, sizeof(ballX));
     sendBytes(&ballY, sizeof(ballY));
+    sendBytes(&sign, sizeof(sign));
+    sendBytes(&angle, sizeof(angle));
 
     //  Score
-    uint16_t local = (uint16_t) htons(matchInfo[2]);
-    uint16_t visit = (uint16_t) htons(matchInfo[3]);
+    uint16_t local = (uint16_t) htons(matchInfo[4]);
+    uint16_t visit = (uint16_t) htons(matchInfo[5]);
     sendBytes(&local, sizeof(local));
     sendBytes(&visit, sizeof(visit));
 
     //  Tiempo restante
-    uint16_t time = (uint16_t) htons(matchInfo[5]);
+    uint16_t time = (uint16_t) htons(matchInfo[7]);
     sendBytes(&time, sizeof(time));
 
     //  Numero de Clientes
-    uint16_t n_clients = (uint16_t) htons(matchInfo[4]);
+    uint16_t n_clients = (uint16_t) htons(matchInfo[6]);
     sendBytes(&n_clients, sizeof(n_clients));
 
     int vSize = matchInfo.size();
@@ -128,17 +132,15 @@ ServerProtocolo::serializeStatsUpdate(ServerUpdateStats *updateStats, std::funct
 
     for (int i = 1; i < (stats.size()); i+=2) {
         uint8_t id = stats[i];
-        std::cout << "id: " << (int)id << std::endl;
         uint8_t goals = stats[i+1];
-        std::cout << "goals: " << (int)goals << std::endl;
         sendBytes(&id, sizeof(id));
         sendBytes(&goals, sizeof(goals));
     }
 }
 
 std::shared_ptr<ServerAction>
-        ServerProtocolo::deserializeDataOnCommand(uint8_t &actionType, uint8_t &id, GameManager &gameManager,
-                                                  std::function<void(void *, int)> &receiveBytes) {
+ServerProtocolo::deserializeDataOnCommand(uint8_t &actionType, uint8_t &id, GameManager &gameManager,
+                                          std::function<void(void *, int)> &receiveBytes) {
     switch (actionType) {
         case CREATE_ROOM:
             return parseCreateAction(id, receiveBytes, gameManager);
@@ -151,8 +153,8 @@ std::shared_ptr<ServerAction>
 }
 
 std::shared_ptr<ServerAction>
-        ServerProtocolo::parseCreateAction(uint8_t &id, const std::function<void(void *, int)>& receiveBytes,
-                                           GameManager &gameManager) {
+ServerProtocolo::parseCreateAction(uint8_t &id, const std::function<void(void *, int)>& receiveBytes,
+                                   GameManager &gameManager) {
     std::vector<uint8_t> capacity_and_nameSize(2);
     receiveBytes(capacity_and_nameSize.data(), capacity_and_nameSize.size());
     uint8_t capacity = capacity_and_nameSize[0];
@@ -167,8 +169,8 @@ std::shared_ptr<ServerAction>
 }
 
 std::shared_ptr<ServerAction>
-        ServerProtocolo::parseJoinAction(const uint8_t &id, const std::function<void(void *, int)> &receiveBytes,
-                                         GameManager &gameManager) {
+ServerProtocolo::parseJoinAction(const uint8_t &id, const std::function<void(void *, int)> &receiveBytes,
+                                 GameManager &gameManager) {
     std::vector<uint8_t> nameSize(1);
     receiveBytes(nameSize.data(), nameSize.size());
 
