@@ -7,8 +7,9 @@ class Ball {
 private:
     float x;
     float y;
+    float angle;
 public:
-    Ball(float x, float y) : x(x), y(y) {};
+    Ball(float x, float y, float angle) : x(x), y(y), angle(angle) {};
     ~Ball() = default;
 
     float getX() const {

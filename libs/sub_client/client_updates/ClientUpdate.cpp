@@ -5,7 +5,7 @@
 #include "ClientUpdate.h"
 
 Ball ClientUpdate::getBall() {
-    return Ball(0, 0);
+    return Ball(0, 0, 0);
 }
 
 Score ClientUpdate::getScore() {

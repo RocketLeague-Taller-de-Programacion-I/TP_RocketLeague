@@ -28,6 +28,8 @@ public:
     float Y() const;
 
     void restartGame() const;
+
+    float angleDeg() const;
 };
 
 
