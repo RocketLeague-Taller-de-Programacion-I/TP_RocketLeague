@@ -67,6 +67,20 @@ The proyect nose que [RocketLeague Code Documentation](CodeDocumentation.md)
 * ### Sound
 
   -  **Ambience Music**
+* ### Configuration
+
+  Macros in Match.cpp: 
+    - GRAVITY, 
+    - TIME_TO_PLAY
+  Macros in Car.cpp:
+    - FLIPYHEIGHT 
+    - ONEJUMP  
+    - ONEJUMPFORCE 
+    - TWOJUMPFORCE 
+    - XFORCE  
+    - TURBOXFORCE
+  Macron in ball.cpp:
+    - BALL_RESTITUTION
 
 * ### Tests
 
