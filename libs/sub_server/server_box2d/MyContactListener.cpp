@@ -49,25 +49,37 @@ void MyContactListener::BeginContact(b2Contact* contact) {
         return;
     }
     //  Gold shot
-    bool right = reinterpret_cast<MyFixtureUserDataType*> (dataA.pointer)->facingRight;
+
     /*  En estos dos casos los autos estan mirando para la izquierda, entonces su parte trasera será la derecha,
     * y como no hay precisión de cual es cada cuerpo (A auto o B bola ó viceversa) contemplo ambos casos.
      */
-    if (typeA == 2 and typeB == 6 and !right) {
-        fA->GetBody()->ApplyForceToCenter(b2Vec2(5000.0,0), true);
-        return;
+    if (typeA == 2 and typeB == 6) {
+        bool right = reinterpret_cast<MyFixtureUserDataType*> (dataB.pointer)->facingRight;
+        if (!right) {
+            fA->GetBody()->ApplyForceToCenter(b2Vec2(5000.0, 0), true);
+            return;
+        }
     }
-    if (typeA == 6 and typeB == 2 and !right) {
-        fB->GetBody()->ApplyForceToCenter(b2Vec2(5000.0,0), true);
-        return;
+    if (typeB == 2 and typeA == 6) {
+        bool right = reinterpret_cast<MyFixtureUserDataType *> (dataA.pointer)->facingRight;
+        if (!right) {
+            fB->GetBody()->ApplyForceToCenter(b2Vec2(5000.0, 0), true);
+            return;
+        }
     }
-    if (typeA == 2 and typeB == 5 and right) {
-        fA->GetBody()->ApplyForceToCenter(b2Vec2(-5000.0,0), true);
-        return;
+    if (typeB == 2 and typeA == 5) {
+        bool right = reinterpret_cast<MyFixtureUserDataType *> (dataA.pointer)->facingRight;
+        if (right) {
+            fB->GetBody()->ApplyForceToCenter(b2Vec2(-5000.0, 0), true);
+            return;
+        }
     }
-    if (typeA == 5 and typeB == 2 and right) {
-        fB->GetBody()->ApplyForceToCenter(b2Vec2(-5000.0,0), true);
-        return;
+    if (typeA == 2 and typeB == 5) {
+        bool right = reinterpret_cast<MyFixtureUserDataType *> (dataB.pointer)->facingRight;
+        if (right) {
+            fA->GetBody()->ApplyForceToCenter(b2Vec2(-5000.0, 0), true);
+            return;
+        }
     }
 }
 
