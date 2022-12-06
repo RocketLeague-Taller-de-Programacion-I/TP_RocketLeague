@@ -162,8 +162,11 @@ std::shared_ptr<ClientUpdate> ClientProtocol::parseStatsUpdate(const std::functi
     for (int i = 0; i < numberOfPlayers; i++) {
         uint8_t id;
         receiveBytes(&id, sizeof(id));
+
         uint8_t score;
         receiveBytes(&score, sizeof(score));
+
+        if(id == 0) continue; // 0 is not a valid id
         stats[id] = score;
     }
     std::shared_ptr<ClientUpdate> update = std::make_shared<ClientUpdateStats>(stats);
