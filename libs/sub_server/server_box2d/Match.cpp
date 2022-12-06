@@ -142,9 +142,7 @@ bool Match::isFinished() const {
     return timeElapsed >= (unsigned int)TIME_TO_PLAY;
 }
 
-Match::~Match() {
-
-}
+Match::~Match() {}
 
 void Match::addGoalToScorer() {
     uint8_t id = this->contacts.back();

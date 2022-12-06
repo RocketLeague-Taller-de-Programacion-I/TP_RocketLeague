@@ -90,9 +90,10 @@ void Game::deletePlayer(uint8_t idPlayer) {
 
 void Game::stop() {
     finished = true;
-    this->match.deleteMatch();
     delete queue;
 }
 
-Game::~Game() {}
+Game::~Game() {
+    this->match.deleteMatch();
+}
 
