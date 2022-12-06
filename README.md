@@ -31,7 +31,7 @@ documentation.
 
 How to play, see in [Manual Game](Manual.md)
 ## For Development
-The proyect nose que [RocketLeague Code Documentation](CodeDocumentation.md)
+The proyect: [RocketLeague Code Documentation](CodeDocumentation.md)
 
 ## Features
 * ### Car:

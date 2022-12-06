@@ -317,7 +317,7 @@ TEST_CASE("ClientProtocol can deserialize StatACK update", "[clientProtocol]") {
         /*
          * Score Assert
          */
-        auto stats = update->getStats();
+        auto stats = std::static_pointer_cast<ClientUpdateStats>(update)->getStats();
         REQUIRE(stats.at(1)==3);
         REQUIRE(stats.at(2)==0);
     }

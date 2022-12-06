@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
 
 project(RocketLeague LANGUAGES CXX)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -pedantic-errors -O3 -ggdb -DDEBUG -fno-inline -pthread")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}  -pedantic -pedantic-errors -O3 -ggdb -DDEBUG -fno-inline -pthread")
 set(CMAKE_CXX_STANDARD 17)
 
 set(SDL2PP_WITH_IMAGE ON) # if you need SDL_image support
@@ -26,6 +26,7 @@ add_subdirectory(libs/sub_common)
 add_subdirectory(tests)
 
 # Find the QtWidgets library
+find_package(Catch2 3 REQUIRED)
 find_package(Qt5 REQUIRED COMPONENTS Widgets)
 qt5_wrap_ui(UIS_HEADERS
         ui/mainwindow.ui
@@ -35,16 +36,14 @@ qt5_wrap_ui(UIS_HEADERS
 add_executable(client_main client_main.cpp ${UIS_HEADERS})
 add_executable(server_main server_main.cpp)
 
+add_executable(test_client tests/client_protocol_test/ClientProtocolTest.cpp)
+add_executable(test_server tests/server_protocol_test/ServerProtocolTest.cpp)
+
 #  Linkeo las bibliotecas con los ejecutables
-target_link_libraries(server_main PUBLIC lib_server lib_common box2d Qt5::Widgets )
+target_link_libraries(server_main PUBLIC lib_server lib_common box2d Qt5::Widgets)
 target_link_libraries(client_main PUBLIC lib_client lib_common SDL2pp::SDL2pp Qt5::Widgets)
 
-# Ejecutables y bilbiotecas de los test
-add_executable(testsClient tests/client_protocol_test/ClientProtocolTest.cpp)
-target_link_libraries(testsClient PRIVATE Catch2::Catch2WithMain lib_testClient)
+target_link_libraries(test_server PRIVATE Catch2::Catch2WithMain lib_testServer)
 
-add_executable(testsServer tests/server_protocol_test/ServerProtocolTest.cpp tests/GamesTest.cpp)
-target_link_libraries(testsServer PRIVATE Catch2::Catch2WithMain lib_testServer)
+target_link_libraries(test_client PRIVATE Catch2::Catch2WithMain lib_testClient)
 
-add_executable(testsCommon tests/blockingQueueTest.cpp)
-target_link_libraries(testsCommon PRIVATE Catch2::Catch2WithMain lib_testCommon)
