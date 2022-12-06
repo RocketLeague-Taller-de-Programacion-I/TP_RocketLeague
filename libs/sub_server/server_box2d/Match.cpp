@@ -143,11 +143,7 @@ bool Match::isFinished() const {
 }
 
 Match::~Match() {
-    for ( std::pair<const uint8_t,Car*> &player : players){
-        delete player.second;
-        player.second = nullptr;
-    }
-    delete this->ball;
+
 }
 
 void Match::addGoalToScorer() {
@@ -170,4 +166,12 @@ std::vector<int> Match::stats() {
         stats.emplace_back(goals);
     }
     return stats;
+}
+
+void Match::deleteMatch() {
+    for ( auto &player : players){
+        delete player.second;
+    }
+    players.clear();
+    delete this->ball;
 }

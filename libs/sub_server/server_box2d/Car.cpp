@@ -9,7 +9,7 @@
 #define BALL 0x0002
 #define CAR -3
 #define GROUND 0x0004
-#define MAXY 3
+#define MAXY 2.5
 #define FLIPYHEIGHT 1.5
 #define ONEJUMP 0.5
 #define ONEJUMPFORCE 7000
@@ -132,7 +132,7 @@ Car::Car(b2World* world, uint8_t& id) : id(id), turboOn(false), movingLeft(false
 }
 void Car::goRight() {
     if (this->m_car->GetPosition().y > FLIPYHEIGHT) {
-        m_car->ApplyTorque(-50.0, true);
+        m_car->ApplyTorque(-70.0, true);
         return;
     }
     if (turboOn) {
@@ -146,7 +146,7 @@ void Car::goRight() {
 //
 void Car::goLeft() {
     if (this->m_car->GetPosition().y > FLIPYHEIGHT) {
-        m_car->ApplyTorque(50.0, true);
+        m_car->ApplyTorque(70.0, true);
         return;
     }
     if (turboOn) {

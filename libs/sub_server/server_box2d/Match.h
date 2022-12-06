@@ -31,7 +31,6 @@ private:
     Ball* ball;
     std::map<uint8_t, Car*> players;
     std::map<uint8_t, int> scorers;
-    std::map<uint8_t, Car*> assistants;
     std::vector<int> contacts;
     int playersConnected;
     int playersRequired;
@@ -68,6 +67,8 @@ public:
     void addGoalToScorer();
 
     std::vector<int> stats();
+
+    void deleteMatch();
 };
 
 
