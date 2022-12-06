@@ -5,30 +5,22 @@ GameStatsSprite::GameStatsSprite(SDL2pp::Texture *texture, const uint8_t id, int
                                 GameSprite(texture, id, windowWidth, windowHeight),
                                 texture(*texture),
                                 stats(stats),
-                                digitsTexture(digits){}
+                                digitsTexture(*digits){}
 
 void GameStatsSprite::render(SDL2pp::Renderer &renderer) {
     // Render Score Board image
     SDL2pp::Rect dst(windowWidth/2 - SCOREBOARD_WIDTH/2, windowHeight - SCOREBOARD_HEIGHT, SCOREBOARD_WIDTH, SCOREBOARD_HEIGHT);
     renderer.Copy(texture, SDL2pp::NullOpt, dst);
-//
-//    SDL2pp::Rect localTextSrc(LOCALX, 0 , LOCAL_WIDTH, FONT_HEIGHT);
-//    SDL2pp::Rect localTextDst(windowWidth / 2 - LOCAL_DST_X, 0, LOCAL_WIDTH, FONT_HEIGHT);
-//    renderer.Copy(texture, localTextSrc, localTextDst);
-//
-//    SDL2pp::Rect visitorTextSrc(VISITORX, 0 , VISITOR_WIDTH, FONT_HEIGHT);
-//    SDL2pp::Rect visitorTextDst(windowWidth / 2 + VISITOR_DST_X, 0, VISITOR_WIDTH, FONT_HEIGHT);
-//    renderer.Copy(texture, visitorTextSrc, visitorTextDst);
-//
-//    SDL2pp::Rect localGoalsSrc(DIGIT_WIDTH * localGoals, 0 , DIGIT_WIDTH, FONT_HEIGHT);
-//    SDL2pp::Rect localGoalsDst(windowWidth / 2 - 3 * DIGIT_WIDTH / 2, 0, DIGIT_WIDTH, FONT_HEIGHT);
-//    renderer.Copy(texture, localGoalsSrc, localGoalsDst);
-//
-//    SDL2pp::Rect visitorGoalsSrc(DIGIT_WIDTH * visitorGoals, 0 , DIGIT_WIDTH, FONT_HEIGHT);
-//    SDL2pp::Rect visitorGoalsDst(windowWidth / 2 + DIGIT_WIDTH / 2 , 0, DIGIT_WIDTH, FONT_HEIGHT);
-//    renderer.Copy(texture, visitorGoalsSrc, visitorGoalsDst);
-//
-//    SDL2pp::Rect dashSrc(DASHX, 0, DASH_WIDTH, FONT_HEIGHT);
-//    SDL2pp::Rect dashDst(windowWidth/2 - DASH_WIDTH/2, 0, DASH_WIDTH, FONT_HEIGHT);
-//    renderer.Copy(texture,dashSrc,dashDst);
+    int margin = 0;
+    for(auto &playerStat : stats){
+        SDL2pp::Rect idSrc(DIGIT_WIDTH * playerStat.first, 0 , DIGIT_WIDTH, FONT_HEIGHT);
+        SDL2pp::Rect idDst(windowWidth/2 - SCOREBOARD_WIDTH/4, SCOREBOARD_HEIGHT/3 + FONT_HEIGHT * margin, DIGIT_WIDTH, FONT_HEIGHT);
+        renderer.Copy(digitsTexture, idSrc, idDst);
+
+        SDL2pp::Rect score2Src(DIGIT_WIDTH * playerStat.second, 0 , DIGIT_WIDTH, FONT_HEIGHT);
+        SDL2pp::Rect score2Dst(windowWidth/2 +SCOREBOARD_WIDTH/4, SCOREBOARD_HEIGHT/3 + FONT_HEIGHT * margin, DIGIT_WIDTH, FONT_HEIGHT);
+        renderer.Copy(digitsTexture, score2Src, score2Dst);
+
+        margin++;
+    }
 }

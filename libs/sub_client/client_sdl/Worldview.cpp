@@ -80,6 +80,21 @@ void Worldview::cleanDisconnected(std::vector<Car> &players) {
 }
 
 
+void Worldview::updateStats(std::map<uint8_t, uint8_t> &stats) {
+    gameStats = stats;
+    cleanSprites();
+    auto statsSprite = new GameStatsSprite(textures[SCORE_BOARD_TEXT], SCORE, windowWidth, windowHeight, gameStats,
+                                           textures[SCORE_TEXT]);
+    mapSprites.insert(std::pair<uint8_t, GameSprite*>(SCORE, statsSprite));
+}
+
+void Worldview::cleanSprites() {
+    for (auto & sprite : mapSprites) {
+        delete sprite.second;
+    }
+    mapSprites.clear();
+}
+
 // TODO: check if we need to destroy textures
 Worldview::~Worldview() {
     for (auto & sprite : mapSprites) {

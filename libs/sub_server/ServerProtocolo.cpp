@@ -128,11 +128,14 @@ ServerProtocolo::serializeStatsUpdate(ServerUpdateStats *updateStats, std::funct
     std::vector<int> stats = updateStats->getStats();
     uint8_t players = stats[0];
     sendBytes(&players, sizeof(players));
-    for (auto i = 1; i<(stats.size()-1)/2; i+2) {
+
+    for (int i = 1; i < (stats.size()); i+=2) {
         uint8_t id = stats[i];
+        std::cout << "id: " << (int)id << std::endl;
         uint8_t goals = stats[i+1];
-        sendBytes(&id, sizeof(players));
-        sendBytes(&goals, sizeof(players));
+        std::cout << "goals: " << (int)goals << std::endl;
+        sendBytes(&id, sizeof(id));
+        sendBytes(&goals, sizeof(goals));
     }
 }
 
