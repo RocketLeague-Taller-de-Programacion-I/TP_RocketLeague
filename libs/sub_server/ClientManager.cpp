@@ -73,13 +73,17 @@ void ClientManager::startClientThreads(ProtectedQueue<std::shared_ptr<ServerActi
 }
 
 void ClientManager::endManager() {
-    client.shutdown(2);
-    client.close();
-    if (NotConnectedToGame()) {
+    try {
+        client.shutdown(2);
+        client.close();
+        if (NotConnectedToGame()) {
+            return;
+        }
+        clientReceiverThread->stop();
+        clientSenderThread->stop();
+    } catch (...) {
         return;
     }
-    clientReceiverThread->stop();
-    clientSenderThread->stop();
 }
 
 uint8_t ClientManager::getId() {
