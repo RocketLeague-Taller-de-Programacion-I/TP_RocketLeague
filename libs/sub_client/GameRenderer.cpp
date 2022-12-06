@@ -1,5 +1,3 @@
-// Copyright 2022 Sprenger Roberta
-
 #include <QApplication>
 #include "GameRenderer.h"
 #include "sub_client/client_sdl/Worldview.h"
@@ -68,7 +66,7 @@ void GameRenderer::run() {
             Texture redCarTexture(renderer, SDL2pp::Surface("../assets/images/redCar.png").SetColorKey(true, 0));
             Texture ballTexture(renderer, SDL2pp::Surface("../assets/images/ball.png").SetColorKey(true, 0));
             Texture fieldTexture(renderer, SDL2pp::Surface("../assets/images/field.png").SetColorKey(true, 0));
-            Texture scoreBoard(renderer, SDL2pp::Surface("../assets/images/scoreBoard.png").SetColorKey(true, 0));
+            Texture scoreBoard(renderer, SDL2pp::Surface("../assets/images/scoreBoard.png").SetColorKey(false, 0));
 
             int fontsize = 50;
             Color color(0, 0, 0);

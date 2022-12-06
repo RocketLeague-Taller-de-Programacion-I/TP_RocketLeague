@@ -163,6 +163,8 @@ std::shared_ptr<ClientUpdate> ClientProtocol::parseStatsUpdate(const std::functi
         uint8_t id;
         receiveBytes(&id, sizeof(id));
 
+        if(!id) continue; // 0 is not a valid id
+
         uint8_t score;
         receiveBytes(&score, sizeof(score));
         stats[id] = score;
