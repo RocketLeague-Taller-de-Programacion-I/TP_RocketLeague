@@ -1,15 +1,13 @@
-//
-// Created by lucaswaisten on 12/11/22.
-//
-
 #ifndef ROCKETLEAGUE_CLIENTRECEIVER_H
 #define ROCKETLEAGUE_CLIENTRECEIVER_H
 
 
 #include "sub_common/socket.h"
 #include "sub_common/thread.h"
-#include "ServerProtocolo.h"
+#include "sub_common/liberror.h"
 #include "sub_common/ProtectedQueue.h"
+
+#include "ServerProtocolo.h"
 
 #include "server_actions/ServerAction.h"
 
@@ -25,10 +23,8 @@ public:
     ClientReceiver(Socket &skt_client, ProtectedQueue<std::shared_ptr<ServerAction>> *updatesQueue, uint8_t idClient);
     ~ClientReceiver() override;
     void stop() override;
-    void setQueue(ProtectedQueue<std::shared_ptr<ServerAction>> *pQueue);
-    void clearQueue();
 
-    void receiveBytes(std::vector<uint8_t> &bytes_to_read, uint8_t &size);
+    void receiveBytes(void *bytes_to_read, int size);
 };
 
 

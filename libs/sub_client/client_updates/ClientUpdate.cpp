@@ -5,11 +5,15 @@
 #include "ClientUpdate.h"
 
 Ball ClientUpdate::getBall() {
-    return Ball(0, 0);
+    return Ball(0, 0, 0);
 }
 
 Score ClientUpdate::getScore() {
     return Score();
+}
+
+GameTime ClientUpdate::getTime() {
+    return GameTime();
 }
 
 std::vector<Car> ClientUpdate::getCars() {
@@ -18,4 +22,8 @@ std::vector<Car> ClientUpdate::getCars() {
 
 std::map<std::string, std::string> ClientUpdate::getList() {
     return std::map<std::string, std::string>();
+}
+
+std::map<uint8_t, uint8_t> ClientUpdate::getStats() {
+    return std::map<uint8_t, uint8_t>();
 }

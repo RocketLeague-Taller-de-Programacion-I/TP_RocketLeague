@@ -5,6 +5,8 @@
 #ifndef ROCKETLEAGUE_SERVERJOINACK_H
 #define ROCKETLEAGUE_SERVERJOINACK_H
 
+#include <functional>
+
 #include "ServerUpdate.h"
 
 class ServerJoinACK : public ServerUpdate{
@@ -13,7 +15,7 @@ public:
     ~ServerJoinACK() override = default;
 
     uint8_t getType() const override;
-    void beSerialized(Protocolo *protocolo) override;
+    void beSerialized(ServerProtocolo *protocolo, std::function<void(void *, unsigned int)> &sendCallable) override;
 };
 
 

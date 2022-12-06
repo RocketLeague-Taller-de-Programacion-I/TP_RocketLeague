@@ -7,7 +7,6 @@
 
 #include "ClientAction.h"
 
-// create ActionCreateRoom class with public inheritance from Action class
 class ActionCreateRoom : public ClientAction{
 private:
     uint8_t capacity;
@@ -18,7 +17,7 @@ public:
     ~ActionCreateRoom() override;
 
     uint8_t getType() const override;
-    std::vector<uint8_t> beSerialized() override;
+    void beSerialized(ClientProtocol *protocolo) override;
 
     uint8_t getCapacity();
     std::string getGameName();

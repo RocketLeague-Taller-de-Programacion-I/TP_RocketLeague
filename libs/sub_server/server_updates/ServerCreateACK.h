@@ -5,6 +5,8 @@
 #ifndef ROCKETLEAGUE_SERVERCREATEACK_H
 #define ROCKETLEAGUE_SERVERCREATEACK_H
 
+#include <functional>
+
 #include "ServerUpdate.h"
 
 class ServerCreateACK : public ServerUpdate{
@@ -13,8 +15,7 @@ public:
     ~ServerCreateACK() override = default;
 
     uint8_t getType() const override;
-    void beSerialized(Protocolo *protocolo) override;
-
+    void beSerialized(ServerProtocolo *protocolo, std::function<void(void *, unsigned int)> &sendCallable) override;
 };
 
 

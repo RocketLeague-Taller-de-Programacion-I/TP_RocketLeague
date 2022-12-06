@@ -1,7 +1,3 @@
-//
-// Created by franco on 05/11/22.
-//
-
 #ifndef ROCKETLEAGUE_BALL_H
 #define ROCKETLEAGUE_BALL_H
 
@@ -9,14 +5,22 @@
 
 class Ball {
 private:
-    uint16_t x;
-    uint16_t y;
+    float x;
+    float y;
+    float angle;
 public:
-    Ball(uint16_t x, uint16_t y) : x(x), y(y) {};
+    Ball(float x, float y, float angle) : x(x), y(y), angle(angle) {};
     ~Ball() = default;
 
-    uint16_t getX() const { return x; };
-    uint16_t getY() const { return y; };
+    float getX() const {
+        return x;
+    };
+    float getY() const {
+        return y;
+    };
+    float getAngle() const {
+        return angle;
+    };
 };
 
 

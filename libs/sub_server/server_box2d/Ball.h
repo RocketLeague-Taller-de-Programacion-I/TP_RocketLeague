@@ -1,12 +1,9 @@
-//
-// Created by franco on 07/11/22.
-//
-
 #ifndef ROCKETLEAGUE_BALL_H
 #define ROCKETLEAGUE_BALL_H
 
-
 #include <memory>
+#include <unistd.h>
+
 #include "box2d/b2_body.h"
 #include "box2d/box2d.h"
 #include "Car.h"
@@ -24,10 +21,12 @@ public:
 public:
     Ball(b2World* world, float radius);
     ~Ball();
-    int X() const;
-    int Y() const;
+    float X() const;
+    float Y() const;
 
     void restartGame() const;
+
+    float angleDeg() const;
 };
 
 

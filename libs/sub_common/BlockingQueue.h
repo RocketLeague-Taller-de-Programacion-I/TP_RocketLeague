@@ -1,7 +1,3 @@
-//
-// Created by lucaswaisten on 12/11/22.
-//
-
 #ifndef ROCKETLEAGUE_BQUEUE_H
 #define ROCKETLEAGUE_BQUEUE_H
 
@@ -28,24 +24,19 @@ public:
     }
 
     void wait_not_empty(std::unique_lock<std::mutex> &lock) {
-        while(queue.empty()) {
-            signal.wait(lock);
-        }
+        signal.wait(lock,[this]{return !queue.empty();});
     }
 
     bool isEmpty() {
         std::lock_guard<std::mutex> lock(mutex);
         return queue.empty();
     }
-    std::vector<T> popAll() {
-        std::unique_lock<std::mutex> lock(mutex);
-        std::vector<T> elements;
-        while(queue.empty()) {
-            T element = queue.front();
-            queue.pop();
-            elements.push_back(element);
-        }
-        return elements;
+    std::queue<T> popAll() {
+        std::lock_guard<std::mutex> lock(mutex);
+        std::queue<T> old;
+        std::queue<T> elements = this->queue;
+        elements.swap(old);
+        return old;
     }
 
     virtual ~BlockingQueue() = default;

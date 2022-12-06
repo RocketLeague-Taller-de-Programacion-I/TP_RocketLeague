@@ -1,22 +1,22 @@
-
 #include "mainwindow.h"
-#include "../WaitingForGameToStartThread.h"
 #include "ui_mainwindow.h"
 #include <iostream>
 #include <regex>
 
-MainWindow::MainWindow(QWidget *parent, ProtectedQueue<std::shared_ptr<ClientUpdate>> &updates, BlockingQueue<std::shared_ptr<ClientAction>> &actions)
+MainWindow::MainWindow(uint8_t &id, QWidget *parent, ProtectedQueue<std::shared_ptr<ClientUpdate>> &updates,
+                       BlockingQueue<std::optional<std::shared_ptr<ClientAction>>> &actions)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , updatesQueue(updates)
     , actionsQueue(actions)
+    , id(id)
 {
     ui->setupUi(this);
     // Seteo un Objeto QGraphicsScene para manejar la escena del juego
     this->scene.setSceneRect(0,0,1500,750);
 
     ui->view->setScene(&scene);
-    ui->view->setStyleSheet("border-image: url(../images/rocketLig.jpg);");
+    ui->view->setStyleSheet("border-image: url(../assets/images/rocketLig.jpg);");
     this->lineEdit = findChild<QLineEdit*>("lineEditName");
     this->cantPlayers = findChild<QSpinBox*>("cantPlayers");
     this->label = findChild<QLabel*>("label");
@@ -30,7 +30,7 @@ void MainWindow::start() {
     this->label->hide();
 
     //set menu background
-    ui->view->setStyleSheet("border-image: url(../images/menu.png);");
+    ui->view->setStyleSheet("border-image: url(../assets/images/menu.png);");
 
     drawGUI();
 }
@@ -62,7 +62,8 @@ void MainWindow::drawJoinGameMenu() {
 
     drawTitle("Join Game");
     std::shared_ptr<ClientAction> action = std::make_shared<ActionListRooms>();
-    this->actionsQueue.push(action);
+    std::optional<std::shared_ptr<ClientAction>> optAction = action;
+    this->actionsQueue.push(optAction);
 
     //list all the games
     std::shared_ptr<ClientUpdate> update;
@@ -71,12 +72,13 @@ void MainWindow::drawJoinGameMenu() {
     }
     //draw a button for each game
     if(update->getReturnCode() != OK){
-        label = new QLabel("No games available");
-        label->setGeometry(width() / 2 - 110 , 200 , 301, 71);
-        label->setStyleSheet("font: 20pt; color: white;");
-        this->scene.addWidget(label);
+        QLabel *labelNoGames = new QLabel("No games available");
+        labelNoGames->setGeometry(width() / 2 - 110 , 200 , 301, 71);
+        labelNoGames->setStyleSheet("font: 20pt; color: white;");
+        this->scene.addWidget(labelNoGames);
 
     } else {
+        id = update->getId();
         std::map<std::string,std::string> games = update->getList();
         int i = 200;
                 foreach(auto game, games) {
@@ -100,10 +102,9 @@ void MainWindow::createRoom() {
 
     std::string roomName = this->lineEdit->text().toStdString();
     uint8_t players = this->cantPlayers->value();
-//    Action* actionCreate = new ActionCreate(id, players, roomName);
     std::shared_ptr<ClientAction> actionCreate = std::make_shared<ActionCreateRoom>(players, roomName);
-    //ClientAction* actionCreate = new ActionCreateRoom(players, roomName);
-    this->actionsQueue.push(actionCreate);
+    std::optional<std::shared_ptr<ClientAction>> optActionCreate = actionCreate;
+    this->actionsQueue.push(optActionCreate);
     popFirstUpdate(); //pop CreateACK
     drawLoadingScreen();
 }
@@ -114,10 +115,9 @@ void MainWindow::joinParticularGame(QString roomName) {
 
     // crear evento de join ()
     std::string room = retrieveGameName(roomName.toStdString());
-    std::cout << "Joining to " << room << std::endl;
     std::shared_ptr<ClientAction> actionJoin = std::make_shared<ActionJoinRoom>(room);
-    // ClientAction *actionJoin = new ActionJoinRoom(room);
-    this->actionsQueue.push(actionJoin);
+    std::optional<std::shared_ptr<ClientAction>> optActionJoin = actionJoin;
+    this->actionsQueue.push(optActionJoin);
 
     // popFirstUpdate(); //pop JoinACK
     drawLoadingScreen();
@@ -162,7 +162,7 @@ void MainWindow::drawGUI() {
 
 void MainWindow::displayMainMenu() {
     //set menu background
-    ui->view->setStyleSheet("border-image: url(../images/rocketLig.jpg);");
+    ui->view->setStyleSheet("border-image: url(../assets/images/rocketLig.jpg);");
     this->lineEdit->show();
     this->cantPlayers->hide();
     this->label->hide();
@@ -242,7 +242,7 @@ void MainWindow::drawLoadingScreen() {
     this->cantPlayers->hide();
     this->label->hide();
 
-    ui->view->setStyleSheet("border-image: url(../images/loadingScreen.jpeg);");
+    ui->view->setStyleSheet("border-image: url(../assets/images/loadingScreen.jpeg);");
 
     // create the title text
     auto *titleText = new QGraphicsTextItem(QString("Waiting for more players to join"));
@@ -266,16 +266,14 @@ void MainWindow::popFirstUpdate() {
             popping = false;
         }
     }
+    id = update->getId();
+
     if(update->getType() == STARTED_GAME_ACK) {
         //start the game directly
         //TODO: retrieve ID from update
         scene.clear();
         close();
     }
-    std::cout << "Update received" << std::endl;
-    std::cout << "Game created with id: " << (int)(update->getId()) << std::endl;
-    std::cout << "Game created with returnmesage: " << (int)update->getReturnCode() << std::endl;
-
     if(update->getReturnCode()) {
         drawGUI();
     }

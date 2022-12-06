@@ -2,29 +2,32 @@
 // Created by franco on 03/11/22.
 //
 
-#include <map>
 #include <unistd.h>
 #include "GameLoop.h"
 #include "sub_client/client_actions/ClientActionMove.h"
 #include "Ball.h"
 #include "Score.h"
 #include "sub_client/client_updates/ClientUpdateWorld.h"
+#include "sub_client/client_updates/ClientUpdateStats.h"
 
-GameLoop::GameLoop(SDL2pp::Renderer &renderer, int xMax, int yMax, ProtectedQueue<std::shared_ptr<ClientUpdate>> &updates,
-                   BlockingQueue<std::shared_ptr<ClientAction>> &actions, Worldview &wv)
-        : renderer(renderer),
+#define EVENTS_X_FRAME 10
+
+GameLoop::GameLoop(uint8_t &id, SDL2pp::Renderer &renderer, int xMax, int yMax,
+                   ProtectedQueue<std::shared_ptr<ClientUpdate>> &updates,
+                   BlockingQueue<std::optional<std::shared_ptr<ClientAction>>> &actions, Worldview &wv)
+        : id(id),
+          renderer(renderer),
           updatesQueue(updates),
           actionsQueue(actions),
           running(true),
           xMax(xMax),
           yMax(yMax),
           wv(wv){}
-
-void GameLoop::run() {
-    // Gameloop, notar como tenemos desacoplado el procesamiento de los inputs (handleEvents)
-    // del update del modelo.
+// Returns if the user still wants to play another game
+bool GameLoop::run() {
+    bool wantsToquit = false;
     while (running) {
-        handle_events();
+        wantsToquit = handle_events();
         //pop from updates queue
         popUpdates();
         update(FRAME_RATE);
@@ -33,63 +36,89 @@ void GameLoop::run() {
         // de la cantidad de tiempo que demoró el handleEvents y el render
         usleep(FRAME_RATE);
     }
+    return wantsToquit;
 }
 
 bool GameLoop::handle_events() {
     SDL_Event event;
 
-    while(SDL_PollEvent(&event)){
+    for (int i = 0; i < EVENTS_X_FRAME; ++i) {
+        if(!SDL_PollEvent(&event)) {
+            continue;
+        }
         switch(event.type) {
-            case SDL_KEYDOWN: {
-                // ¿Qué pasa si mantengo presionada la tecla?
-                auto &keyEvent = (SDL_KeyboardEvent&) event;
-                if(keyEvent.keysym.sym == SDLK_ESCAPE) {
-                    running = false;
-                    break;
+            case SDL_KEYDOWN:
+                {
+                    //if the user pressed escape, return to QT
+                    if(event.key.keysym.sym == SDLK_ESCAPE) {
+                        running = false;
+                        return false;
+                    }
+                    //catch every other key down that is not in the map
+                    if(directionMap.count(event.key.keysym.sym) == 0) {
+                        continue;
+                    }
+                    //if the key is already down, do nothing
+                    if(keyDownStateMap[event.key.keysym.sym]) {
+                        continue;
+                    }
+                    uint8_t movement = directionMap.at(event.key.keysym.sym);
+                    std::shared_ptr<ClientAction> action = std::make_shared<ClientActionMove>(id, movement, ON);
+                    std::optional<std::shared_ptr<ClientAction>> optAction = action;
+                    actionsQueue.push(optAction);
+                    // set the key down state to true
+                    keyDownStateMap[event.key.keysym.sym] = true;
                 }
-                uint8_t movement = directionMap.at(keyEvent.keysym.sym);
-                std::shared_ptr<ClientAction> action = std::make_shared<ClientActionMove>(movement,ON);
-                actionsQueue.push(action);
-            } // Fin KEY_DOWN
                 break;
-            case SDL_KEYUP: {
-                SDL_KeyboardEvent& keyEvent = (SDL_KeyboardEvent&) event;
+            case SDL_KEYUP:
+                {
+                    if(directionMap.count(event.key.keysym.sym) == 0) {
+                        continue;
+                    }
+                    uint8_t movement = directionMap.at(event.key.keysym.sym);
+                    std::shared_ptr<ClientAction> action = std::make_shared<ClientActionMove>(id, movement, OFF);
+                    std::optional<std::shared_ptr<ClientAction>> optAction = action;
+                    actionsQueue.push(optAction);
+                    keyDownStateMap[event.key.keysym.sym] = false;
+                }
+                break;
 
-                uint8_t movement = directionMap.at(keyEvent.keysym.sym);
-                std::shared_ptr<ClientAction> action = std::make_shared<ClientActionMove>(movement,OFF);
-                actionsQueue.push(action);
-            }// Fin KEY_UP
             case SDL_QUIT:
                 running = false;
-                break;
-        } // fin switch(event)
-    } // fin while(SDL_PollEvents)
-    return true;
+                return true;
+        }
+    }
+    return false;
 }
 
 void GameLoop::render() {
     renderer.SetDrawColor(0x00, 0x00, 0x00);
     renderer.Clear();
     wv.render(renderer);
-    //    player.render(renderer);
     renderer.Present();
 }
 
 void GameLoop::popUpdates() {
-    // TODO: implement swap between queues
-    std::shared_ptr<ClientUpdate> update;
-    while (!updatesQueue.tryPop(update)) {
-        Ball ball = update->getBall();
-        std::cout << "Ball: " << (int)ball.getX() << " " << (int)ball.getY() << std::endl;
-        Score score = update->getScore();
-        std::cout << "Score: " << (int)score.getLocal() << " " << (int)score.getVisitor() << std::endl;
+    std::queue<std::shared_ptr<ClientUpdate>> updates = updatesQueue.popAll();
 
-        std::vector<Car> players = update->getCars();
-        for (auto &player : players) {
-            std::cout << "Player: " << (int)player.getX() << " " << (int)player.getY() << std::endl;
+    std::shared_ptr<ClientUpdate> update;
+
+    while(!updates.empty()) {
+        update = updates.front();
+
+        if(update->getType() == GAME_OVER) {
+            std::map<uint8_t, uint8_t> scores = std::static_pointer_cast<ClientUpdateStats>(update)->getStats();
+            wv.updateStats(scores);
+            break;
         }
+        Ball ball = update->getBall();
+        Score score = update->getScore();
+        GameTime gameTime = update->getTime();
+        std::vector<Car> cars = update->getCars();
+        wv.updateSprites(ball, score, gameTime, cars);
+        updates.pop();
     }
 }
 void GameLoop::update(float dt) {
-    wv.update(dt);
+//    wv.update(dt);
 }

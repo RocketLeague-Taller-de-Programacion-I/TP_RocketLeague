@@ -1,7 +1,3 @@
-//
-// Created by roby on 22/11/22.
-//
-
 #ifndef ROCKETLEAGUE_CLIENTUPDATE_H
 #define ROCKETLEAGUE_CLIENTUPDATE_H
 
@@ -11,13 +7,15 @@
 #include "sub_client/client_sdl/Ball.h"
 #include "sub_client/client_sdl/Score.h"
 #include "sub_client/client_sdl/Car.h"
+#include "sub_client/client_sdl/GameTime.h"
 
 enum updateType {
     CREATE_ACK = 1,
     JOIN_ACK = 2,
     LIST_INFO = 3,
     STARTED_GAME_ACK = 4,
-    WORLD = 5
+    WORLD = 5,
+    GAME_OVER = 6,
 };
 
 enum returnCode {
@@ -41,10 +39,13 @@ public:
     virtual std::vector<uint8_t> getData() const { return returnData;};
     virtual uint8_t getReturnCode() const { return returnCode;};
     virtual uint8_t getType() const = 0;
+
     virtual Ball getBall() ;
     virtual Score getScore() ;
+    virtual GameTime getTime() ;
     virtual std::vector<Car> getCars() ;
     virtual std::map<std::string, std::string> getList();
+    virtual std::map<uint8_t,uint8_t> getStats();
 };
 
 

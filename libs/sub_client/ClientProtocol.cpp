@@ -1,7 +1,3 @@
-//
-// Created by roby on 22/11/22.
-//
-
 #include <netinet/in.h>
 #include <memory>
 #include "ClientProtocol.h"
@@ -15,10 +11,10 @@ std::shared_ptr<ClientUpdate> ClientProtocol::deserializeData(const uint8_t &typ
             return parseJoinACK(receiveBytes);
         case LIST_INFO:
             return parseListUpdate(receiveBytes);
-    // case STARTED_GAME_ACK:
-       // return parseStartedGameACK(receiveBytes);
         case WORLD:
             return parseWorldUpdate(receiveBytes);
+        case GAME_OVER:
+            return parseStatsUpdate(receiveBytes);
     }
     return nullptr;
 }
@@ -35,15 +31,6 @@ std::shared_ptr<ClientUpdate> ClientProtocol::parseCreateACK(
     std::shared_ptr<ClientUpdate> update = std::make_shared<ClientCreateACK>(id, returnCode);
     return update;
 }
-
-/*std::shared_ptr<ClientUpdate> ClientProtocol::deserializeCreateACK(const std::vector<uint16_t> &data) {
-    uint16_t id = data[1];
-    uint16_t returnCode = data[2];
-    std::shared_ptr<ClientUpdate> update = std::make_shared<ClientCreateACK>(id, returnCode);
-    return update;
-    return new ClientCreateACK(reinterpret_cast<uint8_t &>(id), reinterpret_cast<uint8_t &>(returnCode));
-    //CreateACK -> CreateACK(id,returnCode) returnCode = 1 OK, 2 ERROR_Existe
-}*/
 
 std::shared_ptr<ClientUpdate> ClientProtocol::parseJoinACK(const std::function<void(void *, int)> &receiveBytes) {
     uint8_t id;
@@ -64,18 +51,11 @@ std::shared_ptr<ClientUpdate> ClientProtocol::parseListUpdate(
     uint8_t returnCode;
     receiveBytes(&returnCode, sizeof(returnCode));
 
-
-    if (returnCode == ERROR_FULL) {
-        std::map<std::string,std::string> games;
-        std::shared_ptr<ClientUpdate> update = std::make_shared<ClientListACK>(id, returnCode, games);
-        return update;
-    }
-
     uint8_t cantGames;
     receiveBytes(&cantGames, sizeof(cantGames));
 
     std::map<std::string,std::string> games;
-    //[id,returnCode, cantidadDeGames,{online,max,sieName,name},...]
+    //[id,returnCode, cantidadDeGames,{online,max,sizeName,name},...]
 
     for(uint8_t cant = cantGames, i = 0; i < cant; i++) {
         std::vector<uint8_t> players_and_size(3);
@@ -93,23 +73,32 @@ std::shared_ptr<ClientUpdate> ClientProtocol::parseListUpdate(
         games[gameName] = std::to_string(playersOnLine) + "/" + std::to_string(capacity);
     }
 
-    uint16_t test;
-    receiveBytes(&test, sizeof(test));
-    test = ntohs(test);
-
     std::shared_ptr<ClientUpdate> update = std::make_shared<ClientListACK>(id, returnCode, games);
     return update;
 }
 
-// TODO: implement this
 std::shared_ptr<ClientUpdate> ClientProtocol::parseWorldUpdate(const std::function<void(void *, int)> &receiveBytes) {
     uint16_t ballX;
+    float ballXFloat;
     receiveBytes(&ballX, sizeof(ballX));
     ballX = ntohs(ballX);
+    ballXFloat = ballX/1000.0;
+
     uint16_t ballY;
+    float ballYFloat;
     receiveBytes(&ballY, sizeof(ballY));
     ballY = ntohs(ballY);
-    Ball ball(ballX, ballY);
+    ballYFloat = ballY/1000.0;
+
+    uint16_t angleSign;
+    receiveBytes(&angleSign, sizeof(angleSign));
+    uint32_t angleBall; //uint32_t
+    receiveBytes(&angleBall, sizeof(angleBall));
+    angleBall = ntohl(angleBall);
+    float angleFloat = float(angleBall);
+    angleFloat = angleFloat / 1000.0 *  (angleSign ? 1 : -1);
+    Ball ball(ballXFloat, ballYFloat, angleFloat);
+
     //  Score
     uint16_t local;
     receiveBytes(&local, sizeof(local));
@@ -118,43 +107,114 @@ std::shared_ptr<ClientUpdate> ClientProtocol::parseWorldUpdate(const std::functi
     receiveBytes(&visit, sizeof(visit));
     visit = ntohs(visit);
     Score score(local, visit);
+
+    // Time
+    uint16_t time;
+    receiveBytes(&time, sizeof(time));
+    time = ntohs(time);
+    GameTime gameTime(time);
+
     //  n_clients
     uint16_t n_clients;
     receiveBytes(&n_clients, sizeof(n_clients));
     n_clients = ntohs(n_clients);
+
     std::vector<Car> clientCars;
     //  CLients
-    //  TODO: Vector de Cars
     for (unsigned int i = 0; i < n_clients; i++) {
         uint16_t id;
         receiveBytes(&id, sizeof(id));
         id = ntohs(id);
+
         uint16_t x;
         receiveBytes(&x, sizeof(x));
         x = ntohs(x);
+        float xFloat = float(x);
+        xFloat = xFloat/1000.0;
+
         uint16_t y;
         receiveBytes(&y, sizeof(y));
         y = ntohs(y);
+        float yFloat = float(y);
+        yFloat = y/1000.0;
+
         uint16_t angleSign;
         receiveBytes(&angleSign, sizeof(angleSign));
         angleSign = ntohs(angleSign);
-        uint16_t angle;
+
+        uint32_t angle; //uint32_t
         receiveBytes(&angle, sizeof(angle));
-        angle = ntohs(angle);
-        Car car(id, x, y, angleSign, angle);
+        angle = ntohl(angle);
+        float angleFloat = float(angle);
+        angleFloat = angleFloat / 1000.0 *  (angleSign ? 1 : -1);
+
+        uint16_t facingWhere;  // 0 right, 1 left
+        receiveBytes(&facingWhere, sizeof(facingWhere));
+        facingWhere = ntohs(facingWhere);
+
+        Car car(id, xFloat, yFloat, angleFloat, facingWhere);
         clientCars.emplace_back(car);
     }
 
-    std::shared_ptr<ClientUpdate> update = std::make_shared<ClientUpdateWorld>(ball, score, clientCars);
+    std::shared_ptr<ClientUpdate> update = std::make_shared<ClientUpdateWorld>(ball, score, gameTime, clientCars);
     return update;
 }
 
-std::shared_ptr<ClientUpdate>
-ClientProtocol::parseStartedGameACK(const std::function<void(std::vector<uint8_t> &, uint8_t &)> &function) {
-    std::vector<uint8_t> id_and_returncode(2);
-    uint8_t size = id_and_returncode.size();
-    function(id_and_returncode, size);
+std::shared_ptr<ClientUpdate> ClientProtocol::parseStatsUpdate(const std::function<void(void *, int)> &receiveBytes) {
+    uint8_t numberOfPlayers;
+    receiveBytes(&numberOfPlayers, sizeof(numberOfPlayers));
 
-    std::shared_ptr<ClientUpdate> update = std::make_shared<ClientStartedGameACK>(id_and_returncode[0], id_and_returncode[1]);
+    std::map<uint8_t, uint8_t> stats;
+    for (int i = 0; i < numberOfPlayers; i++) {
+        uint8_t id;
+        receiveBytes(&id, sizeof(id));
+
+        uint8_t score;
+        receiveBytes(&score, sizeof(score));
+
+        if(id == 0) continue; // 0 is not a valid id
+        stats[id] = score;
+    }
+    std::shared_ptr<ClientUpdate> update = std::make_shared<ClientUpdateStats>(stats);
     return update;
+}
+
+void ClientProtocol::serializeAction(std::shared_ptr<ClientAction> action) {
+    action->beSerialized(this);
+}
+
+void ClientProtocol::serializeCreateRoom(ActionCreateRoom *action) {
+    std::vector<uint8_t> capacity_and_nameSize(2);
+    capacity_and_nameSize[0] = action->getCapacity();
+    capacity_and_nameSize[1] = action->getGameName().size();
+    sendBytes(capacity_and_nameSize.data(), capacity_and_nameSize.size());
+
+    std::string name = action->getGameName();
+    std::vector<uint8_t> nameVector(name.begin(), name.end());
+
+    sendBytes(nameVector.data(), (nameVector.size()));
+}
+
+void ClientProtocol::serializeJoinRoom(ActionJoinRoom *action) {
+    uint8_t nameSize = action->getRoomName().size();
+    sendBytes(&nameSize, sizeof(nameSize));
+
+    std::string name = action->getRoomName();
+    std::vector<uint8_t> nameVector(name.begin(), name.end());
+    sendBytes(nameVector.data(), (nameVector.size()));
+}
+
+void ClientProtocol::serializeListRooms(ActionListRooms *action) {
+    // Only send the type of action
+}
+
+void ClientProtocol::serializeMove(ClientActionMove *action) {
+    uint8_t id = action->getIdPlayer();
+    sendBytes(&id, sizeof(id));
+
+    uint8_t direction = action->getDirection();
+    sendBytes(&direction, sizeof(direction));
+
+    uint8_t state = action->getState();
+    sendBytes(&state, sizeof(state));
 }

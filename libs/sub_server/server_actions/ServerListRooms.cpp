@@ -6,14 +6,17 @@
 #include "sub_server/gameManager.h"
 
 
-std::shared_ptr<ServerUpdate> ServerListRooms::execute(GameManager &manager, const std::function<BlockingQueue<std::shared_ptr<ServerUpdate>> *(
-        ProtectedQueue<std::shared_ptr<ServerAction>> *)> &setQueue) {
+void
+ServerListRooms::execute(std::function<void(ProtectedQueue<std::shared_ptr<ServerAction>> *,
+                                            BlockingQueue<std::optional<std::shared_ptr<ServerUpdate>>> *)> &startThreadsCallable,
+                         std::function<void(void *, unsigned int)> &sendCallable,
+                         ServerProtocolo &protocolo) {
 
     std::vector<uint8_t> listData;
     uint8_t numberOfGames = manager.listGames(id, listData);
     uint8_t returnCode = numberOfGames ? OK : ERROR_FULL; //TODO: change ERROR_FULL to ERROR_EMPTY
     std::shared_ptr<ServerUpdate> update = std::make_shared<ServerListACK>(id, returnCode, numberOfGames, listData);
-    return update;
+    update->beSerialized(&protocolo, sendCallable);
 }
 
 void ServerListRooms::execute(Match &match) {

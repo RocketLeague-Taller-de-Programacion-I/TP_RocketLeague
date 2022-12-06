@@ -15,3 +15,7 @@ std::vector<Car> ClientUpdateWorld::getCars() {
 Score ClientUpdateWorld::getScore() {
     return score;
 }
+
+GameTime ClientUpdateWorld::getTime() {
+    return gameTime;
+}

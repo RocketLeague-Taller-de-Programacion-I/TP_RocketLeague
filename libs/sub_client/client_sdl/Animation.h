@@ -16,8 +16,7 @@ public:
     Animation(SDL2pp::Texture &texture);
     ~Animation();
     void update(float dt);
-    void render(SDL2pp::Renderer &renderer, const SDL2pp::Rect dest, SDL_RendererFlip &flipType);
-
+    void render(SDL2pp::Renderer &renderer, const SDL2pp::Rect dst, SDL_RendererFlip &flipType, int &angle);
 
 private:
     void advanceFrame();

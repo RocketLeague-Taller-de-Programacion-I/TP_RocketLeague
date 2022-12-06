@@ -1,37 +1,35 @@
-//
-// Created by lucaswaisten on 04/11/22.
-//
-
-#include <iostream>
 #include "gameManager.h"
 
 bool GameManager::createGame(uint8_t idCreator, uint8_t capacityGame, const std::string &nameGame,
-                             std::function<BlockingQueue<std::shared_ptr<ServerUpdate>> *(
-                                     ProtectedQueue<std::shared_ptr<ServerAction>> *)> setQueue) {
+                             std::function<void(ProtectedQueue<std::shared_ptr<ServerAction>> *,
+                             BlockingQueue<std::optional<std::shared_ptr<ServerUpdate>>> *)> &startThreadsCallable) {
     std::unique_lock<std::mutex> lock(this->mutex);
 
     if (games.find(nameGame) == games.end()) {
         auto *queueGame = new ProtectedQueue<std::shared_ptr<ServerAction>>;
         games[nameGame] = new Game(capacityGame,nameGame,queueGame);
     } else {
-//        throw std::runtime_error("Game already exists");
         return false;
     }
-    auto queueSender = setQueue(games[nameGame]->getQueue());
-    games[nameGame]->joinPlayer(idCreator,queueSender);
+    auto queueSender = new BlockingQueue<std::optional<std::shared_ptr<ServerUpdate>>>;
+    games[nameGame]->joinPlayer(idCreator, queueSender);
+
+    startThreadsCallable(games[nameGame]->getQueue(), queueSender);
 
     return true;
 }
-bool GameManager::joinGame(uint8_t idCreator, const std::string& nameGame, std::function<BlockingQueue<std::shared_ptr<ServerUpdate>> *(
-        ProtectedQueue<std::shared_ptr<ServerAction>> *)> setQueue) {
+bool GameManager::joinGame(uint8_t idCreator, const std::string& nameGame, std::function<void(
+        ProtectedQueue<std::shared_ptr<ServerAction>> *,
+        BlockingQueue<std::optional<std::shared_ptr<ServerUpdate>>> *)> &startThreadsCallable) {
 
     std::unique_lock<std::mutex> lock(this->mutex);
     if (this->games[nameGame]->isFull()) {
-        // TODO: return update with ERROR message
         return false;
     } else {
-        auto *queueSender = setQueue(games[nameGame]->getQueue());
+        auto queueSender = new BlockingQueue<std::optional<std::shared_ptr<ServerUpdate>>>;
         games[nameGame]->joinPlayer(idCreator,queueSender);
+
+        startThreadsCallable(games[nameGame]->getQueue(), queueSender);
     }
     return true;
 }
@@ -49,7 +47,28 @@ uint8_t GameManager::listGames(uint8_t &id, std::vector<uint8_t> &listData) {
 
 void GameManager::cleanGames() {
     for (auto & game: games) {
+        game.second->stop();
+        if(game.second->started()) {
+            game.second->join();
+        }
         delete game.second;
+    }
+}
+
+void GameManager::deletePlayer(uint8_t idPlayer) {
+    // search idPlayer on Games maps
+    for (auto & game: games) {
+        if (game.second->hasPlayer(idPlayer)) {
+            game.second->deletePlayer(idPlayer);
+            // if player was deleted, delete game if is empty
+            if (game.second->isFinished()) {
+                game.second->stop();
+                game.second->join();
+                delete game.second;
+                games.erase(game.first);
+            }
+            break;
+        }
     }
 }
 

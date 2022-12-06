@@ -1,7 +1,3 @@
-//
-// Created by roby on 27/11/22.
-//
-
 #ifndef ROCKETLEAGUE_SERVERACTIONMOVE_H
 #define ROCKETLEAGUE_SERVERACTIONMOVE_H
 
@@ -14,11 +10,12 @@ private:
     bool state;
 public:
     ServerActionMove(const uint8_t &id, uint8_t &direction, bool &state);
-
     ~ServerActionMove() override = default;
 
-    std::shared_ptr<ServerUpdate> execute(GameManager &manager, const std::function<BlockingQueue<std::shared_ptr<ServerUpdate>> *(
-            ProtectedQueue<std::shared_ptr<ServerAction>> *)> &setQueue) override { return nullptr; };
+    void execute(std::function<void(ProtectedQueue<std::shared_ptr<ServerAction>> *,
+                                    BlockingQueue<std::optional<std::shared_ptr<ServerUpdate>>> *)> &startThreadsCallable,
+                 std::function<void(void *, unsigned int)> &sendCallable,
+                 ServerProtocolo &protocolo) override {};
 
     void execute(Match &match) override;
 };

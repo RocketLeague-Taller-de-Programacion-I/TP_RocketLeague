@@ -5,7 +5,7 @@
 #ifndef ROCKETLEAGUE_CLIENTACTION_H
 #define ROCKETLEAGUE_CLIENTACTION_H
 
-
+class ClientProtocol;
 #include <utility>
 #include <cstdint>
 #include <string>
@@ -19,12 +19,12 @@ enum action_type {
     MOVE
 };
 
-enum direction {
-    RIGHT_D,
-    LEFT_D,
-    JUMP_D,
-    DOWN_D,
-    TURBO_D
+enum direction: uint8_t {
+    RIGHT_D = 0,
+    LEFT_D = 1,
+    JUMP_D = 2,
+    DOWN_D = 3,
+    TURBO_D = 4
 } ;
 enum state : bool {
     ON = true,
@@ -41,7 +41,7 @@ public:
     virtual ~ClientAction() = default;
 
     virtual std::uint8_t getType() const = 0;
-    virtual std::vector<uint8_t> beSerialized() = 0;
+    virtual void beSerialized(ClientProtocol *protocolo) = 0;
 };
 
 

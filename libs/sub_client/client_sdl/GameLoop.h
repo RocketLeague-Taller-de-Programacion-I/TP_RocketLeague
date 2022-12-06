@@ -6,19 +6,16 @@
 #define ROCKETLEAGUE_GAMELOOP_H
 
 #include "SDL2pp/SDL2pp.hh"
-#include "Player.h"
 #include "sub_client/client_updates/ClientUpdate.h"
 #include "sub_client/client_actions/ClientAction.h"
 #include "sub_common/ProtectedQueue.h"
 #include "sub_common/BlockingQueue.h"
 #include "Worldview.h"
 
-#define NOP 10
-
 class GameLoop {
     SDL2pp::Renderer &renderer;
     ProtectedQueue<std::shared_ptr<ClientUpdate>>& updatesQueue;
-    BlockingQueue<std::shared_ptr<ClientAction>>& actionsQueue;
+    BlockingQueue<std::optional<std::shared_ptr<ClientAction>>> &actionsQueue;
     bool running;
     int xMax;
     int yMax;
@@ -26,20 +23,30 @@ class GameLoop {
     void update(float dt);
     void render();
 public:
-    GameLoop(SDL2pp::Renderer &renderer, int xMax, int yMax, ProtectedQueue<std::shared_ptr<ClientUpdate>> &updates,
-             BlockingQueue<std::shared_ptr<ClientAction>> &actions, Worldview &wv);
+    GameLoop(uint8_t &id, SDL2pp::Renderer &renderer, int xMax, int yMax,
+             ProtectedQueue<std::shared_ptr<ClientUpdate>> &updates,
+             BlockingQueue<std::optional<std::shared_ptr<ClientAction>>> &actions, Worldview &wv);
 
-    void run();
+    bool run();
 private:
+    uint8_t &id;
     Worldview &wv;
-    std::unordered_map<uint32_t ,uint8_t> directionMap = {
-            {SDLK_LEFT,LEFT_D},
-            {SDLK_RIGHT,RIGHT_D},
-            {SDLK_UP,JUMP_D},
-            {SDLK_DOWN,DOWN_D},
-            {SDLK_ESCAPE,NOP}
+
+    std::map<uint32_t ,uint8_t> directionMap = {
+            {SDLK_d,RIGHT_D},
+            {SDLK_a,LEFT_D},
+            {SDLK_w,JUMP_D},
+            {SDLK_s,DOWN_D},
+            {SDLK_SPACE,TURBO_D}
     };
 
+    std::map<uint32_t ,uint8_t> keyDownStateMap = {
+            {SDLK_d, false},
+            {SDLK_a, false},
+            {SDLK_w, false},
+            {SDLK_s, false},
+            {SDLK_SPACE, false}
+    };
     void popUpdates();
 };
 #endif //ROCKETLEAGUE_GAMELOOP_H

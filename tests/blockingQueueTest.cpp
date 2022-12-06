@@ -1,6 +1,3 @@
-//
-// Created by lucaswaisten on 14/11/22.
-//
 #include <catch2/catch_test_macros.hpp>
 #include <atomic>
 #include "sub_common/BlockingQueue.h"
@@ -15,11 +12,11 @@ public:
                  std::atomic<bool> &b) :
                  queue(pQueue),
                  waiting(b){}
-
     void run() override {
        queue.pop();
        waiting = true;
     }
+    void stop() override {join();}
 
 
 };
@@ -39,25 +36,24 @@ TEST_CASE("pushed two elements, verified if the queue is empty and popped the pu
     queue.push(element1);
     queue.push(element2);
 
-    REQUIRE(queue.size() == 2);
     REQUIRE(queue.isEmpty() == false);
 
-    queue.pop();
-    REQUIRE(queue.size() == 1);
-    queue.pop();
-    REQUIRE(queue.size() == 0);
+    auto i = queue.pop();
+    REQUIRE(i == element1);
+    i = queue.pop();
+    REQUIRE(i == element2);
 }
 
 /*
  * Este test prueba si la cola esta bloqueada tratando de hacer pop
  * cuando la cola esta vacia.
  */
+
 TEST_CASE("thread is blocked trying to pop",
           "[single-file]") {
     BlockingQueue<char> queue;
     std::atomic<bool> waiting(false);
     TessterQueue tester(queue,waiting);
-
     tester.start();
     /*
      * Como todavia esta vacia la cola, waiting nunca sera true
@@ -66,6 +62,6 @@ TEST_CASE("thread is blocked trying to pop",
 
     char element1 = 'a';
     queue.push(element1);
-    tester.join();
+    tester.stop();
     REQUIRE(waiting == true);
 }

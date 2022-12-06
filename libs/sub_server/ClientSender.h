@@ -6,13 +6,12 @@
 #define ROCKETLEAGUE_CLIENTSENDER_H
 
 
+#include <optional>
 #include "sub_common/socket.h"
 #include "sub_common/thread.h"
 #include "ServerProtocolo.h"
 #include "sub_common/BlockingQueue.h"
-
 #include "server_updates/ServerUpdate.h"
-//WorldUpdate
 
 class ClientSender : public Thread{
 private:
@@ -22,12 +21,11 @@ private:
 protected:
     void run() override;
 public:
-    BlockingQueue<std::shared_ptr<ServerUpdate>> *actionsQueue;
+    BlockingQueue<std::optional<std::shared_ptr<ServerUpdate>>> *updatesQueue;
 
-    explicit ClientSender(Socket &skt_client, BlockingQueue<std::shared_ptr<ServerUpdate>> *queue, uint8_t idClient);
+    explicit ClientSender(Socket &skt_client, BlockingQueue<std::optional<std::shared_ptr<ServerUpdate>>> *queue, uint8_t idClient);
     ~ClientSender() override;
     void stop() override;
-    BlockingQueue<std::shared_ptr<ServerUpdate>> * getQueue() const;
 
     void sendBytes(void *bytes_to_send, unsigned int size);
 };

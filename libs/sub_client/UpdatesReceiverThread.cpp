@@ -2,19 +2,14 @@
 // Created by roby on 22/11/22.
 //
 
-#include <netinet/in.h>
 #include "UpdatesReceiverThread.h"
 
-#define NOP 0x00
-
 UpdatesReceiverThread::UpdatesReceiverThread(Socket &skt_client, ProtectedQueue<std::shared_ptr<ClientUpdate>> &updatesQueue)
-        : skt_client(skt_client), updatesQueue(updatesQueue) {
-    this->closed = false;
-}
+        : skt_client(skt_client), updatesQueue(updatesQueue), finished(false), closed(false) {}
 
 void UpdatesReceiverThread::run() {
     try {
-        while (!closed) {
+        while (not closed and not finished) {
             uint8_t byte_to_read;
             //type byte
             this->skt_client.recvall(&byte_to_read, sizeof(byte_to_read), &closed);
@@ -40,4 +35,7 @@ void UpdatesReceiverThread::receiveBytes(void *bytes_to_read, int size) {
     }
 }
 
-void UpdatesReceiverThread::stop() {}
+void UpdatesReceiverThread::stop() {
+    closed = true;
+    finished = true;
+}
