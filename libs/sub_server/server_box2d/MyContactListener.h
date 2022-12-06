@@ -9,8 +9,10 @@
 #include "box2d/box2d.h"
 
 class MyContactListener : public b2ContactListener {
+private:
+    std::vector<int> &contacts;
 public:
-    MyContactListener();
+    MyContactListener(std::vector<int> &contacts);
     ~MyContactListener() override;
     void BeginContact(b2Contact* contact) override;
 

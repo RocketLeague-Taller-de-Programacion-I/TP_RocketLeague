@@ -31,7 +31,7 @@ void Server::garbageCollector(GameManager &gameManager) {
     managers.erase(std::remove_if(managers.begin(),
                                   managers.end(),
                                   [&gameManager](ClientManager *manager)
-                                  { if (manager->isDisconnected()) {
+                                  { if (manager->NotConnectedToGame()) {
                                       gameManager.deletePlayer(manager->getId());
                                       delete manager;
                                       return true;

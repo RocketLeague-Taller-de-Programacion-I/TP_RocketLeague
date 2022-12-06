@@ -17,6 +17,7 @@ enum upodate_type { // TODO: cambiarles el nombre?
     LIST_INFO = 3,
     STARTED_GAME_ACK = 4,
     WORLD = 5,
+    GAME_OVER = 6,
 };
 enum returnCode {
     OK,

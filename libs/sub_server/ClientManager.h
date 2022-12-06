@@ -24,7 +24,7 @@ private:
     bool closed;
     uint8_t id;
     std::atomic<bool> shouldContinueLooping;
-    std::atomic<bool> disconnected;
+    std::atomic<bool> notConnectedToGame;
     ClientReceiver *clientReceiverThread;
     ClientSender *clientSenderThread;
 
@@ -49,7 +49,7 @@ public:
 
     void sendBytes(void *bytes_to_send, unsigned int size);
 
-    bool isDisconnected();
+    bool NotConnectedToGame();
 };
 
 

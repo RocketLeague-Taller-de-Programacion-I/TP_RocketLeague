@@ -14,6 +14,7 @@ struct MyFixtureUserDataType
     int mObjectType {};
     b2Fixture* mOwningFixture {};
     bool* facingRight;
+    uint8_t id;
 };
 class Car {
     uint8_t id;
@@ -50,6 +51,8 @@ public:
     void stopMovingLeft();
     void update();
     bool facingWhere();
+
+    uint8_t carId();
 };
 
 

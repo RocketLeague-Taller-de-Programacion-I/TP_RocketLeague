@@ -3,6 +3,7 @@
 //
 
 #include "game.h"
+#include "sub_server/server_updates/ServerUpdateStats.h"
 
 Game::Game(int capacity,
            std::string  name,
@@ -37,8 +38,6 @@ void Game::run() {
    std::cout << "Game " << gameName << " started" << std::endl;
     std::shared_ptr<ServerAction> action;
     while (not finished) {
-        //check if time of match's usleep reached 3 minutes
-        //TODO: check if clientManager are still alive
         if (match.isFinished()){
             finished = true;
             break;
@@ -51,8 +50,10 @@ void Game::run() {
         std::optional<std::shared_ptr<ServerUpdate>> update = std::make_shared<ServerUpdateWorld>(info);
         broadcastUpdate(update);
     }
-
     std::cout << "Game " << gameName << " finished" << std::endl;
+    std::vector<int> stats = match.stats();
+    std::optional<std::shared_ptr<ServerUpdate>> update = std::make_shared<ServerUpdateStats>(stats);
+    broadcastUpdate(update);
 }
 
 bool Game::isFull() const {

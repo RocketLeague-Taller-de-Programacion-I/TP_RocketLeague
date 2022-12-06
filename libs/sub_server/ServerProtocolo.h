@@ -23,6 +23,7 @@
 #include "sub_server/server_actions/ServerJoinRoom.h"
 #include "sub_server/server_actions/ServerListRooms.h"
 #include "sub_server/server_actions/ServerActionMove.h"
+#include "sub_server/server_updates/ServerUpdateStats.h"
 
 enum action {
     NOP,
@@ -75,6 +76,7 @@ public:
     void serializeJoinACK(ServerJoinACK *update, std::function<void(void *, unsigned int)> &sendBytes);
     void serializeServerListACK(ServerListACK *update, std::function<void(void *, unsigned int)> &sendBytes);
     void serializeWorldUpdate(ServerUpdateWorld *update, std::function<void(void *, unsigned int)> &sendBytes);
+    void serializeStatsUpdate(ServerUpdateStats *updateStats, std::function<void(void *, unsigned int)> &sendBytes);
 };
 
 

@@ -1,7 +1,3 @@
-//
-// Created by roby on 25/11/22.
-//
-
 #ifndef ROCKETLEAGUE_SERVERUPDATEWORLD_H
 #define ROCKETLEAGUE_SERVERUPDATEWORLD_H
 

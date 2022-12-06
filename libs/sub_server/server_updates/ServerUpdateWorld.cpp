@@ -1,7 +1,3 @@
-//
-// Created by roby on 25/11/22.
-//
-
 #include "ServerUpdateWorld.h"
 #include "sub_server/ServerProtocolo.h"
 

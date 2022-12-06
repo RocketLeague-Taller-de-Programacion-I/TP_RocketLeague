@@ -3,7 +3,7 @@
 //
 
 #include "ServerProtocolo.h"
-
+#define INITIAL_POSITION 6
 command_t ServerProtocolo::getMapCommand(uint32_t action) {
     return this->mapCommand.at(action);
 }
@@ -76,7 +76,6 @@ ServerProtocolo::serializeServerListACK(ServerListACK *update, std::function<voi
 }
 void
 ServerProtocolo::serializeWorldUpdate(ServerUpdateWorld *update, std::function<void(void *, unsigned int)> &sendBytes) {
-    //implement
     std::vector<int> matchInfo = update->getInfo();
     //  Ball
     uint16_t ballX = (uint16_t) htons(matchInfo[0]);
@@ -101,11 +100,40 @@ ServerProtocolo::serializeWorldUpdate(ServerUpdateWorld *update, std::function<v
     int vSize = matchInfo.size();
 
     //  Clientes
-    for (int i = 6 ; i<vSize; i++) {
-        uint16_t carInfo = (uint16_t) htons(matchInfo[i]);
-        sendBytes(&carInfo, sizeof(carInfo));
+    for (int i = INITIAL_POSITION ; i < vSize; i += 6) {
+
+        uint16_t id = (uint16_t) htons(matchInfo[i]);
+        sendBytes(&id, sizeof(id));
+
+        uint16_t x = (uint16_t) htons(matchInfo[i + 1]);
+        sendBytes(&x, sizeof(x));
+
+        uint16_t y = (uint16_t) htons(matchInfo[i + 2]);
+        sendBytes(&y, sizeof(y));
+
+        uint16_t sign = (uint16_t) htons(matchInfo[i + 3]);
+        sendBytes(&sign, sizeof(sign));
+
+        uint32_t angle = (uint32_t) htonl(matchInfo[i + 4]);
+        sendBytes(&angle, sizeof(angle));
+
+        uint16_t facing = (uint16_t) htons(matchInfo[i + 5]);
+        sendBytes(&facing, sizeof(facing));
     }
 
+}
+
+void
+ServerProtocolo::serializeStatsUpdate(ServerUpdateStats *updateStats, std::function<void(void *, unsigned int)> &sendBytes) {
+    std::vector<int> stats = updateStats->getStats();
+    uint8_t players = stats[0];
+    sendBytes(&players, sizeof(players));
+    for (auto i = 1; i<(stats.size()-1)/2; i+2) {
+        uint8_t id = stats[i];
+        uint8_t goals = stats[i+1];
+        sendBytes(&id, sizeof(players));
+        sendBytes(&goals, sizeof(players));
+    }
 }
 
 std::shared_ptr<ServerAction>
