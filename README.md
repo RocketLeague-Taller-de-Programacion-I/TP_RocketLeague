@@ -31,15 +31,15 @@ documentation.
 
 How to play, see in [Manual Game](Manual.md)
 ## For Development
-The proyect: [RocketLeague Code Documentation](CodeDocumentation.md)
+The proyect nose que [RocketLeague Code Documentation](CodeDocumentation.md)
 
 ## Features
 * ### Car:
 *  **Jump**: jump and double jump.
 *  **Flips**: both sides.
-*  **Shots**: 
-  -  **Purple Shot**
-  -  **Gold Shot**
+*  **Shots**:
+-  **Purple Shot**
+-  **Gold Shot**
 
 * ### Game
   - **Duration**
@@ -51,7 +51,7 @@ The proyect: [RocketLeague Code Documentation](CodeDocumentation.md)
 
   - **Repeat**
 
-  - **Collisions** 
+  - **Collisions**
 
 * ### GUI:
 
@@ -69,18 +69,23 @@ The proyect: [RocketLeague Code Documentation](CodeDocumentation.md)
   -  **Ambience Music**
 * ### Configuration
 
-  Macros in Match.cpp: 
-    - GRAVITY, 
-    - TIME_TO_PLAY
+
+  Macros in Match.cpp:
+  - GRAVITY,
+  - TIME_TO_PLAY
+
+
   Macros in Car.cpp:
-    - FLIPYHEIGHT 
-    - ONEJUMP  
-    - ONEJUMPFORCE 
-    - TWOJUMPFORCE 
-    - XFORCE  
-    - TURBOXFORCE
+  - FLIPYHEIGHT
+  - ONEJUMP
+  - ONEJUMPFORCE
+  - TWOJUMPFORCE
+  - XFORCE
+  - TURBOXFORCE
+
+
   Macron in ball.cpp:
-    - BALL_RESTITUTION
+  - BALL_RESTITUTION
 
 * ### Tests
 

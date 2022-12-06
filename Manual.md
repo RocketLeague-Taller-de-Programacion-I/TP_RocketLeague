@@ -17,38 +17,28 @@
 
 Enter your name to get started.
 
-<p align="center">
-<img height="400" src="../TP_RocketLeague/diagramas/Inicio.png" width="800"/>
-</p>
+![Inicio](diagramas/Inicio.png "Inicio")
 
 
 #### Step Two
 
 Creates a match. Wait for another client to connect.
 
-<p align="center">
-<img height="400" src="../TP_RocketLeague/diagramas/Menu.png" width="800"/>
-</p>
+![Menu](diagramas/Menu.png "Menu")
 
 #### Step Three
 Choose the name and capacity of the game.
 
-<p align="center">
-<img height="400" src="../TP_RocketLeague/diagramas/Create.png" width="800"/>
-</p>
+![Create](diagramas/Create.png "Create")
 
 #### Step Four
 
 Start the game with another client. Join existing game.
 
-<p align="center">
-<img height="400" src="../TP_RocketLeague/diagramas/Join.png" width="800"/>
-</p>
+![Join](diagramas/Join.png "Join")
 
 #### Step Five
 
 Enjoy the game with your friends 😃
 
-<p align="center">
-<img height="400" src="../TP_RocketLeague/diagramas/Game.jpeg" width="800"/>
-</p>
+![Game](diagramas/Game.jpeg "Game")
