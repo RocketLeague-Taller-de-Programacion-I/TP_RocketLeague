@@ -49,6 +49,11 @@ bool GameLoop::handle_events() {
         switch(event.type) {
             case SDL_KEYDOWN:
                 {
+                    //if the user pressed escape, return to QT
+                    if(event.key.keysym.sym == SDLK_ESCAPE) {
+                        running = false;
+                        return false;
+                    }
                     //catch every other key down that is not in the map
                     if(directionMap.count(event.key.keysym.sym) == 0) {
                         continue;

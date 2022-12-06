@@ -6,7 +6,6 @@
 #define ROCKETLEAGUE_GAMELOOP_H
 
 #include "SDL2pp/SDL2pp.hh"
-#include "Player.h"
 #include "sub_client/client_updates/ClientUpdate.h"
 #include "sub_client/client_actions/ClientAction.h"
 #include "sub_common/ProtectedQueue.h"
