@@ -1,5 +1,6 @@
-#ifndef ROCKETLEAGUE_PROTECTEDQUEUE_H
-#define ROCKETLEAGUE_PROTECTEDQUEUE_H
+#ifndef ROCKETLEAGUE_PROTECTEDQUEUEBOUNDED_H
+#define ROCKETLEAGUE_PROTECTEDQUEUEBOUNDED_H
+
 
 #pragma once
 #include <mutex>
@@ -10,9 +11,10 @@
 
 
 template<typename T>
-class ProtectedQueue
-{
+class ProtectedQueueBounded {
 public:
+    explicit ProtectedQueueBounded(int capacity) : capacity(capacity) {};
+
     T pop() {
         std::lock_guard<std::mutex> lock(mutex);
         if (queue.empty()) {
@@ -23,9 +25,14 @@ public:
         return element;
 
     }
-    void push(T &element) {
+    T push(T &element) {
         std::lock_guard<std::mutex> lock(mutex);
+        T firstElement = queue.front();
+        if(queue.size() == capacity){
+            queue.pop();
+        }
         queue.push(element);
+        return firstElement;
     }
     bool isEmpty() {
         std::lock_guard<std::mutex> lock(mutex);
@@ -49,11 +56,12 @@ public:
         return old;
     }
 
-    ~ProtectedQueue()  = default;
+    ~ProtectedQueueBounded()  = default;
 
 
 private:
     std::queue<T> queue;
     std::mutex mutex;
+    int capacity;
 };
-#endif //ROCKETLEAGUE_PROTECTEDQUEUE_H
+#endif //ROCKETLEAGUE_PROTECTEDQUEUEBOUNDED_H
