@@ -35,7 +35,6 @@ void Game::joinPlayer(uint8_t& id, BlockingQueue<std::optional<std::shared_ptr<S
 }
 
 void Game::run() {
-   std::cout << "Game " << gameName << " started" << std::endl;
     std::shared_ptr<ServerAction> action;
     while (not finished) {
         if (match.isFinished()){
@@ -50,7 +49,6 @@ void Game::run() {
         std::optional<std::shared_ptr<ServerUpdate>> update = std::make_shared<ServerUpdateWorld>(info);
         broadcastUpdate(update);
     }
-    std::cout << "Game " << gameName << " finished" << std::endl;
     std::vector<int> stats = match.stats();
     std::optional<std::shared_ptr<ServerUpdate>> update = std::make_shared<ServerUpdateStats>(stats);
     broadcastUpdate(update);

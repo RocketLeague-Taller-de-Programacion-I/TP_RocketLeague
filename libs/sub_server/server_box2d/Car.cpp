@@ -10,10 +10,10 @@
 #define CAR -3
 #define GROUND 0x0004
 #define MAXY 2.5
-#define FLIPYHEIGHT 1.5
+#define FLIPYHEIGHT 2
 #define ONEJUMP 0.5
 #define ONEJUMPFORCE 7000
-#define TWOJUMPFORCE 5000
+#define TWOJUMPFORCE 6000
 #define XFORCE 50
 #define SENSORDOWN 4
 #define SENSORLEFT 5
@@ -36,7 +36,7 @@ Car::Car(b2World* world, uint8_t& id) : id(id), turboOn(false), movingLeft(false
     bd.type = b2_dynamicBody;
     bd.position.Set(20.0f, 1.0f);
     fixDef.density = 1.f;
-    fixDef.restitution = 0.3f;
+    fixDef.restitution = 0.2f;
     fixDef.shape = &chassis;
     fixDef.filter.groupIndex = CAR;
     m_car = world->CreateBody(&bd);
@@ -119,7 +119,7 @@ Car::Car(b2World* world, uint8_t& id) : id(id), turboOn(false), movingLeft(false
     up.Set(vertUp, 4);
     b2FixtureDef fixDefUp;
     fixDefUp.density = 1.f;
-    fixDefUp.restitution = 0.3f;
+    fixDefUp.restitution = 0.1f;
     fixDefUp.shape = &up;
     fixDefUp.filter.groupIndex = CAR;
     fixDefUp.isSensor = true;
@@ -132,7 +132,7 @@ Car::Car(b2World* world, uint8_t& id) : id(id), turboOn(false), movingLeft(false
 }
 void Car::goRight() {
     if (this->m_car->GetPosition().y > FLIPYHEIGHT) {
-        m_car->ApplyTorque(-70.0, true);
+        m_car->ApplyTorque(-50.0, true);
         return;
     }
     if (turboOn) {
@@ -146,7 +146,7 @@ void Car::goRight() {
 //
 void Car::goLeft() {
     if (this->m_car->GetPosition().y > FLIPYHEIGHT) {
-        m_car->ApplyTorque(70.0, true);
+        m_car->ApplyTorque(50.0, true);
         return;
     }
     if (turboOn) {
@@ -217,13 +217,13 @@ void Car::update() {
     if (movingLeft and X() > 1) {
         goLeft();
     }
-    if(X() > 38.0) {
+    if(X() > 39.0) {
         this->m_car->SetTransform(b2Vec2(38.0, Y()), true);
-        m_car->ApplyLinearImpulseToCenter(b2Vec2(-5,0), true);
+        m_car->ApplyLinearImpulseToCenter(b2Vec2(-10,0), true);
     }
     if(X() < 0.5) {
         this->m_car->SetTransform(b2Vec2(0.5, Y()), true);
-        m_car->ApplyLinearImpulseToCenter(b2Vec2(5,0), true);
+        m_car->ApplyLinearImpulseToCenter(b2Vec2(10,0), true);
     }
 }
 bool Car::facingWhere() {

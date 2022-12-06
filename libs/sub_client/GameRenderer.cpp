@@ -35,8 +35,6 @@ void GameRenderer::run() {
                 quit = true;
                 throw std::runtime_error("La aplicación QT finalizó de forma incorrecta");
             }
-            std::cout << "QT finalizó correctamente con: " << qt_return << std::endl;
-
             if (id == 0) {
                 //the user quited QT before the game started
                 quit = true;

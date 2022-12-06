@@ -62,13 +62,10 @@ bool GameLoop::handle_events() {
                     if(keyDownStateMap[event.key.keysym.sym]) {
                         continue;
                     }
-                    std::cout << "key down: " << (int) keyDownStateMap[event.key.keysym.sym] << std::endl;
-
                     uint8_t movement = directionMap.at(event.key.keysym.sym);
                     std::shared_ptr<ClientAction> action = std::make_shared<ClientActionMove>(id, movement, ON);
                     std::optional<std::shared_ptr<ClientAction>> optAction = action;
                     actionsQueue.push(optAction);
-
                     // set the key down state to true
                     keyDownStateMap[event.key.keysym.sym] = true;
                 }
@@ -78,13 +75,10 @@ bool GameLoop::handle_events() {
                     if(directionMap.count(event.key.keysym.sym) == 0) {
                         continue;
                     }
-
                     uint8_t movement = directionMap.at(event.key.keysym.sym);
                     std::shared_ptr<ClientAction> action = std::make_shared<ClientActionMove>(id, movement, OFF);
                     std::optional<std::shared_ptr<ClientAction>> optAction = action;
                     actionsQueue.push(optAction);
-                    std::cout << "key up: " << (int) keyDownStateMap[event.key.keysym.sym] << std::endl;
-
                     keyDownStateMap[event.key.keysym.sym] = false;
                 }
                 break;
