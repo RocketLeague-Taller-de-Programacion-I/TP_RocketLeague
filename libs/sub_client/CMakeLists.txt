@@ -74,6 +74,6 @@ add_library(lib_client
         client_sdl/sprites/GameTimeSprite.cpp
         client_sdl/sprites/GameTimeSprite.h
         client_sdl/GameTime.cpp
-        client_sdl/GameTime.h)
+        client_sdl/GameTime.h client_updates/ClientUpdateStats.cpp client_updates/ClientUpdateStats.h client_sdl/sprites/GameStatsSprite.cpp client_sdl/sprites/GameStatsSprite.h)
 
 target_link_libraries(lib_client SDL2pp::SDL2pp Qt5::Widgets)

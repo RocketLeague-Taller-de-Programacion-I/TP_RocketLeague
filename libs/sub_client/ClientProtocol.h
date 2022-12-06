@@ -10,6 +10,7 @@
 #include "sub_client/client_updates/ClientListACK.h"
 #include "sub_client/client_updates/ClientStartedGameACK.h"
 #include "sub_client/client_updates/ClientUpdateWorld.h"
+#include "sub_client/client_updates/ClientUpdateStats.h"
 
 #include "sub_client/client_actions/ActionCreateRoom.h"
 #include "sub_client/client_actions/ActionJoinRoom.h"
@@ -35,6 +36,8 @@ public:
     void serializeJoinRoom(ActionJoinRoom *action);
     void serializeListRooms(ActionListRooms *action);
     void serializeMove(ClientActionMove *action);
+
+    static std::shared_ptr<ClientUpdate> parseStatsUpdate(const std::function<void(void *, int)> &receiveBytes);
 };
 
 

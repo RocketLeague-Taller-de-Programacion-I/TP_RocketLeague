@@ -15,6 +15,8 @@ std::shared_ptr<ClientUpdate> ClientProtocol::deserializeData(const uint8_t &typ
        // return parseStartedGameACK(receiveBytes);
         case WORLD:
             return parseWorldUpdate(receiveBytes);
+        case GAME_OVER:
+            return parseStatsUpdate(receiveBytes);
     }
     return nullptr;
 }
@@ -149,6 +151,24 @@ std::shared_ptr<ClientUpdate> ClientProtocol::parseWorldUpdate(const std::functi
     }
 
     std::shared_ptr<ClientUpdate> update = std::make_shared<ClientUpdateWorld>(ball, score, gameTime, clientCars);
+    return update;
+}
+
+std::shared_ptr<ClientUpdate> ClientProtocol::parseStatsUpdate(const std::function<void(void *, int)> &receiveBytes) {
+    uint8_t numberOfPlayers;
+    receiveBytes(&numberOfPlayers, sizeof(numberOfPlayers));
+
+    std::map<uint8_t, uint8_t> stats;
+    for (int i = 0; i < numberOfPlayers; i++) {
+        uint8_t id;
+        receiveBytes(&id, sizeof(id));
+
+        uint8_t score;
+        receiveBytes(&score, sizeof(score));
+        stats[id] = score;
+    }
+
+    std::shared_ptr<ClientUpdate> update = std::make_shared<ClientUpdateStats>(stats);
     return update;
 }
 

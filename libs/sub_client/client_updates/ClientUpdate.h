@@ -14,7 +14,8 @@ enum updateType {
     JOIN_ACK = 2,
     LIST_INFO = 3,
     STARTED_GAME_ACK = 4,
-    WORLD = 5
+    WORLD = 5,
+    GAME_OVER = 6,
 };
 
 enum returnCode {
