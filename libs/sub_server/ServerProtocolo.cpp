@@ -126,8 +126,16 @@ ServerProtocolo::serializeWorldUpdate(ServerUpdateWorld *update, std::function<v
 }
 
 void
-ServerProtocolo::serializeStatsUpdate(ServerUpdateStats *updateStats, std::function<void(void *, unsigned int)> &function) {
+ServerProtocolo::serializeStatsUpdate(ServerUpdateStats *updateStats, std::function<void(void *, unsigned int)> &sendBytes) {
     std::vector<int> stats = updateStats->getStats();
+    uint8_t players = stats[0];
+    sendBytes(&players, sizeof(players));
+    for (auto i = 1; i<(stats.size()-1)/2; i+2) {
+        uint8_t id = stats[i];
+        uint8_t goals = stats[i+1];
+        sendBytes(&id, sizeof(players));
+        sendBytes(&goals, sizeof(players));
+    }
 }
 
 std::shared_ptr<ServerAction>
