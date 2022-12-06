@@ -24,7 +24,6 @@ bool GameManager::joinGame(uint8_t idCreator, const std::string& nameGame, std::
 
     std::unique_lock<std::mutex> lock(this->mutex);
     if (this->games[nameGame]->isFull()) {
-        // TODO: return update with ERROR message
         return false;
     } else {
         auto queueSender = new BlockingQueue<std::optional<std::shared_ptr<ServerUpdate>>>;

@@ -16,6 +16,7 @@
 #define BALL 0x0002
 #define CAR 0x0003
 #define GROUND 0x0004
+#define RADIO 1
 Match::Match(std::string gameName, int required) : name(std::move(gameName)), world(b2World(b2Vec2(0,-10))), playersConnected(0), playersRequired(required), goalsLocal(0), goalsVisit(0),
                                                    listener(contacts) {
     world.SetContactListener(&this->listener);
@@ -35,12 +36,14 @@ Match::Match(std::string gameName, int required) : name(std::move(gameName)), wo
     fixDef.filter.groupIndex = GROUND;
     myUserData->mOwningFixture->SetFilterData(fixDef.filter);
     //  Balls creation
-    this->ball = new Ball(&this->world, 1);
+    std::shared_ptr<Ball> myBall = std::make_shared<Ball>(&this->world, RADIO);
+    this->ball = myBall;
 }
 
 
 void Match::addPlayer(uint8_t &id) {
-    this->players[id] = new Car(&this->world, id);
+    std::shared_ptr<Car> car = std::make_shared<Car>(&this->world, id);
+    this->players[id] = car;
     this->playersConnected++;
 }
 
@@ -48,15 +51,17 @@ void Match::removePlayer(uint8_t &id) {
     this->players.erase(id);
     this->playersConnected--;
 }
-
-void Match::step() {
-    for ( std::pair<const uint8_t,Car*> &player : players){
+//retorns if there was a goal
+bool Match::step() {
+    bool goal = false;
+    for ( std::pair<const uint8_t,std::shared_ptr<Car>> &player : players){
         player.second->update();
     }
-    checkGoals();
+    goal = checkGoals();
     this->world.Step(BX2D_TIMESTEP, BX2D_VELOCITY_ITERATIONS, BX2D_POSITION_ITERATIONS);
     usleep(USECONDS_TO_SLEEP);
     timeElapsed += USECONDS_TO_SLEEP;
+    return goal;
 }
 
 void Match::moveRight(uint8_t &id, bool state) {
@@ -74,6 +79,10 @@ std::vector<int> Match::info() {
     data.push_back(x);
     int y = (int) (this->ball->Y() * 1000);
     data.push_back(y);
+    int signBall = (ball->angleDeg() < 0) ? 1 : 0;
+    int angleBall = (int) abs(ball->angleDeg() * 1000);
+    data.push_back(signBall);
+    data.push_back(angleBall);
 //    score -> 4bytes
     data.push_back((this->goalsLocal));
     data.push_back((this->goalsVisit));
@@ -120,17 +129,21 @@ void Match::turbo(uint8_t &id, bool state) {
     }
 }
 
-void Match::checkGoals() {
+bool Match::checkGoals() {
+    bool goal = false;
     if (this->ball->X() <= LOCALGOAL and this->ball->Y() <= GOALSIZE) {  //  LOCALGOAL es el arco del local
         this->goalsVisit++;
         this->ball->restartGame();
         addGoalToScorer();
+        goal = true;
     }
     else if (this->ball->X() >= VISITGOAL and this->ball->Y() <= GOALSIZE) {  //  VISITGOAL es el arco del visitante
         this->goalsLocal++;
         this->ball->restartGame();
         addGoalToScorer();
+        goal = true;
     }
+    return goal;
 }
 int Match::local() const {
     return this->goalsLocal;
@@ -142,13 +155,7 @@ bool Match::isFinished() const {
     return timeElapsed >= (unsigned int)TIME_TO_PLAY;
 }
 
-Match::~Match() {
-    for ( std::pair<const uint8_t,Car*> &player : players){
-        delete player.second;
-        player.second = nullptr;
-    }
-    delete this->ball;
-}
+Match::~Match() {}
 
 void Match::addGoalToScorer() {
     uint8_t id = this->contacts.back();
@@ -170,4 +177,8 @@ std::vector<int> Match::stats() {
         stats.emplace_back(goals);
     }
     return stats;
+}
+
+void Match::deleteMatch() {
+    players.clear();
 }

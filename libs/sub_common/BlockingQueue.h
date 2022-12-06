@@ -1,7 +1,3 @@
-//
-// Created by lucaswaisten on 12/11/22.
-//
-
 #ifndef ROCKETLEAGUE_BQUEUE_H
 #define ROCKETLEAGUE_BQUEUE_H
 

@@ -89,7 +89,15 @@ std::shared_ptr<ClientUpdate> ClientProtocol::parseWorldUpdate(const std::functi
     receiveBytes(&ballY, sizeof(ballY));
     ballY = ntohs(ballY);
     ballYFloat = ballY/1000.0;
-    Ball ball(ballXFloat, ballYFloat);
+
+    uint16_t angleSign;
+    receiveBytes(&angleSign, sizeof(angleSign));
+    uint32_t angleBall; //uint32_t
+    receiveBytes(&angleBall, sizeof(angleBall));
+    angleBall = ntohl(angleBall);
+    float angleFloat = float(angleBall);
+    angleFloat = angleFloat / 1000.0 *  (angleSign ? 1 : -1);
+    Ball ball(ballXFloat, ballYFloat, angleFloat);
 
     //  Score
     uint16_t local;
@@ -161,13 +169,12 @@ std::shared_ptr<ClientUpdate> ClientProtocol::parseStatsUpdate(const std::functi
         uint8_t id;
         receiveBytes(&id, sizeof(id));
 
-        if(!id) continue; // 0 is not a valid id
-
         uint8_t score;
         receiveBytes(&score, sizeof(score));
+
+        if(id == 0) continue; // 0 is not a valid id
         stats[id] = score;
     }
-
     std::shared_ptr<ClientUpdate> update = std::make_shared<ClientUpdateStats>(stats);
     return update;
 }

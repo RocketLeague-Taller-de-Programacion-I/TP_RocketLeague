@@ -17,8 +17,6 @@ message("Client - Agregando '${PROJECT_SOURCE_DIR}/sub_client' como directorio d
 add_library(lib_client
         client_sdl/Animation.cpp
         client_sdl/Animation.h
-        client_sdl/Player.cpp
-        client_sdl/Player.h
         client_sdl/GameLoop.cpp
         client_sdl/GameLoop.h
         client_qt/mainwindow.cpp
@@ -29,7 +27,6 @@ add_library(lib_client
         GameRenderer.h
         client_sdl/Worldview.cpp
         client_sdl/Worldview.h
-        client_sdl/sprites/GameSprite.cpp
         client_sdl/sprites/GameSprite.h
         UpdatesReceiverThread.cpp
         UpdatesReceiverThread.h
@@ -48,32 +45,29 @@ add_library(lib_client
         client_actions/ActionListRooms.h
         client_updates/ClientUpdate.cpp
         client_updates/ClientUpdate.h
-        client_updates/ClientCreateACK.cpp
         client_updates/ClientCreateACK.h
-        client_updates/ClientJoinACK.cpp
         client_updates/ClientJoinACK.h
         client_updates/ClientListACK.cpp
         client_updates/ClientListACK.h
         WaitingForGameToStartThread.cpp
         WaitingForGameToStartThread.h
-        client_updates/ClientStartedGameACK.cpp
         client_updates/ClientStartedGameACK.h
         client_updates/ClientUpdateWorld.cpp
         client_updates/ClientUpdateWorld.h
-        client_sdl/Car.cpp
-        client_sdl/Car.h
-        client_sdl/Score.cpp
-        client_sdl/Score.h
+        client_updates/ClientUpdateStats.h
         client_sdl/Ball.h
+        client_sdl/Score.h
+        client_sdl/Car.h
+        client_sdl/GameTime.h
+        client_sdl/sprites/BallSprite.cpp
+        client_sdl/sprites/BallSprite.h
         client_sdl/sprites/ScoreSprite.cpp
         client_sdl/sprites/ScoreSprite.h
         client_sdl/sprites/CarSprite.cpp
         client_sdl/sprites/CarSprite.h
-        client_sdl/sprites/BallSprite.cpp
-        client_sdl/sprites/BallSprite.h
         client_sdl/sprites/GameTimeSprite.cpp
         client_sdl/sprites/GameTimeSprite.h
-        client_sdl/GameTime.cpp
-        client_sdl/GameTime.h client_updates/ClientUpdateStats.cpp client_updates/ClientUpdateStats.h client_sdl/sprites/GameStatsSprite.cpp client_sdl/sprites/GameStatsSprite.h)
+        client_sdl/sprites/GameStatsSprite.cpp
+        client_sdl/sprites/GameStatsSprite.h)
 
 target_link_libraries(lib_client SDL2pp::SDL2pp Qt5::Widgets)

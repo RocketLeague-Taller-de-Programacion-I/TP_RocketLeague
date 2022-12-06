@@ -29,7 +29,8 @@
 
 class GameRenderer {
 private:
-    Socket skt_client;
+    const char* host;
+    const char* port;
     bool quit = false;
     ActionsSenderThread* sender;
     UpdatesReceiverThread* receiver;
@@ -40,7 +41,7 @@ public:
     ~GameRenderer();
 
     void run();
-    void stop();
+    void stop(Socket &skt);
 
     void cleanThreads();
     void startThreads();

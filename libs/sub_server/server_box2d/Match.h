@@ -28,10 +28,9 @@ class Match {
 private:
     std::string name;
     b2World world;
-    Ball* ball;
-    std::map<uint8_t, Car*> players;
+    std::shared_ptr<Ball> ball;
+    std::map<uint8_t, std::shared_ptr<Car>> players;
     std::map<uint8_t, int> scorers;
-    std::map<uint8_t, Car*> assistants;
     std::vector<int> contacts;
     int playersConnected;
     int playersRequired;
@@ -56,8 +55,8 @@ public:
     void jump(uint8_t &id, bool state);
     void turbo(uint8_t &id, bool state);
 
-    void checkGoals();
-    void step();
+    bool checkGoals();
+    bool step();
     int visit() const;
     int local() const;
 
@@ -68,6 +67,8 @@ public:
     void addGoalToScorer();
 
     std::vector<int> stats();
+
+    void deleteMatch();
 };
 
 

@@ -13,5 +13,5 @@ add_library(lib_common
         ProtectedQueue.h
         QueueIsEmptyException.cpp
         QueueIsEmptyException.h
-        )
+        ProtectedQueueBounded.h)
 target_link_libraries(lib_common)

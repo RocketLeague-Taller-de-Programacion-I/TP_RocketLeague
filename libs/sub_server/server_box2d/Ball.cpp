@@ -7,6 +7,7 @@
 #define BALL 0x0002
 #define CAR -3
 #define GROUND 0x0004
+#define RADTODEG 57.2958
 
 Ball::Ball(b2World* world, float radius) {
     myUserData = std::make_unique<MyFixtureUserDataType>();
@@ -22,8 +23,8 @@ Ball::Ball(b2World* world, float radius) {
     circleShape.m_p.Set(0, 0);
     circleShape.m_radius = m_radius; //use class variable
     fixDef.shape = &circleShape;
-    fixDef.density = 1;
-    fixDef.restitution = 0.2;
+    fixDef.density = 0.5;
+    fixDef.restitution = 0.08;
     fixDef.filter.groupIndex = BALL;
     myUserData->mOwningFixture =  m_body->CreateFixture(&fixDef);
     myUserData->mOwningFixture->SetFilterData(fixDef.filter);
@@ -37,6 +38,9 @@ float Ball::Y() const {
 }
 void Ball::restartGame() const {
     m_body->SetTransform(b2Vec2(20,10),m_body->GetAngle());
+}
+float Ball::angleDeg() const {
+    return (this->m_body->GetAngle()*RADTODEG);
 }
 
 Ball::~Ball() { }

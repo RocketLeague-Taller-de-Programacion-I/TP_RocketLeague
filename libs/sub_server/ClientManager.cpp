@@ -65,7 +65,6 @@ void ClientManager::startClientThreads(ProtectedQueue<std::shared_ptr<ServerActi
     this->shouldContinueLooping = false;
     clientReceiverThread = new ClientReceiver(client, qReceiver, id);
     clientSenderThread = new ClientSender(client, senderQueue, id);
-    std::cout << "Starting client threads" << std::endl;
     clientReceiverThread->start();
     clientSenderThread->start();
 }

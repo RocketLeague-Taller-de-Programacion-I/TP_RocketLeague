@@ -3,8 +3,10 @@
 //
 
 #include "ServerProtocolo.h"
-#define INITIAL_POSITION 6
-
+#define INITIAL_POSITION 8
+command_t ServerProtocolo::getMapCommand(uint32_t action) {
+    return this->mapCommand.at(action);
+}
 
 std::shared_ptr<ServerAction> ServerProtocolo::deserializeData(const std::function<void(void *, int)> &receiveBytes) {
     return parseUpdateAction(receiveBytes);
@@ -129,7 +131,9 @@ ServerProtocolo::serializeStatsUpdate(ServerUpdateStats *updateStats, std::funct
 
     for (int i = 1; i < (stats.size()); i+=2) {
         uint8_t id = stats[i];
+        std::cout << "id: " << (int)id << std::endl;
         uint8_t goals = stats[i+1];
+        std::cout << "goals: " << (int)goals << std::endl;
         sendBytes(&id, sizeof(id));
         sendBytes(&goals, sizeof(goals));
     }
@@ -137,7 +141,10 @@ ServerProtocolo::serializeStatsUpdate(ServerUpdateStats *updateStats, std::funct
 
 std::shared_ptr<ServerAction>
         ServerProtocolo::deserializeDataOnCommand(uint8_t &actionType, uint8_t &id, GameManager &gameManager,
-                                                  std::function<void(void *, int)> &receiveBytes) {
+                                                  std::function<void(void *, int)> &receiveBytes,
+                                                  std::function<void(void *, unsigned int)> &sendBytes,
+                                                  std::function<void(ProtectedQueue<std::shared_ptr<ServerAction>> *,
+                                                                     BlockingQueue<std::optional<std::shared_ptr<ServerUpdate>>> *)> &startThreadsCallable) {
     switch (actionType) {
         case CREATE_ROOM:
             return parseCreateAction(id, receiveBytes, gameManager);
@@ -146,7 +153,7 @@ std::shared_ptr<ServerAction>
         case LIST_ROOMS:
             return parseListAction(id, gameManager);
     }
-    return nullptr;
+    return {};
 }
 
 std::shared_ptr<ServerAction>

@@ -117,7 +117,6 @@ void MainWindow::joinParticularGame(QString roomName) {
 
     // crear evento de join ()
     std::string room = retrieveGameName(roomName.toStdString());
-    std::cout << "Joining to " << room << std::endl;
     std::shared_ptr<ClientAction> actionJoin = std::make_shared<ActionJoinRoom>(room);
     std::optional<std::shared_ptr<ClientAction>> optActionJoin = actionJoin;
     this->actionsQueue.push(optActionJoin);
@@ -277,10 +276,6 @@ void MainWindow::popFirstUpdate() {
         scene.clear();
         close();
     }
-    std::cout << "Update received" << std::endl;
-    std::cout << "Game created with id: " << (int)(update->getId()) << std::endl;
-    std::cout << "Game created with returnmesage: " << (int)update->getReturnCode() << std::endl;
-
     if(update->getReturnCode()) {
         drawGUI();
     }

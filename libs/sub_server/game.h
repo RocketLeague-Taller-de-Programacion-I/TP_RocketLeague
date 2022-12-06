@@ -1,7 +1,3 @@
-//
-// Created by lucaswaisten on 04/11/22.
-//
-
 #ifndef ROCKETLEAGUE_GAME_H
 #define ROCKETLEAGUE_GAME_H
 
@@ -9,8 +5,11 @@
 #include <string>
 #include <map>
 #include <atomic>
+#include <unistd.h>
+
 #include "sub_common/thread.h"
 #include "sub_common/BlockingQueue.h"
+#include "sub_common/ProtectedQueueBounded.h"
 #include "sub_server/server_box2d/Match.h"
 
 #include "server_updates/ServerUpdateWorld.h"
@@ -55,6 +54,8 @@ public:
     void deletePlayer(uint8_t idPlayer);
     bool started() { return gameStarted; };
     bool isFinished() const;
+
+    void broadcastUpdateForRepetition(ProtectedQueueBounded<std::optional<std::shared_ptr<ServerUpdate>>> &bounded);
 };
 
 
