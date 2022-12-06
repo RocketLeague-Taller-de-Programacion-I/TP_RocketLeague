@@ -23,8 +23,8 @@ Ball::Ball(b2World* world, float radius) {
     circleShape.m_p.Set(0, 0);
     circleShape.m_radius = m_radius; //use class variable
     fixDef.shape = &circleShape;
-    fixDef.density = 1;
-    fixDef.restitution = 0.2;
+    fixDef.density = 0.5;
+    fixDef.restitution = 0.08;
     fixDef.filter.groupIndex = BALL;
     myUserData->mOwningFixture =  m_body->CreateFixture(&fixDef);
     myUserData->mOwningFixture->SetFilterData(fixDef.filter);
