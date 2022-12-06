@@ -116,7 +116,6 @@ ServerProtocolo::serializeWorldUpdate(ServerUpdateWorld *update, std::function<v
         sendBytes(&sign, sizeof(sign));
 
         uint32_t angle = (uint32_t) htonl(matchInfo[i + 4]);
-        std::cout << "Angle: " << matchInfo[i + 4] << std::endl;
         sendBytes(&angle, sizeof(angle));
 
         uint16_t facing = (uint16_t) htons(matchInfo[i + 5]);
