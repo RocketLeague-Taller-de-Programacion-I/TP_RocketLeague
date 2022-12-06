@@ -55,8 +55,8 @@ public:
     void jump(uint8_t &id, bool state);
     void turbo(uint8_t &id, bool state);
 
-    void checkGoals();
-    void step();
+    bool checkGoals();
+    bool step();
     int visit() const;
     int local() const;
 

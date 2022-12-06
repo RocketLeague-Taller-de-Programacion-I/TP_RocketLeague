@@ -1,7 +1,3 @@
-//
-// Created by lucaswaisten on 04/11/22.
-//
-
 #include "game.h"
 #include "sub_server/server_updates/ServerUpdateStats.h"
 
@@ -36,6 +32,8 @@ void Game::joinPlayer(uint8_t& id, BlockingQueue<std::optional<std::shared_ptr<S
 
 void Game::run() {
     std::shared_ptr<ServerAction> action;
+    ProtectedQueueBounded<std::optional<std::shared_ptr<ServerUpdate>>> queueBounded(500);
+
     while (not finished) {
         if (match.isFinished()){
             finished = true;
@@ -44,10 +42,14 @@ void Game::run() {
         if (queue->tryPop(action) and action){
             action->execute(match); //update model
         }
-        match.step(); //update box2d
+        if(match.step()) { //update box2d and check if there were any goals made
+            broadcastUpdateForRepetition(queueBounded);
+        }
         std::vector<int> info = match.info();
         std::optional<std::shared_ptr<ServerUpdate>> update = std::make_shared<ServerUpdateWorld>(info);
         broadcastUpdate(update);
+        //push last update also to this queue to have a repeteiton
+        queueBounded.push(update);
     }
     std::vector<int> stats = match.stats();
     std::optional<std::shared_ptr<ServerUpdate>> update = std::make_shared<ServerUpdateStats>(stats);
@@ -95,3 +97,10 @@ Game::~Game() {
     this->match.deleteMatch();
 }
 
+void Game::broadcastUpdateForRepetition(ProtectedQueueBounded<std::optional<std::shared_ptr<ServerUpdate>>> &bounded) {
+    std::optional<std::shared_ptr<ServerUpdate>> update;
+    while (bounded.tryPop(update)){
+        usleep(USECONDS_TO_SLEEP);
+        broadcastUpdate(update);
+    }
+}

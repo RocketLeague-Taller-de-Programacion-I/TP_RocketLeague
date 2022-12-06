@@ -51,15 +51,17 @@ void Match::removePlayer(uint8_t &id) {
     this->players.erase(id);
     this->playersConnected--;
 }
-
-void Match::step() {
+//retorns if there was a goal
+bool Match::step() {
+    bool goal = false;
     for ( std::pair<const uint8_t,std::shared_ptr<Car>> &player : players){
         player.second->update();
     }
-    checkGoals();
+    goal = checkGoals();
     this->world.Step(BX2D_TIMESTEP, BX2D_VELOCITY_ITERATIONS, BX2D_POSITION_ITERATIONS);
     usleep(USECONDS_TO_SLEEP);
     timeElapsed += USECONDS_TO_SLEEP;
+    return goal;
 }
 
 void Match::moveRight(uint8_t &id, bool state) {
@@ -127,17 +129,21 @@ void Match::turbo(uint8_t &id, bool state) {
     }
 }
 
-void Match::checkGoals() {
+bool Match::checkGoals() {
+    bool goal = false;
     if (this->ball->X() <= LOCALGOAL and this->ball->Y() <= GOALSIZE) {  //  LOCALGOAL es el arco del local
         this->goalsVisit++;
         this->ball->restartGame();
         addGoalToScorer();
+        goal = true;
     }
     else if (this->ball->X() >= VISITGOAL and this->ball->Y() <= GOALSIZE) {  //  VISITGOAL es el arco del visitante
         this->goalsLocal++;
         this->ball->restartGame();
         addGoalToScorer();
+        goal = true;
     }
+    return goal;
 }
 int Match::local() const {
     return this->goalsLocal;
