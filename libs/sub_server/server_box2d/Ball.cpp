@@ -7,6 +7,7 @@
 #define BALL 0x0002
 #define CAR -3
 #define GROUND 0x0004
+#define RADTODEG 57.2958
 
 Ball::Ball(b2World* world, float radius) {
     myUserData = std::make_unique<MyFixtureUserDataType>();
@@ -37,6 +38,9 @@ float Ball::Y() const {
 }
 void Ball::restartGame() const {
     m_body->SetTransform(b2Vec2(20,10),m_body->GetAngle());
+}
+float Ball::angleDeg() const {
+    return (this->m_body->GetAngle()*RADTODEG);
 }
 
 Ball::~Ball() { }

@@ -74,6 +74,10 @@ std::vector<int> Match::info() {
     data.push_back(x);
     int y = (int) (this->ball->Y() * 1000);
     data.push_back(y);
+    int signBall = (ball->angleDeg() < 0) ? 1 : 0;
+    int angleBall = (int) abs(ball->angleDeg() * 1000);
+    data.push_back(signBall);
+    data.push_back(angleBall);
 //    score -> 4bytes
     data.push_back((this->goalsLocal));
     data.push_back((this->goalsVisit));

@@ -3,7 +3,7 @@
 //
 
 #include "ServerProtocolo.h"
-#define INITIAL_POSITION 6
+#define INITIAL_POSITION 8
 command_t ServerProtocolo::getMapCommand(uint32_t action) {
     return this->mapCommand.at(action);
 }
@@ -81,21 +81,25 @@ ServerProtocolo::serializeWorldUpdate(ServerUpdateWorld *update, std::function<v
     //  Ball
     uint16_t ballX = (uint16_t) htons(matchInfo[0]);
     uint16_t ballY = (uint16_t) htons(matchInfo[1]);
+    uint16_t sign = (uint16_t) htons(matchInfo[2]);
+    uint32_t angle = (uint32_t) htonl(matchInfo[3]);
     sendBytes(&ballX, sizeof(ballX));
     sendBytes(&ballY, sizeof(ballY));
+    sendBytes(&sign, sizeof(sign));
+    sendBytes(&angle, sizeof(angle));
 
     //  Score
-    uint16_t local = (uint16_t) htons(matchInfo[2]);
-    uint16_t visit = (uint16_t) htons(matchInfo[3]);
+    uint16_t local = (uint16_t) htons(matchInfo[4]);
+    uint16_t visit = (uint16_t) htons(matchInfo[5]);
     sendBytes(&local, sizeof(local));
     sendBytes(&visit, sizeof(visit));
 
     //  Tiempo restante
-    uint16_t time = (uint16_t) htons(matchInfo[5]);
+    uint16_t time = (uint16_t) htons(matchInfo[7]);
     sendBytes(&time, sizeof(time));
 
     //  Numero de Clientes
-    uint16_t n_clients = (uint16_t) htons(matchInfo[4]);
+    uint16_t n_clients = (uint16_t) htons(matchInfo[6]);
     sendBytes(&n_clients, sizeof(n_clients));
 
     int vSize = matchInfo.size();
