@@ -162,6 +162,8 @@ TEST_CASE("ClientProtocol can deserialize ListACK update", "[clientProtocol]") {
 
 std::vector<uint16_t> dataTestOne = {10, // x_ball
                                      10, // y_ball
+                                     1, // ball_angleSing
+                                     15, // ball_angle
                                      2, // local
                                      0, // visitor
                                      1, // time
@@ -177,6 +179,8 @@ MockWorldProtocol mockWorldOneOK(dataTestOne);
 
 std::vector<uint16_t> dataTestTwo = {20, // x_ball
                                      20, // y_ball
+                                     1, // ball_angleSing
+                                     20, // ball_angle
                                      3, // local
                                      2, // visitor
                                      5, // time
@@ -184,8 +188,8 @@ std::vector<uint16_t> dataTestTwo = {20, // x_ball
                                      3, // id_client1
                                      400, // x_car
                                      500, // y_car
-                                     1, // angle_sing
-                                     30,// angle
+                                     1, // car_angle_sing
+                                     30,// car_angle
                                      1 // facing_where
 };
 MockWorldProtocol mockWorldTwoOK(dataTestTwo);
@@ -205,9 +209,10 @@ TEST_CASE("ClientProtocol can deserialize WorldACK update", "[clientProtocol]") 
         auto ball = update->getBall();
         auto x = (int)(ball.getX()*1000);
         auto y = (int)(ball.getY()*1000);
-
+        auto ball_angle =  (int)(ball.getAngle()*1000);
         REQUIRE(x == 10);
         REQUIRE(y == 10);
+        REQUIRE(ball_angle == 15);
 
         /*
          * Score Assert
@@ -255,10 +260,10 @@ TEST_CASE("ClientProtocol can deserialize WorldACK update", "[clientProtocol]") 
         auto ball = update->getBall();
         auto x = (int)(ball.getX()*1000);
         auto y = (int)(ball.getY()*1000);
-
+        auto ball_angle = (int)(ball.getAngle()*1000);
         REQUIRE(x == 20);
         REQUIRE(y == 20);
-
+        REQUIRE(ball_angle == 20);
         /*
          * Score Assert
          */
